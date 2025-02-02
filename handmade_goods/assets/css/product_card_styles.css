@@ -93,12 +93,12 @@
 }
 
 .cart-btn {
-    background-color: #e63946;
+    background-color: #722F37;
     color: white;
 }
 
 .cart-btn:hover {
-    background-color: #c52836;
+    background-color: #4A1C1C;
 }
 
 .listing-item:hover .button-container {

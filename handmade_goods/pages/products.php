@@ -1,7 +1,7 @@
 <?php
 session_start();
 $is_logged_in = isset($_SESSION["user_id"]);
-include 'test-products.php';
+include '../test_products.php';
 ?>
 
 <!DOCTYPE html>
@@ -11,12 +11,14 @@ include 'test-products.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
-    <link rel="stylesheet" href="assets/css/product_styles.css?v=1">
+    <link rel="stylesheet" href="../assets/css/product_styles.css?v=1">
+    <link rel="stylesheet" href="../assets/css/navbar_styles.css">
+    <link rel="stylesheet" href="../assets/css/product_card_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 </head>
 
 <body>
-    <?php include 'navbar.php'; ?>
+    <?php include '../assets/html/navbar.php'; ?>
     <h1 class="text-center">Explore our products !</h1>
     <p class="text-center">Browse our collection and discover what suits you.</p>
 
@@ -55,7 +57,7 @@ include 'test-products.php';
                     $name = htmlspecialchars($product["name"]);
                     $price = number_format($product["price"], 2);
                     $image = htmlspecialchars($product["image"]);
-                    include "product_card.php";
+                    include "../assets/html/product_card.php";
                     ?>
                 <?php endforeach; ?>
             </div>

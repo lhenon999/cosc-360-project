@@ -1,5 +1,5 @@
 <?php session_start();
-include 'test-products.php'; ?>
+include '../test_products.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,15 +8,16 @@ include 'test-products.php'; ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="assets/css/navbar_styles.css">
-    <link rel="stylesheet" href="assets/css/footer_styles.css">
-    <link rel="stylesheet" href="assets/css/home_styles.css">
+    <link rel="stylesheet" href="../assets/css/navbar_styles.css">
+    <link rel="stylesheet" href="../assets/css/footer_styles.css">
+    <link rel="stylesheet" href="../assets/css/home_styles.css">
+    <link rel="stylesheet" href="../assets/css/product_card_styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <?php include 'navbar.php'; ?>
+    <?php include '../assets/html/navbar.php'; ?>
 
     <div class="container mt-5">
         <h1 class="text-center text-uppercase fw-bold">Welcome to Handmade Goods</h1>
@@ -24,19 +25,19 @@ include 'test-products.php'; ?>
 
         <div class="img-container">
             <div class="home-img">
-                <img src="assets/images/image1.jpg">
+                <img src="../assets/images/image1.jpg">
             </div>
             <div class="home-img">
-                <img src="assets/images/image2.jpg">
+                <img src="../assets/images/image2.jpg">
             </div>
             <div class="home-img">
-                <img src="assets/images/image3.jpg">
+                <img src="../assets/images/image3.jpg">
             </div>
             <div class="home-img">
-                <img src="assets/images/image4.jpg">
+                <img src="../assets/images/image4.jpg">
             </div>
             <div class="home-img">
-                <img src="assets/images/stock_image.webp">
+                <img src="../assets/images/stock_image.webp">
             </div>
         </div>
 
@@ -89,7 +90,7 @@ include 'test-products.php'; ?>
                 $price = number_format($product["price"], 2);
                 $image = htmlspecialchars($product["image"]);
                 ?>
-                <?php include "product_card.php"; ?>
+                <?php include "../assets/html/product_card.php"; ?>
                 <?php $counter++; ?>
             <?php endforeach; ?>
         </div>
@@ -99,7 +100,7 @@ include 'test-products.php'; ?>
     </div>
 
     <div id="footer"></div>
-        <?php include "footer.php"; ?>
+        <?php include "../assets/html/footer.php"; ?>
     </div>
 
 </body>

@@ -12,19 +12,19 @@
     gap: 40px;
 }
 
-.footer-brand {
+.footer-info {
     flex: 1;
     max-width: 300px;
     margin-bottom: 40px;
 }
 
-.footer-brand h2 {
+.footer-info h2 {
     font-size: 2.5rem;
     margin-bottom: 10px;
     font-weight: bold;
 }
 
-.footer-brand p {
+.footer-info p {
     font-size: 1.1rem;
     margin-bottom: 20px;
 }
@@ -80,7 +80,7 @@
 .footer-shop a:hover,
 .footer-help a:hover,
 .footer-about a:hover {
-    color: #e63946; 
+    color: #722F37; 
 }
 
 .footer-bottom {
@@ -106,7 +106,7 @@
         align-items: center;
     }
 
-    .footer-brand {
+    .footer-info {
         text-align: center;
         margin-bottom: 20px;
     }

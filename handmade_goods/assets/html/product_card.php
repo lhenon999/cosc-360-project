@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="assets/css/product_card_styles.css">
+<link rel="stylesheet" href="../css/product_card_styles.css">
 
 <div class="listing-item-container">
     <div class="listing-item">

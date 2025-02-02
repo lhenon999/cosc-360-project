@@ -33,4 +33,9 @@ Import `init.sql`
 
 `http://localhost/handmade_goods/home.php`
 
+login info:
+
+user Id: johndoe@mail.com
+password: password123
+
 ![img](https://raw.githubusercontent.com/lhenon999/cosc-360-project/master/handmade_goods/assets/images/home_page_screenshot.png)

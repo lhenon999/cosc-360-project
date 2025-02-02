@@ -1,8 +1,8 @@
 <footer class="footer">
     <div class="footer-content">
-        <div class="footer-brand">
+        <div class="footer-info">
             <h2>HandMade Goods</h2>
-            <p>Unique handmade products crafted with care.</p>
+            <p>Unique handmade products</p>
             <div class="footer-social">
                 <a href="#" class="social-icon">Facebook</a>
                 <a href="#" class="social-icon">Instagram</a>
@@ -36,9 +36,9 @@
 
     <div class="footer-bottom">
         <div class="footer-payment">
-            <img src="assets/images/icons/paypal.png">
-            <img src="assets/images/icons/visa.png">
-            <img src="assets/images/icons/mastercard.png">
+            <img src="../assets/images/icons/paypal.png">
+            <img src="../assets/images/icons/visa.png">
+            <img src="../assets/images/icons/mastercard.png">
         </div>
     </div>
 </footer>

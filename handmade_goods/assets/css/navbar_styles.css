@@ -1,17 +1,24 @@
 .navbar {
-    background-color: #263238 !important;
+    background-color: #722F37 !important;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
+    padding: 10px 0;
 }
 
 .navbar-logo {
     font-size: 20px;
     font-weight: bold;
     color: #ffffff !important;
+    text-decoration: none; 
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-logo:hover {
+    color: #4A1C1C;
 }
 
 .navbar-nav {
@@ -21,29 +28,91 @@
 .navbar-nav .nav-link {
     font-size: 16px;
     color: #ffffff !important;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
 }
 
 .navbar-nav .nav-link:hover {
-    text-decoration: underline;
+    color: #4A1C1C;
+    transform: scale(1.05);
 }
 
 .navbar-search {
     margin-right: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-search input {
     width: 280px !important;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.navbar-search input:focus {
+    border-color: #4A1C1C;
+    box-shadow: 0 0 8px rgba(230, 57, 70, 0.3);
+    outline: none;
 }
 
 .navbar-search button {
-    background-color: #263238 !important;
+    background-color: #722F37;
     border: none;
     color: white;
     padding: 8px 15px;
     border-radius: 4px;
     cursor: pointer;
+    margin-left: 8px;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
 }
 
 .navbar-search button:hover {
-    background-color: 333333 !important;
+    background-color: #4A1C1C;
+    transform: scale(1.05);
+}
+
+.navbar-auth {
+    display: flex;
+    gap: 15px;
+}
+
+.navbar-auth a {
+    font-size: 14px;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar-auth a:hover {
+    background-color: #4A1C1C;
+    color: white;
+    transform: scale(1.05);
+}
+
+.navbar-nav .account-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease-in-out;
+    margin-left: 10px;
+}
+
+.navbar-nav .account-link .account-icon {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.navbar-nav .account-link:hover {
+    color: #4A1C1C;
+    transform: scale(1.05);
 }
