@@ -33,4 +33,5 @@ Import `init.sql`
 
 `http://localhost/handmade_goods/home.php`
 
-[https://github.com/lhenon999/cosc-360-project/blob/master/handmade_goods/assets/images/home_page_screenshot.png]
+![img](https://raw.githubusercontent.com/lhenon999/cosc-360-project/master/handmade_goods/assets/images/home_page_screenshot.png)
+Explanation:
