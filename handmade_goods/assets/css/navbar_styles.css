@@ -1,0 +1,49 @@
+.navbar {
+    background-color: #263238 !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar-logo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff !important;
+}
+
+.navbar-nav {
+    margin-left: 20px;
+}
+
+.navbar-nav .nav-link {
+    font-size: 16px;
+    color: #ffffff !important;
+}
+
+.navbar-nav .nav-link:hover {
+    text-decoration: underline;
+}
+
+.navbar-search {
+    margin-right: 20px;
+}
+
+.navbar-search input {
+    width: 280px !important;
+}
+
+.navbar-search button {
+    background-color: #263238 !important;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.navbar-search button:hover {
+    background-color: 333333 !important;
+}
