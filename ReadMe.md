@@ -23,18 +23,15 @@ Start the **Apache** server and **MySQL** server
     
 
 Open **phpMyAdmin**:
+`http://localhost/phpmyadmin`
 
-    http://localhost/phpmyadmin
-
-Import 'init.sql'
-
-    handmade_goods/db/init.sql
+Import `init.sql`
 
 ---
 
 ### 4. Update config.php and test site
 
-    [localhost/](http://localhost/handmade_goods/home.php)
+`http://localhost/handmade_goods/home.php`
 
 
 ![img](assets/images/home_page_screenshot.png)
