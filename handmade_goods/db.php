@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     //Register 
     if (isset($_POST["register"])) {
-        $name = trim($_POST["name"]);
+        $name = trim($_POST["full_name"]);
         $email = trim($_POST["email"]);
         $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
 

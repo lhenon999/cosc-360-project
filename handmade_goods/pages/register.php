@@ -11,7 +11,7 @@
     <div class="login-container">
         <h2>Create an Account</h2>
         <form method="POST" action="../db.php">
-            <input type="text" name="full_name" id="full_name" placeholder="Full Name" required>
+            <input type="text" name="name" id="full_name" placeholder="Full Name" required>
             <input type="email" name="email" id="email" placeholder="Email" required>
             <input type="password" name="password" id="password" placeholder="Password" required>
             <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
