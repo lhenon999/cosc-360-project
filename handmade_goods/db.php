@@ -2,14 +2,29 @@
 require_once 'config.php';
 session_start();
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    //Register 
     if (isset($_POST["register"])) {
-        $name = trim($_POST["full_name"]);
+        $name = trim($_POST["name"]);
         $email = trim($_POST["email"]);
         $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
-
+    
+        $check_stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+        $check_stmt->bind_param("s", $email);
+        $check_stmt->execute();
+        $check_stmt->store_result();
+    
+        if ($check_stmt->num_rows > 0) {
+            echo "Error: This email is already registered!";
+            exit();
+        }
+        $check_stmt->close();
+    
         $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $name, $email, $password);
         
@@ -21,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Registration failed!";
         }
-
+    
         $stmt->close();
     }
 
