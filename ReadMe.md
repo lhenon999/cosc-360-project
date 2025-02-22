@@ -31,7 +31,7 @@ Import `init.sql`
 
 ### 4. Update config.php and test site
 
-`http://localhost/handmade_goods/home.php`
+`http://localhost/handmade_goods/pages/home.php`
 
 login info:
 
