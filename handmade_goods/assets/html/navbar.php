@@ -27,7 +27,7 @@
                     <li class="nav-item"><a class="nav-link" href="../pages/home.php">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="../pages/products.php">Shop</a></li>
                     <li class="nav-item"><a class="nav-link" href="#footer">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../pages/contact.php">Contact</a></li>
                 </ul>
                 <form class="d-flex navbar-search me-3">
                     <input class="form-control me-2" type="search" placeholder="Search">
