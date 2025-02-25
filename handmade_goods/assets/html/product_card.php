@@ -2,11 +2,7 @@
 
 <div class="listing-item-container">
     <div class="listing-item">
-        <img src="<?= $image ?>" alt="<?= htmlspecialchars($name) ?>" class="product-image full-size">
-        <div class="button-container hidden-buttons">
-            <button class="view-btn">View</button>
-            <button class="cart-btn">Add to Cart</button>
-        </div>
+        <img src="<?= $image ?>" alt="<?= htmlspecialchars($name) ?>" class="product-image">
     </div>
     <div class="product-info">
         <h4 class="product-title"><?= htmlspecialchars($name) ?></h4>
