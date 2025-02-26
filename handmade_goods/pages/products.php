@@ -10,17 +10,24 @@ include '../test_products.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
-    <link rel="stylesheet" href="../assets/css/product_styles.css?v=1">
-    <link rel="stylesheet" href="../assets/css/navbar_styles.css">
-    <link rel="stylesheet" href="../assets/css/product_card_styles.css">
+    <title>Handmade Goods - Browse</title>
+
+    <style>@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');</style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/globals.css">
+    <link rel="stylesheet" href="../assets/css/product.css?v=1">
+    <link rel="stylesheet" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="../assets/css/product_card.css">
 </head>
 
 <body>
     <?php include '../assets/html/navbar.php'; ?>
-    <h1 class="text-center">Explore our products !</h1>
-    <p class="text-center">Browse our collection and discover what suits you.</p>
+    <h1 class="text-center">Explore our products!</h1>
+    <p class="text-center">Browse our collection and discover what suits you</p>
 
     <div class="container">
         <div class="sidebar">

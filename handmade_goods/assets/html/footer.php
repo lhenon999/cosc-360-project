@@ -1,44 +1,15 @@
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-info">
-            <h2>HandMade Goods</h2>
-            <p>Unique handmade products</p>
-            <div class="footer-social">
-                <a href="#" class="social-icon">Facebook</a>
-                <a href="#" class="social-icon">Instagram</a>
-            </div>
-        </div>
-
-        <div class="footer-shop">
-            <h3>Our Shop</h3>
-            <ul>
-                <li><a href="#">All Products</a></li>
-                <li><a href="#">Accessories</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-help">
-            <h3>Help</h3>
-            <ul>
-                <li><a href="#">Shipping Policy</a></li>
-                <li><a href="#">Refund Policy</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-about">
-            <h3>About Us</h3>
-            <ul>
-                <li><a href="#">Values</a></li>
-                <li><a href="#">Contact Us</a></li>
-            </ul>
-        </div>
+<footer>
+    <div class="footerleft">
+    <h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3>
     </div>
-
-    <div class="footer-bottom">
-        <div class="footer-payment">
-            <img src="../assets/images/icons/paypal.png">
-            <img src="../assets/images/icons/visa.png">
-            <img src="../assets/images/icons/mastercard.png">
+    <div class="footerright">
+        <div class="footerlinks">
+            <ul>
+                <li class="hover-raise"><a class="navlink" href="../pages/home.php">Home</a></li>
+                <li class="hover-raise"><a class="navlink" href="../pages/products.php">Shop</a></li>
+                <li class="hover-raise"><a class="navlink" href="#">About</a></li>
+                <li class="hover-raise"><a class="navlink" href="#">My Profile</a></li>
+            </ul>
         </div>
     </div>
 </footer>
