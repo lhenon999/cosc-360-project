@@ -1,0 +1,35 @@
+.order-summary {
+    border: #DDD 2px solid;
+    border-radius: 16px;
+    padding: 2.5em;
+}
+
+.total-price {
+    color: #3f661e;
+}
+
+.order-item {
+    border: #DDD 2px solid;
+    border-radius: 16px;
+    padding: 1em;
+}
+
+.cart-img {
+    aspect-ratio: square;
+    height: 230px;
+    width: 230px;
+    border-radius: 12px;
+}
+
+.item-desc {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+}
+
+.ending-div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
