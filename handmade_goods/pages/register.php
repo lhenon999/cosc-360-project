@@ -34,6 +34,10 @@
                     <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
                     <span class="error" id="confirmPasswordError"></span>
 
+                    <label for="profile_picture">Profile Picture (Optional)</label>
+                    <input type="file" name="profile_picture" id="profile_picture" accept="image/*">
+                    <span class="error" id="profilePictureError"></span>
+
                     <button type="submit" name="register">Sign Up</button>
 
                     <a href="login.php">Already have an account? Log in</a>
