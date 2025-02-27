@@ -76,7 +76,7 @@ $total = $subtotal + $shipping + $tax;
     <h4><span class="text-muted"><?= count($cart_items) ?> items</span></h4>
 
     <div class="row mt-5">
-        <div class="col-md-8">
+        <div class="col-md-<?= empty($cart_items) ? '12' : '8' ?>">
             <?php if (!empty($cart_items)): ?>
                 <?php foreach ($cart_items as $id => $item): ?>
                     <div class="cart-item d-flex align-items-center p-3 mb-3">
@@ -96,7 +96,11 @@ $total = $subtotal + $shipping + $tax;
                 <?php endforeach; ?>
             <?php else: ?>
                 <p class="text-muted">Your basket is empty.</p>
-                <a href="../pages/products.php" class="cta"><span class="material-symbols-outlined">shoppingmode</span>Browse Products</a>
+                <div class="text-center">
+                    <a href="../pages/products.php" class="cta d-inline-flex align-items-center hover-raise">
+                        <span class="material-symbols-outlined">shoppingmode</span>Browse Products
+                    </a>
+                </div>
             <?php endif; ?>
         </div>
         
