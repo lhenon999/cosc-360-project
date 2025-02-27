@@ -141,6 +141,7 @@ h3 {
     position: relative;
     display: inline-block;
     padding: 4px 0;
+    cursor: pointer;
 }
 
 .dropdown-content {

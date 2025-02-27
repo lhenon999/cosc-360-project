@@ -1,6 +1,6 @@
 <footer>
     <div class="footerleft">
-    <h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3>
+    <a href="../pages/home.php"><h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3></a>
     </div>
     <div class="footerright">
         <div class="footerlinks">

@@ -1,7 +1,7 @@
 <?php session_start(); ?>
 <nav>
     <div class="navleft">
-        <h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3>
+        <a href="../pages/home.php"><h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3></a>
         <button class="material-symbols-outlined" id="toggle-nav"">menu</button>
     </div>
     <div class="navright">
