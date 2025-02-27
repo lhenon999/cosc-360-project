@@ -35,7 +35,12 @@ Import `init.sql`
 
 login info:
 
-user Id: johndoe@mail.com
+normal user: 
+
+user ID: johndoe@mail.com
 password: password123
 
-![img](https://raw.githubusercontent.com/lhenon999/cosc-360-project/master/handmade_goods/assets/images/home_page_screenshot.png)
+admin user:
+
+user ID: admin@handmadegoods.com
+password: Admin123!
