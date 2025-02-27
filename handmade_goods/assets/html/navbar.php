@@ -5,7 +5,7 @@
         <button class="material-symbols-outlined" id="toggle-nav"">menu</button>
     </div>
     <div class="navright">
-        <span class="material-symbols-outlined hover-raise">search</span>
+        <span class="material-symbols-outlined hover-raise auth-hide">search</span>
         <div class="navlinks">
             <ul>
                 <li class="hover-raise"><a class="navlink" href="../pages/home.php">Home</a></li>
@@ -26,7 +26,7 @@
                 <?php endif; ?>
             </div>
         </span>
-        <button class="cta hover-raise"><span class="material-symbols-outlined">shopping_basket</span>Basket</button>
+        <a class="cta hover-raise auth-hide"><span class="material-symbols-outlined">shopping_basket</span>Basket</a>
     </div>
     <script>
         $("#toggle-nav").click(function() {
