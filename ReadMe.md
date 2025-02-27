@@ -37,10 +37,10 @@ login info:
 
 normal user: 
 
-user ID: johndoe@mail.com
+user ID: 'johndoe@mail.com'
 password: 'John@123'
 
 admin user:
 
-user ID: admin@handmadegoods.com
+user ID: 'admin@handmadegoods.com'
 password: 'Admin@123'
