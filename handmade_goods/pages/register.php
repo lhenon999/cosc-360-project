@@ -40,7 +40,6 @@
                 </form>
             </div>
         </main>
-        <?php include '../assets/html/footer.php'; ?>
 
         <script>
             $(document).ready(function () {
