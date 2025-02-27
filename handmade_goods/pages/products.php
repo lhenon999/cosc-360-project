@@ -73,6 +73,7 @@ $stmt->close();
                     <?php if (!empty($products)): ?>
                         <?php foreach ($products as $product): ?>
                             <?php
+                            $id = htmlspecialchars($product["id"]);
                             $name = htmlspecialchars($product["name"]);
                             $price = number_format($product["price"], 2);
                             $image = htmlspecialchars($product["img"]);

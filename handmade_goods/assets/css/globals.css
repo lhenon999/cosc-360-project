@@ -46,6 +46,7 @@ p {
 
 a {
     text-decoration: none;
+    color: black;
 }
 
 a.cta,
@@ -61,7 +62,7 @@ button.cta {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: fit-content !important;
+    width: fit-content;
 }
 
 a.cta:hover,
