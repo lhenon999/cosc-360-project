@@ -50,27 +50,27 @@
 
                     let fullName = $("#full_name").val().trim();
                     if (!/^\w+\s+\w+/.test(fullName)) {
-                        $("#nameError").text("Enter at least first and last name.");
+                        $("#nameError").text("Enter a first and last name");
                         isValid = false;
                     }
 
                     let email = $("#email").val().trim();
                     let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
                     if (!emailRegex.test(email)) {
-                        $("#emailError").text("Enter a valid email address.");
+                        $("#emailError").text("Enter a valid email address");
                         isValid = false;
                     }
 
                     let password = $("#password").val();
                     let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
                     if (!passwordRegex.test(password)) {
-                        $("#passwordError").text("Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character.");
+                        $("#passwordError").text("Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character");
                         isValid = false;
                     }
 
                     let confirmPassword = $("#confirm_password").val();
                     if (password !== confirmPassword) {
-                        $("#confirmPasswordError").text("Passwords do not match.");
+                        $("#confirmPasswordError").text("Passwords do not match");
                         isValid = false;
                     }
 
