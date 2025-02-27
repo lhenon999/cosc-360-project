@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     //Register 
     if (isset($_POST["register"])) {
-        $name = trim($_POST["name"]);
+        $name = trim($_POST["full_name"]);
         $email = trim($_POST["email"]);
         $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
 
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             $_SESSION["user_id"] = $stmt->insert_id;
             $_SESSION["user_name"] = $name;
-            header("Location: /handmade_goods/pages/account.php");
+            header("Location: /cosc-360-project/handmade_goods/pages/home.php");
             exit();
         } else {
             echo "Registration failed!";
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["user_id"] = $id;
                 $_SESSION["user_name"] = $name;
                 
-                header("Location: /handmade_goods/pages/home.php");
+                header("Location: /cosc-360-project/handmade_goods/pages/home.php");
                 exit();
             } else {
                 echo "Invalid password.";

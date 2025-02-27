@@ -1,6 +1,5 @@
 footer {
     padding: 2em;
-    background-color: #DDD;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

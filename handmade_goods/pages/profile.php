@@ -1,25 +1,19 @@
 <?php
 session_start();
-require_once '../config.php'; // Ensure database connection
+require_once '../config.php';
 
-/*// Check if user is logged in
 if (!isset($_SESSION["user_id"])) {
-    header("Location: login.php"); // Redirect to login page
+    header("Location: ../pages/login.php");
     exit();
 }
 
-// Fetch user data from database
 $user_id = $_SESSION["user_id"];
 $stmt = $conn->prepare("SELECT name, email FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $stmt->bind_result($name, $email);
 $stmt->fetch();
-$stmt->close();*/
-
-// For now, using placeholder data instead of database fetch
-$name = "John Doe";
-$email = "john.doe@example.com";
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -54,8 +48,9 @@ $email = "john.doe@example.com";
                     <h2><?php echo htmlspecialchars($name); ?></h2>
                     <p><?php echo htmlspecialchars($email); ?></p>
                     <div class="profile-buttons">
-                        <button class="cta hover-raise">Settings</button>
-                        <button class="cta hover-raise">List Orders</button>
+                        <a class="cta hover-raise" href=""><span class="material-symbols-outlined">settings</span>Settings</a>
+                        <a class="cta hover-raise" href=""><span class="material-symbols-outlined">storefront</span>My Shop</a>
+                        <a class="cta hover-raise" href="../logout.php"><span class="material-symbols-outlined">logout</span>Logout</a>
                     </div>
                 </div>
             </div>
@@ -67,7 +62,7 @@ $email = "john.doe@example.com";
                     <a href="#activity">Other Activity</a>
                 </nav>
                 <div class="tab-content">
-                    <!-- Tab content will be loaded here -->
+                    You currently have no activity.
                 </div>
             </div>
         </div>

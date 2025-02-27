@@ -1,38 +1,7 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-}
-
-body {
-    background-color: #f2f2f7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    padding: 20px;
-}
-
 .login-container {
-    background: white;
-    padding: 40px;
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    width: 350px;
+    width: 550px;
     text-align: center;
-    transition: 0.3s ease-in-out;
-}
-
-.login-container:hover {
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
-}
-
-.login-container h2 {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #333;
+    margin: 2em;
 }
 
 .login-container input {
@@ -40,22 +9,22 @@ body {
     padding: 12px;
     margin-top: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 2px solid #DDD;
     border-radius: 8px;
     font-size: 16px;
     transition: border 0.3s ease-in-out;
 }
 
 .login-container input:focus {
-    border-color: #0071e3;
+    border-color: #127be3;
     outline: none;
-    box-shadow: 0 0 8px rgba(0, 113, 227, 0.3);
+    box-shadow: 0 0 8px rgba(7, 116, 226, 0.3);
 }
 
 .login-container button {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #333333, #e63946);
+    background: linear-gradient(135deg, #444, #426b1f);
     color: white;
     font-size: 16px;
     font-weight: 600;
@@ -66,7 +35,7 @@ body {
 }
 
 .login-container button:hover {
-    background: linear-gradient(135deg, #ff838d, #333333);
+    background: linear-gradient(135deg, #426b1f, #444);
     transform: scale(1.02);
 }
 
@@ -80,12 +49,30 @@ body {
 }
 
 .login-container a:hover {
-    color: #e63946;
+    color: #426b1f;
     text-decoration: underline;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 400px) {
     .login-container {
         width: 90%;
     }
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-hide {
+    display: none !important;
 }
