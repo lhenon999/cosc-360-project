@@ -38,9 +38,9 @@ login info:
 normal user: 
 
 user ID: johndoe@mail.com
-password: password123
+password: John@123
 
 admin user:
 
 user ID: admin@handmadegoods.com
-password: Admin123!
+password: Admin@123

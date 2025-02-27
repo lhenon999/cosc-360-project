@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 INSERT INTO users (name, email, password, user_type)
-SELECT 'administrator', 'admin@handmadegoods.com', '$2y$10$Jj/jkgMpbWnUbyizOC1WYOYQGZB6f.Bncfm6AnTfhOC5QUu7Ftx0a', 'admin'
+SELECT 'administrator', 'admin@handmadegoods.com', '$2y$10$8BVxD8EpPDunffWh3ih2FeBpfjZxsHwLVW53eOZJISs.O5BlBByNK', 'admin'
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@handmadegoods.com');
 
 INSERT INTO users (name, email, password, user_type)
-SELECT 'John Doe', 'johndoe@mail.com', '$2y$10$Wjt9qdt7Z2vmyPQXHHsVbOuWrIglX6pkATfpP1xqIDZwJGFyF3e1e', 'normal'
+SELECT 'John Doe', 'johndoe@mail.com', '$2y$10$tA.PReExstX08tJym/gF8u95ZAsBR8mvMIEBRTbAkquFQSyoyJDCq', 'normal'
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'johndoe@mail.com');
