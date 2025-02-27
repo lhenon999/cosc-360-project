@@ -10,7 +10,14 @@
                 <li class="hover-raise"><a class="navlink" href="../pages/home.php">Home</a></li>
                 <li class="hover-raise"><a class="navlink" href="../pages/products.php">Shop</a></li>
                 <li class="hover-raise"><a class="navlink" href="#">About</a></li>
-                <li class="hover-raise"><a class="navlink" href="#">My Profile</a></li>
+                <li class="hover-raise dropdown">
+                    <a class="navlink" href="../pages/profile.php">My Profile <span class="material-symbols-outlined">expand_more</span></a>
+                    <div class="dropdown-content">
+                        <a href="../pages/profile.php">View Profile</a>
+                        <a href="../pages/settings.php">Settings</a>
+                        <a href="../pages/logout.php">Logout</a>
+                    </div>
+                </li>
             </ul>
         </div>
         <button class="cta hover-raise">Basket</button>
@@ -22,3 +29,4 @@
         });
     </script>
 </nav>
+
