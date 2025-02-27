@@ -6,7 +6,7 @@
 - [x] Examples of each page type in your proposed site
 - [x] Think about the different users and the pages they should have access to.
 - [x] Create a Git Hub repository and add instructor and TAs.
-- [x] You will submit the link to the GitHub repository.
+- [] You will submit the link to the GitHub repository.
 
 ## Setup
 #### Requirements:
