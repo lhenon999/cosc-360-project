@@ -86,3 +86,10 @@ h3.cta:hover,
 h3.cta:hover * {
     color: #345418;
 }
+
+a.cta .material-symbols-outlined,
+button.cta .material-symbols-outlined {
+    color: white !important;
+    margin-right: 6px !important;
+    font-size: 1.15em !important;
+}

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <nav>
     <div class="navleft">
         <h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3>
@@ -14,12 +15,18 @@
         </div>
         <span class="hover-raise dropdown"><span class="material-symbols-outlined">account_circle</span><span class="material-symbols-outlined" id="downArrow">expand_more</span>
             <div class="dropdown-content">
-                <a href="../pages/profile.php">View Profile</a>
-                <a href="../pages/settings.php">Settings</a>
-                <a href="../pages/logout.php">Logout</a>
+                <?php if (isset($_SESSION["user_id"])): ?>
+                        <a href="../pages/profile.php">View Profile</a>
+                        <a href="../pages/profile.php">My Shop</a>
+                        <a href="../pages/settings.php">Settings</a>
+                        <a href="../logout.php">Logout</a>
+                <?php else: ?>
+                    <a href="../pages/login.php">Login</a>
+                    <a href="../pages/register.php">Sign Up</a>
+                <?php endif; ?>
             </div>
         </span>
-        <button class="cta hover-raise"><span class="material-symbols-outlined" id="basket">shopping_basket</span>Basket</button>
+        <button class="cta hover-raise"><span class="material-symbols-outlined">shopping_basket</span>Basket</button>
     </div>
     <script>
         $("#toggle-nav").click(function() {
