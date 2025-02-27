@@ -2,8 +2,8 @@
 session_start();
 require_once '../config.php'; // Ensure database connection
 
-/*// Check if user is logged in
-if (!isset($_SESSION["user_id"])) {
+// Check if user is logged in
+/*if (!isset($_SESSION["user_id"])) {
     header("Location: login.php"); // Redirect to login page
     exit();
 }
@@ -16,6 +16,7 @@ $stmt->execute();
 $stmt->bind_result($name, $email);
 $stmt->fetch();
 $stmt->close();*/
+
 
 // For now, using placeholder data instead of database fetch
 $name = "John Doe";
@@ -42,8 +43,8 @@ $email = "john.doe@example.com";
 <body>
     <?php include '../assets/html/navbar.php'; ?>
 
-    <div class="container">
-        <h1 class="text-center mt-5">My Profile</h1>
+    <div class="container mt-5">
+        <h1 class="mb-4">My Profile</h1>
         
         <div class="profile-container">
             <div class="profile-header">
@@ -60,7 +61,7 @@ $email = "john.doe@example.com";
                 </div>
             </div>
 
-            <div class="profile-tabs mt-5">
+            <div class="profile-tabs">
                 <nav class="tabs-nav">
                     <a href="#orders" class="active">My Orders</a>
                     <a href="#reviews">My Reviews</a>

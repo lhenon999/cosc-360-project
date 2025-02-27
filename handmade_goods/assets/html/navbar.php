@@ -20,7 +20,9 @@
                 </li>
             </ul>
         </div>
-        <button class="cta hover-raise">Basket</button>
+        <?php if (isset($_SESSION["user_id"])): ?>
+            <button class="cta hover-raise">Basket</button>
+        <?php endif; ?>
     </div>
     <script>
         $("#toggle-nav").click(function() {
