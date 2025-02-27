@@ -8,6 +8,7 @@ if (!isset($_SESSION["user_id"])) {
 }
 
 $user_id = $_SESSION["user_id"];
+$user_type = $_SESSION["user_type"]; 
 $stmt = $conn->prepare("SELECT name, email FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -37,7 +38,7 @@ $stmt->close();
     <?php include '../assets/html/navbar.php'; ?>
 
     <div class="container">
-        <h1 class="text-center mt-5">My Profile</h1>
+        <h1 class="text-center mt-5"><?php echo ($user_type === 'admin') ? 'Admin Dashboard' : 'My Profile'; ?></h1>
         
         <div class="profile-container">
             <div class="profile-header">
@@ -49,7 +50,11 @@ $stmt->close();
                     <p><?php echo htmlspecialchars($email); ?></p>
                     <div class="profile-buttons">
                         <a class="cta hover-raise" href=""><span class="material-symbols-outlined">settings</span>Settings</a>
-                        <a class="cta hover-raise" href=""><span class="material-symbols-outlined">storefront</span>My Shop</a>
+
+                        <?php if ($user_type !== 'admin') : ?>
+                            <a class="cta hover-raise" href=""><span class="material-symbols-outlined">storefront</span>My Shop</a>
+                        <?php endif; ?>
+
                         <a class="cta hover-raise" href="../logout.php"><span class="material-symbols-outlined">logout</span>Logout</a>
                     </div>
                 </div>
@@ -57,9 +62,14 @@ $stmt->close();
 
             <div class="profile-tabs mt-5">
                 <nav class="tabs-nav">
-                    <a href="#orders" class="active">My Orders</a>
-                    <a href="#reviews">My Reviews</a>
-                    <a href="#activity">Other Activity</a>
+                    <?php if ($user_type === 'admin'): ?>
+                        <a href="#users" class="active">Users</a>
+                        <a href="#listings">Listings</a>
+                    <?php else: ?>
+                        <a href="#orders" class="active">My Orders</a>
+                        <a href="#reviews">My Reviews</a>
+                        <a href="#activity">Other Activity</a>
+                    <?php endif; ?>
                 </nav>
                 <div class="tab-content">
                     You currently have no activity.
@@ -70,4 +80,4 @@ $stmt->close();
 
     <?php include "../assets/html/footer.php"; ?>
 </body>
-</html> 
+</html>
