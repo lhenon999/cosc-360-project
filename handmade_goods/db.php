@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = trim($_POST["full_name"]);
         $email = trim($_POST["email"]);
         $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
-        $user_type = 'normal'; // Default user type
+        $user_type = 'normal';
 
         $stmt = $conn->prepare("INSERT INTO users (name, email, password, user_type) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $name, $email, $password, $user_type);
@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->execute()) {
             $_SESSION["user_id"] = $stmt->insert_id;
             $_SESSION["user_name"] = $name;
-            $_SESSION["user_type"] = $user_type; // Store user type in session
+            $_SESSION["user_type"] = $user_type;
             header("Location: /cosc-360-project/handmade_goods/pages/home.php");
             exit();
         } else {
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $hashed_password)) {
                 $_SESSION["user_id"] = $id;
                 $_SESSION["user_name"] = $name;
-                $_SESSION["user_type"] = $user_type; // Store user type in session
+                $_SESSION["user_type"] = $user_type;
                 
                 header("Location: /cosc-360-project/handmade_goods/pages/home.php");
                 exit();

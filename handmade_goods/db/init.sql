@@ -9,3 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     user_type ENUM('admin', 'normal') NOT NULL DEFAULT 'normal',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO users (name, email, password, user_type)
+SELECT 'administrator', 'admin@handmadegoods.com', '$2y$10$Jj/jkgMpbWnUbyizOC1WYOYQGZB6f.Bncfm6AnTfhOC5QUu7Ftx0a', 'admin'
+WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@handmadegoods.com');
