@@ -54,6 +54,10 @@ button.cta {
     border: none;
     box-shadow: 0px 0px 4px rgb(126, 126, 126);
     transition: background-color ease-in-out 0.25s, transform ease-in-out 0.25s;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 a.cta:hover,
