@@ -10,7 +10,7 @@
             <ul>
                 <li class="hover-raise"><a class="navlink" href="../pages/home.php">Home</a></li>
                 <li class="hover-raise"><a class="navlink" href="../pages/products.php">Shop</a></li>
-                <li class="hover-raise"><a class="navlink" href="#">About</a></li>
+                <li class="hover-raise"><a class="navlink" href="../pages/about.php">About</a></li>
             </ul>
         </div>
         <span class="hover-raise dropdown"><span class="material-symbols-outlined">account_circle</span><span class="material-symbols-outlined" id="downArrow">expand_more</span>
@@ -26,7 +26,7 @@
                 <?php endif; ?>
             </div>
         </span>
-        <a class="cta hover-raise auth-hide"><span class="material-symbols-outlined">shopping_basket</span>Basket</a>
+        <a class="cta hover-raise auth-hide" href="../pages/basket.php"><span class="material-symbols-outlined">shopping_basket</span>Basket</a>
     </div>
     <script>
         $("#toggle-nav").click(function() {
