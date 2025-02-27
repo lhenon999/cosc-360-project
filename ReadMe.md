@@ -1,6 +1,6 @@
 # README
 
-2) Client-side experience - develop pages for your site
+STEP 2) Client-side experience - develop pages for your site
 - [x] Develop the pages with client-side validation
 - [x] Develop styles for pages
 - [x] Examples of each page type in your proposed site
