@@ -1,5 +1,17 @@
 <?php session_start();
-include '../test_products.php'; ?>
+include '../config.php';
+
+$products = [];
+$stmt = $conn->prepare("SELECT id, name, price, img FROM items ORDER BY created_at DESC LIMIT 6");
+$stmt->execute();
+$result = $stmt->get_result();
+
+while ($row = $result->fetch_assoc()) {
+    $products[] = $row;
+}
+
+$stmt->close();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -80,18 +92,20 @@ include '../test_products.php'; ?>
             <h3>What's New</h3>
             <p>Discover the latest handmade creations and featured products</p>
             <div class="product-cards-container" id="product-cards-container">
-                <?php
-                $counter = 0;
-                foreach ($products as $product):
-                    if ($counter >= 6)
-                        break;
-                    $name = htmlspecialchars($product["name"]);
-                    $price = number_format($product["price"], 2);
-                    $image = htmlspecialchars($product["image"]);
-                    ?>
-                    <?php include "../assets/html/product_card.php"; ?>
-                    <?php $counter++; ?>
-                <?php endforeach; ?>
+                <?php if (!empty($products)): ?>
+                    <?php foreach ($products as $product): ?>
+                        <?php
+                        $id = htmlspecialchars($product["id"]);
+                        $name = htmlspecialchars($product["name"]);
+                        $price = number_format($product["price"], 2);
+                        $image = htmlspecialchars($product["img"]);
+                        include "../assets/html/product_card.php";
+                        ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-center">No products available at the moment</p>
+                    <a class="cta hover-raise">Create a Listing</a>
+                <?php endif; ?>
             </div>
             <div class="view-more-container text-center mt-4">
                 <a href="products.php" class="hover-raise cta">View More</a>
