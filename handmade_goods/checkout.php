@@ -36,7 +36,7 @@ $stmt->close();
 
 if (empty($cart_items)) {
     $_SESSION["error"] = "Your cart is empty.";
-    header("Location: basket.php");
+    header("Location: /cosc-360-project/handmade_goods/pages/basket.php");
     exit();
 }
 
@@ -64,5 +64,5 @@ $stmt->execute();
 $stmt->close();
 
 $_SESSION["message"] = "Your order has been placed successfully!";
-header("Location: ../pages/order_confirmation.php");
+header("Location: /cosc-360-project/handmade_goods/pages/order_confirmation.php");
 exit();
