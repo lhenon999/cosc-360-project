@@ -65,9 +65,7 @@ include '../test_products.php'; ?>
             <h3 class="text-center mt-5">Browse by Category</h3>
             <?php
             $categories = [
-                "Woodwork", "Jewelry", "Textiles", "Pottery", "Art",
-                "Glasswork", "Leather Goods", "Metal Crafts", "Sculptures",
-                "Decor", "Stationery", "Candles", "Rugs"
+                "Woodwork", "Jewelry", "Textiles", "Pottery", "Sculptures", "Candles"
             ];
             ?>
 
