@@ -10,7 +10,7 @@
             <ul>
                 <li class="hover-raise"><a class="navlink" href="../pages/home.php">Home</a></li>
                 <li class="hover-raise"><a class="navlink" href="../pages/products.php">Shop</a></li>
-                <li class="hover-raise"><a class="navlink" href="#">About</a></li>
+                <li class="hover-raise"><a class="navlink" href="../pages/about.php">About</a></li>
             </ul>
         </div>
         <span class="hover-raise dropdown">
