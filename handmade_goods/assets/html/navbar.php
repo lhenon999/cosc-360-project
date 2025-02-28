@@ -1,8 +1,8 @@
 <?php session_start(); ?>
 <nav>
     <div class="navleft">
-        <h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3>
-        <button class="material-symbols-outlined" id="toggle-nav">menu</button>
+        <a href="../pages/home.php"><h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3></a>
+        <button class="material-symbols-outlined" id="toggle-nav"">menu</button>
     </div>
     <div class="navright">
         <span class="material-symbols-outlined hover-raise auth-hide">search</span>
@@ -10,7 +10,7 @@
             <ul>
                 <li class="hover-raise"><a class="navlink" href="../pages/home.php">Home</a></li>
                 <li class="hover-raise"><a class="navlink" href="../pages/products.php">Shop</a></li>
-                <li class="hover-raise"><a class="navlink" href="#">About</a></li>
+                <li class="hover-raise"><a class="navlink" href="../pages/about.php">About</a></li>
             </ul>
         </div>
         <span class="hover-raise dropdown">
@@ -34,7 +34,7 @@
                 <?php endif; ?>
             </div>
         </span>
-        <a class="cta hover-raise auth-hide"><span class="material-symbols-outlined">shopping_basket</span>Basket</a>
+        <a class="cta hover-raise auth-hide" href="../pages/basket.php"><span class="material-symbols-outlined">shopping_basket</span>Basket</a>
     </div>
     <script>
         $("#toggle-nav").click(function() {
