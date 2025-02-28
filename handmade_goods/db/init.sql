@@ -53,6 +53,11 @@ CREATE TABLE IF NOT EXISTS ORDER_ITEMS( id INT auto_increment PRIMARY KEY,
                                                                                           
 ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+INSERT INTO ITEMS (name, description, price, stock, category, img) VALUES
+('Handmade Necklace', 'A beautiful handmade necklace.', 19.99, 10, 'Jewelry', 'img1.jpg'),
+('Wooden Carving', 'Intricate hand-carved wooden sculpture.', 49.99, 5, 'Woodwork', 'img2.jpg'),
+('Handmade Pottery Bowl', 'A unique ceramic bowl.', 29.99, 8, 'Pottery', 'img3.jpg');
+
 INSERT INTO users (name, email, password, user_type)
 SELECT 'administrator', 'admin@handmadegoods.com', '$2y$10$E4LsPni7YFBS96DJ6tK8PeCJVgswuLXnd6XDPUySc3yCgbv6lnyeG', 'admin'
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@handmadegoods.com');
