@@ -118,7 +118,7 @@ h1 {
 }
 
 .filter-section {
-    margin-bottom: 24px;
+    margin-bottom: 1.5rem;
 }
 
 .filter-section label {
@@ -178,6 +178,40 @@ button[type="submit"]:hover {
 .filter-section + .filter-section {
     border-top: 1px solid #f2f2f2;
     padding-top: 24px;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.category-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.category-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.25rem 0;
+}
+
+.category-label:hover {
+    background-color: #f8f9fa;
+}
+
+.category-label input[type="radio"] {
+    cursor: pointer;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    padding: 2rem;
+    text-align: center;
 }
 
 @media (max-width: 480px) {

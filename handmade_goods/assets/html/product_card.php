@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="../css/product_card_styles.css">
+<link rel="stylesheet" href="../../assets/css/product_card.css">
 
 <a class="listing-item-container" href="../pages/product.php?id=<?= $id ?>">
     <div class="listing-item">

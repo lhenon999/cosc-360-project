@@ -1,5 +1,7 @@
-<?php session_start();
-include '../test_products.php'; ?>
+<?php 
+session_start();
+include '../config.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -64,16 +66,19 @@ include '../test_products.php'; ?>
 
             <h3 class="text-center mt-5">Browse by Category</h3>
             <?php
-            $categories = [
-                "Woodwork", "Jewelry", "Textiles", "Pottery", "Art",
-                "Glasswork", "Leather Goods", "Metal Crafts", "Sculptures",
-                "Decor", "Stationery", "Candles", "Rugs"
-            ];
+            $cat_stmt = $conn->prepare("SELECT DISTINCT category FROM items WHERE category IS NOT NULL ORDER BY category");
+            $cat_stmt->execute();
+            $cat_result = $cat_stmt->get_result();
+            $categories = [];
+            while ($row = $cat_result->fetch_assoc()) {
+                $categories[] = $row['category'];
+            }
+            $cat_stmt->close();
             ?>
 
             <div class="category-container d-flex justify-content-center flex-wrap">
                 <?php foreach ($categories as $category): ?>
-                    <div class="category-button"><?= htmlspecialchars($category) ?></div>
+                    <div class="category-button" onclick="window.location.href='products.php?category=<?= rawurlencode($category) ?>'"><?= htmlspecialchars($category) ?></div>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -83,17 +88,18 @@ include '../test_products.php'; ?>
             <p>Discover the latest handmade creations and featured products</p>
             <div class="product-cards-container" id="product-cards-container">
                 <?php
-                $counter = 0;
-                foreach ($products as $product):
-                    if ($counter >= 6)
-                        break;
+                $stmt = $conn->prepare("SELECT id, name, price, img FROM items ORDER BY created_at DESC LIMIT 6");
+                $stmt->execute();
+                $result = $stmt->get_result();
+                while($product = $result->fetch_assoc()):
+                    $id = htmlspecialchars($product["id"]);
                     $name = htmlspecialchars($product["name"]);
                     $price = number_format($product["price"], 2);
-                    $image = htmlspecialchars($product["image"]);
-                    ?>
-                    <?php include "../assets/html/product_card.php"; ?>
-                    <?php $counter++; ?>
-                <?php endforeach; ?>
+                    $image = htmlspecialchars($product["img"]);
+                    include "../assets/html/product_card.php";
+                endwhile;
+                $stmt->close();
+                ?>
             </div>
             <div class="view-more-container text-center mt-4">
                 <a href="products.php" class="hover-raise cta">View More</a>
