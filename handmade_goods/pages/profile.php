@@ -52,7 +52,7 @@ $stmt->close();
                         <a class="cta hover-raise" href=""><span class="material-symbols-outlined">settings</span>Settings</a>
 
                         <?php if ($user_type !== 'admin') : ?>
-                            <a class="cta hover-raise" href="../myShop.php"><span class="material-symbols-outlined">storefront</span>My Shop</a>
+                            <a class="cta hover-raise" href="../pages/myShop.php"><span class="material-symbols-outlined">storefront</span>My Shop</a>
                         <?php endif; ?>
 
                         <a class="cta hover-raise" href="../logout.php"><span class="material-symbols-outlined">logout</span>Logout</a>
