@@ -24,7 +24,16 @@ $name = htmlspecialchars($product['name']);
 $description = nl2br(htmlspecialchars($product['description']));
 $price = number_format($product['price'], 2);
 $image = htmlspecialchars($product['img']);
+$stmt = $conn->prepare("SELECT id, name, description, price, img, user_id FROM items WHERE id = ?");
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$product = $result->fetch_assoc();
+$stmt->close();
+
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -56,13 +65,20 @@ $image = htmlspecialchars($product['img']);
             <p class="text-muted">$<?= $price ?></p>
             <p class="mt-4"><?= $description ?></p>
 
-            <form action="../basket/add_to_basket.php" method="POST">
-                <input type="hidden" name="product_id" value="<?= $product_id ?>">
-                <div class="quantity-add">
-                    <input type="number" name="quantity" value="1" min="1" class="form-control">
-                    <button type="submit" class="cta hover-raise atc"><span class="material-symbols-outlined">add_shopping_cart</span>Add to Basket</button>
-                </div>
-            </form>
+            <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $product['user_id']): ?>
+    <a href="edit_product.php?id=<?= $product_id ?>" class="btn btn-primary">Edit Listing</a>
+<?php else: ?>
+    <form action="../basket/add_to_basket.php" method="POST">
+        <input type="hidden" name="product_id" value="<?= $product_id ?>">
+        <div class="quantity-add">
+            <input type="number" name="quantity" value="1" min="1" class="form-control">
+            <button type="submit" class="cta hover-raise atc">
+                <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
+            </button>
+        </div>
+    </form>
+<?php endif; ?>
+
 
             <a href="products.php" class="btn btn-outline-secondary mt-3">Back to Products</a>
         </div>

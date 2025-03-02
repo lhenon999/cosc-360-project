@@ -1,14 +1,25 @@
 <?php
 session_start();
 $is_logged_in = isset($_SESSION["user_id"]);
+
+if (!$is_logged_in) {
+    header("Location: login.php");
+    exit();
+}
+
 include '../config.php';
 
+$user_email = $_SESSION["user_id"];
 $products = [];
-$stmt = $conn->prepare("SELECT id, name, price, img FROM items");
+
+$stmt = $conn->prepare("SELECT id, name, price, img FROM items WHERE user_id = ?");
+$stmt->bind_param("s", $user_email);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$products = [];
+echo "<p>DEBUG: user_id (email) = " . htmlspecialchars($user_email) . "</p>";
+echo "<p>DEBUG: Found " . $result->num_rows . " products</p>";
+
 while ($row = $result->fetch_assoc()) {
     $products[] = $row;
 }
@@ -24,9 +35,6 @@ $stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Handmade Goods - Browse</title>
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
-    </style>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -41,6 +49,7 @@ $stmt->close();
 
 <body>
     <?php include '../assets/html/navbar.php'; ?>
+    
     <h1 class="text-center">My Shop</h1>
     <p class="text-center">Browse and edit your listings</p>
     <br>
@@ -65,11 +74,12 @@ $stmt->close();
                         ?>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p class="text-center">No products available at the moment</p>
+                    <p class="text-center">You have no current listings</p>
                 <?php endif; ?>
             </div>
         </div>
     </div>
+    
     <?php include '../assets/html/footer.php'; ?>
 </body>
 
