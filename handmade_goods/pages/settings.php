@@ -53,7 +53,6 @@
         </div>
 
         <div class="settings-section">
-            <h3>Danger Zone</h3>
             <a href="delete_account.php" class="btn-danger">Delete My Account</a>
         </div>
     </div>
