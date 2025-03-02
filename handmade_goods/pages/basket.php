@@ -169,7 +169,6 @@ $total = $subtotal + $shipping + $tax;
         </div>
     </div>
 
-    <?php include "../assets/html/footer.php"; ?>
 
 </body>
 
