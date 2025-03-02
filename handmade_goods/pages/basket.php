@@ -56,13 +56,17 @@ $total = $subtotal + $shipping + $tax;
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basket - Handmade Goods</title>
 
-    <style>@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');</style>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+    </style>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
@@ -72,60 +76,100 @@ $total = $subtotal + $shipping + $tax;
     <link rel="stylesheet" href="../assets/css/basket.css">
     <link rel="stylesheet" href="../assets/css/product_card.css">
 </head>
-<body>
-<?php include '../assets/html/navbar.php'; ?>
-<div class="container mt-5">
-    <h1>Basket</h1>
-    <h4><span class="text-muted"><?= count($cart_items) ?> items</span></h4>
 
-    <div class="row mt-5">
-        <div class="col-md-<?= empty($cart_items) ? '12' : '8' ?>">
-            <?php if (!empty($cart_items)): ?>
-                <?php foreach ($cart_items as $id => $item): ?>
-                    <div class="cart-item d-flex align-items-center p-3 mb-3">
-                        <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['name']) ?>" class="cart-img">
-                        <div class="cart-details ms-3">
-                            <h5><?= htmlspecialchars($item['name']) ?></h5>
-                            <p class="text-muted">$<?= number_format($item['price'], 2) ?></p>
-                            <form action="../basket/update_basket.php" method="POST" class="d-flex align-items-center">
-                                <input type="hidden" name="product_id" value="<?= $id ?>">
-                                <input type="number" name="quantity" value="<?= $item['quantity'] ?>" min="1" class="form-control quantity-input me-2">
-                                <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
-                                <a href="../basket/remove_from_basket.php?id=<?= $id ?>" class="btn btn-sm btn-outline-danger ms-2">Remove</a>
-                            </form>
+<body>
+    <?php include '../assets/html/navbar.php'; ?>
+    <div class="container mt-5">
+        <h1>Basket</h1>
+        <h4><span class="text-muted"><?= count($cart_items) ?> items</span></h4>
+
+        <div class="row mt-5">
+            <div class="col-md-<?= empty($cart_items) ? '12' : '8' ?>">
+                <?php if (!empty($cart_items)): ?>
+                    <?php foreach ($cart_items as $id => $item): ?>
+                        <div class="cart-item d-flex align-items-center p-3 mb-3">
+                            <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['name']) ?>"
+                                class="cart-img">
+                            <div class="cart-details ms-3">
+                                <h5><?= htmlspecialchars($item['name']) ?></h5>
+                                <p class="text-muted">$<?= number_format($item['price'], 2) ?></p>
+                                <form action="../basket/update_basket.php" method="POST" class="d-flex align-items-center">
+                                    <input type="hidden" name="product_id" value="<?= $id ?>">
+                                    <input type="number" name="quantity" value="<?= $item['quantity'] ?>" min="1"
+                                        class="form-control quantity-input me-2">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
+                                    <a href="../basket/remove_from_basket.php?id=<?= $id ?>"
+                                        class="btn btn-sm btn-outline-danger ms-2">Remove</a>
+                                </form>
+                            </div>
+                            <h5 class="text-end">$<?= number_format($item['price'] * $item['quantity'], 2) ?></h5>
                         </div>
-                        <h5 class="text-end">$<?= number_format($item['price'] * $item['quantity'], 2) ?></h5>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-muted">Your basket is empty.</p>
+                    <div class="text-center">
+                        <a href="../pages/products.php" class="cta d-inline-flex align-items-center hover-raise">
+                            <span class="material-symbols-outlined">shoppingmode</span>Browse Products
+                        </a>
                     </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p class="text-muted">Your basket is empty.</p>
-                <div class="text-center">
-                    <a href="../pages/products.php" class="cta d-inline-flex align-items-center hover-raise">
-                        <span class="material-symbols-outlined">shoppingmode</span>Browse Products
-                    </a>
+                <?php endif; ?>
+            </div>
+
+            <?php if (!empty($cart_items)): ?>
+                <div class="col-md-4">
+                    <div class="summary-box p-4">
+                        <h4>Order Summary</h4>
+                        <div class="summary-item">Subtotal: <span
+                                class="float-end">$<?= number_format($subtotal, 2) ?></span></div>
+                        <div class="summary-item">Shipping: <span
+                                class="float-end">$<?= number_format($shipping, 2) ?></span></div>
+                        <div class="summary-item">Tax (7.5%): <span class="float-end">$<?= number_format($tax, 2) ?></span>
+                        </div>
+                        <hr>
+                        <h5 class="summary-total">Total: <span class="float-end">$<?= number_format($total, 2) ?></span>
+                        </h5>
+                        <?php if (!empty($cart_items)): ?>
+                            <form id="placeOrderForm">
+                                <button type="submit" class="btn btn-success w-100 mt-3">Place Order</button>
+                            </form>
+
+                            <script>
+                                $(document).ready(function () {
+                                    $("#placeOrderForm").submit(function (e) {
+                                        e.preventDefault();
+
+                                        $.ajax({
+                                            url: "../basket/place_order.php",
+                                            type: "POST",
+                                            dataType: "json",
+                                            success: function (response) {
+                                                console.log(response);
+
+                                                if (response.success) {
+                                                    alert("Order placed successfully! Order ID: " + response.order_id);
+                                                    window.location.href = "../pages/order_confirmation.php?order_id=" + response.order_id;
+                                                } else {
+                                                    alert("Error: " + response.error);
+                                                }
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error("AJAX error: ", error);
+                                                console.error("Server response: ", xhr.responseText);
+                                                alert("Error processing order. Please try again.");
+                                            }
+                                        });
+                                    });
+                                });
+
+                            </script>
+                        <?php endif; ?>
+                    </div>
                 </div>
             <?php endif; ?>
         </div>
-        
-        <?php if (!empty($cart_items)): ?>
-            <div class="col-md-4">
-                <div class="summary-box p-4">
-                    <h4>Order Summary</h4>
-                    <div class="summary-item">Subtotal: <span class="float-end">$<?= number_format($subtotal, 2) ?></span></div>
-                    <div class="summary-item">Shipping: <span class="float-end">$<?= number_format($shipping, 2) ?></span></div>
-                    <div class="summary-item">Tax (7.5%): <span class="float-end">$<?= number_format($tax, 2) ?></span></div>
-                    <hr>
-                    <h5 class="summary-total">Total: <span class="float-end">$<?= number_format($total, 2) ?></span></h5>
-                    <?php if (!empty($cart_items)): ?>
-                        <a href="../checkout.php" class="btn btn-success w-100 mt-3">Continue to Payment →</a>
-                    <?php endif; ?>
-                </div>
-            </div>
-        <?php endif; ?>
     </div>
-</div>
 
-<?php include "../assets/html/footer.php"; ?>
 
 </body>
+
 </html>
