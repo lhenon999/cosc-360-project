@@ -72,15 +72,15 @@ $stmt->close();
 
             <?php if (isset($_SESSION['user_id']) && $_SESSION['user_id'] == $product['user_id']): ?>
                 <a href="edit_listing.php?id=<?= $product['id'] ?>" class="cta hover-raise atc">
-        <span class="material-symbols-outlined">edit</span> Edit Listing
-    </a>
+                    <span class="material-symbols-outlined">edit</span> Edit Listing
+                </a>
             <?php else: ?>
                 <form action="../basket/add_to_basket.php" method="POST">
                     <input type="hidden" name="product_id" value="<?= $product_id ?>">
                     <div class="quantity-add">
                         <input type="number" name="quantity" value="1" min="1" class="form-control">
                         <button type="submit" class="cta hover-raise atc">
-                           c class="material-symbols-outlined">add_shopping_cart</> Add to Basket
+                            c class="material-symbols-outlined">add_shopping_cart</> Add to Basket
                         </button>
                     </div>
                 </form>
