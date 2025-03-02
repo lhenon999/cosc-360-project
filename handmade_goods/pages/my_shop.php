@@ -17,9 +17,6 @@ $stmt->bind_param("s", $user_email);
 $stmt->execute();
 $result = $stmt->get_result();
 
-echo "<p>DEBUG: user_id (email) = " . htmlspecialchars($user_email) . "</p>";
-echo "<p>DEBUG: Found " . $result->num_rows . " products</p>";
-
 while ($row = $result->fetch_assoc()) {
     $products[] = $row;
 }
@@ -49,15 +46,16 @@ $stmt->close();
 
 <body>
     <?php include '../assets/html/navbar.php'; ?>
-    
+
     <h1 class="text-center">My Shop</h1>
     <p class="text-center">Browse and edit your listings</p>
     <br>
     <div class="d-flex justify-content-center">
-        <a class="cta hover-raise" href="">
-            <span class="material-symbols-outlined"></span>
-            Create a new listing
-        </a>
+        <div class="d-flex justify-content-center">
+            <a class="cta hover-raise" href="create_listing.php">
+                <span class="material-symbols-outlined">add</span> Create a new listing
+            </a>
+        </div>
     </div>
 
     <div class="container">
@@ -79,7 +77,7 @@ $stmt->close();
             </div>
         </div>
     </div>
-    
+
     <?php include '../assets/html/footer.php'; ?>
 </body>
 
