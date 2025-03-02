@@ -7,13 +7,13 @@ if (!isset($conn)) {
 <nav>
     <div class="navleft">
         <a href="../pages/home.php"><h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3></a>
-        <button class="material-symbols-outlined" id="toggle-nav"">menu</button>
+        <button class="material-symbols-outlined" id="toggle-nav">menu</button>
     </div>
     <div class="navright">
         <form action="../pages/products.php" method="GET" class="search-form">
             <input type="text" name="search" placeholder="Search products..." class="search-input" aria-label="Search">
             <button type="submit" class="search-button">
-                <span class="material-symbols-outlined hover-raise">search</span>
+                <span class="material-symbols-outlined">search</span>
             </button>
         </form>
         <div class="navlinks">
