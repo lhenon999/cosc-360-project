@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("ssdiiss", $name, $description, $price, $stock, $category, $target_file, $user_email);
 
     if ($stmt->execute()) {
-        header("Location: my_shop.php");
+        header("Location: myshop.php");
         exit();
     } else {
         echo "Error: Failed to add product.";
@@ -48,17 +48,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Listing</title>
+    <title>Handmade Goods - Browse</title>
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/globals.css">
+    <link rel="stylesheet" href="../assets/css/products.css?v=1">
+    <link rel="stylesheet" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="../assets/css/product_card.css">
 </head>
+
 <body>
     <?php include '../assets/html/navbar.php'; ?>
 
-    <div class="container mt-5">
-        <h2>Create a New Listing</h2>
+    <h1 class="text-center">Create a New Listing</h1>
+    <p class="text-center">Fill in the details to add your product</p>
+    <br>
+
+    <div class="container mt-4 d-flex justify-content-center">
         <form action="create_listing.php" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="mb-3">
                 <label for="name" class="form-label">Product Name</label>
@@ -90,10 +105,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">Create Listing</button>
+            <div class="d-flex justify-content-center">
+                <a class="cta hover-raise" href="myshop.php">
+                    <span class="material-symbols-outlined"></span> Create Listing
+                </a>
+            </div>
         </form>
     </div>
 
     <?php include '../assets/html/footer.php'; ?>
 </body>
+
 </html>
