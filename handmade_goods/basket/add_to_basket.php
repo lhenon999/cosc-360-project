@@ -2,12 +2,18 @@
 session_start();
 include '../config.php';
 
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// include '../config.php';
+
+// var_dump($_SESSION);
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"], $_POST["quantity"])) {
     $item_id = intval($_POST["product_id"]);
     $quantity = max(1, intval($_POST["quantity"]));
 
     if (isset($_SESSION["user_id"])) {
-        $user_id = $_SESSION["user_id"];
+        $user_id = intval($_SESSION["user_id"]);
 
         // Get or create user's cart
         $stmt = $conn->prepare("SELECT id FROM cart WHERE user_id = ?");
@@ -53,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"], $_POST["
     }
 
     $_SESSION["message"] = "Product added to cart.";
-    header("Location: ../pages/product.php?id=$item_id");
+    header("Location: ../pages/basket.php");
     exit();
 }
 ?>

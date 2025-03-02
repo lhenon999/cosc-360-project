@@ -1,3 +1,4 @@
+DROP DATABASE handmade_goods;
 CREATE DATABASE IF NOT EXISTS handmade_goods;
 USE handmade_goods;
 CREATE TABLE IF NOT EXISTS USERS( id INT auto_increment PRIMARY KEY,
@@ -13,7 +14,7 @@ CREATE TABLE IF NOT EXISTS ITEMS( id INT auto_increment PRIMARY KEY,
                                   stock INT NOT NULL DEFAULT 0,
                                   category VARCHAR ( 100 ),
                                   img VARCHAR ( 255 ) NOT NULL,
-                                  user_id VARCHAR ( 100 ),
+                                  user_id INT NOT NULL,
                                   created_at timestamp DEFAULT CURRENT_TIMESTAMP );
 CREATE TABLE IF NOT EXISTS ITEM_IMAGES( id INT auto_increment PRIMARY KEY,
                                   item_id INT NOT NULL,
@@ -54,24 +55,24 @@ CREATE TABLE IF NOT EXISTS ORDER_ITEMS( id INT auto_increment PRIMARY KEY,
                                                                                           
 ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+INSERT INTO items (name, description, price, stock, category, img, user_id) VALUES
+('Handmade Wooden Bowl', 'A beautifully handcrafted wooden bowl.', 29.99, 15, 'Kitchenware', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+('Knitted Scarf', 'A warm and cozy knitted scarf made from wool.', 19.99, 25, 'Clothing', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+('Ceramic Vase', 'A stylish handmade ceramic vase.', 34.99, 12, 'Home Decor', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+('Leather Wallet', 'A premium handmade leather wallet.', 49.99, 20, 'Accessories', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+('Hand-Painted Mug', 'A unique hand-painted ceramic mug.', 14.99, 30, 'Kitchenware', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+('Wooden Jewelry Box', 'A handcrafted wooden jewelry box with carvings.', 39.99, 12, 'Accessories', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+('Macrame Wall Hanging', 'A boho-style macrame wall hanging.', 24.99, 18, 'Home Decor', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+('Handmade Soap Set', 'A set of organic handmade soaps.', 12.99, 50, 'Personal Care', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 2),
+('Woven Basket', 'A natural fiber woven basket for storage.', 27.99, 22, 'Home Decor', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 2),
+('Handcrafted Candle', 'A scented handmade candle with natural wax.', 16.99, 35, 'Personal Care', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 2);
 
-INSERT INTO ITEMS (name, description, price, stock, category, img, user_id) VALUES
-('Handmade Wooden Bowl', 'A beautifully handcrafted wooden bowl.', 29.99, 15, 'Kitchenware', 'images/wooden_bowl.jpg', null),
-('Knitted Scarf', 'A warm and cozy knitted scarf made from wool.', 19.99, 25, 'Clothing', 'images/knitted_scarf.jpg', null),
-('Ceramic Vase', 'A stylish handmade ceramic vase.', 34.99, 10, 'Home Decor', 'images/ceramic_vase.jpg', null),
-('Leather Wallet', 'A premium handmade leather wallet.', 49.99, 20, 'Accessories', 'images/leather_wallet.jpg', null),
-('Hand-Painted Mug', 'A unique hand-painted ceramic mug.', 14.99, 30, 'Kitchenware', 'images/hand_painted_mug.jpg', null),
-('Wooden Jewelry Box', 'A handcrafted wooden jewelry box with carvings.', 39.99, 12, 'Accessories', 'images/jewelry_box.jpg', null),
-('Macrame Wall Hanging', 'A boho-style macrame wall hanging.', 24.99, 18, 'Home Decor', 'images/macrame_wall.jpg', null),
-('Handmade Soap Set', 'A set of organic handmade soaps.', 12.99, 50, 'Personal Care', 'images/handmade_soap.jpg', 'johndoe@mail.com'),
-('Woven Basket', 'A natural fiber woven basket for storage.', 27.99, 22, 'Home Decor', 'images/woven_basket.jpg', 'johndoe@mail.com'),
-('Handcrafted Candle', 'A scented handmade candle with natural wax.', 16.99, 35, 'Personal Care', 'images/handcrafted_candle.jpg', 'johndoe@mail.com');
 
 
-INSERT INTO users (name, email, password, user_type)
-SELECT 'administrator', 'admin@handmadegoods.com', '$2y$10$E4LsPni7YFBS96DJ6tK8PeCJVgswuLXnd6XDPUySc3yCgbv6lnyeG', 'admin'
+INSERT INTO users (id, name, email, password, user_type)
+SELECT 1, 'administrator', 'admin@handmadegoods.com', '$2y$10$E4LsPni7YFBS96DJ6tK8PeCJVgswuLXnd6XDPUySc3yCgbv6lnyeG', 'admin'
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@handmadegoods.com');
 
-INSERT INTO users (name, email, password, user_type)
-SELECT 'John Doe', 'johndoe@mail.com', '$2y$10$6FRuRI3lBFOpHtYhd29XIOs.sT7WeAYXWxs8ORhzLIvAqQApYchRu', 'normal'
+INSERT INTO users (id, name, email, password, user_type)
+SELECT 2, 'John Doe', 'johndoe@mail.com', '$2y$10$6FRuRI3lBFOpHtYhd29XIOs.sT7WeAYXWxs8ORhzLIvAqQApYchRu', 'normal'
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'johndoe@mail.com');

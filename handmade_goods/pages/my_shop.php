@@ -7,6 +7,13 @@ if (!$is_logged_in) {
     exit();
 }
 
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// include '../config.php';
+
+// var_dump($_SESSION);
+
+
 include '../config.php';
 
 $user_email = $_SESSION["user_id"];

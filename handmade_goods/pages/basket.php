@@ -2,6 +2,8 @@
 session_start();
 include '../config.php';
 
+// echo "Debug: User ID = $user_id <br>";
+
 $isLoggedIn = isset($_SESSION["user_id"]);
 if (!$isLoggedIn) {
     header("Location: ../pages/login.php");
@@ -68,6 +70,7 @@ $total = $subtotal + $shipping + $tax;
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/basket.css">
+    <link rel="stylesheet" href="../assets/css/product_card.css">
 </head>
 <body>
 <?php include '../assets/html/navbar.php'; ?>
