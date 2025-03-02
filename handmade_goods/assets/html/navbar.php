@@ -34,7 +34,7 @@ if (!isset($conn)) {
                         <a href="../logout.php">Logout</a>
                     <?php else: ?>
                         <a href="../pages/profile.php">View Profile</a>
-                        <a href="../pages/profile.php">My Shop</a>
+                        <a href="../pages/my_shop.php">My Shop</a>
                         <a href="../pages/settings.php">Settings</a>
                         <a href="../logout.php">Logout</a>
                     <?php endif; ?>
