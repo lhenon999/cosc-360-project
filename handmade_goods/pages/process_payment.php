@@ -34,23 +34,45 @@ $total_price = $order["total_price"];
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Process Payment</title>
+    <title>Thank you for your order!</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+    </style>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+    <link rel="stylesheet" href="../assets/css/order_confirmation.css">
     <style>
-        .hidden { display: none; }
-        .payment-form { max-width: 500px; margin: auto; }
-        .paypal-button { background-color: #ffc439; border: none; padding: 10px 20px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        .hidden {
+            display: none;
+        }
+
+        .payment-form {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .paypal-button {
+            background-color: #ffc439;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
     </style>
 </head>
+
 <body>
     <?php include '../assets/html/navbar.php'; ?>
 
@@ -70,7 +92,8 @@ $total_price = $order["total_price"];
 
             <div id="credit-card-form" class="mt-4">
                 <label for="card_number">Card Number:</label>
-                <input type="text" name="card_number" id="card_number" class="form-control" placeholder="1234 5678 9012 3456" required>
+                <input type="text" name="card_number" id="card_number" class="form-control"
+                    placeholder="1234 5678 9012 3456" required>
 
                 <label for="expiry_date" class="mt-2">Expiration Date:</label>
                 <input type="month" name="expiry_date" id="expiry_date" class="form-control" required>
@@ -78,7 +101,9 @@ $total_price = $order["total_price"];
                 <label for="cvv" class="mt-2">CVV:</label>
                 <input type="text" name="cvv" id="cvv" class="form-control" placeholder="123" required>
 
-                <button type="submit" class="btn btn-success w-100 mt-4">Pay with Credit Card</button>
+                <button type="submit" class="cta hover-raise w-100 mt-4">
+                    <span class="material-symbols-outlined">credit_card</span> Pay with Credit Card
+                </button>
             </div>
 
             <div id="paypal-button-container" class="hidden mt-4 text-center">
@@ -91,18 +116,18 @@ $total_price = $order["total_price"];
     </div>
 
     <script>
-        document.getElementById('payment_method').addEventListener('change', function() {
+        document.getElementById('payment_method').addEventListener('change', function () {
             let method = this.value;
             document.getElementById('credit-card-form').classList.toggle('hidden', method !== 'credit_card');
             document.getElementById('paypal-button-container').classList.toggle('hidden', method !== 'paypal');
         });
 
-        document.getElementById('paypal-button').addEventListener('click', function() {
+        document.getElementById('paypal-button').addEventListener('click', function () {
             alert("Redirecting to PayPal... (This will be replaced with PayPal Sandbox API)");
             window.location.href = "order_confirmation.php?order_id=<?= $order_id ?>&payment=paypal";
         });
     </script>
 
-    <?php include "../assets/html/footer.php"; ?>
 </body>
+
 </html>
