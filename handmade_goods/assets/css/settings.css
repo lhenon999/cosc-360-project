@@ -1,0 +1,58 @@
+.settings-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.settings-section {
+    margin-bottom: 2rem;
+}
+
+.settings-section h3 {
+    font-size: 1.4rem;
+    color: #2d5a27;
+    margin-bottom: 10px;
+}
+
+.settings-container form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #2d5a27;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1e3f1a;
+}
+
+.btn-danger {
+    display: inline-block;
+    padding: 10px 16px;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #a71d2a;
+}
+
+@media (max-width: 768px) {
+    .settings-container {
+        width: 90%;
+    }
+}

@@ -243,5 +243,6 @@ $rating_stmt->close();
                 });
             });
         </script>
+        <script src="../assets/js/dark_mode.js"></script>
     </body>
 </html>

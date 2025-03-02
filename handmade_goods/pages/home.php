@@ -134,6 +134,7 @@ include '../config.php';
 
         </div>
         <?php include "../assets/html/footer.php"; ?>
+        <script src="../assets/js/dark_mode.js"></script>
     </body>
 
 </html>
