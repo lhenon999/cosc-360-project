@@ -7,10 +7,11 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
-$user_id = $_SESSION["user_id"];
-$user_type = $_SESSION["user_type"]; 
-$stmt = $conn->prepare("SELECT name, email FROM users WHERE id = ?");
-$stmt->bind_param("i", $user_id);
+$user_email = $_SESSION["user_id"];
+$user_type = $_SESSION["user_type"];
+
+$stmt = $conn->prepare("SELECT name, email FROM users WHERE email = ?");
+$stmt->bind_param("s", $user_email);
 $stmt->execute();
 $stmt->bind_result($name, $email);
 $stmt->fetch();
