@@ -50,3 +50,11 @@ admin user:
 
 user ID: 'admin@handmadegoods.com'
 password: 'Admin@123'
+
+---
+
+Paypal Sandbox API account info: 
+
+email: sb-r282p34425608@business.example.com
+
+password: V>C6HtE7
