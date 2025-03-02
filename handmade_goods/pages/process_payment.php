@@ -123,7 +123,6 @@ $total_price = $order["total_price"];
         });
 
         document.getElementById('paypal-button').addEventListener('click', function () {
-            alert("Redirecting to PayPal... (This will be replaced with PayPal Sandbox API)");
             window.location.href = "order_confirmation.php?order_id=<?= $order_id ?>&payment=paypal";
         });
     </script>
