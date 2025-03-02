@@ -74,6 +74,7 @@ $stmt->close();
                 <a href="edit_listing.php?id=<?= $product['id'] ?>" class="cta hover-raise atc">
                     <span class="material-symbols-outlined">edit</span> Edit Listing
                 </a>
+                <a href="my_shop.php" class="btn btn-outline-secondary mt-3">Back to My Shop</a>
             <?php else: ?>
                 <form action="../basket/add_to_basket.php" method="POST">
                     <input type="hidden" name="product_id" value="<?= $product_id ?>">
@@ -83,11 +84,8 @@ $stmt->close();
                                 class="material-symbols-outlined">add_shopping_cart</span>Add to Basket</button>
                     </div>
                 </form>
-
+                <a href="products.php" class="btn btn-outline-secondary mt-3">Back to Products</a>
             <?php endif; ?>
-
-
-            <a href="products.php" class="btn btn-outline-secondary mt-3">Back to Products</a>
         </div>
     </main>
 
