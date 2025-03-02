@@ -45,21 +45,47 @@ $stmt->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
+    </style>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
+    <link rel="stylesheet" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/order_details.css">
 </head>
+
 <body>
-    <div class="container">
+    <?php include '../assets/html/navbar.php'; ?>
+    <div class="order-details-container">
         <h2>Order Details</h2>
-        <p><strong>Order ID:</strong> #<?= $order["id"] ?></p>
-        <p><strong>Status:</strong> <?= htmlspecialchars($order["status"]) ?></p>
-        <p><strong>Total Price:</strong> $<?= number_format($order["total_price"], 2) ?></p>
-        <p><strong>Order Date:</strong> <?= $order["created_at"] ?></p>
+
+        <div class="order-info">
+            <p><strong>Order ID:</strong> #<?= $order["id"] ?></p>
+            <p><strong>Status:</strong>
+                <span class="order-status 
+                    <?= strtolower($order["status"]) === 'pending' ? 'status-pending' : '' ?>
+                    <?= strtolower($order["status"]) === 'shipped' ? 'status-shipped' : '' ?>
+                    <?= strtolower($order["status"]) === 'delivered' ? 'status-delivered' : '' ?>
+                    <?= strtolower($order["status"]) === 'cancelled' ? 'status-cancelled' : '' ?>">
+                    <?= htmlspecialchars($order["status"]) ?>
+                </span>
+            </p>
+            <p><strong>Total Price:</strong> $<?= number_format($order["total_price"], 2) ?></p>
+            <p><strong>Order Date:</strong> <?= $order["created_at"] ?></p>
+        </div>
 
         <h3>Items</h3>
-        <table class="table table-bordered">
+        <table class="order-items-table">
             <thead>
                 <tr>
                     <th>Item</th>
@@ -78,7 +104,8 @@ $stmt->close();
             </tbody>
         </table>
 
-        <a href="../pages/profile.php" class="btn btn-secondary">Back to Profile</a>
+        <a href="../pages/profile.php" class="back-btn">Back to Profile</a>
     </div>
 </body>
+
 </html>
