@@ -79,11 +79,11 @@ $stmt->close();
                     <input type="hidden" name="product_id" value="<?= $product_id ?>">
                     <div class="quantity-add">
                         <input type="number" name="quantity" value="1" min="1" class="form-control">
-                        <button type="submit" class="cta hover-raise atc">
-                            c class="material-symbols-outlined">add_shopping_cart</> Add to Basket
-                        </button>
+                        <button type="submit" class="cta hover-raise atc"><span
+                                class="material-symbols-outlined">add_shopping_cart</span>Add to Basket</button>
                     </div>
                 </form>
+
             <?php endif; ?>
 
 
