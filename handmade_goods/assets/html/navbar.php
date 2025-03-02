@@ -1,11 +1,21 @@
-<?php session_start(); ?>
+<?php 
+session_start();
+if (!isset($conn)) {
+    include_once __DIR__ . '/../../config.php';
+}
+?>
 <nav>
     <div class="navleft">
         <a href="../pages/home.php"><h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3></a>
-        <button class="material-symbols-outlined" id="toggle-nav"">menu</button>
+        <button class="material-symbols-outlined" id="toggle-nav">menu</button>
     </div>
     <div class="navright">
-        <span class="material-symbols-outlined hover-raise auth-hide">search</span>
+        <form action="../pages/products.php" method="GET" class="search-form">
+            <input type="text" name="search" placeholder="Search products..." class="search-input" aria-label="Search">
+            <button type="submit" class="search-button">
+                <span class="material-symbols-outlined">search</span>
+            </button>
+        </form>
         <div class="navlinks">
             <ul>
                 <li class="hover-raise"><a class="navlink" href="../pages/home.php">Home</a></li>
