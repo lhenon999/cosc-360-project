@@ -1,4 +1,4 @@
-DROP DATABASE handmade_goods;
+DROP DATABASE IF EXISTS handmade_goods;
 CREATE DATABASE IF NOT EXISTS handmade_goods;
 USE handmade_goods;
 CREATE TABLE IF NOT EXISTS USERS( id INT auto_increment PRIMARY KEY,
