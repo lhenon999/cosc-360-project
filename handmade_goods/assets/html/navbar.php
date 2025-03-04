@@ -1,16 +1,26 @@
-<?php session_start(); ?>
+<?php 
+session_start();
+if (!isset($conn)) {
+    include_once __DIR__ . '/../../config.php';
+}
+?>
 <nav>
     <div class="navleft">
-        <h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3>
+        <a href="../pages/home.php"><h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3></a>
         <button class="material-symbols-outlined" id="toggle-nav">menu</button>
     </div>
     <div class="navright">
-        <span class="material-symbols-outlined hover-raise auth-hide">search</span>
+        <form action="../pages/products.php" method="GET" class="search-form">
+            <input type="text" name="search" placeholder="Search products..." class="search-input" aria-label="Search">
+            <button type="submit" class="search-button">
+                <span class="material-symbols-outlined">search</span>
+            </button>
+        </form>
         <div class="navlinks">
             <ul>
                 <li class="hover-raise"><a class="navlink" href="../pages/home.php">Home</a></li>
                 <li class="hover-raise"><a class="navlink" href="../pages/products.php">Shop</a></li>
-                <li class="hover-raise"><a class="navlink" href="#">About</a></li>
+                <li class="hover-raise"><a class="navlink" href="../pages/about.php">About</a></li>
             </ul>
         </div>
         <span class="hover-raise dropdown">
@@ -24,7 +34,7 @@
                         <a href="../logout.php">Logout</a>
                     <?php else: ?>
                         <a href="../pages/profile.php">View Profile</a>
-                        <a href="../pages/profile.php">My Shop</a>
+                        <a href="../pages/my_shop.php">My Shop</a>
                         <a href="../pages/settings.php">Settings</a>
                         <a href="../logout.php">Logout</a>
                     <?php endif; ?>
@@ -34,7 +44,7 @@
                 <?php endif; ?>
             </div>
         </span>
-        <a class="cta hover-raise auth-hide"><span class="material-symbols-outlined">shopping_basket</span>Basket</a>
+        <a class="cta hover-raise auth-hide" href="../pages/basket.php"><span class="material-symbols-outlined">shopping_basket</span>Basket</a>
     </div>
     <script>
         $("#toggle-nav").click(function() {

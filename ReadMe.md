@@ -6,7 +6,7 @@ STEP 2) Client-side experience - develop pages for your site
 - [x] Examples of each page type in your proposed site
 - [x] Think about the different users and the pages they should have access to.
 - [x] Create a Git Hub repository and add instructor and TAs.
-- [ ] You will submit the link to the GitHub repository.
+- [x] You will submit the link to the GitHub repository.
 
 ## Setup
 #### Requirements:
@@ -37,7 +37,7 @@ Import `init.sql`
 
 ### 4. Update config.php and test site
 
-`http://localhost/handmade_goods/home.php`
+`http://localhost/handmade_goods/home.php` or `http://localhost/cosc-360-project/handmade_goods/home.php` based on your configuration.
 
 login info:
 
@@ -50,3 +50,11 @@ admin user:
 
 user ID: 'admin@handmadegoods.com'
 password: 'Admin@123'
+
+---
+
+Paypal Sandbox API account info: 
+
+email: sb-r282p34425608@business.example.com
+
+password: V>C6HtE7
