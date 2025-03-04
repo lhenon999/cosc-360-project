@@ -52,7 +52,15 @@ CREATE TABLE IF NOT EXISTS ORDER_ITEMS( id INT auto_increment PRIMARY KEY,
                                   price_at_purchase DECIMAL ( 10, 2 ) NOT NULL,
                                   FOREIGN KEY ( order_id ) REFERENCES ORDERS(id) ON DELETE CASCADE,
                                   FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
-                                                                                          
+CREATE TABLE IF NOT EXISTS password_resets (id INT AUTO_INCREMENT PRIMARY KEY,
+                                email VARCHAR(255) NOT NULL,
+                                token VARCHAR(100) NOT NULL,
+                                expires DATETIME NOT NULL,
+                                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                FOREIGN KEY (email) REFERENCES users(email) ON DELETE CASCADE);
+
+
+ALTER TABLE password_resets DROP FOREIGN KEY password_resets_ibfk_1;           
 ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE USERS ADD COLUMN profile_picture VARCHAR(255) NOT NULL DEFAULT '/cosc-360-project/handmade_goods/assets/images/default_profile.png';
 

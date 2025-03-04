@@ -21,22 +21,12 @@
 <body>
     <?php include '../assets/html/navbar.php'; ?>
     <main class="container text-center">
-        <h1>Confirm your email</h1>
+        <h1>Enter your reset code</h1>
+        <p class="text-muted mb-5">Your code has been sent to your email address</p>
         <div class="login-container">
-            <form method="POST" action="../password_reset.php" id="emailValidationForm" novalidate>
-                <input type="email" name="email" id="email" placeholder="Email" required>
-                <?php
-                if (isset($_GET["error"])) {
-                    echo '<p class="error">';
-                    if ($_GET["error"] == "not_found") {
-                        echo "No user found with that email.";
-                    } else if ($_GET["error"] == "invalid_email") {
-                        echo "Could not send reset email. Try again later.";
-                    }
-                    echo '</p>';
-                }
-                ?>
-                <span class="error" id="emailError"></span>
+            <form method="POST" action="update_password.php" id="tokenValidationForm" novalidate>
+                <input type="token" name="token" id="token" placeholder="Reset Code" required>
+                <span class="error" id="tokenError"></span>
 
                 <button type="submit" name="confirm">Confirm</button>
                 <a href="login.php">Back to login</a>
@@ -46,24 +36,35 @@
 
     <script>
         $(document).ready(function () {
-            $("#emailValidationForm").submit(function (event) {
+            $("#tokenValidationForm").submit(function (event) {
                 $(".error").text("");
                 let isValid = true;
 
-                let email = $("#email").val().trim();
-                let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                if (email === "") {
-                    $("#emailError").text("Email field cannot be empty.");
-                    isValid = false;
-                } else if (!emailRegex.test(email)) {
-                    $("#emailError").text("Enter a valid email address.");
+                let token = $("#token").val().trim();
+
+                if (token === "") {
+                    $("#tokenError").text("Token field cannot be empty.");
                     isValid = false;
                 }
+
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has("error")) {
+                    let errorType = urlParams.get("error");
+                    if (errorType === "invalid_token") {
+                        $("#tokenError").text("Invalid token. Please check your email.");
+                        isValid = false;
+                    } else if (errorType === "expired_token") {
+                        $("#tokenError").text("This token has expired. Request a new one.");
+                        isValid = false;
+                    }
+                }
+
                 if (!isValid) {
                     event.preventDefault();
                 }
             });
         });
+
     </script>
 </body>
 
