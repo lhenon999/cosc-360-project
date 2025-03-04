@@ -1,5 +1,9 @@
 <?php
 session_start();
+$_SESSION = []; 
+session_unset();
 session_destroy();
-echo "<script>window.location.href = './pages/home.php';</script>";
+setcookie(session_name(), '', time() - 3600, '/');
+
+header("Location: /cosc-360-project/handmade_goods/pages/home.php");
 exit();
