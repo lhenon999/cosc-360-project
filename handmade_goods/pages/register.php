@@ -21,7 +21,7 @@
         <main class="container text-center">
             <h1 class="mb-5">Create an Account</h1>
             <div class="login-container">
-                <form method="POST" action="../db.php" id="registerForm" novalidate>
+            <form method="POST" action="../db.php" id="registerForm" enctype="multipart/form-data" novalidate>
                     <input type="text" name="full_name" id="full_name" placeholder="Full Name" required>
                     <span class="error" id="nameError"></span>
 

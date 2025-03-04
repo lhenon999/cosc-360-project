@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS ORDER_ITEMS( id INT auto_increment PRIMARY KEY,
                                   FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
                                                                                           
 ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE USERS ADD COLUMN profile_picture VARCHAR(255) NOT NULL DEFAULT '/cosc-360-project/handmade_goods/assets/images/default_profile.png';
 
 INSERT INTO items (name, description, price, stock, category, img, user_id) VALUES
 ('Handmade Wooden Bowl', 'A beautifully handcrafted wooden bowl.', 29.99, 15, 'Kitchenware', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
