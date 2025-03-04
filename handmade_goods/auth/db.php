@@ -3,8 +3,8 @@ require_once 'config.php';
 session_start();
 session_regenerate_id(true);
 
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 // var_dump($_FILES);
 // exit();
 
@@ -36,14 +36,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
                 if (!move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
                     error_log("Move failed: " . print_r(error_get_last(), true));
-                    header("Location: ../pages/register.php?error=file_upload_failed");
+                    header("Location: /cosc-360-project/handmade_goods/auth/register.php?error=file_upload_failed");
                     exit();
                 } else {
                     $profile_picture = "/cosc-360-project/handmade_goods/" . $target_file;
                 }
             } else {
                 error_log("Invalid file type: " . $imageFileType);
-                header("Location: ../pages/register.php?error=invalid_file");
+                header("Location: /cosc-360-project/handmade_goods/auth/register.php?error=invalid_file");
                 exit();
             }
         }
@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: /cosc-360-project/handmade_goods/pages/home.php");
             exit();
         } else {
-            header("Location: ../pages/register.php?error=registration_failed");
+            header("Location: /cosc-360-project/handmade_goods/auth/register.php?error=registration_failed");
             exit();
         }
         $stmt->close();
@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: http://localhost/cosc-360-project/handmade_goods/pages/home.php");
                 exit();
             } else {
-                header("Location: ../pages/login.php?error=invalid");
+                header("Location: /cosc-360-project/handmade_goods/auth/login.php?error=invalid");
                 exit();
             }
         } else {

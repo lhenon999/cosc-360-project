@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'config.php';
+require '../config.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -42,10 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Email the reset link
 
-        header("Location: pages/validate_token.php");
+        header("Location: validate_token.php");
         exit();
     } else {
-        header("Location: pages/forgot_password.php?error=not_found");
+        header("Location: forgot_password.php?error=not_found");
         exit();
     }
 } else {

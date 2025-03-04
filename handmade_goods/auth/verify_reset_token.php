@@ -24,7 +24,7 @@
         <h1>Enter your reset code</h1>
         <p class="text-muted mb-5">Your code has been sent to your email address</p>
         <div class="login-container">
-            <form method="POST" action="update_password.php" id="tokenValidationForm" novalidate>
+            <form method="POST" action="reset_password.php" id="tokenValidationForm" novalidate>
                 <input type="token" name="token" id="token" placeholder="Reset Code" required>
                 <span class="error" id="tokenError"></span>
 
