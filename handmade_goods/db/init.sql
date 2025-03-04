@@ -67,8 +67,6 @@ INSERT INTO items (name, description, price, stock, category, img, user_id) VALU
 ('Woven Basket', 'A natural fiber woven basket for storage.', 27.99, 22, 'Home Decor', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 2),
 ('Handcrafted Candle', 'A scented handmade candle with natural wax.', 16.99, 35, 'Personal Care', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 2);
 
-
-
 INSERT INTO users (id, name, email, password, user_type)
 SELECT 1, 'administrator', 'admin@handmadegoods.com', '$2y$10$E4LsPni7YFBS96DJ6tK8PeCJVgswuLXnd6XDPUySc3yCgbv6lnyeG', 'admin'
 WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@handmadegoods.com');

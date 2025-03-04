@@ -168,8 +168,6 @@ $total = $subtotal + $shipping + $tax;
             <?php endif; ?>
         </div>
     </div>
-
-
 </body>
 
 </html>
