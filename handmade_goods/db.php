@@ -82,9 +82,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-
-
-    
     // Login
     if (isset($_POST["login"])) {
         $email = trim($_POST["email"]);
