@@ -36,13 +36,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
                 if (!move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
                     error_log("Move failed: " . print_r(error_get_last(), true));
-                    die("Error: File move failed. Check permissions or target path.");
+                    header("Location: ../pages/register.php?error=file_upload_failed");
+                    exit();
                 } else {
                     $profile_picture = "/cosc-360-project/handmade_goods/" . $target_file;
                 }
             } else {
                 error_log("Invalid file type: " . $imageFileType);
-                die("Error: Invalid file type. Allowed types: jpg, jpeg, png, gif.");
+                header("Location: ../pages/register.php?error=invalid_file");
+                exit();
             }
         }
         
@@ -52,7 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check->store_result();
 
         if ($check->num_rows > 0) {
-            die("Error: Email already registered.");
+            header("Location: ../pages/register.php?error=email_taken");
+            exit();
         }
         $check->close();
 
@@ -72,7 +75,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: /cosc-360-project/handmade_goods/pages/home.php");
             exit();
         } else {
-            die("Error: Registration failed.");
+            header("Location: ../pages/register.php?error=registration_failed");
+            exit();
         }
         $stmt->close();
     }
@@ -104,10 +108,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: http://localhost/cosc-360-project/handmade_goods/pages/home.php");
                 exit();
             } else {
-                die("Error: Invalid email or password.");
+                header("Location: ../pages/login.php?error=invalid");
+                exit();
             }
         } else {
-            die("Error: No user found with that email.");
+            header("Location: http://localhost/cosc-360-project/handmade_goods/pages/login.php?error=nouser");
+            exit();
+
         }
         $stmt->close();
     }
