@@ -33,8 +33,15 @@
                     echo "No user found with that email.";
                 } elseif ($_GET["error"] == "invalid") {
                     echo "Invalid email or password.";
-                } 
+                }
                 echo '</p>';
+            }
+            ?>
+            <?php
+            if (isset($_GET['success']) && $_GET['success'] == 'password_reset') {
+                echo "<div class='alert alert-success text-center' style='margin: 10px; padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;'>
+            Your password has been reset successfully. You can now log in with your new password.
+          </div>";
             }
             ?>
             <form method="POST" action="db.php" id="loginForm" novalidate>

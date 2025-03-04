@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Email the reset link
 
-        header("Location: validate_token.php");
+        header("Location: verify_reset_token.php");
         exit();
     } else {
         header("Location: forgot_password.php?error=not_found");

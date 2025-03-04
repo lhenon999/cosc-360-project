@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $token = trim($_POST['token']);
 
     if (empty($token)) {
-        header("Location: confirm_token.php?error=invalid_token");
+        header("Location: verify_reset_token.php?error=invalid_token");
         exit();
     }
 
@@ -24,12 +24,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $row = $result->fetch_assoc();
 
     if (!$row) {
-        header("Location: confirm_token.php?error=invalid_token");
+        header("Location: verify_reset_token.php?error=invalid_token");
         exit();
     }
 
     if (strtotime($row['expires']) < time()) {
-        header("Location: confirm_token.php?error=expired_token");
+        header("Location: verify_reset_token.php?error=expired_token");
         exit();
     }
 

@@ -36,30 +36,22 @@
 
     <script>
         $(document).ready(function () {
+            $(".error").text("");
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has("error")) {
+                let errorType = urlParams.get("error");
+                if (errorType === "invalid_token") {
+                    $("#tokenError").text("Invalid token. Please check your email.");
+                } else if (errorType === "expired_token") {
+                    $("#tokenError").text("This token has expired. Request a new one.");
+                }
+            }
+
             $("#tokenValidationForm").submit(function (event) {
-                $(".error").text("");
-                let isValid = true;
-
                 let token = $("#token").val().trim();
-
                 if (token === "") {
                     $("#tokenError").text("Token field cannot be empty.");
-                    isValid = false;
-                }
-
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.has("error")) {
-                    let errorType = urlParams.get("error");
-                    if (errorType === "invalid_token") {
-                        $("#tokenError").text("Invalid token. Please check your email.");
-                        isValid = false;
-                    } else if (errorType === "expired_token") {
-                        $("#tokenError").text("This token has expired. Request a new one.");
-                        isValid = false;
-                    }
-                }
-
-                if (!isValid) {
                     event.preventDefault();
                 }
             });
