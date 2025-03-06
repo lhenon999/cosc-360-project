@@ -23,7 +23,7 @@
     <main class="container text-center">
         <h1>Confirm your email</h1>
         <div class="login-container">
-            <form method="POST" action="send_reset_link.php" id="emailValidationForm" novalidate>
+            <form method="POST" action="send_reset_code.php" id="emailValidationForm" novalidate>
                 <input type="email" name="email" id="email" placeholder="Email" required>
                 <?php
                 if (isset($_GET["error"])) {
