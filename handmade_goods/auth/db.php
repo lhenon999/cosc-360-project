@@ -17,25 +17,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user_type = 'normal';
         $profile_picture = "/cosc-360-project/handmade_goods/assets/images/default-profile.jpg";
 
-        // Ensure uploads directory exists
         $upload_dir = "assets/images/uploads/profile_pictures/";
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0775, true);
         }
 
         if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == UPLOAD_ERR_OK) {
-            // Sanitize file name
-            $file_name = time() . '_' . preg_replace('/[^A-Za-z0-9_.-]/', '_', basename($_FILES["profile_picture"]["name"]));
+            $file_name = "profile_" . $user_id . "." . $imageFileType;
             $target_file = $upload_dir . $file_name;
             $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
             $allowed_types = array("jpg", "jpeg", "png", "gif");
         
             if (in_array($imageFileType, $allowed_types)) {
-                error_log("Attempting to move file from: " . $_FILES["profile_picture"]["tmp_name"]);
-                error_log("Target file path: " . $target_file);
         
                 if (!move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
-                    error_log("Move failed: " . print_r(error_get_last(), true));
                     header("Location: /cosc-360-project/handmade_goods/auth/register.php?error=file_upload_failed");
                     exit();
                 } else {

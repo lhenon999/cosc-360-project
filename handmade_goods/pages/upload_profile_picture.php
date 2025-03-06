@@ -23,12 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_picture"])) {
     $fileSize = $_FILES["profile_picture"]["size"];
     $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-    if (!in_array($fileExt, $allowedTypes)) {
-        $_SESSION["error"] = "Invalid file type. Allowed types: JPG, JPEG, PNG, GIF.";
-        header("Location: ../pages/profile.php");
-        exit();
-    }
-
     if ($fileSize > $maxFileSize) {
         $_SESSION["error"] = "File size exceeds 2MB limit.";
         header("Location: ../pages/profile.php");
