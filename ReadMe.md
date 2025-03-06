@@ -1,16 +1,5 @@
 # README
 
-STEP 2) Client-side experience - develop pages for your site
-
-- [X] Develop the pages with client-side validation
-- [X] Develop styles for pages
-- [X] Examples of each page type in your proposed site
-- [X] Think about the different users and the pages they should have access to.
-- [X] Create a Git Hub repository and add instructor and TAs.
-- [X] You will submit the link to the GitHub repository.
-
----
-
 STEP 3) Minimal core functionality
 
 Your site should have minimal core functionality and:
@@ -36,7 +25,7 @@ Minimum Functional Requirements (for a C grade):
 - [X] Site must maintain state (user state being logged on, etc)
 - [ ] Responsive design philosophy (minimum requirements for different non-mobile display sizes)
 - [ ] AJAX (or similar) utilization for asynchronous updates (meaning that if a discussion thread is updated, another user who is viewing the same thread will not have to refresh the page to see the update)
-- [ ] User images (thumbnail) and profile stored in database
+- [x] User images (thumbnail) and profile stored in database
 - [ ] Simple discussion (topics) grouping and display
 - [ ] Navigation breadcrumb strategy (i.e. user can determine where they are in threads)
 - [ ] Error handling (bad navigation)
