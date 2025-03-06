@@ -166,7 +166,11 @@ h1 {
     align-items: center;
     font-size: 14px;
     font-weight: 500;
-    color: #ffffff;
+    color: black;
+}
+
+.bg-dark .filter-section label{
+    color: white;
 }
 
 .filter-section label:hover {
@@ -207,23 +211,23 @@ h1 {
     padding: 8px;
     font-size: 14px;
     border-radius: 6px;
-    border: 1px solid #444;
-    background: #2a2a2a;
-    color: #fff;
+    border: 1px solid #fffcfc;
+    background: #eceaea;
+    color: #282727;
     transition: border-color 0.3s ease;
     text-align: center;
     margin-bottom: 10px; 
+}
+
+.bg-dark .filter-section input[type="number"] {
+    background: #2a2a2a;
+    color: #fff; 
 }
 
 .filter-section input[type="number"]::placeholder {
     color: #aaa;
     font-size: 14px;
     opacity: 0.7;
-}
-
-.filter-section input[type="number"]:focus {
-    border-color: #722F37;
-    outline: none;
 }
 
 button[type="submit"] {
