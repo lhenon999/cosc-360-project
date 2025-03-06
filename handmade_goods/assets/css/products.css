@@ -103,18 +103,22 @@ h1 {
 }
 
 .listing-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(280px, 1fr));
-    gap: 40px !important;
-    justify-content: center !important;
-    max-width: 1400px;
-    width: 100%;
-    margin: auto;
-    align-items: flex-start;
-    justify-content: flex-start;
-    min-height: 100vh;
-    align-self: flex-start;
-    align-content: flex-start;
+    display: grid;
+    gap: 20px;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+@media (max-width: 900px) {
+    .listing-grid {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 750px) {
+    .listing-grid {
+        grid-template-columns: repeat(1, minmax(280px, 1fr));
+    }
 }
 
 .spacer {
