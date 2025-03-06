@@ -14,6 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/settings.css">
@@ -23,40 +24,51 @@
     <?php include '../assets/html/navbar.php'; ?>
 
     <div class="settings-container">
-        <h2>Settings</h2>
+    <div class="settings-header">
+            <a href="profile.php" class="back-arrow">&#8592;</a>
+            <h2><i class="bi bi-gear-fill"></i> Settings</h2>
+        </div>
 
-        <div class="settings-section">
-            <h3>Account Settings</h3>
+        <div class="mb-4">
+            <h5>Account Details</h5>
             <form action="update_profile.php" method="post">
-                <label>Name:</label>
-                <input type="text" name="name" value="<?= htmlspecialchars($user['name']) ?>" required>
-
-                <label>Email:</label>
-                <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
-
-                <button type="submit">Save Changes</button>
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" name="name" value="<?= htmlspecialchars($user['name']) ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Save Changes</button>
             </form>
         </div>
 
-        <div class="settings-section">
-            <h3>Security</h3>
-            <a href="change_password.php" class="btn">Change Password</a>
+        <div class="mb-4">
+            <h5>Security</h5>
+            <a href="change_password.php" class="btn btn-outline-secondary w-100">Change Password</a>
         </div>
 
-        <div class="settings-section">
-            <h3>Preferences</h3>
-            <label class="toggle-switch">
-                <input type="checkbox" id="darkModeToggle">
-                <span class="slider"></span>
-            </label>
-            <p>Enable Dark Mode</p>
+        <div class="mb-4">
+            <h5>Preferences</h5>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                <label class="form-check-label" for="darkModeToggle">Enable Dark Mode</label>
+            </div>
         </div>
 
-        <div class="settings-section">
-            <a href="delete_account.php" class="btn-danger">Delete My Account</a>
+        <div>
+            <button class="btn btn-delete">Delete My Account</button>
         </div>
     </div>
-    <script src="../assets/js/dark_mode.js"></script>
+
+    <script>
+        document.getElementById('darkModeToggle').addEventListener('change', function() {
+            document.body.classList.toggle('bg-dark');
+            document.body.classList.toggle('text-light');
+        });
+    </script>
+
 </body>
 
 </html>

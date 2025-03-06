@@ -1,58 +1,88 @@
-.settings-container {
-    max-width: 800px;
-    margin: 50px auto;
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.settings-section {
-    margin-bottom: 2rem;
-}
-
-.settings-section h3 {
-    font-size: 1.4rem;
-    color: #2d5a27;
-    margin-bottom: 10px;
-}
-
-.settings-container form input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    background-color: #2d5a27;
-    color: white;
-    padding: 10px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #1e3f1a;
-}
-
-.btn-danger {
-    display: inline-block;
-    padding: 10px 16px;
-    background-color: #dc3545;
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: background 0.3s ease;
-}
-
-.btn-danger:hover {
-    background-color: #a71d2a;
-}
-
-@media (max-width: 768px) {
-    .settings-container {
-        width: 90%;
-    }
-}
+body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfffd;
+            color: #222;
+        }
+        .settings-container {
+            max-width: 700px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #DDD;
+            position: relative;
+        }
+        .settings-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            margin-bottom: 3rem;
+        }
+        .back-arrow {
+            font-size: 28px;
+            text-decoration: none;
+            color: #2d5a27;
+            font-weight: 600;
+            transition: color 0.3s ease-in-out;
+        }
+        .back-arrow:hover {
+            color: #1e3f1a;
+        }
+        h2 {
+            font-weight: 600;
+            color: #2d5a27;
+            margin-bottom: 0;
+        }
+        h5{
+            color: #2d5a27;
+        }
+        .form-label {
+            font-family: "Newsreader", serif;
+            color: #426B1F;
+            font-weight: 500;
+        }
+        .form-control {
+            border-radius: 8px;
+            border: 2px solid #DDD;
+            padding: 0.75em;
+            transition: border 0.3s ease-in-out;
+        }
+        .form-control:focus {
+            border-color: #127be3;
+            outline: none;
+            box-shadow: 0 0 8px rgba(7, 116, 226, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #444, #426b1f);
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background 0.3s ease-in-out, transform 0.2s ease;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #426b1f, #444);
+            transform: scale(1.02);
+        }
+        .btn-delete {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: none;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            width: auto;
+            display: block;
+            margin: 20px auto;
+            transition: background 0.3s ease-in-out;
+        }
+        .btn-delete:hover {
+            background-color: #f1b0b7;
+        }
+        .form-check-input {
+            transform: scale(1.3);
+        }
