@@ -103,7 +103,7 @@ Import `init.sql`
 
 ### 4. Update config.php and test site
 
-`http://localhost/handmade_goods/home.php` or `http://localhost/cosc-360-project/handmade_goods/home.php` based on your configuration.
+`http://localhost/cosc-360-project/handmade_goods/pages/home.php`
 
 login info:
 
