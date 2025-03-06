@@ -85,12 +85,6 @@ $stmt->close();
         </div>
     </div>
 
-<<<<<<< HEAD
-    <?php include '../assets/html/footer.php'; ?>
-    <script src="../assets/js/dark_mode.js"></script>
-
-=======
->>>>>>> origin/step3-master
 </body>
 
 </html>

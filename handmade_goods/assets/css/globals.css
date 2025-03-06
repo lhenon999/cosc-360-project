@@ -60,6 +60,10 @@ p {
     color: #555;
 }
 
+.bg-dark p {
+    color: #e0e0e0 !important;
+}
+
 a {
     text-decoration: none;
     color: black;
@@ -121,16 +125,23 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.dark-mode {
+.bg-dark {
     background-color: #121212;
     color: #f5f5f5;
 }
 
-.dark-mode .settings-container,
-.dark-mode .profile-container,
-.dark-mode .order-details-container {
-    background-color: #1e1e1e;
-    color: #ffffff;
+.bg-dark .settings-container {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+}
+
+.bg-dark .profile-container {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+}
+
+.bg-dark .tabs-nav a {
+    color: #ffffff !important;
 }
 
 .dark-mode table {
@@ -189,3 +200,23 @@ input:checked + .slider {
 input:checked + .slider::before {
     transform: translateX(24px);
 }
+
+.bg-dark .settings-container {
+    border: none !important;
+}
+
+.bg-dark .scrollable-container {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+}
+
+.bg-dark.container-page .container {
+    background-color: #1e1e1e !important;
+}
+
+/* .bg-dark.home-page .container,
+.bg-dark.basket-page .container {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+} */
