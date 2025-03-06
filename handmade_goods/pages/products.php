@@ -206,6 +206,7 @@ $rating_stmt->close();
                             </div>
                         <?php endif; ?>
                     </div>
+                    <div class="spacer"></div>
                 <!-- </div> -->
             </div>
         </div>
