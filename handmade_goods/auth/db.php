@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check->store_result();
 
         if ($check->num_rows > 0) {
-            header("Location: ../pages/register.php?error=email_taken");
+            header("Location: ../auth/register.php?error=email_taken");
             exit();
         }
         $check->close();
@@ -71,6 +71,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["user_name"] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
             $_SESSION["user_type"] = $user_type;
             $_SESSION["profile_picture"] = $profile_picture;
+
+            $api_key = "api-DFEA151D81194B3EB9B6CF30891D53A5";
+            $email_data = [
+                "api_key" => $api_key,
+                "sender" => "handmadegoods@mail2world.com",
+                "to" => [$email],
+                "subject" => "Welcome to Handmade Goods",
+                "html_body" => "<h1>Hello $name,</h1><p>Thank you for signing up! Welcome to Handmade Goods.</p>",
+            ];
+
+            $ch = curl_init("https://api.smtp2go.com/v3/email/send");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($email_data));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'accept: application/json']);
+
+            $response = curl_exec($ch);
+            curl_close($ch);
             
             header("Location: /cosc-360-project/handmade_goods/pages/home.php");
             exit();
@@ -122,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             }
         } else {
-            header("Location: http://localhost/cosc-360-project/handmade_goods/pages/login.php?error=nouser");
+            header("Location: http://localhost/cosc-360-project/handmade_goods/auth/login.php?error=nouser");
             exit();
 
         }

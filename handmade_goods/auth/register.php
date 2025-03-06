@@ -73,6 +73,12 @@
 
     <script>
         $(document).ready(function () {
+            const urlParams = new URLSearchParams(window.location.search);
+        
+            if (urlParams.get("error") === "email_taken") {
+                $("#emailError").text("This email is already registered. Please use another one.");
+            }
+            
             $("#registerForm").submit(function (event) {
                 $(".error").text("");
                 let isValid = true;
