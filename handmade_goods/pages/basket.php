@@ -6,7 +6,7 @@ include '../config.php';
 
 $isLoggedIn = isset($_SESSION["user_id"]);
 if (!$isLoggedIn) {
-    header("Location: ../pages/login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 $user_id = $isLoggedIn ? $_SESSION["user_id"] : null;

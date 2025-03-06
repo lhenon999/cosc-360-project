@@ -113,7 +113,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
     </div>
 
-    <?php include '../assets/html/footer.php'; ?>
 </body>
 
 </html>

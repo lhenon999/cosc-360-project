@@ -92,7 +92,6 @@ $image_path = !empty($product['img']) ? htmlspecialchars($product['img']) : $def
         </div>
     </main>
 
-    <?php include "../assets/html/footer.php"; ?>
 </body>
 
 </html>

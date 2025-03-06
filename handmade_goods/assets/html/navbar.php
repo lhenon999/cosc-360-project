@@ -1,5 +1,7 @@
-<?php
-session_start();
+<?php 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 if (!isset($conn)) {
     include_once __DIR__ . '/../../config.php';
 }
@@ -38,11 +40,11 @@ if (!isset($conn)) {
                         <a href="../pages/profile.php">View Profile</a>
                         <a href="../pages/my_shop.php">My Shop</a>
                         <a href="../pages/settings.php">Settings</a>
-                        <a href="../logout.php">Logout</a>
+                        <a href="../auth/logout.php">Logout</a>
                     <?php endif; ?>
                 <?php else: ?>
-                    <a href="../pages/login.php">Login</a>
-                    <a href="../pages/register.php">Sign Up</a>
+                    <a href="../auth/login.php">Login</a>
+                    <a href="../auth/register.php">Sign Up</a>
                 <?php endif; ?>
             </div>
         </span>
