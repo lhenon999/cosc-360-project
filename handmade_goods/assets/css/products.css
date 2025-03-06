@@ -109,13 +109,19 @@ h1 {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1300px) {
+    .listing-grid {
+        grid-template-columns: repeat(3, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 1150px) {
     .listing-grid {
         grid-template-columns: repeat(2, minmax(280px, 1fr));
     }
 }
 
-@media (max-width: 750px) {
+@media (max-width: 1000px) {
     .listing-grid {
         grid-template-columns: repeat(1, minmax(280px, 1fr));
     }
