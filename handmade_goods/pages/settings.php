@@ -78,7 +78,7 @@ $conn->close();
 
         <div class="mb-4">
             <h5>Security</h5>
-            <a href="change_password.php" class="btn btn-outline-secondary w-100">Change Password</a>
+            <a href="../auth/forgot_password.php" class="btn btn-outline-secondary w-100">Change Password</a>
         </div>
 
         <div class="mb-4">
