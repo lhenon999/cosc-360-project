@@ -17,27 +17,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user_type = 'normal';
         $profile_picture = "/cosc-360-project/handmade_goods/assets/images/default-profile.jpg";
 
-        $upload_dir = "assets/images/uploads/profile_pictures/";
+        $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/";
+
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0775, true);
         }
 
         if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == UPLOAD_ERR_OK) {
-            $file_name = "profile_" . $user_id . "." . $imageFileType;
-            $target_file = $upload_dir . $file_name;
-            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+            $imageFileType = strtolower(pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION));
             $allowed_types = array("jpg", "jpeg", "png", "gif");
         
             if (in_array($imageFileType, $allowed_types)) {
-        
+                $file_name = "profile_" . uniqid() . "." . $imageFileType;
+                $target_file = $upload_dir . $file_name;
+
+                if (!file_exists($_FILES["profile_picture"]["tmp_name"])) {
+                    header("Location: /cosc-360-project/handmade_goods/auth/register.php?error=temp_file_missing");
+                    exit();
+                }
+
                 if (!move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
                     header("Location: /cosc-360-project/handmade_goods/auth/register.php?error=file_upload_failed");
                     exit();
                 } else {
-                    $profile_picture = "/cosc-360-project/handmade_goods/" . $target_file;
+                    $profile_picture = str_replace($_SERVER['DOCUMENT_ROOT'], '', $target_file);
                 }
             } else {
-                error_log("Invalid file type: " . $imageFileType);
                 header("Location: /cosc-360-project/handmade_goods/auth/register.php?error=invalid_file");
                 exit();
             }

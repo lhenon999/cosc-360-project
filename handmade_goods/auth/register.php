@@ -40,7 +40,7 @@
                         echo "Invalid file type. Allowed types: JPG, JPEG, PNG, GIF.";
                         break;
                     case "file_upload_failed":
-                        echo "File upload failed. Check file permissions.";
+                        echo "File upload failed.";
                         break;
                 }
                 echo '</p>';
@@ -78,7 +78,7 @@
             if (urlParams.get("error") === "email_taken") {
                 $("#emailError").text("This email is already registered. Please use another one.");
             }
-            
+
             $("#registerForm").submit(function (event) {
                 $(".error").text("");
                 let isValid = true;
