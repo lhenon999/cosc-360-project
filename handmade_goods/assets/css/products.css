@@ -105,8 +105,8 @@ h1 {
 .listing-grid {
     display: grid;
     gap: 20px;
-    justify-content: center;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    justify-items: start;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
 
 @media (max-width: 1300px) {
@@ -303,4 +303,3 @@ button[type="submit"]:hover {
         padding: 16px;
     }
 }
-
