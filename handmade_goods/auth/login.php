@@ -18,70 +18,59 @@
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/form.css">
 
-    <title>Handmade Goods - Register</title>
+    <title>Handmade Goods - Login</title>
 </head>
 
 <body>
     <?php include '../assets/html/navbar.php'; ?>
     <main class="container text-center">
-        <h1 class="mb-5">Create an Account</h1>
+        <h1>Welcome Back</h1>
         <div class="login-container">
             <?php
             if (isset($_GET["error"])) {
-                echo '<p class="error-message">';
-                switch ($_GET["error"]) {
-                    case "email_taken":
-                        echo "This email is already registered.";
-                        break;
-                    case "registration_failed":
-                        echo "Registration failed. Please try again.";
-                        break;
-                    case "invalid_file":
-                        echo "Invalid file type. Allowed types: JPG, JPEG, PNG, GIF.";
-                        break;
-                    case "file_upload_failed":
-                        echo "File upload failed. Check file permissions.";
-                        break;
+                echo '<p class="error">';
+                if ($_GET["error"] == "nouser") {
+                    echo "No user found with that email.";
+                } elseif ($_GET["error"] == "invalid") {
+                    echo "Invalid email or password.";
                 }
                 echo '</p>';
             }
             ?>
-            <form method="POST" action="../db.php" id="registerForm" enctype="multipart/form-data" novalidate>
-                <input type="text" name="full_name" id="full_name" placeholder="Full Name" required>
-                <span class="error" id="nameError"></span>
+            <?php
+            if (isset($_GET['success']) && $_GET['success'] == 'password_reset') {
+                echo "<div class='alert alert-success text-center' style='margin: 10px; padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px;'>
+            Your password has been reset successfully. You can now log in with your new password.
+          </div>";
+            }
 
+            if (isset($_GET['error']) && $_GET['error'] == 'password_reset_failed') {
+                echo "<div class='alert alert-danger text-center' style='margin: 10px; padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px;'>
+                    Password reset failed. Please try again or request a new reset link.
+                </div>";
+            }
+            ?>
+            <form method="POST" action="db.php" id="loginForm" novalidate>
                 <input type="email" name="email" id="email" placeholder="Email" required>
                 <span class="error" id="emailError"></span>
 
                 <input type="password" name="password" id="password" placeholder="Password" required>
                 <span class="error" id="passwordError"></span>
 
-                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password"
-                    required>
-                <span class="error" id="confirmPasswordError"></span>
+                <button type="submit" name="login">Log In</button>
 
-                <label for="profile_picture">Profile Picture (Optional)</label>
-                <input type="file" name="profile_picture" id="profile_picture" accept="image/*">
-                <span class="error" id="profilePictureError"></span>
-
-                <button type="submit" name="register">Sign Up</button>
-
-                <a href="login.php">Already have an account? Log in</a>
+                <a href="register.php">Don't have an account? Sign up</a>
+                <br>
+                <a href="forgot_password.php">Forgot your password?</a>
             </form>
         </div>
     </main>
 
     <script>
         $(document).ready(function () {
-            $("#registerForm").submit(function (event) {
+            $("#loginForm").submit(function (event) {
                 $(".error").text("");
                 let isValid = true;
-
-                let fullName = $("#full_name").val().trim();
-                if (!/^\w+\s+\w+/.test(fullName)) {
-                    $("#nameError").text("Enter a first and last name");
-                    isValid = false;
-                }
 
                 let email = $("#email").val().trim();
                 let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -93,13 +82,7 @@
                 let password = $("#password").val();
                 let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
                 if (!passwordRegex.test(password)) {
-                    $("#passwordError").text("Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character");
-                    isValid = false;
-                }
-
-                let confirmPassword = $("#confirm_password").val();
-                if (password !== confirmPassword) {
-                    $("#confirmPasswordError").text("Passwords do not match");
+                    $("#passwordError").text("Enter a valid password");
                     isValid = false;
                 }
 

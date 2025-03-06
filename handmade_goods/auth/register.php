@@ -18,44 +18,70 @@
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/form.css">
 
-    <title>Handmade Goods - Login</title>
+    <title>Handmade Goods - Register</title>
 </head>
 
 <body>
     <?php include '../assets/html/navbar.php'; ?>
     <main class="container text-center">
-        <h1>Welcome Back</h1>
+        <h1 class="mb-5">Create an Account</h1>
         <div class="login-container">
             <?php
             if (isset($_GET["error"])) {
-                echo '<p class="error">';
-                if ($_GET["error"] == "nouser") {
-                    echo "No user found with that email.";
-                } elseif ($_GET["error"] == "invalid") {
-                    echo "Invalid email or password.";
+                echo '<p class="error-message">';
+                switch ($_GET["error"]) {
+                    case "email_taken":
+                        echo "This email is already registered.";
+                        break;
+                    case "registration_failed":
+                        echo "Registration failed. Please try again.";
+                        break;
+                    case "invalid_file":
+                        echo "Invalid file type. Allowed types: JPG, JPEG, PNG, GIF.";
+                        break;
+                    case "file_upload_failed":
+                        echo "File upload failed. Check file permissions.";
+                        break;
                 }
                 echo '</p>';
             }
             ?>
-            <form method="POST" action="../db.php" id="loginForm" novalidate>
+            <form method="POST" action="db.php" id="registerForm" enctype="multipart/form-data" novalidate>
+                <input type="text" name="full_name" id="full_name" placeholder="Full Name" required>
+                <span class="error" id="nameError"></span>
+
                 <input type="email" name="email" id="email" placeholder="Email" required>
                 <span class="error" id="emailError"></span>
 
                 <input type="password" name="password" id="password" placeholder="Password" required>
                 <span class="error" id="passwordError"></span>
 
-                <button type="submit" name="login">Log In</button>
+                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password"
+                    required>
+                <span class="error" id="confirmPasswordError"></span>
 
-                <a href="register.php">Don't have an account? Sign up</a>
+                <label for="profile_picture">Profile Picture (Optional)</label>
+                <input type="file" name="profile_picture" id="profile_picture" accept="image/*">
+                <span class="error" id="profilePictureError"></span>
+
+                <button type="submit" name="register">Sign Up</button>
+
+                <a href="login.php">Already have an account? Log in</a>
             </form>
         </div>
     </main>
 
     <script>
         $(document).ready(function () {
-            $("#loginForm").submit(function (event) {
+            $("#registerForm").submit(function (event) {
                 $(".error").text("");
                 let isValid = true;
+
+                let fullName = $("#full_name").val().trim();
+                if (!/^\w+\s+\w+/.test(fullName)) {
+                    $("#nameError").text("Enter a first and last name");
+                    isValid = false;
+                }
 
                 let email = $("#email").val().trim();
                 let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -67,7 +93,13 @@
                 let password = $("#password").val();
                 let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
                 if (!passwordRegex.test(password)) {
-                    $("#passwordError").text("Enter a valid password");
+                    $("#passwordError").text("Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character");
+                    isValid = false;
+                }
+
+                let confirmPassword = $("#confirm_password").val();
+                if (password !== confirmPassword) {
+                    $("#confirmPasswordError").text("Passwords do not match");
                     isValid = false;
                 }
 
