@@ -32,6 +32,8 @@
                         echo "No user found with that email.";
                     } else if ($_GET["error"] == "invalid_email") {
                         echo "Could not send reset email. Try again later.";
+                    } else if ($_GET["error"] == "too_many_requests"){
+                        echo "Too many reset requests. Please wait an hour before trying again.";
                     }
                     echo '</p>';
                 }
