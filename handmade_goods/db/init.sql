@@ -67,17 +67,17 @@ ALTER TABLE password_resets ADD COLUMN short_code VARCHAR(8) NOT NULL;
 ALTER TABLE password_resets ADD UNIQUE (email);
 ALTER TABLE users ADD COLUMN remember_token VARCHAR(255) NULL;
 
-INSERT INTO items (name, description, price, stock, category, img, user_id) VALUES
-('Handmade Wooden Bowl', 'A beautifully handcrafted wooden bowl.', 29.99, 15, 'Kitchenware', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
-('Knitted Scarf', 'A warm and cozy knitted scarf made from wool.', 19.99, 25, 'Clothing', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
-('Ceramic Vase', 'A stylish handmade ceramic vase.', 34.99, 12, 'Home Decor', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
-('Leather Wallet', 'A premium handmade leather wallet.', 49.99, 20, 'Accessories', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
-('Hand-Painted Mug', 'A unique hand-painted ceramic mug.', 14.99, 30, 'Kitchenware', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
-('Wooden Jewelry Box', 'A handcrafted wooden jewelry box with carvings.', 39.99, 12, 'Accessories', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
-('Macrame Wall Hanging', 'A boho-style macrame wall hanging.', 24.99, 18, 'Home Decor', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
-('Handmade Soap Set', 'A set of organic handmade soaps.', 12.99, 50, 'Personal Care', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 2),
-('Woven Basket', 'A natural fiber woven basket for storage.', 27.99, 22, 'Home Decor', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 2),
-('Handcrafted Candle', 'A scented handmade candle with natural wax.', 16.99, 35, 'Personal Care', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 2);
+-- INSERT INTO items (name, description, price, stock, category, img, user_id) VALUES
+-- ('Handmade Wooden Bowl', 'A beautifully handcrafted wooden bowl.', 29.99, 15, 'Kitchenware', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+-- ('Knitted Scarf', 'A warm and cozy knitted scarf made from wool.', 19.99, 25, 'Clothing', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+-- ('Ceramic Vase', 'A stylish handmade ceramic vase.', 34.99, 12, 'Home Decor', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+-- ('Leather Wallet', 'A premium handmade leather wallet.', 49.99, 20, 'Accessories', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+-- ('Hand-Painted Mug', 'A unique hand-painted ceramic mug.', 14.99, 30, 'Kitchenware', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+-- ('Wooden Jewelry Box', 'A handcrafted wooden jewelry box with carvings.', 39.99, 12, 'Accessories', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+-- ('Macrame Wall Hanging', 'A boho-style macrame wall hanging.', 24.99, 18, 'Home Decor', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
+-- ('Handmade Soap Set', 'A set of organic handmade soaps.', 12.99, 50, 'Personal Care', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 2),
+-- ('Woven Basket', 'A natural fiber woven basket for storage.', 27.99, 22, 'Home Decor', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 2),
+-- ('Handcrafted Candle', 'A scented handmade candle with natural wax.', 16.99, 35, 'Personal Care', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 2);
 
 INSERT INTO users (id, name, email, password, user_type)
 SELECT 1, 'administrator', 'admin@handmadegoods.com', '$2y$10$E4LsPni7YFBS96DJ6tK8PeCJVgswuLXnd6XDPUySc3yCgbv6lnyeG', 'admin'

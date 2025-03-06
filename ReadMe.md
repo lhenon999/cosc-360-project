@@ -86,7 +86,7 @@ Start the **Apache** server and **MySQL** server
 Open **phpMyAdmin**:
 `http://localhost/phpmyadmin`
 
-Import `init.sql`
+Import `init.sql`, `populate_items.sql`, `populate_users.sql`
 
 ---
 
