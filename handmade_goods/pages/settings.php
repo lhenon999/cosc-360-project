@@ -17,6 +17,7 @@ $user = $result->fetch_assoc();
 $stmt->close();
 $conn->close();
 
+$email = isset($user['email']) ? $user['email'] : '';
 ?>
 
 <?php if (isset($_SESSION['success'])): ?>
@@ -83,7 +84,11 @@ $conn->close();
 
         <div class="mb-4">
             <h5>Security</h5>
-            <a href="../auth/forgot_password.php" class="btn btn-outline-secondary w-100">Change Password</a>
+            <a href="../auth/forgot_password.php?email=<?= urlencode($email); ?>"
+                class="btn btn-outline-secondary w-100">
+                Change Password
+            </a>
+
         </div>
 
         <div class="mb-4">
