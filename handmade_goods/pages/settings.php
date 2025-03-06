@@ -16,17 +16,20 @@ $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 $stmt->close();
 $conn->close();
+
 ?>
 
 <?php if (isset($_SESSION['success'])): ?>
     <div class="alert alert-success">
-        <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+        <?= $_SESSION['success'];
+        unset($_SESSION['success']); ?>
     </div>
 <?php endif; ?>
 
 <?php if (isset($_SESSION['error'])): ?>
     <div class="alert alert-danger">
-        <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+        <?= $_SESSION['error'];
+        unset($_SESSION['error']); ?>
     </div>
 <?php endif; ?>
 
@@ -56,7 +59,7 @@ $conn->close();
     <?php include '../assets/html/navbar.php'; ?>
 
     <div class="settings-container">
-    <div class="settings-header">
+        <div class="settings-header">
             <a href="profile.php" class="back-arrow">&#8592;</a>
             <h2><i class="bi bi-gear-fill"></i> Settings</h2>
         </div>
@@ -66,11 +69,13 @@ $conn->close();
             <form action="update_profile.php" method="post">
                 <div class="mb-3">
                     <label class="form-label">Name</label>
-                    <input type="text" class="form-control" name="name" value="<?= htmlspecialchars($user['name']) ?>" required>
+                    <input type="text" class="form-control" name="name" value="<?= htmlspecialchars($user['name']) ?>"
+                        required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($user['email']) ?>" required>
+                    <input type="email" class="form-control" name="email"
+                        value="<?= htmlspecialchars($user['email']) ?>" required>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Save Changes</button>
             </form>
@@ -84,7 +89,7 @@ $conn->close();
         <div class="mb-4">
             <h5>Preferences</h5>
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                <input class="form-check-input" type="checkbox" id="darkModeToggle" <?= $dark_mode_checked ?>>
                 <label class="form-check-label" for="darkModeToggle">Enable Dark Mode</label>
             </div>
         </div>
@@ -95,12 +100,38 @@ $conn->close();
     </div>
 
     <script>
-        document.getElementById('darkModeToggle').addEventListener('change', function() {
+        document.getElementById('darkModeToggle').addEventListener('change', function () {
             document.body.classList.toggle('bg-dark');
             document.body.classList.toggle('text-light');
         });
     </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const darkModeToggle = document.getElementById("darkModeToggle");
+
+            let darkModeLocal = localStorage.getItem("darkMode") === "enabled";
+            if (darkModeLocal) {
+                document.body.classList.add("bg-dark", "text-light");
+                darkModeToggle.checked = true;
+            }
+
+            darkModeToggle.addEventListener("change", function () {
+                let darkMode = this.checked ? 1 : 0;
+
+                document.body.classList.toggle("bg-dark", darkMode);
+                document.body.classList.toggle("text-light", darkMode);
+
+                localStorage.setItem("darkMode", darkMode ? "enabled" : "disabled");
+
+                fetch("../dark_mode.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: "dark_mode=" + darkMode
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

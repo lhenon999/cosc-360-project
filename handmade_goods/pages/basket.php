@@ -170,7 +170,6 @@ $total = $subtotal + $shipping + $tax;
     </div>
 </div>
 
-<script src="../assets/js/dark_mode.js"></script>
 </body>
 
 </html>

@@ -115,6 +115,5 @@ $stmt->close();
                     class="material-symbols-outlined">shoppingmode</span>Continue Shopping</a>
         </div>
     </div>
-    <script src="../assets/js/dark_mode.js"></script>
 </body>
 </html>
