@@ -1,3 +1,27 @@
+<?php
+session_start();
+require_once '../config.php';
+
+//auto login
+if (!isset($_SESSION["user_id"]) && isset($_COOKIE["remember_token"])) {
+    $token = $_COOKIE["remember_token"];
+    $email = $_COOKIE["user_email"];
+
+    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND remember_token = ?");
+    $stmt->bind_param("ss", $email, $token);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if ($user) {
+        $_SESSION["user_id"] = $user["id"];
+        $_SESSION["user_email"] = $email;
+        header("Location: /cosc-360-project/handmade_goods/pages/home.php");
+        exit();
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,7 +81,16 @@
                 <input type="password" name="password" id="password" placeholder="Password" required>
                 <span class="error" id="passwordError"></span>
 
+                <div class="remember-me">
+                    <label for="remember">
+                        <input type="checkbox" name="remember" id="remember">
+                        Remember Me
+                    </label>
+                </div>
+
+
                 <button type="submit" name="login">Log In</button>
+
 
                 <a href="register.php">Don't have an account? Sign up</a>
                 <br>
