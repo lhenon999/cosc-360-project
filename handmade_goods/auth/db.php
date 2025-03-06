@@ -86,7 +86,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["login"])) {
         $email = trim($_POST["email"]);
         $password = $_POST["password"];
+        $remember = isset($_POST["remember"]); 
 
+        if ($remember) {
+            $token = bin2hex(random_bytes(32));
+        
+            $cookie_stmt = $conn->prepare("UPDATE users SET remember_token = ? WHERE email = ?");
+            $cookie_stmt->bind_param("ss", $token, $email);
+            $cookie_stmt->close();
+        
+            setcookie("remember_token", $token, time() + (30 * 24 * 60 * 60), "/", "", false, true);
+            setcookie("user_email", $email, time() + (30 * 24 * 60 * 60), "/", "", false, true);
+        }
+        
+        
         $stmt = $conn->prepare("SELECT id, name, password, user_type, profile_picture FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();

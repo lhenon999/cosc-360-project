@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS handmade_goods;
+-- DROP DATABASE IF EXISTS handmade_goods;
 CREATE DATABASE IF NOT EXISTS handmade_goods;
 USE handmade_goods;
 CREATE TABLE IF NOT EXISTS USERS( id INT auto_increment PRIMARY KEY,
@@ -65,6 +65,7 @@ ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE USERS ADD COLUMN profile_picture VARCHAR(255) NOT NULL DEFAULT '/cosc-360-project/handmade_goods/assets/images/default_profile.png';
 ALTER TABLE password_resets ADD COLUMN short_code VARCHAR(8) NOT NULL;
 ALTER TABLE password_resets ADD UNIQUE (email);
+ALTER TABLE users ADD COLUMN remember_token VARCHAR(255) NULL;
 
 INSERT INTO items (name, description, price, stock, category, img, user_id) VALUES
 ('Handmade Wooden Bowl', 'A beautifully handcrafted wooden bowl.', 29.99, 15, 'Kitchenware', '/cosc-360-project/handmade_goods/assets/images/sample_image.webp', 1),
