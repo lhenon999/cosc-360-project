@@ -187,23 +187,25 @@ $rating_stmt->close();
                 </div>
             </div>
             <div class="scrollable-container">
-                <div class="listing-grid">
-                    <?php if (!empty($products)): ?>
-                        <?php foreach ($products as $product): ?>
-                            <?php
-                            $id = htmlspecialchars($product["id"]);
-                            $name = htmlspecialchars($product["name"]);
-                            $price = number_format($product["price"], 2);
-                            $image = htmlspecialchars($product["img"]);
-                            include "../assets/html/product_card.php";
-                            ?>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div class="no-results text-center">
-                            <p>No products found matching your criteria</p>
-                            <a href="products.php" class="cta hover-raise">Clear Filters</a>
-                        </div>
-                    <?php endif; ?>
+                <div class="container-fluid">
+                    <div class="listing-grid">
+                        <?php if (!empty($products)): ?>
+                            <?php foreach ($products as $product): ?>
+                                <?php
+                                $id = htmlspecialchars($product["id"]);
+                                $name = htmlspecialchars($product["name"]);
+                                $price = number_format($product["price"], 2);
+                                $image = htmlspecialchars($product["img"]);
+                                include "../assets/html/product_card.php";
+                                ?>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="no-results text-center">
+                                <p>No products found matching your criteria</p>
+                                <a href="products.php" class="cta hover-raise">Clear Filters</a>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
