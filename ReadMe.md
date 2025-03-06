@@ -33,7 +33,7 @@ Minimum Functional Requirements (for a C grade):
 - [ ] Server-side scripting with PHP
 - [X] Data storage in MySQL
 - [ ] Appropriate security for data
-- [ ] Site must maintain state (user state being logged on, etc)
+- [X] Site must maintain state (user state being logged on, etc)
 - [ ] Responsive design philosophy (minimum requirements for different non-mobile display sizes)
 - [ ] AJAX (or similar) utilization for asynchronous updates (meaning that if a discussion thread is updated, another user who is viewing the same thread will not have to refresh the page to see the update)
 - [ ] User images (thumbnail) and profile stored in database
