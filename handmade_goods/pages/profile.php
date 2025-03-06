@@ -7,6 +7,13 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
+session_start();
+if (isset($_SESSION['success'])) {
+    echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';
+    unset($_SESSION['success']);
+}
+
+
 $user_id = $_SESSION["user_id"];
 $user_type = $_SESSION["user_type"];
 
@@ -56,13 +63,7 @@ $stmt->close();
                     <h2><?php echo htmlspecialchars($name); ?></h2>
                     <p><?php echo htmlspecialchars($email); ?></p>
                     <div class="profile-buttons">
-<<<<<<< HEAD
                         <a class="cta hover-raise" href="../pages/settings.php"><span class="material-symbols-outlined">settings</span>Settings</a>
-=======
-                        <a class="cta hover-raise" href=""><span
-                                class="material-symbols-outlined">settings</span>Settings</a>
->>>>>>> origin/step3-master
-
                         <?php if ($user_type !== 'admin'): ?>
                             <a class="cta hover-raise" href="../pages/my_shop.php"><span
                                     class="material-symbols-outlined">storefront</span>My Shop</a>
