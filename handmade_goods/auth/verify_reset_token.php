@@ -1,3 +1,10 @@
+<?php
+if (!isset($_GET['email']) || empty($_GET['email'])) {
+    die("Error: Account Error. Please request a new reset link.");
+}
+$email = urldecode($_GET['email']);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,8 +33,8 @@
         <div class="login-container">
             <form method="POST" action="reset_password.php" id="tokenValidationForm" novalidate>
                 <input type="token" name="token" id="token" placeholder="Reset Code" required>
+                <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
                 <span class="error" id="tokenError"></span>
-
                 <button type="submit" name="confirm">Confirm</button>
                 <a href="login.php">Back to login</a>
             </form>
@@ -56,6 +63,7 @@
                 }
             });
         });
+
 
     </script>
 </body>

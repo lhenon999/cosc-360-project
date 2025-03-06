@@ -2,51 +2,60 @@
 session_start();
 require '../config.php';
 
-error_reporting(E_ALL);
 ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $token = trim($_POST['token']);
+    $short_code = trim($_POST['token']);
+    $email = trim($_POST['email']);
 
-    if (empty($token)) {
-        header("Location: verify_reset_token.php?error=invalid_token");
-        exit();
-    }
-
-    $stmt = $conn->prepare("SELECT email, expires FROM password_resets WHERE token = ?");
+    $stmt = $conn->prepare("SELECT token, short_code, expires FROM password_resets WHERE email = ?");
     if (!$stmt) {
         die("Prepare failed: " . $conn->error);
     }
-
-    $stmt->bind_param("s", $token);
+    $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
 
+    // if (!$result) {
+    //     die("Query failed: " . $conn->error);
+    // }
+    
+    // if (!$row) {
+    //     die("No record found for email: " . $email);
+    // }
+
     if (!$row) {
-        header("Location: verify_reset_token.php?error=invalid_token");
+        header("Location: verify_reset_token.php?error=invalid_token&email=" . urlencode($email));
         exit();
     }
 
     if (strtotime($row['expires']) < time()) {
-        header("Location: verify_reset_token.php?error=expired_token");
+        header("Location: verify_reset_token.php?error=expired_token&email=" . urlencode($email));
         exit();
     }
 
-    $_SESSION['reset_email'] = $row['email'];
-    $_SESSION['reset_token'] = $token;
-} else {
-    if (!isset($_SESSION['reset_email']) || !isset($_SESSION['reset_token'])) {
-        header("Location: forgot_password.php?error=session_expired");
+    $stored_code = $row['short_code'];
+
+    if ($short_code === $stored_code) {
+        $_SESSION['reset_email'] = $email;
+        $_SESSION['reset_token'] = $row['token'];
+    } else{
+        header("Location: verify_reset_token.php?error=invalid_token&email=" . urlencode($email));
         exit();
     }
 }
+
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
@@ -61,6 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/form.css">
 </head>
+
 <body>
     <?php include '../assets/html/navbar.php'; ?>
     <main class="container text-center">
@@ -73,7 +83,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <input type="password" name="new_password" id="new_password" placeholder="New Password" required>
                 <span class="error" id="passwordError"></span>
 
-                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
+                <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password"
+                    required>
                 <span class="error" id="confirmPasswordError"></span>
 
                 <button type="submit">Reset Password</button>
@@ -106,4 +117,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     </script>
 </body>
+
 </html>

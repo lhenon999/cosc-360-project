@@ -43,6 +43,12 @@
             Your password has been reset successfully. You can now log in with your new password.
           </div>";
             }
+
+            if (isset($_GET['error']) && $_GET['error'] == 'password_reset_failed') {
+                echo "<div class='alert alert-danger text-center' style='margin: 10px; padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px;'>
+                    Password reset failed. Please try again or request a new reset link.
+                </div>";
+            }
             ?>
             <form method="POST" action="db.php" id="loginForm" novalidate>
                 <input type="email" name="email" id="email" placeholder="Email" required>
