@@ -124,7 +124,7 @@ $rating_stmt->close();
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="../assets/css/globals.css">
-        <link rel="stylesheet" href="../assets/css/products.css?v=1">
+        <link rel="stylesheet" href="../assets/css/products.css">
         <link rel="stylesheet" href="../assets/css/navbar.css">
         <link rel="stylesheet" href="../assets/css/footer.css">
         <link rel="stylesheet" href="../assets/css/product_card.css">
@@ -187,7 +187,7 @@ $rating_stmt->close();
                 </div>
             </div>
             <div class="scrollable-container">
-                <div class="container-fluid">
+                <!-- <div class="container">  -->
                     <div class="listing-grid">
                         <?php if (!empty($products)): ?>
                             <?php foreach ($products as $product): ?>
@@ -206,7 +206,7 @@ $rating_stmt->close();
                             </div>
                         <?php endif; ?>
                     </div>
-                </div>
+                <!-- </div> -->
             </div>
         </div>
         <?php include '../assets/html/footer.php'; ?>
