@@ -205,6 +205,7 @@ h3 {
     overflow: hidden;
     transition: box-shadow 0.3s ease;
     border: none;
+    /* height: 40px !important; */
 }
 
 .search-form:focus-within {
