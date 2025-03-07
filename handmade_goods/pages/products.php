@@ -16,7 +16,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $search_param = "%" . $search . "%";
     $results = ["products" => [], "users" => []];
 
-    $query = "SELECT id, name, img FROM items WHERE name LIKE ? LIMIT 5";
+    $query = "SELECT id, name, img, user_id FROM items WHERE name LIKE ? LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $search_param);
     $stmt->execute();
@@ -37,7 +37,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
 }
 
 // Build the base query
-$query = "SELECT DISTINCT i.*, IFNULL(AVG(r.rating), 0) as avg_rating 
+$query = "SELECT DISTINCT i.id, i.name, i.img, i.user_id, i.price, IFNULL(AVG(r.rating), 0) as avg_rating 
           FROM items i 
           LEFT JOIN reviews r ON i.id = r.item_id";
 
