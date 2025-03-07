@@ -36,6 +36,7 @@ $stmt->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,8 +54,9 @@ $stmt->close();
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/product_card.css">
     <link rel="stylesheet" href="../assets/css/user_profile.css">
-    <link rel="stylesheet" href="../assets/css/profile.css">
+    <!-- <link rel="stylesheet" href="../assets/css/profile.css"> -->
 </head>
+
 <body>
 
     <?php include '../assets/html/navbar.php'; ?>
@@ -71,21 +73,28 @@ $stmt->close();
         </div>
 
         <?php if (!empty($products)): ?>
-            <div class="user-products">
-                <h2>Products</h2>
-                <div class="product-grid">
-                    <?php foreach ($products as $product): ?>
-                        <div class="product-card">
-                            <img src="<?= htmlspecialchars($product['img']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
-                            <h3><?= htmlspecialchars($product['name']) ?></h3>
-                            <p>$<?= number_format($product['price'], 2) ?></p>
-                            <a href="../pages/product.php?id=<?= $product['id'] ?>" class="cta">View Product</a>
-                        </div>
-                    <?php endforeach; ?>
+            <h2 class="text-center"><?= htmlspecialchars($user['name']) ?>'s Listings</h2>
+            <div class="container">
+                <div class="scrollable-container">
+                    <div class="listing-grid">
+                        <?php foreach ($products as $product): ?>
+                            <?php
+                            $id = htmlspecialchars($product["id"]);
+                            $name = htmlspecialchars($product["name"]);
+                            $price = number_format($product["price"], 2);
+                            $image = htmlspecialchars($product["img"]);
+                            include "../assets/html/product_card.php";
+                            ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
+        <?php else: ?>
+            <p class="text-center">User has no current listings</p>
         <?php endif; ?>
+
     </div>
 
 </body>
+
 </html>
