@@ -109,8 +109,9 @@ if (!isset($conn)) {
                             if (data.users.length > 0) {
                                 let userSection = document.createElement("div");
                                 data.users.forEach(u => {
+                                    let profileImage = u.profile_picture ? `<img src="${u.profile_picture}" class="profile-pic" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">` : `<span class="material-symbols-outlined icon">person</span>`;
                                     let item = document.createElement("div");
-                                    item.innerHTML = `<a href="../pages/user_profile.php?id=${u.id}" class="suggestion-item"> <span class="material-symbols-outlined icon">person</span> ${u.name}</a>`;
+                                    item.innerHTML = `<a href="../pages/user_profile.php?id=${u.id}" class="suggestion-item">${profileImage} ${u.name}</a>`;
                                     userSection.appendChild(item);
                                 });
                                 suggestionsBox.appendChild(userSection);
