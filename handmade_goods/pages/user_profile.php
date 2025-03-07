@@ -87,6 +87,7 @@ $stmt->close();
                             $name = htmlspecialchars($product["name"]);
                             $price = number_format($product["price"], 2);
                             $image = htmlspecialchars($product["img"]);
+                            $from_profile = "user_profile";
                             include "../assets/html/product_card.php";
                             ?>
                         <?php endforeach; ?>

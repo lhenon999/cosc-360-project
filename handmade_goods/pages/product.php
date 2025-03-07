@@ -15,6 +15,8 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 }
 $product_id = intval($_GET['id']);
 
+$from_profile = isset($_GET['from']) && $_GET['from'] === 'user_profile';
+
 $stmt = $conn->prepare("SELECT id, name, description, price, img, user_id FROM items WHERE id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
@@ -87,7 +89,9 @@ $image_path = !empty($product['img']) ? htmlspecialchars($product['img']) : $def
                         </button>
                     </div>
                 </form>
-                <a href="products.php" class="btn btn-outline-secondary mt-3">Back to Products</a>
+                <a href="<?= $from_profile ? 'user_profile.php?id=' . $user_id : 'products.php' ?>" class="btn btn-outline-secondary mt-3">
+                    Back to <?= $from_profile ? 'User' : 'Products' ?>
+                </a>
             <?php endif; ?>
         </div>
     </main>
