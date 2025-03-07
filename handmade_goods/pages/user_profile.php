@@ -67,6 +67,10 @@ $stmt->close();
             <h1><?= htmlspecialchars($user['name']) ?></h1>
         </div>
 
+        <div>
+            <p class="rating-score">⭐ ⭐ ⭐ ⭐</p>
+        </div>
+
         <div class="profile-details">
             <h2>Contact</h2>
             <p>Email: <?= htmlspecialchars($user['email']) ?></p>
@@ -92,7 +96,6 @@ $stmt->close();
         <?php else: ?>
             <p class="text-center">User has no current listings</p>
         <?php endif; ?>
-
     </div>
 
 </body>
