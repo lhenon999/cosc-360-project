@@ -204,7 +204,7 @@ h3 {
     background-color: #f9f9f9;
     overflow: hidden;
     transition: box-shadow 0.3s ease;
-    border: none; /* Ensure no extra border */
+    border: none;
 }
 
 .search-form:focus-within {
