@@ -99,8 +99,10 @@ if (!isset($conn)) {
                             if (data.products.length > 0) {
                                 let productSection = document.createElement("div");
                                 data.products.forEach(p => {
+                                    let productImage = p.img ? `<img src="${p.img}" class="product-pic" style="width: 30px; height: 30px; border-radius: 8px; object-fit: cover;">`: `<span class="material-symbols-outlined icon">shopping_bag</span>`;
+
                                     let item = document.createElement("div");
-                                    item.innerHTML = `<a href="../pages/product.php?id=${p.id}" class="suggestion-item"> <span class="material-symbols-outlined icon">shopping_bag</span> ${p.name}</a>`;
+                                    item.innerHTML = `<a href="../pages/product.php?id=${p.id}" class="suggestion-item">${productImage} ${p.name}</a>`;
                                     productSection.appendChild(item);
                                 });
                                 suggestionsBox.appendChild(productSection);

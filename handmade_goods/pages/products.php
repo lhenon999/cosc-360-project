@@ -16,7 +16,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $search_param = "%" . $search . "%";
     $results = ["products" => [], "users" => []];
 
-    $query = "SELECT id, name FROM items WHERE name LIKE ? LIMIT 5";
+    $query = "SELECT id, name, img FROM items WHERE name LIKE ? LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $search_param);
     $stmt->execute();
