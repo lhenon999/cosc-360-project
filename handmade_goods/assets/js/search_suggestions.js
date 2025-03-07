@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     searchInput.addEventListener("input", function () {
         let query = this.value.trim();
+        let noValidSuggestions = false;
         let loggedInUserId = typeof window.loggedInUserId !== "undefined" ? parseInt(window.loggedInUserId, 10) : null;
         if (query.length > 1) {
             fetch(`../pages/products.php?search=${encodeURIComponent(query)}&ajax=true`)
@@ -40,6 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                         if (productSection.querySelectorAll('.suggestion-item').length > 0) {
                             suggestionsBox.appendChild(productSection);
+                        } else{
+                            noValidSuggestions = true;
                         }
                     }
 
@@ -47,19 +50,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         let userSection = document.createElement("div");
                         userSection.innerHTML = `<p class="suggestion-label">People</p>`;
                         data.users.forEach(u => {
-                            console.log("Product ID:", p.id, "User ID:", p.user_id, "Logged-in User ID:", loggedInUserId);
-                            if (loggedInUserId !== null && parseInt(p.user_id, 10) === loggedInUserId) return;
+                            if (loggedInUserId && u.id == loggedInUserId) return;
                             let profileImage = u.profile_picture ? `<img src="${u.profile_picture}" class="profile-pic" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">` : `<span class="material-symbols-outlined icon">person</span>`;
                             let item = document.createElement("div");
                             item.innerHTML = `<a href="../pages/user_profile.php?id=${u.id}" class="suggestion-item">${profileImage} ${u.name}</a>`;
                             userSection.appendChild(item);
                         });
-                        if (userSection.children.length > 1) {
+                        if (userSection.querySelectorAll('.suggestion-item').length > 0) {
                             suggestionsBox.appendChild(userSection);
+                        } else{
+                            noValidSuggestions = true;
                         }
                     }
 
-                    if (data.products.length > 0 || data.users.length > 0) {
+                    if ((data.products.length > 0 || data.users.length > 0) && noValidSuggestions == false) {
                         suggestionsBox.style.display = "block";
                     } else {
                         suggestionsBox.style.display = "none";
@@ -79,5 +83,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.addEventListener("resize", updateSuggestionsPosition);
 });
-
-
