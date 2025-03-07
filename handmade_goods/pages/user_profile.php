@@ -67,20 +67,66 @@ $stmt->close();
         <div class="profile-header">
             <img src="<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" class="profile-pic">
             <h1><?= htmlspecialchars($user['name']) ?></h1>
+            <div class="profile-details">
+                <h2>Contact</h2>
+                <p>Email: <?= htmlspecialchars($user['email']) ?></p>
+            </div>
         </div>
 
-        <div>
-            <p class="rating-score">⭐ ⭐ ⭐ ⭐</p>
+        <div class="reviews-containers">
+            <div class="rating-summary">
+                <h3>Review Summary</h3>
+                <div class="rating-overall">
+                    <span class="rating-score">4.1</span>
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-count">167 reviews</span>
+                </div>
+
+                <div class="rating-bars">
+                    <div class="rating-row">
+                        <span>5</span>
+                        <div class="bar">
+                            <div class="filled" style="width: 80%;"></div>
+                        </div>
+                    </div>
+                    <div class="rating-row">
+                        <span>4</span>
+                        <div class="bar">
+                            <div class="filled" style="width: 40%;"></div>
+                        </div>
+                    </div>
+                    <div class="rating-row">
+                        <span>3</span>
+                        <div class="bar">
+                            <div class="filled" style="width: 20%;"></div>
+                        </div>
+                    </div>
+                    <div class="rating-row">
+                        <span>2</span>
+                        <div class="bar">
+                            <div class="filled" style="width: 10%;"></div>
+                        </div>
+                    </div>
+                    <div class="rating-row">
+                        <span>1</span>
+                        <div class="bar">
+                            <div class="filled" style="width: 30%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviews-summary">
+                <h3>Recent reviews</h3>
+            </div>
         </div>
 
-        <div class="profile-details">
-            <h2>Contact</h2>
-            <p>Email: <?= htmlspecialchars($user['email']) ?></p>
-        </div>
 
         <?php if (!empty($products)): ?>
-            <h2 class="text-center"><?= htmlspecialchars($first_name) ?>'s Listings</h2>
             <div class="container">
+                <div class="listings-title">
+                    <h3 class="text-center"><?= htmlspecialchars($first_name) ?>'s Listings</h3>
+                </div>
                 <div class="scrollable-container">
                     <div class="listing-grid">
                         <?php foreach ($products as $product): ?>

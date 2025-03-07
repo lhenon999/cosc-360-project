@@ -1,9 +1,34 @@
 .profile-container {
-    max-width: 1600px;
+    max-width: 1800px;
     margin: auto;
     padding: 20px;
     text-align: center;
     height: auto;
+}
+
+.reviews-containers {
+    width: 1800px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+}
+
+.container {
+    flex-wrap: wrap !important;
+    margin: 20px !important;
+    padding: 0px !important;
+}
+
+.text-center{
+    justify-self: center;
+}
+
+.listings-title{
+    display: block;
+    width: 100%;
 }
 
 .profile-header {
@@ -11,8 +36,8 @@
 }
 
 .profile-pic {
-    width: 120px;
-    height: 120px;
+    width: 220px;
+    height: 200px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
@@ -22,6 +47,18 @@
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px;
+}
+
+.profile-name {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}
+
+.rating-score {
+    font-size: 20px;
+    color: #2a9d8f;
 }
 
 .user-products {
@@ -47,4 +84,76 @@
     height: 150px;
     object-fit: cover;
     border-radius: 8px;
+}
+
+.rating-summary {
+    background: #fff;
+    color: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    flex: 1; 
+    width: 300px;
+    height: 350px;
+    max-width: 300px;
+}
+
+.reviews-summary{
+    background: #fff;
+    color: #1e1e1e;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    flex: 1; 
+    height: 350px;
+    min-width: 500px;
+}
+
+.rating-overall {
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.rating-score {
+    font-size: 32px;
+    font-weight: bold;
+    color: #345418;
+}
+
+.stars {
+    font-size: 22px;
+    color: #345418;
+}
+
+.rating-count {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.rating-bars {
+    margin-top: 15px;
+}
+
+.rating-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+.bar {
+    width: 200px;
+    height: 8px;
+    background: #fff;
+    border-radius: 4px;
+    position: relative;
+}
+
+.filled {
+    height: 100%;
+    background: #345418;
+    border-radius: 4px;
 }
