@@ -132,6 +132,16 @@
     min-width: 500px;
 }
 
+.bg-dark .reviews-summary, .bg-dark .rating-summary{
+    background: #1e1e1e;
+    color: #fff;
+}
+
+
+.bg-dark .profile-container{
+    background-color: #232529 !important;
+}
+
 .rating-overall {
     font-size: 18px;
     display: flex;
