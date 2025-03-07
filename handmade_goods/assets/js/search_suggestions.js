@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             let productImage = p.img ? `<img src="${p.img}" class="product-pic" style="width: 30px; height: 30px; border-radius: 8px; object-fit: cover;">`: `<span class="material-symbols-outlined icon">shopping_bag</span>`;
 
                             let item = document.createElement("div");
-                            item.innerHTML = `<a href="../../pages/product.php?id=${p.id}" class="suggestion-item">${productImage} ${p.name}</a>`;
+                            item.innerHTML = `<a href="../pages/product.php?id=${p.id}" class="suggestion-item">${productImage} ${p.name}</a>`;
                             productSection.appendChild(item);
                         });
                         suggestionsBox.appendChild(productSection);
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         data.users.forEach(u => {
                             let profileImage = u.profile_picture ? `<img src="${u.profile_picture}" class="profile-pic" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">` : `<span class="material-symbols-outlined icon">person</span>`;
                             let item = document.createElement("div");
-                            item.innerHTML = `<a href="../../pages/user_profile.php?id=${u.id}" class="suggestion-item">${profileImage} ${u.name}</a>`;
+                            item.innerHTML = `<a href="../pages/user_profile.php?id=${u.id}" class="suggestion-item">${profileImage} ${u.name}</a>`;
                             userSection.appendChild(item);
                         });
                         suggestionsBox.appendChild(userSection);
