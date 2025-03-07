@@ -4,6 +4,7 @@
     padding: 20px;
     text-align: center;
     height: auto;
+    flex-wrap: nowrap;
 }
 
 .reviews-containers {
@@ -22,6 +23,10 @@
     padding: 0px !important;
 }
 
+.profile-info{
+    flex-wrap: wrap !important;
+}
+
 .text-center{
     justify-self: center;
 }
@@ -32,15 +37,23 @@
 }
 
 .profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 50px;
+    width: 100%;
     margin-bottom: 20px;
+    justify-content: center;
 }
 
 .profile-pic {
-    width: 220px;
-    height: 200px;
+    display: block;
+    width: 280px;
+    height: 265px;
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 10px;
+    flex-shrink: 0;
 }
 
 .profile-details {
@@ -156,4 +169,8 @@
     height: 100%;
     background: #345418;
     border-radius: 4px;
+}
+
+.contact-label{
+    margin: 0 !important;
 }

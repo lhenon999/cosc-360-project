@@ -66,10 +66,12 @@ $stmt->close();
     <div class="profile-container">
         <div class="profile-header">
             <img src="<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" class="profile-pic">
-            <h1><?= htmlspecialchars($user['name']) ?></h1>
-            <div class="profile-details">
-                <h2>Contact</h2>
-                <p>Email: <?= htmlspecialchars($user['email']) ?></p>
+            <div class="profile-info">
+                <h1><?= htmlspecialchars($user['name']) ?></h1>
+                <div class="profile-details">
+                    <h3 class="contact-label">Contact</h3>
+                    <p><?= htmlspecialchars($user['email']) ?></p>
+                </div>
             </div>
         </div>
 
