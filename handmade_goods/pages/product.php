@@ -17,6 +17,7 @@ $product_id = intval($_GET['id']);
 
 $from_profile = isset($_GET['from']) && $_GET['from'] === 'user_profile';
 
+
 $stmt = $conn->prepare("SELECT id, name, description, price, img, user_id FROM items WHERE id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
@@ -37,6 +38,15 @@ $user_id = intval($product['user_id']);
 $session_user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
 $default_image = "../assets/images/placeholder.webp";
 $image_path = !empty($product['img']) ? htmlspecialchars($product['img']) : $default_image;
+
+$stmt = $conn->prepare("SELECT name FROM users WHERE id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$seller = $result->fetch_assoc();
+$stmt->close();
+
+$first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 'Seller';
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +100,7 @@ $image_path = !empty($product['img']) ? htmlspecialchars($product['img']) : $def
                     </div>
                 </form>
                 <a href="<?= $from_profile ? 'user_profile.php?id=' . $user_id : 'products.php' ?>" class="btn btn-outline-secondary mt-3">
-                    Back to <?= $from_profile ? 'User' : 'Products' ?>
+                    Back to <?= $from_profile ? htmlspecialchars($first_name) . "'s Shop" : 'Products' ?>
                 </a>
             <?php endif; ?>
         </div>

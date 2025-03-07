@@ -25,6 +25,8 @@ if (!$user) {
     die("User not found.");
 }
 
+$first_name = explode(' ', trim($user['name']))[0];
+
 $query = "SELECT id, name, img, price FROM items WHERE user_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $user_id);
@@ -77,7 +79,7 @@ $stmt->close();
         </div>
 
         <?php if (!empty($products)): ?>
-            <h2 class="text-center"><?= htmlspecialchars($user['name']) ?>'s Listings</h2>
+            <h2 class="text-center"><?= htmlspecialchars($first_name) ?>'s Listings</h2>
             <div class="container">
                 <div class="scrollable-container">
                     <div class="listing-grid">
