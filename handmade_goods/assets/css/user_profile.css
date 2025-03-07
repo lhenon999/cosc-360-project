@@ -13,7 +13,7 @@
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 20px;
+    gap: 30px;
     padding: 20px;
 }
 
@@ -21,6 +21,15 @@
     flex-wrap: wrap !important;
     margin: 20px !important;
     padding: 0px !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+    border-radius: 16px;
+}
+
+.container:hover{
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px) scale(1.03);
+    background: rgba(255, 255, 255, 0.98);
 }
 
 .scrollable-container {
@@ -35,6 +44,8 @@
     flex-wrap: wrap !important;
     margin-top: 15px;
     margin-right: 40px;
+    border-radius: 16px;
+    padding: 20px;
 }
 
 .text-center{
@@ -113,30 +124,43 @@
     background: #fff;
     color: #1e1e1e;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 16px;
     text-align: center;
     flex: 1; 
     width: 300px;
     height: 350px;
     max-width: 300px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
 }
 
 .reviews-summary{
     background: #fff;
     color: #1e1e1e;
-    border-radius: 10px;
+    border-radius: 16px;
     width: 100%;
     text-align: center;
     flex: 1; 
     height: 350px;
     min-width: 500px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+}
+
+.reviews-summary:hover, .rating-summary:hover, .profile-pic:hover {
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px) scale(1.02);
+    background: rgba(255, 255, 255, 0.98);
+}
+
+.profile-info:hover{
+    transform: translateY(-3px) scale(1.02);
 }
 
 .bg-dark .reviews-summary, .bg-dark .rating-summary{
     background: #1e1e1e;
     color: #fff;
 }
-
 
 .bg-dark .profile-container{
     background-color: #232529 !important;

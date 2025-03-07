@@ -18,6 +18,14 @@ body {
     justify-content: flex-start;
     align-items: flex-start;
     gap: 20px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+    border-radius: 16px;
+}
+
+.container:hover{
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
 }
 
 .bg-dark .container{
