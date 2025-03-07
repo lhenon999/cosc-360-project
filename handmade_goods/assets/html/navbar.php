@@ -100,7 +100,7 @@ if (!isset($conn)) {
                                 let productSection = document.createElement("div");
                                 data.products.forEach(p => {
                                     let item = document.createElement("div");
-                                    item.innerHTML = `<a href="../pages/product.php?id=${p.id}" class="suggestion-item">${p.name}</a>`;
+                                    item.innerHTML = `<a href="../pages/product.php?id=${p.id}" class="suggestion-item"> <span class="material-symbols-outlined icon">shopping_bag</span> ${p.name}</a>`;
                                     productSection.appendChild(item);
                                 });
                                 suggestionsBox.appendChild(productSection);
@@ -110,7 +110,7 @@ if (!isset($conn)) {
                                 let userSection = document.createElement("div");
                                 data.users.forEach(u => {
                                     let item = document.createElement("div");
-                                    item.innerHTML = `<a href="../pages/user_profile.php?id=${u.id}" class="suggestion-item">${u.name}</a>`;
+                                    item.innerHTML = `<a href="../pages/user_profile.php?id=${u.id}" class="suggestion-item"> <span class="material-symbols-outlined icon">person</span> ${u.name}</a>`;
                                     userSection.appendChild(item);
                                 });
                                 suggestionsBox.appendChild(userSection);
