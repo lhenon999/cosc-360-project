@@ -36,19 +36,22 @@ document.addEventListener("DOMContentLoaded", function () {
                             item.innerHTML = `<a href="../pages/product.php?id=${p.id}" class="suggestion-item">${productImage} ${p.name}</a>`;
                             productSection.appendChild(item);
                         });
-                        suggestionsBox.appendChild(productSection);
                     }
 
                     if (data.users.length > 0) {
+                        let loggedInUserId = window.loggedInUserId || null;
                         let userSection = document.createElement("div");
                         userSection.innerHTML = `<p class="suggestion-label">People</p>`;
                         data.users.forEach(u => {
+                            if (loggedInUserId && u.id == loggedInUserId) return;
                             let profileImage = u.profile_picture ? `<img src="${u.profile_picture}" class="profile-pic" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">` : `<span class="material-symbols-outlined icon">person</span>`;
                             let item = document.createElement("div");
                             item.innerHTML = `<a href="../pages/user_profile.php?id=${u.id}" class="suggestion-item">${profileImage} ${u.name}</a>`;
                             userSection.appendChild(item);
                         });
-                        suggestionsBox.appendChild(userSection);
+                        if (userSection.children.length > 1) {
+                            suggestionsBox.appendChild(userSection);
+                        }
                     }
 
                     if (data.products.length > 0 || data.users.length > 0) {

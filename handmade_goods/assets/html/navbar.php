@@ -67,5 +67,6 @@ if (!isset($conn)) {
             }
         });
     </script>
+    <script>window.loggedInUserId = <?php echo json_encode($_SESSION['user_id']); ?>;</script>
     <script src="../assets/js/search_suggestions.js"></script>
 </nav>
