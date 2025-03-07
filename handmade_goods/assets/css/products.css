@@ -81,9 +81,10 @@ h1 {
 }
 
 .scrollable-container {
-    flex-grow: 1;
+    flex-grow: 0;
     height: auto;
-    overflow-y: auto;
+    min-height: 0;
+    overflow-y: auto; 
     padding: 20px;
     background: white;
     border-radius: 8px;
@@ -92,9 +93,9 @@ h1 {
     width: 100%;
     max-width: 1800px;
     margin: auto;
-    min-height: 100vh;
     padding-top: 20px;
 }
+
 
 .container-fluid {
     width: 100% !important;

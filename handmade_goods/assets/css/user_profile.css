@@ -23,8 +23,18 @@
     padding: 0px !important;
 }
 
+.scrollable-container {
+    flex-grow: 0;
+    height: auto;
+    min-height: 0;
+    overflow-y: auto;
+    margin-bottom: 40px;
+}
+
 .profile-info{
     flex-wrap: wrap !important;
+    margin-top: 15px;
+    margin-right: 40px;
 }
 
 .text-center{
