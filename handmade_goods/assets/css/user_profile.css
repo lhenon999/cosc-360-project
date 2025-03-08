@@ -43,7 +43,7 @@
 .profile-info{
     flex-wrap: wrap !important;
     margin-top: 15px;
-    margin-right: 40px;
+    margin-right: auto;
     border-radius: 16px;
     padding: 20px;
 }
@@ -217,4 +217,18 @@
 
 .contact-label{
     margin: 0 !important;
+}
+
+.back-arrow {
+    font-size: 68px;
+    text-decoration: none;
+    color: #2d5a27;
+    font-weight: 600;
+    transition: color 0.3s ease-in-out;
+    margin-right: auto;
+    margin-left: 5rem;
+}
+
+.back-arrow:hover {
+    color: #1e3f1a;
 }

@@ -97,7 +97,7 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
 
             <?php if (!$from_profile): ?>
                 <div class="seller-info mt-4 d-flex align-items-center mb-3">
-                    <a href="user_profile.php?id=<?= $user_id ?>"
+                    <a href="user_profile.php?id=<?= $user_id ?>&from_product=product.php?id=<?= $product_id ?>"
                         class="d-flex align-items-center text-decoration-none text-dark">
                         <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
                             class="rounded-circle seller-profile-pic" width="50" height="50">
