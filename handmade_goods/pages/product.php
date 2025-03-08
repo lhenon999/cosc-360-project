@@ -100,7 +100,7 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
                     <a href="user_profile.php?id=<?= $user_id ?>&from_product=product.php?id=<?= $product_id ?>"
                         class="d-flex align-items-center text-decoration-none text-dark">
                         <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
-                            class="rounded-circle seller-profile-pic" width="50" height="50">
+                            class="rounded-circle seller-profile-pic" width="50" height="47">
                         <p class="ms-3 mb-0">Sold by: <strong><?= htmlspecialchars($seller['name']) ?></strong></p>
                     </a>
                 </div>
