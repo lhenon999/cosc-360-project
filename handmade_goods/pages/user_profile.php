@@ -131,6 +131,7 @@ $stmt->close();
                 </div>
                 <div class="scrollable-container">
                     <div class="listing-grid">
+                    <?php $isFromProfile = true; ?>
                         <?php foreach ($products as $product): ?>
                             <?php
                             $id = htmlspecialchars($product["id"]);

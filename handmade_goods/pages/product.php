@@ -60,7 +60,8 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
     </style>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
@@ -99,8 +100,10 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
                         </button>
                     </div>
                 </form>
-                <a href="<?= $from_profile ? 'user_profile.php?id=' . $user_id : 'products.php' ?>" class="btn btn-outline-secondary mt-3">
-                    Back to <?= $from_profile ? htmlspecialchars($first_name) . "'s Shop" : 'Products' ?>
+                <a href="<?= isset($from_profile) && $from_profile ? 'user_profile.php?id=' . $user_id : 'products.php' ?>"
+                    class="btn btn-outline-secondary mt-3">
+                    Back to
+                    <?= isset($from_profile) && $from_profile ? htmlspecialchars($first_name) . "'s Shop" : 'Products' ?>
                 </a>
             <?php endif; ?>
         </div>
