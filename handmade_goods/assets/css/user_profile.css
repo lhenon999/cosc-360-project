@@ -43,7 +43,7 @@
 .profile-info{
     flex-wrap: wrap !important;
     margin-top: 15px;
-    margin-right: auto;
+    margin-right: 15px;
     border-radius: 16px;
     padding: 20px;
 }
