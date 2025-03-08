@@ -18,7 +18,7 @@ $product_id = intval($_GET['id']);
 $from_profile = isset($_GET['from']) && $_GET['from'] === 'user_profile';
 
 
-$stmt = $conn->prepare("SELECT id, name, description, price, img, user_id FROM items WHERE id = ?");
+$stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category FROM items WHERE id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -38,6 +38,7 @@ $user_id = intval($product['user_id']);
 $session_user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
 $default_image = "../assets/images/placeholder.webp";
 $image_path = !empty($product['img']) ? htmlspecialchars($product['img']) : $default_image;
+$category_name = isset($product['category']) ? htmlspecialchars($product['category']) : null;
 
 $stmt = $conn->prepare("SELECT name, profile_picture FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
@@ -82,16 +83,29 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
 
         <div class="col-md-6 desc">
             <h1><?= $name ?></h1>
-            <p class="text-muted">$<?= $price ?></p>
+            <div class="price-category-container d-flex align-items-center">
+                <p class="text-muted" id="price-label">$<?= $price ?></p>
+                <?php if (!empty($category_name)): ?>
+                    <a href="products.php?category=<?= rawurlencode($category_name) ?>"
+                        class="btn btn-outline-secondary mt-3" id="category-btn">
+                        <?= $category_name ?>
+                    </a>
+                <?php endif; ?>
+            </div>
+
             <p class="mt-4"><?= $description ?></p>
 
             <?php if (!$from_profile): ?>
-                <div class="seller-info mt-4 d-flex align-items-center">
-                    <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
-                        class="rounded-circle seller-profile-pic" width="50" height="50">
-                    <p class="ms-3 mb-0">Seller: <strong><?= htmlspecialchars($seller['name']) ?></strong></p>
+                <div class="seller-info mt-4 d-flex align-items-center mb-3">
+                    <a href="user_profile.php?id=<?= $user_id ?>"
+                        class="d-flex align-items-center text-decoration-none text-dark">
+                        <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
+                            class="rounded-circle seller-profile-pic" width="50" height="50">
+                        <p class="ms-3 mb-0">Sold by: <strong><?= htmlspecialchars($seller['name']) ?></strong></p>
+                    </a>
                 </div>
             <?php endif; ?>
+
 
             <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
                 <a href="edit_listing.php?id=<?= $product_id ?>" class="cta hover-raise atc">
