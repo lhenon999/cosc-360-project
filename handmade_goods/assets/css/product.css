@@ -19,11 +19,6 @@ h1 {
     font-weight: bold;
 }
 
-.product-price {
-    font-size: 1.75rem;
-    color: #28a745;
-}
-
 .img {
     display: flex;
     justify-content: center;
@@ -31,8 +26,11 @@ h1 {
 }
 
 .img img {
-    width: 80%;
+    max-width: 80%;
+    height: auto;
+    object-fit: cover;
 }
+
 
 .desc {
     display: flex;
@@ -95,4 +93,10 @@ main {
     display: flex !important;
     align-items: center;
     justify-content: center;
+}
+
+.seller-info {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    width: 100%;
 }

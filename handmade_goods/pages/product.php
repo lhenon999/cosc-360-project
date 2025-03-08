@@ -39,7 +39,7 @@ $session_user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : 
 $default_image = "../assets/images/placeholder.webp";
 $image_path = !empty($product['img']) ? htmlspecialchars($product['img']) : $default_image;
 
-$stmt = $conn->prepare("SELECT name FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT name, profile_picture FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -84,6 +84,14 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
             <h1><?= $name ?></h1>
             <p class="text-muted">$<?= $price ?></p>
             <p class="mt-4"><?= $description ?></p>
+
+            <?php if (!$from_profile): ?>
+                <div class="seller-info mt-4 d-flex align-items-center">
+                    <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
+                        class="rounded-circle seller-profile-pic" width="50" height="50">
+                    <p class="ms-3 mb-0">Seller: <strong><?= htmlspecialchars($seller['name']) ?></strong></p>
+                </div>
+            <?php endif; ?>
 
             <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
                 <a href="edit_listing.php?id=<?= $product_id ?>" class="cta hover-raise atc">
