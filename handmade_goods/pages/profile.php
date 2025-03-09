@@ -11,12 +11,13 @@ $user_id = $_SESSION["user_id"];
 $user_type = $_SESSION["user_type"];
 
 $user_id = intval($_SESSION["user_id"]);
-$stmt = $conn->prepare("SELECT name, email FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT name, email, profile_picture FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
-$stmt->bind_result($name, $email);
+$stmt->bind_result($name, $email, $profile_picture);
 $stmt->fetch();
 $stmt->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +51,7 @@ $stmt->close();
         <div class="profile-container">
             <div class="profile-header">
                 <div class="profile-image">
-                    <img src="../assets/images/default-profile.jpg" alt="Profile Picture">
+                <img src="<?= htmlspecialchars($profile_picture) ?>" alt="Profile Picture">
                 </div>
                 <div class="profile-info">
                     <h2><?php echo htmlspecialchars($name); ?></h2>
