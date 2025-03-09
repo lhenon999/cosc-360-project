@@ -70,3 +70,29 @@ main {
 .atc {
     width: 50% !important;
 }
+
+.search-form {
+    height: 40px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between;
+    max-width: 300px;
+    padding: 0 10px;
+    background-color: #f9f9f9;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.search-input {
+    height: 100% !important;
+    padding: 8px 12px !important;
+    font-size: 16px;
+}
+
+.search-button {
+    height: 100% !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}

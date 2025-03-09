@@ -10,13 +10,31 @@ $price_to = isset($_GET['price-to']) && $_GET['price-to'] !== '' ? floatval($_GE
 $search = isset($_GET['search']) && $_GET['search'] !== '' ? trim($_GET['search']) : null;
 $rating_filter = isset($_GET['rating']) && $_GET['rating'] !== '' ? intval($_GET['rating']) : null;
 
-// Debug URL parameters
-error_log("URL Parameters: " . json_encode($_GET));
-error_log("Category Filter Value (raw): " . $category_filter);
-error_log("Category Filter Value (trimmed): " . trim($category_filter));
+//auto suggestions for users
+if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
+    header('Content-Type: application/json');
+    $search_param = "%" . $search . "%";
+    $results = ["products" => [], "users" => []];
 
-// Add debug for GET parameters
-echo "<!-- Debug: GET parameters = " . json_encode($_GET) . " -->\n";
+    $query = "SELECT id, name, img FROM items WHERE name LIKE ? LIMIT 5";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $search_param);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $results["products"] = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    $query = "SELECT id, name, profile_picture FROM users WHERE (name LIKE ? OR email LIKE ?) AND user_type != 'admin' LIMIT 5";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ss", $search_param, $search_param);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $results["users"] = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    echo json_encode($results);
+    exit();
+}
 
 // Build the base query
 $query = "SELECT DISTINCT i.*, IFNULL(AVG(r.rating), 0) as avg_rating 
@@ -74,11 +92,6 @@ if ($rating_filter !== null) {
     $types .= "dd";
 }
 
-// Debug output
-error_log("Category Filter: " . ($category_filter ?? 'null'));
-error_log("Final SQL Query: " . $query);
-error_log("Parameters: " . print_r($params, true));
-
 // Prepare and execute the query
 $stmt = $conn->prepare($query);
 if (!empty($params)) {
@@ -96,7 +109,6 @@ $cat_stmt->execute();
 $cat_result = $cat_stmt->get_result();
 while ($row = $cat_result->fetch_assoc()) {
     $categories[] = $row['category'];
-    echo "<!-- Debug: Available category: " . htmlspecialchars($row['category']) . " -->\n";
 }
 $cat_stmt->close();
 

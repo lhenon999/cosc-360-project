@@ -1,4 +1,4 @@
-<?php 
+<?php
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -15,7 +15,9 @@ if (!isset($conn)) {
     </div>
     <div class="navright">
         <form action="../pages/products.php" method="GET" class="search-form">
-            <input type="text" name="search" placeholder="Search products..." class="search-input" aria-label="Search">
+            <input type="text" name="search" placeholder="Search products and people..." class="search-input"
+                aria-label="Search">
+            <input type="hidden" name="search_type" value="products">
             <button type="submit" class="search-button">
                 <span class="material-symbols-outlined">search</span>
             </button>
@@ -65,4 +67,5 @@ if (!isset($conn)) {
             }
         });
     </script>
+    <script src="../assets/js/search_suggestions.js"></script>
 </nav>
