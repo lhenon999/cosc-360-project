@@ -6,6 +6,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+date_default_timezone_set('America/Los_Angeles');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $short_code = trim($_POST['token']);
@@ -20,15 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
 
-    // if (!$result) {
-    //     die("Query failed: " . $conn->error);
-    // }
-    
-    // if (!$row) {
-    //     die("No record found for email: " . $email);
-    // }
 
-    if (!$row) {
+    if (!$row) {        
         header("Location: verify_reset_token.php?error=invalid_token&email=" . urlencode($email));
         exit();
     }
@@ -43,12 +37,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($short_code === $stored_code) {
         $_SESSION['reset_email'] = $email;
         $_SESSION['reset_token'] = $row['token'];
-    } else{
+    } else {
         header("Location: verify_reset_token.php?error=invalid_token&email=" . urlencode($email));
         exit();
     }
 }
-
 ?>
 
 <!DOCTYPE html>
