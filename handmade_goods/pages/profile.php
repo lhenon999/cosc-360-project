@@ -7,6 +7,13 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
+session_start();
+if (isset($_SESSION['success'])) {
+    echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';
+    unset($_SESSION['success']);
+}
+
+
 $user_id = $_SESSION["user_id"];
 $user_type = $_SESSION["user_type"];
 
@@ -51,15 +58,25 @@ $stmt->close();
         <div class="profile-container">
             <div class="profile-header">
                 <div class="profile-image">
-                <img src="<?= htmlspecialchars($profile_picture) ?>" alt="Profile Picture">
+                    <div class="profile-image">
+                        <form id="profilePicForm" action="upload_profile_picture.php" method="POST"
+                            enctype="multipart/form-data">
+                            <input type="file" name="profile_picture" id="profileInput" accept="image/*"
+                                style="display: none;">
+                            <label for="profileInput">
+                                <img src="<?= htmlspecialchars($profile_picture) ?>" alt="Profile Picture"
+                                    id="profilePic">
+                            </label>
+                        </form>
+                    </div>
+
                 </div>
                 <div class="profile-info">
                     <h2><?php echo htmlspecialchars($name); ?></h2>
                     <p><?php echo htmlspecialchars($email); ?></p>
                     <div class="profile-buttons">
-                        <a class="cta hover-raise" href=""><span
+                        <a class="cta hover-raise" href="../pages/settings.php"><span
                                 class="material-symbols-outlined">settings</span>Settings</a>
-
                         <?php if ($user_type !== 'admin'): ?>
                             <a class="cta hover-raise" href="../pages/my_shop.php"><span
                                     class="material-symbols-outlined">storefront</span>My Shop</a>
@@ -142,6 +159,12 @@ $stmt->close();
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById("profileInput").addEventListener("change", function () {
+            document.getElementById("profilePicForm").submit();
+        });
+    </script>
 
 </body>
 

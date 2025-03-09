@@ -8,7 +8,9 @@ if (!isset($conn)) {
 ?>
 <nav>
     <div class="navleft">
-        <a href="../pages/home.php"><h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3></a>
+        <a href="../pages/home.php">
+            <h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3>
+        </a>
         <button class="material-symbols-outlined" id="toggle-nav">menu</button>
     </div>
     <div class="navright">
@@ -46,12 +48,21 @@ if (!isset($conn)) {
                 <?php endif; ?>
             </div>
         </span>
-        <a class="cta hover-raise auth-hide" href="../pages/basket.php"><span class="material-symbols-outlined">shopping_basket</span>Basket</a>
+        <a class="cta hover-raise auth-hide" href="../pages/basket.php"><span
+                class="material-symbols-outlined">shopping_basket</span>Basket</a>
     </div>
     <script>
-        $("#toggle-nav").click(function() {
+        $("#toggle-nav").click(function () {
             $(".navright").toggleClass("active");
             $(this).text($(this).text() == "menu" ? "close" : "menu");
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let darkModeLocal = localStorage.getItem("darkMode") === "enabled";
+            if (darkModeLocal) {
+                document.body.classList.add("bg-dark", "text-light");
+            }
         });
     </script>
 </nav>

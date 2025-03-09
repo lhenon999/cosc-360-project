@@ -98,3 +98,20 @@ main {
     color: #333;
     cursor: pointer;
 }
+
+.bg-dark .remember-me label {
+    color: #ffffff !important;
+    opacity: 0.5;
+}
+
+.bg-dark a {
+    color: #ffffff !important;
+    opacity: 0.5;
+    transition: color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.bg-dark a:hover {
+    color: #ffcc00 !important;
+    opacity: 1;
+}
+

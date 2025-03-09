@@ -24,7 +24,12 @@
         <h1>Confirm your email</h1>
         <div class="login-container">
             <form method="POST" action="send_reset_code.php" id="emailValidationForm" novalidate>
-                <input type="email" name="email" id="email" placeholder="Email" required>
+                <?php
+                $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
+                $backUrl = !empty($email) ? "../pages/settings.php" : "login.php";
+                ?>
+                <input type="email" name="email" id="email" placeholder="Email" value="<?= $email; ?>" required>
+
                 <?php
                 if (isset($_GET["error"])) {
                     echo '<p class="error">';
@@ -32,7 +37,7 @@
                         echo "No user found with that email.";
                     } else if ($_GET["error"] == "invalid_email") {
                         echo "Could not send reset email. Try again later.";
-                    } else if ($_GET["error"] == "too_many_requests"){
+                    } else if ($_GET["error"] == "too_many_requests") {
                         echo "Too many reset requests. Please wait an hour before trying again.";
                     }
                     echo '</p>';
@@ -41,7 +46,7 @@
                 <span class="error" id="emailError"></span>
 
                 <button type="submit" name="confirm">Confirm</button>
-                <a href="login.php">Back to login</a>
+                <a href="<?= $backUrl; ?>">Back</a>
             </form>
         </div>
     </main>

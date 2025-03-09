@@ -19,6 +19,10 @@ body {
     gap: 20px;
 }
 
+.bg-dark .container{
+    background: #1e1e1e !important;
+}
+
 .sidebar {
     width: 250px;
     background: #ffffff;
@@ -32,6 +36,16 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+}
+
+.bg-dark .sidebar {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+}
+
+.bg-dark .sidebar h3,
+.bg-dark .sidebar ul li a {
+    color: #ffffff !important;
 }
 
 .sidebar h3 {
@@ -91,8 +105,13 @@ h1 {
     background-color: white;
     border-radius: 16px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-    color: #333;
+    color: #fafafa;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.bg-dark .filter-container{
+    background-color: #1e1e1e;
+    color: #fafafa;
 }
 
 .filter-container:hover {

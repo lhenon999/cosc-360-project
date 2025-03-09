@@ -296,3 +296,17 @@ button.search-button::-moz-focus-inner,
 nav .navright form .search-button::-moz-focus-inner {
     border: 0 !important;
 }
+
+.bg-dark .dropdown-content {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #333 !important;
+}
+
+.bg-dark .dropdown-content a {
+    color: #ffffff !important;
+}
+
+.bg-dark .dropdown-content a:hover {
+    background-color: #222222 !important;
+}

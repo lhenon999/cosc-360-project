@@ -115,7 +115,5 @@ $stmt->close();
                     class="material-symbols-outlined">shoppingmode</span>Continue Shopping</a>
         </div>
     </div>
-    <?php include "../assets/html/footer.php"; ?>
 </body>
-
 </html>
