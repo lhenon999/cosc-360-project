@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="../../assets/css/product_card.css">
 
-<a class="listing-item-container" href="../pages/product.php?id=<?= $id ?>">
+<a class="listing-item-container" href="../pages/product.php?id=<?= $id ?><?= isset($isFromProfile) && $isFromProfile ? '&from=user_profile' : '' ?>">
     <div class="listing-item">
         <img src="<?= $image ?>" alt="<?= htmlspecialchars($name) ?>" class="product-image">
     </div>

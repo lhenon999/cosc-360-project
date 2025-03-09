@@ -213,10 +213,3 @@ input:checked + .slider::before {
 .bg-dark.container-page .container {
     background-color: #1e1e1e !important;
 }
-
-/* .bg-dark.home-page .container,
-.bg-dark.basket-page .container {
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-} */

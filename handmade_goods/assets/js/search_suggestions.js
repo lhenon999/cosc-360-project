@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     searchInput.addEventListener("input", function () {
         let query = this.value.trim();
+        let noValidSuggestions = false;
+        let loggedInUserId = typeof window.loggedInUserId !== "undefined" ? parseInt(window.loggedInUserId, 10) : null;
         if (query.length > 1) {
             fetch(`../pages/products.php?search=${encodeURIComponent(query)}&ajax=true`)
                 .then(response => response.json())
@@ -28,28 +30,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (data.products.length > 0) {
                         let productSection = document.createElement("div");
+                        productSection.innerHTML = `<p class="suggestion-label">Products</p>`;
                         data.products.forEach(p => {
+                            if (loggedInUserId && p.user_id == loggedInUserId) return;
                             let productImage = p.img ? `<img src="${p.img}" class="product-pic" style="width: 30px; height: 30px; border-radius: 8px; object-fit: cover;">`: `<span class="material-symbols-outlined icon">shopping_bag</span>`;
 
                             let item = document.createElement("div");
-                            item.innerHTML = `<a href="../../pages/product.php?id=${p.id}" class="suggestion-item">${productImage} ${p.name}</a>`;
+                            item.innerHTML = `<a href="../pages/product.php?id=${p.id}" class="suggestion-item">${productImage} ${p.name}</a>`;
                             productSection.appendChild(item);
                         });
-                        suggestionsBox.appendChild(productSection);
+                        if (productSection.querySelectorAll('.suggestion-item').length > 0) {
+                            suggestionsBox.appendChild(productSection);
+                        } else{
+                            noValidSuggestions = true;
+                        }
                     }
 
                     if (data.users.length > 0) {
                         let userSection = document.createElement("div");
+                        userSection.innerHTML = `<p class="suggestion-label">People</p>`;
                         data.users.forEach(u => {
+                            if (loggedInUserId && u.id == loggedInUserId) return;
                             let profileImage = u.profile_picture ? `<img src="${u.profile_picture}" class="profile-pic" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">` : `<span class="material-symbols-outlined icon">person</span>`;
                             let item = document.createElement("div");
-                            item.innerHTML = `<a href="../../pages/user_profile.php?id=${u.id}" class="suggestion-item">${profileImage} ${u.name}</a>`;
+                            item.innerHTML = `<a href="../pages/user_profile.php?id=${u.id}" class="suggestion-item">${profileImage} ${u.name}</a>`;
                             userSection.appendChild(item);
                         });
-                        suggestionsBox.appendChild(userSection);
+                        if (userSection.querySelectorAll('.suggestion-item').length > 0) {
+                            suggestionsBox.appendChild(userSection);
+                        } else{
+                            noValidSuggestions = true;
+                        }
                     }
 
-                    if (data.products.length > 0 || data.users.length > 0) {
+                    if ((data.products.length > 0 || data.users.length > 0) && noValidSuggestions == false) {
                         suggestionsBox.style.display = "block";
                     } else {
                         suggestionsBox.style.display = "none";

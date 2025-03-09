@@ -16,7 +16,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $search_param = "%" . $search . "%";
     $results = ["products" => [], "users" => []];
 
-    $query = "SELECT id, name, img FROM items WHERE name LIKE ? LIMIT 5";
+    $query = "SELECT id, name, img, user_id FROM items WHERE name LIKE ? LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $search_param);
     $stmt->execute();
@@ -37,7 +37,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
 }
 
 // Build the base query
-$query = "SELECT DISTINCT i.*, IFNULL(AVG(r.rating), 0) as avg_rating 
+$query = "SELECT DISTINCT i.id, i.name, i.img, i.user_id, i.price, IFNULL(AVG(r.rating), 0) as avg_rating 
           FROM items i 
           LEFT JOIN reviews r ON i.id = r.item_id";
 
@@ -184,18 +184,19 @@ $rating_stmt->close();
                     </div>
 
                     <div class="filter-section">
-                        <h4>Ratings</h4>
-                        <label><input type="radio" name="rating" value="1" <?= ($rating_filter === 1) ? 'checked' : '' ?>>
-                            1+ Star</label><br>
-                        <label><input type="radio" name="rating" value="2" <?= ($rating_filter === 2) ? 'checked' : '' ?>>
-                            2+ Stars</label><br>
-                        <label><input type="radio" name="rating" value="3" <?= ($rating_filter === 3) ? 'checked' : '' ?>>
-                            3+ Stars</label><br>
-                        <label><input type="radio" name="rating" value="4" <?= ($rating_filter === 4) ? 'checked' : '' ?>>
-                            4+ Stars</label><br>
+                        <h4>Average Rating</h4>
                         <label><input type="radio" name="rating" value="5" <?= ($rating_filter === 5) ? 'checked' : '' ?>>
-                            5 Stars</label><br>
+                            ★ ★ ★ ★ ★</label><br>
+                        <label><input type="radio" name="rating" value="4" <?= ($rating_filter === 4) ? 'checked' : '' ?>>
+                            ★ ★ ★ ★</label><br>
+                        <label><input type="radio" name="rating" value="3" <?= ($rating_filter === 3) ? 'checked' : '' ?>>
+                            ★ ★ ★</label><br>
+                        <label><input type="radio" name="rating" value="2" <?= ($rating_filter === 2) ? 'checked' : '' ?>>
+                            ★ ★</label><br>
+                        <label><input type="radio" name="rating" value="1" <?= ($rating_filter === 1) ? 'checked' : '' ?>>
+                            ★</label><br>
                     </div>
+
 
                     <a href="products.php" class="btn btn-secondary w-100">Clear Filters</a>
                 </form>

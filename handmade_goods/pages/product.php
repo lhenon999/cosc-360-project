@@ -15,6 +15,9 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 }
 $product_id = intval($_GET['id']);
 
+$from_profile = isset($_GET['from']) && $_GET['from'] === 'user_profile';
+
+
 $stmt = $conn->prepare("SELECT id, name, description, price, img, user_id FROM items WHERE id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
@@ -35,6 +38,15 @@ $user_id = intval($product['user_id']);
 $session_user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
 $default_image = "../assets/images/placeholder.webp";
 $image_path = !empty($product['img']) ? htmlspecialchars($product['img']) : $default_image;
+
+$stmt = $conn->prepare("SELECT name FROM users WHERE id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$seller = $result->fetch_assoc();
+$stmt->close();
+
+$first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 'Seller';
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +60,8 @@ $image_path = !empty($product['img']) ? htmlspecialchars($product['img']) : $def
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
     </style>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
@@ -87,7 +100,11 @@ $image_path = !empty($product['img']) ? htmlspecialchars($product['img']) : $def
                         </button>
                     </div>
                 </form>
-                <a href="products.php" class="btn btn-outline-secondary mt-3">Back to Products</a>
+                <a href="<?= isset($from_profile) && $from_profile ? 'user_profile.php?id=' . $user_id : 'products.php' ?>"
+                    class="btn btn-outline-secondary mt-3">
+                    Back to
+                    <?= isset($from_profile) && $from_profile ? htmlspecialchars($first_name) . "'s Shop" : 'Products' ?>
+                </a>
             <?php endif; ?>
         </div>
     </main>
