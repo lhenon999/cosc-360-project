@@ -384,4 +384,12 @@ nav .navright form .search-button::-moz-focus-inner {
     background-color: #222222 !important;
 }
 
+.bg-dark #search-suggestions, .bg-dark .suggestion-label  {
+    background: #1e1e1e !important;
+}
+
+.bg-dark .suggestion-item{
+    color: white;
+}
+
 

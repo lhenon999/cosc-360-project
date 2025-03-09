@@ -11,6 +11,8 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
     header("Location: home.php");
 }
 
+$from_product = isset($_GET['from_product']) ? $_GET['from_product'] : null;
+
 $user_id = intval($_GET['id']);
 
 $query = "SELECT name, email, profile_picture FROM users WHERE id = ?";
@@ -65,6 +67,9 @@ $stmt->close();
 
     <div class="profile-container">
         <div class="profile-header">
+            <?php if ($from_product): ?>
+                <a href="<?= htmlspecialchars($from_product) ?>" class="back-arrow">&#8592;</a>
+            <?php endif; ?>
             <img src="<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" class="profile-pic">
             <div class="profile-info">
                 <h1><?= htmlspecialchars($user['name']) ?></h1>
@@ -131,7 +136,7 @@ $stmt->close();
                 </div>
                 <div class="scrollable-container">
                     <div class="listing-grid">
-                    <?php $isFromProfile = true; ?>
+                        <?php $isFromProfile = true; ?>
                         <?php foreach ($products as $product): ?>
                             <?php
                             $id = htmlspecialchars($product["id"]);
