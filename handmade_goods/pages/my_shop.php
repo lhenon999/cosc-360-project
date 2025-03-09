@@ -57,13 +57,11 @@ $stmt->close();
     <h1 class="text-center">My Shop</h1>
     <p class="text-center">Browse and edit your listings</p>
     <br>
-    <div class="d-flex justify-content-center">
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center mb-5">
             <a class="cta hover-raise" href="create_listing.php">
                 <span class="material-symbols-outlined">add</span> Create a new listing
             </a>
         </div>
-    </div>
 
     <div class="container">
         <div class="scrollable-container">

@@ -10,12 +10,13 @@ if (!isset($_SESSION["user_id"])) {
 $user_id = $_SESSION["user_id"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_picture"])) {
-    $uploadDir = "cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/";
+    $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/";
+
     $allowedTypes = ["jpg", "jpeg", "png", "gif"];
     $maxFileSize = 2 * 1024 * 1024;
 
-    if (!file_exists($uploadDir)) {
-        mkdir($uploadDir, 0775, true);
+    if (!file_exists($upload_dir)) {
+        mkdir($upload_dir, 0775, true);
     }
 
     $fileName = $_FILES["profile_picture"]["name"];
@@ -30,10 +31,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_picture"])) {
     }
 
     $newFileName = "profile_" . $user_id . "." . $fileExt;
-    $uploadFile = $uploadDir . $newFileName;
+    $uploadFile = $upload_dir . $newFileName;
 
     if (move_uploaded_file($fileTmpPath, $uploadFile)) {
-        $profilePicPath = "cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/" . $newFileName;
+        $profilePicPath = "/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/" . $newFileName;
 
         $stmt = $conn->prepare("UPDATE users SET profile_picture = ? WHERE id = ?");
         $stmt->bind_param("si", $profilePicPath, $user_id);

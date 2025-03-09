@@ -6,8 +6,9 @@ body {
 }
 
 .container {
-    max-width: 1200px;
-    margin: 40px auto;
+    max-width: 1800px !important;
+    width: 90%;
+    margin: 0 auto;
     padding: 20px;
     background: white;
     border-radius: 8px;
@@ -86,17 +87,49 @@ h1 {
     padding: 20px;
     background: white;
     border-radius: 8px;
-    /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 1800px;
+    margin: auto;
+    min-height: 100vh;
+    padding-top: 20px;
+}
+
+.container-fluid {
+    width: 100% !important;
+    max-width: 1800px !important;
+    margin: auto;
 }
 
 .listing-grid {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 20px !important;
-    justify-content: flex-start !important;
-    align-items: flex-start;
+    display: grid;
+    gap: 20px;
+    justify-items: start;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+@media (max-width: 1300px) {
+    .listing-grid {
+        grid-template-columns: repeat(3, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 1150px) {
+    .listing-grid {
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 1000px) {
+    .listing-grid {
+        grid-template-columns: repeat(1, minmax(280px, 1fr));
+    }
+}
+
+.spacer {
+    height: 200px;
+    flex-shrink: 0;
 }
 
 .filter-container {
@@ -134,46 +167,77 @@ h1 {
     margin-bottom: 12px;
     letter-spacing: 1px;
     text-transform: uppercase;
-}
-
-.filter-section {
-    margin-bottom: 1.5rem;
+    padding-bottom: 20px;
 }
 
 .filter-section label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 14px;
-    color: #555;
-    display: block;
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: color 0.2s ease;
+    font-weight: 500;
+    color: black;
+}
+
+.bg-dark .filter-section label{
+    color: white;
 }
 
 .filter-section label:hover {
-    color: #722F37;
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
-.filter-section input[type="checkbox"],
-.filter-section input[type="radio"] {
-    accent-color: #722F37;
-    margin-right: 12px;
-    vertical-align: middle;
+.filter-section input[type="radio"],
+.filter-section input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #426B1F;
+    background: transparent;
+    display: inline-block;
+    position: relative;
+}
+
+.filter-section input[type="radio"]:checked::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: #426B1F;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.filter-section input[type="radio"]:checked + label {
+    color: #103e11 !important;
+    font-weight: bold;
 }
 
 .filter-section input[type="number"] {
-    width: 90px;
+    width: 100%;
     padding: 8px;
-    font-size: 15px;
-    margin-top: 8px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #fffcfc;
+    background: #eceaea;
+    color: #282727;
     transition: border-color 0.3s ease;
+    text-align: center;
+    margin-bottom: 10px; 
 }
 
-.filter-section input[type="number"]:focus {
-    border-color: #722F37;
-    outline: none;
+.bg-dark .filter-section input[type="number"] {
+    background: #2a2a2a;
+    color: #fff; 
+}
+
+.filter-section input[type="number"]::placeholder {
+    color: #aaa;
+    font-size: 14px;
+    opacity: 0.7;
 }
 
 button[type="submit"] {
@@ -239,4 +303,3 @@ button[type="submit"]:hover {
         padding: 16px;
     }
 }
-
