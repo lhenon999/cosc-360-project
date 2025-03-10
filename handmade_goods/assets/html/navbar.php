@@ -37,7 +37,7 @@ if (!isset($conn)) {
                     <?php if ($_SESSION["user_type"] === 'admin'): ?>
                         <a href="../pages/profile.php">Dashboard</a>
                         <a href="../pages/settings.php">Admin Settings</a>
-                        <a href="../logout.php">Logout</a>
+                        <a href="../auth/logout.php">Logout</a>
                     <?php else: ?>
                         <a href="../pages/profile.php">View Profile</a>
                         <a href="../pages/my_shop.php">My Shop</a>

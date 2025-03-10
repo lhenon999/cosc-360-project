@@ -58,6 +58,20 @@
     background-color: #345418;
 }
 
+.delete-btn {
+    padding: 4px 8px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
 
 .profile-tabs {
     border-top: 1px solid #eee;
@@ -163,4 +177,46 @@
 
 .orders-table .view-btn:hover {
     background-color: #1e3f1a;
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.users-table thead {
+    background-color: #426B1F;
+    color: white;
+}
+
+.users-table th, .users-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.users-table th {
+    font-weight: 600;
+}
+
+.user-type {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.user-type.admin {
+    background-color: #dc3545;
+    color: white;
+}
+
+.user-type.normal {
+    background-color: #28a745;
+    color: white;
 }

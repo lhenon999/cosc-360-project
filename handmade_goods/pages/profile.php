@@ -7,15 +7,14 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
-session_start();
+// Ensure only admin can access admin features
+$user_id = $_SESSION["user_id"];
+$user_type = $_SESSION["user_type"];
+
 if (isset($_SESSION['success'])) {
     echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';
     unset($_SESSION['success']);
 }
-
-
-$user_id = $_SESSION["user_id"];
-$user_type = $_SESSION["user_type"];
 
 $user_id = intval($_SESSION["user_id"]);
 $stmt = $conn->prepare("SELECT name, email, profile_picture FROM users WHERE id = ?");
@@ -25,6 +24,31 @@ $stmt->bind_result($name, $email, $profile_picture);
 $stmt->fetch();
 $stmt->close();
 
+// Get all users if admin - Optimized query
+$all_users = [];
+if ($user_type === 'admin') {
+    $stmt = $conn->prepare("
+        SELECT 
+            u.id, 
+            u.name, 
+            u.email, 
+            u.user_type, 
+            u.created_at,
+            (SELECT COUNT(*) FROM orders WHERE user_id = u.id) as total_orders,
+            (SELECT COUNT(*) FROM items WHERE user_id = u.id) as total_listings
+        FROM users u
+        WHERE u.id != ?
+        ORDER BY u.created_at DESC
+        LIMIT 50
+    ");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $all_users[] = $row;
+    }
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -82,7 +106,7 @@ $stmt->close();
                                     class="material-symbols-outlined">storefront</span>My Shop</a>
                         <?php endif; ?>
 
-                        <a class="cta hover-raise" href="../logout.php"><span
+                        <a class="cta hover-raise" href="../auth/logout.php"><span
                                 class="material-symbols-outlined">logout</span>Logout</a>
                     </div>
                 </div>
@@ -100,62 +124,97 @@ $stmt->close();
                     <?php endif; ?>
                 </nav>
                 <div class="tab-content">
-                    <div id="orders" class="tab-pane active">
-                        <h3>My Orders</h3>
-
-                        <?php
-                        $stmt = $conn->prepare("
-            SELECT id, total_price, status, created_at
-            FROM orders
-            WHERE user_id = ?
-            ORDER BY created_at DESC
-        ");
-                        $stmt->bind_param("i", $user_id);
-                        $stmt->execute();
-                        $result = $stmt->get_result();
-
-                        if ($result->num_rows > 0): ?>
-                            <table class="orders-table">
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>Total Price</th>
-                                        <th>Status</th>
-                                        <th>Order Date</th>
-                                        <th>Details</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php while ($order = $result->fetch_assoc()): ?>
+                    <?php if ($user_type === 'admin'): ?>
+                        <div id="users" class="tab-pane active">
+                            <h3>User Management</h3>
+                            <?php if (!empty($all_users)): ?>
+                                <table class="users-table">
+                                    <thead>
                                         <tr>
-                                            <td>#<?= $order["id"] ?></td>
-                                            <td>$<?= number_format($order["total_price"], 2) ?></td>
-                                            <td>
-                                                <span class="status 
-                        <?= strtolower($order["status"]) === 'pending' ? 'status-pending' : '' ?>
-                        <?= strtolower($order["status"]) === 'shipped' ? 'status-shipped' : '' ?>
-                        <?= strtolower($order["status"]) === 'delivered' ? 'status-delivered' : '' ?>
-                        <?= strtolower($order["status"]) === 'cancelled' ? 'status-cancelled' : '' ?>">
-                                                    <?= htmlspecialchars($order["status"]) ?>
-                                                </span>
-                                            </td>
-                                            <td><?= $order["created_at"] ?></td>
-                                            <td>
-                                                <a href="../pages/order_details.php?order_id=<?= $order["id"] ?>"
-                                                    class="view-btn">View</a>
-                                            </td>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Type</th>
+                                            <th>Total Orders</th>
+                                            <th>Total Listings</th>
+                                            <th>Joined Date</th>
+                                            <th>Actions</th>
                                         </tr>
-                                    <?php endwhile; ?>
-                                </tbody>
-                            </table>
-                        <?php else: ?>
-                            <p>You have no orders yet.</p>
-                        <?php endif; ?>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($all_users as $user): ?>
+                                            <tr>
+                                                <td><?= htmlspecialchars($user["name"]) ?></td>
+                                                <td><?= htmlspecialchars($user["email"]) ?></td>
+                                                <td><span class="user-type <?= $user["user_type"] ?>"><?= ucfirst(htmlspecialchars($user["user_type"])) ?></span></td>
+                                                <td><?= $user["total_orders"] ?></td>
+                                                <td><?= $user["total_listings"] ?></td>
+                                                <td><?= date('M j, Y', strtotime($user["created_at"])) ?></td>
+                                                <td>
+                                                    <a href="user_profile.php?id=<?= $user["id"] ?>" class="view-btn">View Profile</a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            <?php else: ?>
+                                <p>No users found.</p>
+                            <?php endif; ?>
+                        </div>
+                    <?php else: ?>
+                        <div id="orders" class="tab-pane active">
+                            <h3>My Orders</h3>
+                            <?php
+                            $stmt = $conn->prepare("
+                                SELECT id, total_price, status, created_at
+                                FROM orders
+                                WHERE user_id = ?
+                                ORDER BY created_at DESC
+                            ");
+                            $stmt->bind_param("i", $user_id);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
 
-                        <?php $stmt->close(); ?>
-                    </div>
+                            if ($result->num_rows > 0): ?>
+                                <table class="orders-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Total Price</th>
+                                            <th>Status</th>
+                                            <th>Order Date</th>
+                                            <th>Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php while ($order = $result->fetch_assoc()): ?>
+                                            <tr>
+                                                <td>#<?= $order["id"] ?></td>
+                                                <td>$<?= number_format($order["total_price"], 2) ?></td>
+                                                <td>
+                                                    <span class="status <?= strtolower($order["status"]) ?>">
+                                                        <?= htmlspecialchars($order["status"]) ?>
+                                                    </span>
+                                                </td>
+                                                <td><?= date('M j, Y', strtotime($order["created_at"])) ?></td>
+                                                <td>
+                                                    <a href="order_details.php?order_id=<?= $order["id"] ?>" class="view-btn">View</a>
+                                                    <form method="POST" action="delete_order.php" style="display: inline;" 
+                                                          onsubmit="return confirm('Are you sure you want to delete this order? This cannot be undone.');">
+                                                        <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
+                                                        <button type="submit" class="delete-btn">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        <?php endwhile; ?>
+                                    </tbody>
+                                </table>
+                            <?php else: ?>
+                                <p>You have no orders yet.</p>
+                            <?php endif; ?>
+                            <?php $stmt->close(); ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
-
             </div>
         </div>
     </div>

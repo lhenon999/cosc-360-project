@@ -30,9 +30,9 @@ if (!$order) {
     die("Order not found or you do not have permission to view it.");
 }
 
-// Fetch order items
+// Fetch order items with current stock levels
 $stmt = $conn->prepare("
-    SELECT i.name, oi.quantity, oi.price_at_purchase
+    SELECT i.name, i.id, i.stock, oi.quantity, oi.price_at_purchase
     FROM order_items oi
     JOIN items i ON oi.item_id = i.id
     WHERE oi.order_id = ?
@@ -47,7 +47,7 @@ $stmt->close();
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
 
@@ -90,6 +90,8 @@ $stmt->close();
                 <tr>
                     <th>Item</th>
                     <th>Quantity</th>
+                    <th>Current Stock</th>
+                    <th>Stock After Delete</th>
                     <th>Price (Each)</th>
                 </tr>
             </thead>
@@ -98,13 +100,21 @@ $stmt->close();
                     <tr>
                         <td><?= htmlspecialchars($item["name"]) ?></td>
                         <td><?= $item["quantity"] ?></td>
+                        <td><?= $item["stock"] ?></td>
+                        <td><?= $item["stock"] + $item["quantity"] ?></td>
                         <td>$<?= number_format($item["price_at_purchase"], 2) ?></td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
 
-        <a href="../pages/profile.php" class="back-btn">Back to Profile</a>
+        <div class="action-buttons mt-4">
+            <a href="../pages/profile.php" class="back-btn">Back to Profile</a>
+            <form method="POST" action="delete_order.php" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this order? The stock will be returned to inventory.');">
+                <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
+                <button type="submit" class="delete-btn">Delete Order</button>
+            </form>
+        </div>
     </div>
 </body>
 
