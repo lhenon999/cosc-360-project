@@ -37,7 +37,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
 }
 
 // Build the base query
-$query = "SELECT DISTINCT i.id, i.name, i.img, i.user_id, i.price, IFNULL(AVG(r.rating), 0) as avg_rating 
+$query = "SELECT DISTINCT i.id, i.name, i.img, i.user_id, i.price, i.stock, IFNULL(AVG(r.rating), 0) as avg_rating 
           FROM items i 
           LEFT JOIN reviews r ON i.id = r.item_id";
 
@@ -212,6 +212,8 @@ $rating_stmt->close();
                         $name = htmlspecialchars($product["name"]);
                         $price = number_format($product["price"], 2);
                         $image = htmlspecialchars($product["img"]);
+                        $stock = intval($product["stock"]);
+                        $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
                         include "../assets/html/product_card.php";
                         ?>
                     <?php endforeach; ?>

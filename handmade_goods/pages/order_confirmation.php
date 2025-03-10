@@ -35,10 +35,11 @@ $status = $order["status"];
 $order_date = date("F j, Y, g:i a", strtotime($order["created_at"]));
 
 $stmt = $conn->prepare("
-    SELECT oi.item_id, i.name, i.img, oi.quantity, oi.price_at_purchase
+    SELECT oi.item_id, oi.item_name, i.img, oi.quantity, oi.price_at_purchase
     FROM order_items oi
-    JOIN items i ON oi.item_id = i.id
+    LEFT JOIN items i ON oi.item_id = i.id
     WHERE oi.order_id = ?
+    ORDER BY oi.item_name
 ");
 $stmt->bind_param("i", $order_id);
 $stmt->execute();
@@ -98,12 +99,14 @@ $stmt->close();
             <?php foreach ($order_items as $item): ?>
                 <div class="col-md-6 mb-4">
                     <div class="order-item d-flex align-items-center">
-                        <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['name']) ?>"
-                            class="cart-img me-4">
+                        <img src="<?= htmlspecialchars($item['img'] ?? '../assets/images/product_images/default.webp') ?>" 
+                             alt="<?= htmlspecialchars($item['item_name']) ?>"
+                             class="cart-img me-4">
                         <div class="item-desc">
-                            <h5><?= htmlspecialchars($item['name']) ?></h5>
+                            <h5><?= htmlspecialchars($item['item_name']) ?></h5>
                             <p class="mt-4"><strong>Quantity:</strong> <?= $item['quantity'] ?></p>
                             <p><strong>Price:</strong> $<?= number_format($item['price_at_purchase'], 2) ?></p>
+                            <p><strong>Item Total:</strong> $<?= number_format($item['price_at_purchase'] * $item['quantity'], 2) ?></p>
                         </div>
                     </div>
 

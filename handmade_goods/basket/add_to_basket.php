@@ -2,15 +2,26 @@
 session_start();
 include '../config.php';
 
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-// include '../config.php';
-
-// var_dump($_SESSION);
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"], $_POST["quantity"])) {
     $item_id = intval($_POST["product_id"]);
     $quantity = max(1, intval($_POST["quantity"]));
+
+    // Check stock availability
+    $stmt = $conn->prepare("SELECT stock FROM items WHERE id = ?");
+    $stmt->bind_param("i", $item_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $item = $result->fetch_assoc();
+    $stmt->close();
+
+    if (!$item) {
+        $_SESSION["error"] = "Product not found.";
+        header("Location: ../pages/basket.php");
+        exit();
+    }
+
+    // Limit quantity to available stock
+    $quantity = min($quantity, $item['stock']);
 
     if (isset($_SESSION["user_id"])) {
         $user_id = intval($_SESSION["user_id"]);
@@ -32,8 +43,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"], $_POST["
             $stmt->close();
         }
 
-        // Check if item is already in cart
-        $stmt = $conn->prepare("SELECT id FROM cart_items WHERE cart_id = ? AND item_id = ?");
+        // Check if item is already in cart and get current quantity
+        $stmt = $conn->prepare("SELECT quantity FROM cart_items WHERE cart_id = ? AND item_id = ?");
         $stmt->bind_param("ii", $cart_id, $item_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -41,24 +52,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"], $_POST["
         $stmt->close();
 
         if ($cart_item) {
+            // Calculate new total quantity
+            $new_quantity = min($cart_item['quantity'] + $quantity, $item['stock']);
+            
             // Update existing cart item quantity
-            $stmt = $conn->prepare("UPDATE cart_items SET quantity = quantity + ? WHERE cart_id = ? AND item_id = ?");
-            $stmt->bind_param("iii", $quantity, $cart_id, $item_id);
+            $stmt = $conn->prepare("UPDATE cart_items SET quantity = ? WHERE cart_id = ? AND item_id = ?");
+            $stmt->bind_param("iii", $new_quantity, $cart_id, $item_id);
+            
+            if ($new_quantity !== ($cart_item['quantity'] + $quantity)) {
+                $_SESSION["message"] = "Some items not added due to stock limitations.";
+            }
         } else {
             // Add new item to cart
             $stmt = $conn->prepare("INSERT INTO cart_items (cart_id, item_id, quantity) VALUES (?, ?, ?)");
             $stmt->bind_param("iii", $cart_id, $item_id, $quantity);
+            
+            if ($quantity !== intval($_POST["quantity"])) {
+                $_SESSION["message"] = "Quantity adjusted to match available stock.";
+            }
         }
 
         $stmt->execute();
         $stmt->close();
     } else {
         $_SESSION["error"] = "You must be logged in to add items to the cart.";
-        header("Location: ../pages/login.php");
+        header("Location: ../auth/login.php");
         exit();
     }
 
-    $_SESSION["message"] = "Product added to cart.";
+    if (!isset($_SESSION["error"])) {
+        $_SESSION["message"] = isset($_SESSION["message"]) ? $_SESSION["message"] : "Product added to cart.";
+    }
     header("Location: ../pages/basket.php");
     exit();
 }

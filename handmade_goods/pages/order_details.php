@@ -12,6 +12,7 @@ if (!isset($_GET["order_id"])) {
 }
 
 $user_id = $_SESSION["user_id"];
+$user_type = $_SESSION["user_type"];
 $order_id = intval($_GET["order_id"]);
 
 // Fetch order details
@@ -30,13 +31,23 @@ if (!$order) {
     die("Order not found or you do not have permission to view it.");
 }
 
-// Fetch order items
-$stmt = $conn->prepare("
-    SELECT i.name, oi.quantity, oi.price_at_purchase
-    FROM order_items oi
-    JOIN items i ON oi.item_id = i.id
-    WHERE oi.order_id = ?
-");
+// Fetch order items - different queries for admin vs regular user
+if ($user_type === 'admin') {
+    $stmt = $conn->prepare("
+        SELECT oi.item_name, i.id, i.stock, oi.quantity, oi.price_at_purchase
+        FROM order_items oi
+        LEFT JOIN items i ON oi.item_id = i.id
+        WHERE oi.order_id = ?
+        ORDER BY oi.item_name
+    ");
+} else {
+    $stmt = $conn->prepare("
+        SELECT oi.item_name, oi.quantity, oi.price_at_purchase
+        FROM order_items oi
+        WHERE oi.order_id = ?
+        ORDER BY oi.item_name
+    ");
+}
 $stmt->bind_param("i", $order_id);
 $stmt->execute();
 $order_items = $stmt->get_result();
@@ -47,7 +58,7 @@ $stmt->close();
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Details</title>
 
@@ -90,21 +101,38 @@ $stmt->close();
                 <tr>
                     <th>Item</th>
                     <th>Quantity</th>
+                    <?php if ($user_type === 'admin'): ?>
+                        <th>Current Stock</th>
+                        <th>Stock After Delete</th>
+                    <?php endif; ?>
                     <th>Price (Each)</th>
                 </tr>
             </thead>
             <tbody>
                 <?php while ($item = $order_items->fetch_assoc()): ?>
                     <tr>
-                        <td><?= htmlspecialchars($item["name"]) ?></td>
+                        <td><?= htmlspecialchars($item["item_name"]) ?></td>
                         <td><?= $item["quantity"] ?></td>
+                        <?php if ($user_type === 'admin'): ?>
+                            <td><?= $item["stock"] ?? 'Item Deleted' ?></td>
+                            <td><?= isset($item["stock"]) ? ($item["stock"] + $item["quantity"]) : 'N/A' ?></td>
+                        <?php endif; ?>
                         <td>$<?= number_format($item["price_at_purchase"], 2) ?></td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
 
-        <a href="../pages/profile.php" class="back-btn">Back to Profile</a>
+        <div class="action-buttons mt-4">
+            <div class="button-wrapper">
+                <a href="../pages/profile.php" class="back-btn">Back to Profile</a>
+                <form method="POST" action="delete_order.php" style="display: inline;" 
+                    onsubmit="return confirm('Are you sure you want to delete this order? <?= $user_type === 'admin' ? 'The stock will be returned to inventory.' : 'This cannot be undone.' ?>');">
+                    <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
+                    <button type="submit" class="delete-btn">Delete Order</button>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 
