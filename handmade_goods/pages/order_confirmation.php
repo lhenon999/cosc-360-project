@@ -45,6 +45,26 @@ $stmt->execute();
 $result = $stmt->get_result();
 $order_items = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
+
+// Insert each item into the sales table
+foreach ($order_items as $item) {
+    // Get the seller ID of the item
+    $seller_stmt = $conn->prepare("SELECT seller_id FROM items WHERE id = ?");
+    $seller_stmt->bind_param("i", $item['item_id']);
+    $seller_stmt->execute();
+    $seller_stmt->bind_result($seller_id);
+    $seller_stmt->fetch();
+    $seller_stmt->close();
+
+    // Insert sale record
+    $insert_sale = $conn->prepare("
+        INSERT INTO sales (order_id, seller_id, buyer_id, item_id, quantity, price)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ");
+    $insert_sale->bind_param("iiiiid", $order_id, $seller_id, $user_id, $item['item_id'], $item['quantity'], $item['price_at_purchase']);
+    $insert_sale->execute();
+    $insert_sale->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -90,8 +110,6 @@ $stmt->close();
                 </form>
             </div>
         </div>
-
-
 
         <h3 class="mt-5">Items Ordered:</h3>
         <div class="row mt-4">
