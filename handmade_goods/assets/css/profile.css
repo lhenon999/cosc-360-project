@@ -220,3 +220,68 @@
     background-color: #28a745;
     color: white;
 }
+
+/* Inventory Table Styles */
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.inventory-table th,
+.inventory-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.inventory-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.inventory-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.stock-level {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.stock-level.critical {
+    background-color: #ffe6e6;
+    color: #dc3545;
+}
+
+.stock-level.warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.stock-level.good {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.seller-link {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.seller-link:hover {
+    text-decoration: underline;
+}
+
+/* Fix tab content display */
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}

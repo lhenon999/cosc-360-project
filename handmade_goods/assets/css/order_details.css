@@ -82,36 +82,51 @@
 
 .action-buttons {
     display: flex;
-    gap: 1rem;
-    justify-content: flex-start;
     align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.button-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.button-wrapper form {
+    margin: 0;
+}
+
+.back-btn,
+.delete-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    height: 38px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .back-btn {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #6c757d;
+    background-color: #2d5a27;
     color: white;
-    border-radius: 4px;
-    text-decoration: none;
-    font-size: 16px;
-    transition: background-color 0.3s;
-    margin-top: 20px;
 }
 
 .back-btn:hover {
-    background-color: #5a6268;
+    background-color: #1e3f1a;
     color: white;
+    text-decoration: none;
 }
 
 .delete-btn {
-    padding: 8px 16px;
     background-color: #dc3545;
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .delete-btn:hover {

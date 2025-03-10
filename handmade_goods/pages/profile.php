@@ -160,6 +160,66 @@ if ($user_type === 'admin') {
                                 <p>No users found.</p>
                             <?php endif; ?>
                         </div>
+                        <div id="listings" class="tab-pane">
+                            <h3>Product Inventory Management</h3>
+                            <?php
+                            $stmt = $conn->prepare("
+                                SELECT i.*, u.name as seller_name, u.email as seller_email,
+                                       (SELECT COUNT(*) FROM order_items oi WHERE oi.item_id = i.id) as total_orders
+                                FROM items i
+                                JOIN users u ON i.user_id = u.id
+                                ORDER BY i.stock ASC, i.name ASC
+                            ");
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            if ($result->num_rows > 0): ?>
+                                <table class="inventory-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Stock</th>
+                                            <th>Category</th>
+                                            <th>Price</th>
+                                            <th>Total Orders</th>
+                                            <th>Seller</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php while ($item = $result->fetch_assoc()): ?>
+                                            <tr class="<?= $item['stock'] < 5 ? 'low-stock' : '' ?>">
+                                                <td><?= htmlspecialchars($item["name"]) ?></td>
+                                                <td>
+                                                    <span class="stock-level <?= $item['stock'] < 5 ? 'critical' : ($item['stock'] < 10 ? 'warning' : 'good') ?>">
+                                                        <?= $item["stock"] ?>
+                                                    </span>
+                                                </td>
+                                                <td><?= htmlspecialchars($item["category"]) ?></td>
+                                                <td>$<?= number_format($item["price"], 2) ?></td>
+                                                <td><?= $item["total_orders"] ?></td>
+                                                <td>
+                                                    <a href="user_profile.php?id=<?= $item["user_id"] ?>" class="seller-link">
+                                                        <?= htmlspecialchars($item["seller_name"]) ?>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="user_profile.php?id=<?= $item["user_id"] ?>" class="view-btn">View Seller</a>
+                                                    <form method="POST" action="delete_listing.php" style="display: inline;" 
+                                                          onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone and will remove the product from all users\' views.');">
+                                                        <input type="hidden" name="item_id" value="<?= $item["id"] ?>">
+                                                        <button type="submit" class="delete-btn">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        <?php endwhile; ?>
+                                    </tbody>
+                                </table>
+                            <?php else: ?>
+                                <p>No products found in the inventory.</p>
+                            <?php endif;
+                            $stmt->close();
+                            ?>
+                        </div>
                     <?php else: ?>
                         <div id="orders" class="tab-pane active">
                             <h3>My Orders</h3>
@@ -222,6 +282,39 @@ if ($user_type === 'admin') {
     <script>
         document.getElementById("profileInput").addEventListener("change", function () {
             document.getElementById("profilePicForm").submit();
+        });
+
+        // Tab switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabLinks = document.querySelectorAll('.tabs-nav a');
+            const tabContents = document.querySelectorAll('.tab-pane');
+            
+            function switchTab(e) {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('href').slice(1);
+                
+                // Update active states
+                tabLinks.forEach(link => link.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                e.target.classList.add('active');
+                document.getElementById(targetId).classList.add('active');
+
+                // Update URL hash without scrolling
+                history.pushState(null, null, '#' + targetId);
+            }
+
+            tabLinks.forEach(link => {
+                link.addEventListener('click', switchTab);
+            });
+
+            // Handle initial load with hash
+            if (window.location.hash) {
+                const targetLink = document.querySelector(`a[href="${window.location.hash}"]`);
+                if (targetLink) {
+                    targetLink.click();
+                }
+            }
         });
     </script>
 

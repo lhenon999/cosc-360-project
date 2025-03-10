@@ -12,6 +12,7 @@ if (!isset($_GET["order_id"])) {
 }
 
 $user_id = $_SESSION["user_id"];
+$user_type = $_SESSION["user_type"];
 $order_id = intval($_GET["order_id"]);
 
 // Fetch order details
@@ -30,13 +31,22 @@ if (!$order) {
     die("Order not found or you do not have permission to view it.");
 }
 
-// Fetch order items with current stock levels
-$stmt = $conn->prepare("
-    SELECT i.name, i.id, i.stock, oi.quantity, oi.price_at_purchase
-    FROM order_items oi
-    JOIN items i ON oi.item_id = i.id
-    WHERE oi.order_id = ?
-");
+// Fetch order items - different queries for admin vs regular user
+if ($user_type === 'admin') {
+    $stmt = $conn->prepare("
+        SELECT i.name, i.id, i.stock, oi.quantity, oi.price_at_purchase
+        FROM order_items oi
+        JOIN items i ON oi.item_id = i.id
+        WHERE oi.order_id = ?
+    ");
+} else {
+    $stmt = $conn->prepare("
+        SELECT i.name, oi.quantity, oi.price_at_purchase
+        FROM order_items oi
+        JOIN items i ON oi.item_id = i.id
+        WHERE oi.order_id = ?
+    ");
+}
 $stmt->bind_param("i", $order_id);
 $stmt->execute();
 $order_items = $stmt->get_result();
@@ -90,8 +100,10 @@ $stmt->close();
                 <tr>
                     <th>Item</th>
                     <th>Quantity</th>
-                    <th>Current Stock</th>
-                    <th>Stock After Delete</th>
+                    <?php if ($user_type === 'admin'): ?>
+                        <th>Current Stock</th>
+                        <th>Stock After Delete</th>
+                    <?php endif; ?>
                     <th>Price (Each)</th>
                 </tr>
             </thead>
@@ -100,8 +112,10 @@ $stmt->close();
                     <tr>
                         <td><?= htmlspecialchars($item["name"]) ?></td>
                         <td><?= $item["quantity"] ?></td>
-                        <td><?= $item["stock"] ?></td>
-                        <td><?= $item["stock"] + $item["quantity"] ?></td>
+                        <?php if ($user_type === 'admin'): ?>
+                            <td><?= $item["stock"] ?></td>
+                            <td><?= $item["stock"] + $item["quantity"] ?></td>
+                        <?php endif; ?>
                         <td>$<?= number_format($item["price_at_purchase"], 2) ?></td>
                     </tr>
                 <?php endwhile; ?>
@@ -109,11 +123,14 @@ $stmt->close();
         </table>
 
         <div class="action-buttons mt-4">
-            <a href="../pages/profile.php" class="back-btn">Back to Profile</a>
-            <form method="POST" action="delete_order.php" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this order? The stock will be returned to inventory.');">
-                <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
-                <button type="submit" class="delete-btn">Delete Order</button>
-            </form>
+            <div class="button-wrapper">
+                <a href="../pages/profile.php" class="back-btn">Back to Profile</a>
+                <form method="POST" action="delete_order.php"
+                    onsubmit="return confirm('Are you sure you want to delete this order? <?= $user_type === 'admin' ? 'The stock will be returned to inventory.' : 'This cannot be undone.' ?>');">
+                    <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
+                    <button type="submit" class="delete-btn">Delete Order</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>
