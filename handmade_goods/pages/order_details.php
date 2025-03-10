@@ -34,17 +34,18 @@ if (!$order) {
 // Fetch order items - different queries for admin vs regular user
 if ($user_type === 'admin') {
     $stmt = $conn->prepare("
-        SELECT i.name, i.id, i.stock, oi.quantity, oi.price_at_purchase
+        SELECT oi.item_name, i.id, i.stock, oi.quantity, oi.price_at_purchase
         FROM order_items oi
-        JOIN items i ON oi.item_id = i.id
+        LEFT JOIN items i ON oi.item_id = i.id
         WHERE oi.order_id = ?
+        ORDER BY oi.item_name
     ");
 } else {
     $stmt = $conn->prepare("
-        SELECT i.name, oi.quantity, oi.price_at_purchase
+        SELECT oi.item_name, oi.quantity, oi.price_at_purchase
         FROM order_items oi
-        JOIN items i ON oi.item_id = i.id
         WHERE oi.order_id = ?
+        ORDER BY oi.item_name
     ");
 }
 $stmt->bind_param("i", $order_id);
@@ -110,11 +111,11 @@ $stmt->close();
             <tbody>
                 <?php while ($item = $order_items->fetch_assoc()): ?>
                     <tr>
-                        <td><?= htmlspecialchars($item["name"]) ?></td>
+                        <td><?= htmlspecialchars($item["item_name"]) ?></td>
                         <td><?= $item["quantity"] ?></td>
                         <?php if ($user_type === 'admin'): ?>
-                            <td><?= $item["stock"] ?></td>
-                            <td><?= $item["stock"] + $item["quantity"] ?></td>
+                            <td><?= $item["stock"] ?? 'Item Deleted' ?></td>
+                            <td><?= isset($item["stock"]) ? ($item["stock"] + $item["quantity"]) : 'N/A' ?></td>
                         <?php endif; ?>
                         <td>$<?= number_format($item["price_at_purchase"], 2) ?></td>
                     </tr>
@@ -125,7 +126,7 @@ $stmt->close();
         <div class="action-buttons mt-4">
             <div class="button-wrapper">
                 <a href="../pages/profile.php" class="back-btn">Back to Profile</a>
-                <form method="POST" action="delete_order.php"
+                <form method="POST" action="delete_order.php" style="display: inline;" 
                     onsubmit="return confirm('Are you sure you want to delete this order? <?= $user_type === 'admin' ? 'The stock will be returned to inventory.' : 'This cannot be undone.' ?>');">
                     <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
                     <button type="submit" class="delete-btn">Delete Order</button>

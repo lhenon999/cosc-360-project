@@ -15,9 +15,9 @@ $user_id = $_SESSION["user_id"];
 $conn->begin_transaction();
 
 try {
-    // Get cart items with current stock levels
+    // Get cart items with current stock levels and names
     $stmt = $conn->prepare("
-        SELECT ci.item_id, i.price, ci.quantity, i.stock 
+        SELECT ci.item_id, i.name, i.price, ci.quantity, i.stock 
         FROM cart_items ci
         JOIN items i ON ci.item_id = i.id
         JOIN cart c ON ci.cart_id = c.id
@@ -37,13 +37,11 @@ try {
     $stock_updates = [];
 
     while ($row = $result->fetch_assoc()) {
-        // Check if enough stock is available
         if ($row['stock'] < $row['quantity']) {
             throw new Exception("Not enough stock available for one or more items in your cart");
         }
         $cart_items[] = $row;
         $total_price += $row["price"] * $row["quantity"];
-        // Prepare stock updates
         $stock_updates[] = [
             'item_id' => $row['item_id'],
             'quantity' => $row['quantity']
@@ -70,13 +68,13 @@ try {
     $order_id = $stmt->insert_id;
     $stmt->close();
 
-    // Add order items
+    // Add order items with item name
     foreach ($cart_items as $item) {
-        $stmt = $conn->prepare("INSERT INTO ORDER_ITEMS (order_id, item_id, quantity, price_at_purchase) VALUES (?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO ORDER_ITEMS (order_id, item_id, item_name, quantity, price_at_purchase) VALUES (?, ?, ?, ?, ?)");
         if (!$stmt) {
             throw new Exception("SQL Error: " . $conn->error);
         }
-        $stmt->bind_param("iiid", $order_id, $item["item_id"], $item["quantity"], $item["price"]);
+        $stmt->bind_param("iisid", $order_id, $item["item_id"], $item["name"], $item["quantity"], $item["price"]);
         $stmt->execute();
         $stmt->close();
     }
