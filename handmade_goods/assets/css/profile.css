@@ -83,6 +83,22 @@
     font-size: 14px;
 }
 
+.manage-btn{
+    padding: 4px 8px;
+    background-color: #426B1F;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.manage-btn:hover {
+    background-color: #365517;
+    transform: scale(1.05);
+}
+
 .delete-btn:hover {
     background-color: #c82333;
 }

@@ -133,6 +133,7 @@ if ($user_type === 'admin') {
     <script>
         let urlParams = new URLSearchParams(window.location.search);
         let itemName = urlParams.get('item');
+        let userName = urlParams.get('user');
         let userType = "<?= $user_type ?>";
     </script>
     <script src="../assets/js/admin_manage_listing.js"></script>

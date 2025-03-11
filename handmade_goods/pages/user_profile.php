@@ -82,11 +82,11 @@ $stmt->close();
                 </div>
             </div>
             <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
-                <button type="button" class="manage-btn"
-                    onclick="showManageModal(<?= $user_id ?>, '<?= htmlspecialchars($name) ?>')">
+                <a href="profile.php?from=admin&user=<?= urlencode($user['name']) ?>" class="manage-btn">
                     <i class="fas fa-cog"></i> Manage
-                </button>
+                </a>
             <?php endif; ?>
+
         </div>
 
         <div class="reviews-containers">
@@ -165,7 +165,6 @@ $stmt->close();
             <p class="text-center">User has no current listings</p>
         <?php endif; ?>
     </div>
-
 </body>
 
 </html>

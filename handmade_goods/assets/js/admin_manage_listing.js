@@ -55,6 +55,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             history.replaceState(null, null, "#listings");
+
+        } else if (typeof userType !== "undefined" && typeof itemName !== "undefined" && userType === "admin" && userName) {
+                switchTab("users");
+    
+                let userSearch = document.getElementById("userSearch");
+                if (userSearch) {
+                    userSearch.value = userName;
+                    filterTable('usersTable', 'userSearch');
+                }
+    
+            history.replaceState(null, null, "#users");
         }
     }, 300);
 });
