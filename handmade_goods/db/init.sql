@@ -1,4 +1,4 @@
--- DROP DATABASE IF EXISTS handmade_goods;
+DROP DATABASE IF EXISTS handmade_goods;
 CREATE DATABASE IF NOT EXISTS handmade_goods;
 USE handmade_goods;
 CREATE TABLE IF NOT EXISTS USERS( id INT auto_increment PRIMARY KEY,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS CART_ITEMS( id INT auto_increment PRIMARY KEY,
                                   item_id INT NOT NULL,
                                   quantity INT NOT NULL DEFAULT 1,
                                   added_at timestamp DEFAULT CURRENT_TIMESTAMP,
-                                  FOREIGN KEY ( cart_id ) REFERENCES CART(id) ON DELETE CASCADE,
+                                  FOREIGN KEY ( cart_id ) REFERENCES CART(id) ON DELETE SET NULL,
                                   FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
 CREATE TABLE IF NOT EXISTS ORDERS( id INT auto_increment PRIMARY KEY,
                                   user_id INT NOT NULL,
