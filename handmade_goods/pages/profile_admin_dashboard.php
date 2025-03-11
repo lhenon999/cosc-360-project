@@ -100,7 +100,8 @@
                                     </td>
                                     <td>
                                         <a href="user_profile.php?id=<?= $item["user_id"] ?>&from=admin" class="view-btn"></a>
-                                        <button type="button" class="delete-btn" onclick="showDeleteListingModal(<?= $item['id'] ?>)">Delete</button>
+                                        <button type="button" class="delete-btn"
+                                            onclick="showDeleteListingModal(<?= $item['id'] ?>)">Delete</button>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
@@ -129,8 +130,10 @@
         <div class="modal-buttons">
             <div class="modal-buttons">
                 <form id="freezeForm" method="POST" action="freeze_account.php">
+                    <input type="hidden" name="user_id" id="manageUserId">
                     <button type="submit" class="freeze-btn">Freeze Account</button>
                 </form>
+
 
                 <button type="button" class="confirm-btn" id="deleteFromManage">Delete Account</button>
                 <button type="button" class="cancel-btn" onclick="closeModal('manageModal')">Cancel</button>

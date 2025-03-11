@@ -9,6 +9,20 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
+$stmt = $conn->prepare("SELECT is_frozen FROM users WHERE id = ?");
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$stmt->bind_result($is_frozen);
+$stmt->fetch();
+$stmt->close();
+
+if ($is_frozen) {
+    $_SESSION['error'] = "Your account has been frozen. You cannot place orders.";
+    header("Location: home.php");
+    exit();
+}
+
+
 $user_id = $_SESSION["user_id"];
 
 // Start transaction

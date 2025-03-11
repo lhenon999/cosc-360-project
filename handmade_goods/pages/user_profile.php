@@ -81,6 +81,12 @@ $stmt->close();
                     <p><?= htmlspecialchars($user['email']) ?></p>
                 </div>
             </div>
+            <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
+                <button type="button" class="manage-btn"
+                    onclick="showManageModal(<?= $user_id ?>, '<?= htmlspecialchars($name) ?>')">
+                    <i class="fas fa-cog"></i> Manage
+                </button>
+            <?php endif; ?>
         </div>
 
         <div class="reviews-containers">

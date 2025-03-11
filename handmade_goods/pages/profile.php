@@ -126,7 +126,6 @@ if ($user_type === 'admin') {
             document.getElementById("profilePicForm").submit();
         });
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../assets/js/profile_handle_modal.js"></script>
     <script src="../assets/js/profile_tab_switching.js"></script>
