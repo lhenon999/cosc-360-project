@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS ORDER_ITEMS( id INT auto_increment PRIMARY KEY,
                                   item_name VARCHAR(255) NOT NULL,
                                   quantity INT NOT NULL,
                                   price_at_purchase DECIMAL ( 10, 2 ) NOT NULL,
-                                  FOREIGN KEY ( order_id ) REFERENCES ORDERS(id) ON DELETE SET NULL,
+                                  FOREIGN KEY ( order_id ) REFERENCES ORDERS(id) ON DELETE CASCADE,
                                   FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE SET NULL );
 CREATE TABLE IF NOT EXISTS password_resets (id INT AUTO_INCREMENT PRIMARY KEY,
                                 email VARCHAR(255) NOT NULL,
