@@ -198,35 +198,6 @@
     background-color: #1e3f1a;
 }
 
-.users-table{
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1.5rem;
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.tab-content h3{
-    font-size: 26px;
-    font-weight: bold;
-    color: #2d5a27;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.users-table thead {
-    background-color: #426B1F;
-    color: white;
-}
-
-.users-table th, .users-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
-
 .users-table th {
     font-weight: 600;
 }
@@ -248,42 +219,63 @@
     color: white;
 }
 
-/* Inventory Table Styles */
-.inventory-table {
+.tab-content h3{
+    font-size: 26px;
+    font-weight: bold;
+    color: #2d5a27;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.inventory-table, .users-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     margin-top: 20px;
-    background: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
     overflow: hidden;
+    backdrop-filter: blur(10px);
 }
 
-.inventory-table th, 
-.inventory-table td {
-    padding: 14px 18px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
+.inventory-table thead, .users-table thead {
+    background: rgba(250, 250, 250, 0.85);
+    font-weight: 500;
+    color: #333;
+    text-transform: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
-.inventory-table th {
-    background-color: #426B1F;
-    color: white;
+.inventory-table th, .users-table th {
+    padding: 16px 20px;
+    font-size: 15px;
     font-weight: 600;
-    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #2c3e50;
+    text-align: left;
+}
+
+.inventory-table tr, .users-table tr {
+    transition: all 0.2s ease-in-out;
 }
 
 .inventory-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: rgba(245, 245, 245, 0.6);
 }
 
-.inventory-table tr:hover {
-    background-color: #eef5ea;
-    transition: background-color 0.2s ease-in-out;
+.inventory-table tr:hover, .users-table tr:hover {
+    background-color: rgba(230, 230, 230, 0.8);
+    backdrop-filter: blur(8px);
 }
 
+.inventory-table td, .users-table td {
+    padding: 14px 20px;
+    font-size: 14.5px;
+    color: #4a4a4a;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
 
-/* Stock Level Styling */
 .stock-level {
     padding: 6px 12px;
     border-radius: 5px;
@@ -541,8 +533,32 @@
 }
 
 #userSearch, #listingsSearch {
-    border-radius: 25px;
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(60, 60, 67, 0.15);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.08);
+    font-size: 16px;
+    color: #333;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 50%;
 }
+
+#userSearch:focus, #listingsSearch:focus {
+    border-color: rgba(44, 104, 40, 0.3);
+    outline: none;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.13);
+}
+
+#userSearch::placeholder, #listingsSearch::placeholder {
+    color: rgba(60, 60, 67, 0.4);
+    font-weight: 400;
+    font-size: 14px;
+}
+
 
 
 
