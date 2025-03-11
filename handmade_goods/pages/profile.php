@@ -392,99 +392,17 @@ if ($user_type === 'admin') {
         document.getElementById("profileInput").addEventListener("change", function () {
             document.getElementById("profilePicForm").submit();
         });
-
-        // Tab switching functionality
-        document.addEventListener('DOMContentLoaded', function () {
-            const tabLinks = document.querySelectorAll('.tabs-nav a');
-            const tabContents = document.querySelectorAll('.tab-pane');
-
-            function switchTab(e) {
-                e.preventDefault();
-                const targetId = e.target.getAttribute('href').slice(1);
-
-                const targetTab = document.getElementById(targetId);
-
-                if (!targetTab) {
-                    console.error(`Tab with ID "${targetId}" not found.`);
-                    return; // Stop execution if tab does not exist
-                }
-
-                // Update active states
-                tabLinks.forEach(link => link.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-
-                e.target.classList.add('active');
-                document.getElementById(targetId).classList.add('active');
-
-                // Update URL hash without scrolling
-                history.pushState(null, null, '#' + targetId);
-            }
-
-            tabLinks.forEach(link => {
-                link.addEventListener('click', switchTab);
-            });
-
-            // Handle initial load with hash
-            if (window.location.hash) {
-                const targetLink = document.querySelector(`a[href="${window.location.hash}"]`);
-                if (targetLink) {
-                    targetLink.click();
-                }
-            }
-        });
     </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../assets/js/profile_tab_switching.js"></script>
+    <script src="../assets/js/profile_earnings_chart.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let earningsChart;
-
-            function renderEarningsChart() {
-                const totalEarnings = parseFloat("<?= $totalEarnings ?>");
-                const ctx = document.getElementById("earningsChart");
-
-                if (!ctx) {
-                    console.error("Canvas element with ID 'earningsChart' not found.");
-                    return;
-                }
-
-                if (earningsChart instanceof Chart) {
-                    earningsChart.destroy();
-                }
-
-                earningsChart = new Chart(ctx.getContext("2d"), {
-                    type: "doughnut",
-                    data: {
-                        labels: ["Earnings", "Remaining"],
-                        datasets: [{
-                            data: [totalEarnings, Math.max(10000 - totalEarnings, 0)],
-                            backgroundColor: ["#2d5a27", "#e0e0e0"],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        cutout: "70%",
-                        plugins: {
-                            legend: { display: false },
-                        }
-                    }
-                });
-
-                console.log("Chart rendered successfully with earnings:", totalEarnings);
-            }
-
-            document.querySelector('a[href="#sales"]').addEventListener("click", function () {
-                setTimeout(renderEarningsChart, 100); 
-            });
-
-            if (document.getElementById("sales").classList.contains("active")) {
-                renderEarningsChart();
-            }
-        });
-
+    let urlParams = new URLSearchParams(window.location.search);
+    let itemName = urlParams.get('item');
+    let userType = "<?= $user_type ?>";
     </script>
-    <script src="../assets/js/filterTable.js"></script>
+    <script src="../assets/js/admin_manage_listing.js"></script>
 </body>
 
 </html>

@@ -113,7 +113,11 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
                 </a>
                 <a href="my_shop.php" class="btn btn-outline-secondary mt-3">Back to My Shop</a>
             <?php else: ?>
-                <?php if ($_SESSION['user_type'] !== 'admin'): // Hide for admins ?>
+                <?php if ($_SESSION['user_type'] === 'admin'): ?>
+                    <a href="profile.php?item=<?= urlencode($name) ?>" class="cta hover-raise atc">
+                        <span class="material-symbols-outlined">manage_accounts</span> Manage Listing
+                    </a>
+                <?php else: ?>
                     <?php if ($product['stock'] > 0): ?>
                         <p class="stock-info <?= $product['stock'] < 5 ? 'low-stock' : '' ?>">
                             <?= $product['stock'] < 5 ? 'Only ' . $product['stock'] . ' left in stock!' : 'In Stock' ?>
@@ -142,6 +146,8 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
                     <?= isset($from_profile) && $from_profile ? htmlspecialchars($first_name) . "'s Shop" : 'Products' ?>
                 </a>
             <?php endif; ?>
+
+
 
         </div>
     </main>
