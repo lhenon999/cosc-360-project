@@ -282,42 +282,75 @@ $stmt->close();
                 document.getElementById("profilePicForm").submit();
             });
         </script>
-        <!-- <script>
-            $(document).ready(function () {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let earningsChart;
+
                 function activateTab(tabId) {
                     $(".tabs-nav a").removeClass("active");
                     $(".tab-pane").removeClass("active").hide();
 
-                    // Activate the correct tab
                     $('.tabs-nav a[href="' + tabId + '"]').addClass("active");
                     $(tabId).fadeIn(300).addClass("active");
                 }
 
-                // On tab click
+                function renderEarningsChart() {
+                    const totalEarnings = parseFloat("<?= $totalEarnings ?>");
+                    const ctx = document.getElementById("earningsChart");
+
+                    if (!ctx) return;
+
+                    if (earningsChart instanceof Chart) {
+                        earningsChart.destroy();
+                    }
+
+                    earningsChart = new Chart(ctx.getContext("2d"), {
+                        type: "doughnut",
+                        data: {
+                            labels: ["Earnings", "Remaining"],
+                            datasets: [{
+                                data: [totalEarnings, Math.max(10000 - totalEarnings, 0)],
+                                backgroundColor: ["#2d5a27", "#e0e0e0"],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: "70%",
+                            plugins: {
+                                legend: { display: false },
+                            }
+                        }
+                    });
+                }
+
                 $(".tabs-nav a").click(function (event) {
                     event.preventDefault();
-
                     var tabId = $(this).attr("href");
+
                     activateTab(tabId);
 
-                    // Update URL without reloading the page
                     history.pushState(null, null, tabId);
 
-                    // If switching to Sales tab, delay the chart rendering
                     if (tabId === "#sales") {
                         setTimeout(renderEarningsChart, 300);
                     }
                 });
 
-                // Handle page refresh with hash
                 var initialTab = window.location.hash || "#orders";
                 if ($(initialTab).length) {
                     activateTab(initialTab);
                 } else {
-                    activateTab("#orders"); // Default tab
+                    activateTab("#orders");
+                }
+
+                if ($("#sales").hasClass("active")) {
+                    renderEarningsChart();
                 }
             });
-        </script> -->
+
+        </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 let earningsChart;

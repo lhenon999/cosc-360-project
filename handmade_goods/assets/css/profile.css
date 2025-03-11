@@ -292,3 +292,10 @@
     display: block;
     margin: 20px auto;
 }
+
+.tab-pane {
+    display: none;
+}
+.tab-pane.active {
+    display: block;
+}
