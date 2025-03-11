@@ -74,6 +74,8 @@ if ($user_type === 'admin') {
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/profile.css">
     <link rel="stylesheet" href="../assets/css/profile_bg-dark.css">
+    <link rel="stylesheet" href="../assets/css/profile_admin.css">
+    <link rel="stylesheet" href="../assets/css/profile_user.css">
 </head>
 
 <body>
