@@ -484,7 +484,7 @@ if ($user_type === 'admin') {
         });
 
     </script>
-
+    <script src="../assets/js/filterTable.js"></script>
 </body>
 
 </html>
