@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../config.php';
+require_once '../config/stripe.php';
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
@@ -30,45 +31,87 @@ if (!$order) {
 }
 
 $total_price = $order["total_price"];
+$amount_in_cents = $total_price * 100;
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank you for your order!</title>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
-    </style>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+    <title>Complete Payment - Handmade Goods</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
-    <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/order_confirmation.css">
+    <script src="https://js.stripe.com/v3/"></script>
     <style>
-        .hidden {
+        .payment-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .order-summary {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .payment-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+        .payment-button:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+            color: white;
+            text-decoration: none;
+        }
+        #payment-message {
+            color: #dc3545;
+            text-align: center;
+            margin-top: 1rem;
             display: none;
         }
-
-        .payment-form {
-            max-width: 500px;
-            margin: auto;
+        .secure-badge {
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.875rem;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
-
-        .paypal-button {
-            background-color: #ffc439;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -77,56 +120,69 @@ $total_price = $order["total_price"];
     <?php include '../assets/html/navbar.php'; ?>
 
     <div class="container mt-5">
-        <h1 class="text-center">Complete Your Payment</h1>
-        <p class="text-center">Order ID: <strong>#<?= $order_id ?></strong></p>
-        <p class="text-center">Total Amount: <strong>$<?= number_format($total_price, 2) ?></strong></p>
-
-        <form id="payment-form" action="process_payment_handler.php" method="POST" class="payment-form">
-            <input type="hidden" name="order_id" value="<?= $order_id ?>">
-
-            <label for="payment_method"><strong>Select Payment Method:</strong></label>
-            <select id="payment_method" name="payment_method" class="form-control mt-2">
-                <option value="credit_card">Credit Card</option>
-                <option value="paypal">PayPal</option>
-            </select>
-
-            <div id="credit-card-form" class="mt-4">
-                <label for="card_number">Card Number:</label>
-                <input type="text" name="card_number" id="card_number" class="form-control"
-                    placeholder="1234 5678 9012 3456" required>
-
-                <label for="expiry_date" class="mt-2">Expiration Date:</label>
-                <input type="month" name="expiry_date" id="expiry_date" class="form-control" required>
-
-                <label for="cvv" class="mt-2">CVV:</label>
-                <input type="text" name="cvv" id="cvv" class="form-control" placeholder="123" required>
-
-                <button type="submit" class="cta hover-raise w-100 mt-4">
-                    <span class="material-symbols-outlined">credit_card</span> Pay with Credit Card
-                </button>
+        <div class="payment-container">
+            <h2 class="mb-4 text-center">Complete Your Payment</h2>
+            
+            <div class="order-summary">
+                <h5 class="text-center mb-3">Order Summary</h5>
+                <p class="mb-2 text-center">Order #<?= $order_id ?></p>
+                <p class="mb-0 text-center"><strong>Total Amount: $<?= number_format($total_price, 2) ?></strong></p>
             </div>
 
-            <div id="paypal-button-container" class="hidden mt-4 text-center">
-                <button type="button" id="paypal-button" class="paypal-button">
-                    Pay with PayPal
-                </button>
-                <p class="text-muted mt-2">You will be redirected to PayPal to complete your payment.</p>
+            <button id="checkout-button" class="payment-button">
+                Proceed to Payment
+            </button>
+
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Preparing checkout...</p>
             </div>
-        </form>
+
+            <div id="payment-message"></div>
+
+            <div class="secure-badge">
+                <svg width="16" height="16" viewBox="0 0 16 16">
+                    <path fill="currentColor" d="M8 0L1 3v5c0 4.19 3.05 8.1 7 9 3.95-.9 7-4.81 7-9V3L8 0zm0 7c.83 0 1.5.67 1.5 1.5V11c0 .18-.12.33-.29.42v1.08c0 .28-.22.5-.5.5h-1.42c-.28 0-.5-.22-.5-.5v-1.08c-.17-.09-.29-.24-.29-.42V8.5C6.5 7.67 7.17 7 8 7z"/>
+                </svg>
+                Secure payment powered by Stripe
+            </div>
+        </div>
     </div>
 
     <script>
-        document.getElementById('payment_method').addEventListener('change', function () {
-            let method = this.value;
-            document.getElementById('credit-card-form').classList.toggle('hidden', method !== 'credit_card');
-            document.getElementById('paypal-button-container').classList.toggle('hidden', method !== 'paypal');
-        });
+        const checkoutButton = document.getElementById('checkout-button');
+        const loadingElement = document.querySelector('.loading');
+        const messageElement = document.getElementById('payment-message');
 
-        document.getElementById('paypal-button').addEventListener('click', function () {
-            window.location.href = "order_confirmation.php?order_id=<?= $order_id ?>&payment=paypal";
+        checkoutButton.addEventListener('click', async () => {
+            checkoutButton.disabled = true;
+            loadingElement.style.display = 'block';
+            messageElement.style.display = 'none';
+
+            try {
+                const response = await fetch("../payments/process_stripe_payment.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        order_id: <?= $order_id ?>,
+                        amount: <?= $amount_in_cents ?>
+                    }),
+                });
+
+                const data = await response.json();
+                
+                if (data.success && data.url) {
+                    window.location.href = data.url;
+                } else {
+                    throw new Error(data.error || 'Failed to create checkout session');
+                }
+            } catch (error) {
+                messageElement.textContent = error.message || "An error occurred. Please try again.";
+                messageElement.style.display = 'block';
+                checkoutButton.disabled = false;
+                loadingElement.style.display = 'none';
+            }
         });
     </script>
-
 </body>
-
 </html>
