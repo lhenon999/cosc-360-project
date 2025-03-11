@@ -97,8 +97,17 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
 
             <?php if (!$from_profile): ?>
                 <div class="seller-info mt-4 d-flex align-items-center mb-3">
-                    <a href="user_profile.php?id=<?= $user_id ?>&from_product=product.php?id=<?= $product_id ?>"
-                        class="d-flex align-items-center text-decoration-none text-dark">
+                    <?php
+                    $isAdmin = isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin';
+                    $fromProfileListings = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
+
+                    $sellerProfileUrl = "user_profile.php?id=" . $user_id . "&from_product=product.php?id=" . $product_id;
+
+                    if ($isAdmin && $fromProfileListings) {
+                        $sellerProfileUrl .= "&from=profile_listings";
+                    }
+                    ?>
+                    <a href="<?= $sellerProfileUrl ?>" class="d-flex align-items-center text-decoration-none text-dark">
                         <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
                             class="rounded-circle seller-profile-pic" width="50" height="47">
                         <p class="ms-3 mb-0">Sold by: <strong><?= htmlspecialchars($seller['name']) ?></strong></p>
