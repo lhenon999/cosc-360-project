@@ -312,3 +312,7 @@ button[type="submit"]:hover {
         padding: 16px;
     }
 }
+
+.stock-status {
+    display: none;
+}

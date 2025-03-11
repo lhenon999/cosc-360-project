@@ -2,6 +2,9 @@
 session_start();
 require_once '../config.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if (!isset($_SESSION["user_id"])) {
     $_SESSION["error"] = "You must be logged in to view this page.";
     header("Location: ../pages/login.php");
@@ -35,16 +38,35 @@ $status = $order["status"];
 $order_date = date("F j, Y, g:i a", strtotime($order["created_at"]));
 
 $stmt = $conn->prepare("
-    SELECT oi.item_id, i.name, i.img, oi.quantity, oi.price_at_purchase
+    SELECT oi.item_id, oi.item_name, i.img, oi.quantity, oi.price_at_purchase
     FROM order_items oi
-    JOIN items i ON oi.item_id = i.id
+    LEFT JOIN items i ON oi.item_id = i.id
     WHERE oi.order_id = ?
+    ORDER BY oi.item_name
 ");
 $stmt->bind_param("i", $order_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $order_items = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
+
+foreach ($order_items as $item) {
+    $seller_stmt = $conn->prepare("SELECT user_id FROM items WHERE id = ?");
+    $seller_stmt->bind_param("i", $item['item_id']);
+    $seller_stmt->execute();
+    $seller_stmt->bind_result($seller_id);
+    $seller_stmt->fetch();
+    $seller_stmt->close();
+
+    $insert_sale = $conn->prepare("
+        INSERT INTO sales (order_id, seller_id, buyer_id, item_id, quantity, price)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ");
+    $insert_sale->bind_param("iiiiid", $order_id, $seller_id, $user_id, $item['item_id'], $item['quantity'], $item['price_at_purchase']);
+    $insert_sale->execute();
+    $insert_sale->close();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -91,19 +113,19 @@ $stmt->close();
             </div>
         </div>
 
-
-
         <h3 class="mt-5">Items Ordered:</h3>
         <div class="row mt-4">
             <?php foreach ($order_items as $item): ?>
                 <div class="col-md-6 mb-4">
                     <div class="order-item d-flex align-items-center">
-                        <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['name']) ?>"
-                            class="cart-img me-4">
+                        <img src="<?= htmlspecialchars($item['img'] ?? '../assets/images/product_images/default.webp') ?>" 
+                             alt="<?= htmlspecialchars($item['item_name']) ?>"
+                             class="cart-img me-4">
                         <div class="item-desc">
-                            <h5><?= htmlspecialchars($item['name']) ?></h5>
+                            <h5><?= htmlspecialchars($item['item_name']) ?></h5>
                             <p class="mt-4"><strong>Quantity:</strong> <?= $item['quantity'] ?></p>
                             <p><strong>Price:</strong> $<?= number_format($item['price_at_purchase'], 2) ?></p>
+                            <p><strong>Item Total:</strong> $<?= number_format($item['price_at_purchase'] * $item['quantity'], 2) ?></p>
                         </div>
                     </div>
 
