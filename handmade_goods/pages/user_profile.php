@@ -29,7 +29,7 @@ if (!$user) {
 
 $first_name = explode(' ', trim($user['name']))[0];
 
-$query = "SELECT id, name, img, price FROM items WHERE user_id = ?";
+$query = "SELECT id, name, img, price, stock FROM items WHERE user_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -143,6 +143,8 @@ $stmt->close();
                             $name = htmlspecialchars($product["name"]);
                             $price = number_format($product["price"], 2);
                             $image = htmlspecialchars($product["img"]);
+                            $stock = intval($product["stock"]);
+                            $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
                             $from_profile = "user_profile";
                             include "../assets/html/product_card.php";
                             ?>

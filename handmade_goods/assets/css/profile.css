@@ -61,6 +61,20 @@
     background-color: #345418;
 }
 
+.delete-btn {
+    padding: 4px 8px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
 
 .profile-tabs {
     border-top: 1px solid #eee;
@@ -168,6 +182,105 @@
     background-color: #1e3f1a;
 }
 
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.users-table thead {
+    background-color: #426B1F;
+    color: white;
+}
+
+.users-table th, .users-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.users-table th {
+    font-weight: 600;
+}
+
+.user-type {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.user-type.admin {
+    background-color: #dc3545;
+    color: white;
+}
+
+.user-type.normal {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Inventory Table Styles */
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.inventory-table th,
+.inventory-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.inventory-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.inventory-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.stock-level {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.stock-level.critical {
+    background-color: #ffe6e6;
+    color: #dc3545;
+}
+
+.stock-level.warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.stock-level.good {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.seller-link {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.seller-link:hover {
+    text-decoration: underline;
+}
+
+/* Fix tab content display */
 .tab-pane {
     display: none;
 }
@@ -176,7 +289,8 @@
     display: block;
 }
 
-.reviews-containers {
+
+.reviews-containers, .sales-container {
     width: 100%;
     display: flex;
     flex-wrap: nowrap;
@@ -186,21 +300,21 @@
     padding: 20px;
 }
 
-.rating-summary {
+.rating-summary, .earnings-summary {
     background: #fff;
     color: #1e1e1e;
     padding: 20px;
     border-radius: 16px;
     text-align: center;
     flex: 1; 
-    width: 300px;
+    width: 100%;
     height: 350px;
-    max-width: 300px;
+    min-width: 300px !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease-in-out;
 }
 
-.reviews-summary{
+.reviews-summary, .sales-summary{
     background: #fff;
     color: #1e1e1e;
     border-radius: 16px;
@@ -273,29 +387,9 @@
     border-radius: 4px;
 }
 
-.sales-summary {
-    background: #fff;
-    color: #1e1e1e;
-    border-radius: 16px;
-    text-align: center;
-    flex: 1; 
-    height: 350px;
-    min-width: 850px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease-in-out;
-    padding: 20px;
-}
-
 #earningsChart {
     max-width: 200px;
     max-height: 200px;
     display: block;
     margin: 20px auto;
-}
-
-.tab-pane {
-    display: none;
-}
-.tab-pane.active {
-    display: block;
 }

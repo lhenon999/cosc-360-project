@@ -18,7 +18,7 @@ $product_id = intval($_GET['id']);
 $from_profile = isset($_GET['from']) && $_GET['from'] === 'user_profile';
 
 
-$stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category FROM items WHERE id = ?");
+$stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock FROM items WHERE id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -113,15 +113,25 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
                 </a>
                 <a href="my_shop.php" class="btn btn-outline-secondary mt-3">Back to My Shop</a>
             <?php else: ?>
-                <form action="/cosc-360-project/handmade_goods/basket/add_to_basket.php" method="POST">
-                    <input type="hidden" name="product_id" value="<?= $product_id ?>">
-                    <div class="quantity-add">
-                        <input type="number" name="quantity" value="1" min="1" class="form-control">
-                        <button type="submit" class="cta hover-raise atc">
-                            <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
-                        </button>
-                    </div>
-                </form>
+                <?php if ($product['stock'] > 0): ?>
+                    <p class="stock-info <?= $product['stock'] < 5 ? 'low-stock' : '' ?>">
+                        <?= $product['stock'] < 5 ? 'Only ' . $product['stock'] . ' left in stock!' : 'In Stock' ?>
+                    </p>
+                    <form action="/cosc-360-project/handmade_goods/basket/add_to_basket.php" method="POST">
+                        <input type="hidden" name="product_id" value="<?= $product_id ?>">
+                        <div class="quantity-add">
+                            <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>" class="form-control quantity-input">
+                            <button type="submit" class="cta hover-raise atc">
+                                <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
+                            </button>
+                        </div>
+                    </form>
+                <?php else: ?>
+                    <p class="out-of-stock">Out of Stock</p>
+                    <button class="cta hover-raise atc" disabled>
+                        <span class="material-symbols-outlined">add_shopping_cart</span> Out of Stock
+                    </button>
+                <?php endif; ?>
                 <a href="<?= isset($from_profile) && $from_profile ? 'user_profile.php?id=' . $user_id : 'products.php' ?>"
                     class="btn btn-outline-secondary mt-3">
                     Back to
