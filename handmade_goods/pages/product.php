@@ -16,7 +16,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $product_id = intval($_GET['id']);
 
 $from_profile = isset($_GET['from']) && $_GET['from'] === 'user_profile';
-
+$from_dashboard = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
 
 $stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock FROM items WHERE id = ?");
 $stmt->bind_param("i", $product_id);
@@ -140,11 +140,12 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <a href="<?= isset($from_profile) && $from_profile ? 'user_profile.php?id=' . $user_id : 'products.php' ?>"
+                <a href="<?= $from_dashboard ? 'profile.php#listings' : ($from_profile ? 'user_profile.php?id=' . $user_id : 'products.php') ?>"
                     class="btn btn-outline-secondary mt-3">
                     Back to
-                    <?= isset($from_profile) && $from_profile ? htmlspecialchars($first_name) . "'s Shop" : 'Products' ?>
+                    <?= $from_dashboard ? 'Dashboard' : ($from_profile ? htmlspecialchars($first_name) . "'s Shop" : 'Products') ?>
                 </a>
+
             <?php endif; ?>
 
 

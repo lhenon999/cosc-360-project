@@ -16,18 +16,23 @@
                     <table class="users-table" id="usersTable">
                         <thead>
                             <tr>
+                                <th>Profile</th>
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Total Orders</th>
                                 <th>Total Listings</th>
                                 <th>Joined Date</th>
                                 <th>Actions</th>
-                                <th>Manage</th>
+                                <th>Moderate</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($all_users as $user): ?>
                                 <tr>
+                                    <td>
+                                        <img src="<?= htmlspecialchars($profile_picture) ?>" alt="Profile Picture"
+                                            id="profile-img-users-table">
+                                    </td>
                                     <td><?= htmlspecialchars($user["name"]) ?></td>
                                     <td><?= htmlspecialchars($user["email"]) ?></td>
                                     <td><?= $user["total_orders"] ?></td>
@@ -41,7 +46,7 @@
                                     </td>
                                     <td>
                                         <button type="button" class="manage-btn"
-                                            onclick="showManageModal(<?= $user['id'] ?>, '<?= htmlspecialchars($user['name']) ?>')">Manage</button>
+                                            onclick="showManageModal(<?= $user['id'] ?>, '<?= htmlspecialchars($user['name']) ?>')">Moderate</button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -76,8 +81,8 @@
                                 <th>Category</th>
                                 <th>Price</th>
                                 <th>Total Orders</th>
-                                <th>Seller</th>
                                 <th>Actions</th>
+                                <th>Moderate</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,12 +99,14 @@
                                     <td>$<?= number_format($item["price"], 2) ?></td>
                                     <td><?= $item["total_orders"] ?></td>
                                     <td>
-                                        <a href="user_profile.php?id=<?= $item["user_id"] ?>&from=admin" class="seller-link">
-                                            <?= htmlspecialchars($item["seller_name"]) ?>
+                                        <a href="product.php?id=<?= $item["id"] ?>&from=profile_listings" class="view-btn">
+                                            View Listing
                                         </a>
+
                                     </td>
+
                                     <td>
-                                        <a href="user_profile.php?id=<?= $item["user_id"] ?>&from=admin" class="view-btn"></a>
+                                        <a href="user_profile.php?id=<?= $item["user_id"] ?>&from=admin"></a>
                                         <button type="button" class="delete-btn"
                                             onclick="showDeleteListingModal(<?= $item['id'] ?>)">Delete</button>
                                     </td>
