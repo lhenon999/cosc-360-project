@@ -129,8 +129,9 @@ if ($user_type === 'admin') {
                     <?php if ($user_type === 'admin'): ?>
                         <div id="users" class="tab-pane active">
                             <h3>User Management</h3>
+                            <input type="text" id="userSearch" class="form-control mb-3" placeholder="Search users..." onkeyup="filterTable('usersTable', 'userSearch')">
                             <?php if (!empty($all_users)): ?>
-                                <table class="users-table">
+                                <table class="users-table" id="usersTable">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
@@ -167,6 +168,8 @@ if ($user_type === 'admin') {
                         </div>
                         <div id="listings" class="tab-pane">
                             <h3>Product Inventory Management</h3>
+                            <input type="text" id="listingsSearch" class="form-control mb-3" placeholder="Search listings..." onkeyup="filterTable('listingsTable', 'listingsSearch')">
+
                             <?php
                             $stmt = $conn->prepare("
                                 SELECT i.*, u.name as seller_name, u.email as seller_email,
@@ -178,7 +181,7 @@ if ($user_type === 'admin') {
                             $stmt->execute();
                             $result = $stmt->get_result();
                             if ($result->num_rows > 0): ?>
-                                <table class="inventory-table">
+                                <table class="inventory-table" id="listingsTable">
                                     <thead>
                                         <tr>
                                             <th>Product Name</th>
