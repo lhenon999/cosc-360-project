@@ -88,7 +88,7 @@ include '../config.php';
             <p>Discover the latest handmade creations and featured products</p>
             <div class="product-cards-container" id="product-cards-container">
                 <?php
-                $stmt = $conn->prepare("SELECT id, name, price, img FROM items ORDER BY created_at DESC LIMIT 6");
+                $stmt = $conn->prepare("SELECT id, name, price, img, stock FROM items ORDER BY created_at DESC LIMIT 6");
                 $stmt->execute();
                 $result = $stmt->get_result();
                 while($product = $result->fetch_assoc()):
@@ -96,6 +96,8 @@ include '../config.php';
                     $name = htmlspecialchars($product["name"]);
                     $price = number_format($product["price"], 2);
                     $image = htmlspecialchars($product["img"]);
+                    $stock = intval($product["stock"]);
+                    $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
                     include "../assets/html/product_card.php";
                 endwhile;
                 $stmt->close();

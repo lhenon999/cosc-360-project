@@ -6,7 +6,7 @@ include '../config.php';
 
 $isLoggedIn = isset($_SESSION["user_id"]);
 if (!$isLoggedIn) {
-    header("Location: ../pages/login.php");
+    header("Location: ../auth/login.php");
     exit();
 }
 $user_id = $isLoggedIn ? $_SESSION["user_id"] : null;
@@ -18,7 +18,7 @@ $cart_items = [];
 
 if ($isLoggedIn) {
     $stmt = $conn->prepare("
-        SELECT ci.item_id, i.name, i.price, i.img, ci.quantity
+        SELECT ci.item_id, i.name, i.price, i.img, ci.quantity, i.stock
         FROM cart_items ci
         JOIN items i ON ci.item_id = i.id
         JOIN cart c ON ci.cart_id = c.id
@@ -34,7 +34,7 @@ if ($isLoggedIn) {
 } else {
     if (isset($_SESSION["cart"])) {
         foreach ($_SESSION["cart"] as $id => $cart_data) {
-            $stmt = $conn->prepare("SELECT id, name, price, img FROM items WHERE id = ?");
+            $stmt = $conn->prepare("SELECT id, name, price, img, stock FROM items WHERE id = ?");
             $stmt->bind_param("i", $id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -93,14 +93,20 @@ $total = $subtotal + $shipping + $tax;
                             <div class="cart-details ms-3">
                                 <h5><?= htmlspecialchars($item['name']) ?></h5>
                                 <p class="text-muted">$<?= number_format($item['price'], 2) ?></p>
-                                <form action="../basket/update_basket.php" method="POST" class="d-flex align-items-center">
-                                    <input type="hidden" name="product_id" value="<?= $id ?>">
-                                    <input type="number" name="quantity" value="<?= $item['quantity'] ?>" min="1"
-                                        class="form-control quantity-input me-2">
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
+                                <?php if ($item['stock'] < 5): ?>
+                                    <p class="stock-warning">Only <?= $item['stock'] ?> left in stock!</p>
+                                <?php endif; ?>
+                                <div class="d-flex align-items-center">
+                                    <form action="../basket/update_basket.php" method="POST" class="d-flex align-items-center">
+                                        <input type="hidden" name="product_id" value="<?= $id ?>">
+                                        <input type="number" name="quantity" value="<?= $item['quantity'] ?>" 
+                                               min="1" max="<?= $item['stock'] ?>"
+                                               class="form-control quantity-input me-2"
+                                               onchange="this.form.submit()">
+                                    </form>
                                     <a href="../basket/remove_from_basket.php?id=<?= $id ?>"
-                                        class="btn btn-sm btn-outline-danger ms-2">Remove</a>
-                                </form>
+                                       class="btn btn-sm btn-outline-danger ms-2">Remove</a>
+                                </div>
                             </div>
                             <h5 class="text-end">$<?= number_format($item['price'] * $item['quantity'], 2) ?></h5>
                         </div>
@@ -168,6 +174,8 @@ $total = $subtotal + $shipping + $tax;
             <?php endif; ?>
         </div>
     </div>
+</div>
+
 </body>
 
 </html>

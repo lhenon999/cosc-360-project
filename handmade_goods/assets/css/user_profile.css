@@ -1,0 +1,232 @@
+.profile-container {
+    max-width: 1800px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    height: auto;
+    flex-wrap: nowrap;
+}
+
+.reviews-containers {
+    width: 1800px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 30px;
+    padding: 20px;
+}
+
+.container {
+    flex-wrap: wrap !important;
+    margin: 20px !important;
+    padding: 0px !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+    border-radius: 16px;
+}
+
+.container:hover{
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px) scale(1.03);
+    background: rgba(255, 255, 255, 0.98);
+}
+
+.scrollable-container {
+    flex-grow: 0;
+    height: auto;
+    min-height: 0;
+    overflow-y: auto;
+    margin-bottom: 40px;
+}
+
+.profile-info{
+    flex-wrap: wrap !important;
+    margin-top: 15px;
+    margin-right: 15px;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.text-center{
+    justify-self: center;
+}
+
+.listings-title{
+    display: block;
+    width: 100%;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 50px;
+    width: 100%;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.profile-pic {
+    display: block;
+    width: 280px;
+    height: 265px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.profile-details {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.profile-name {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+}
+
+.rating-score {
+    font-size: 20px;
+    color: #2a9d8f;
+}
+
+.user-products {
+    margin-top: 20px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    background: white;
+}
+
+.product-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.rating-summary {
+    background: #fff;
+    color: #1e1e1e;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    flex: 1; 
+    width: 300px;
+    height: 350px;
+    max-width: 300px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+}
+
+.reviews-summary{
+    background: #fff;
+    color: #1e1e1e;
+    border-radius: 16px;
+    width: 100%;
+    text-align: center;
+    flex: 1; 
+    height: 350px;
+    min-width: 500px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+}
+
+.reviews-summary:hover, .rating-summary:hover, .profile-pic:hover {
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px) scale(1.02);
+    background: rgba(255, 255, 255, 0.98);
+}
+
+.profile-info:hover{
+    transform: translateY(-3px) scale(1.02);
+}
+
+.bg-dark .reviews-summary, .bg-dark .rating-summary{
+    background: #1e1e1e;
+    color: #fff;
+}
+
+.bg-dark .profile-container{
+    background-color: #232529 !important;
+}
+
+.rating-overall {
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.rating-score {
+    font-size: 32px;
+    font-weight: bold;
+    color: #345418;
+}
+
+.stars {
+    font-size: 22px;
+    color: #345418;
+}
+
+.rating-count {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.rating-bars {
+    margin-top: 15px;
+}
+
+.rating-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+.bar {
+    width: 200px;
+    height: 8px;
+    background: #fff;
+    border-radius: 4px;
+    position: relative;
+}
+
+.filled {
+    height: 100%;
+    background: #345418;
+    border-radius: 4px;
+}
+
+.contact-label{
+    margin: 0 !important;
+}
+
+.back-arrow {
+    font-size: 68px;
+    text-decoration: none;
+    color: #2d5a27;
+    font-weight: 600;
+    transition: color 0.3s ease-in-out;
+}
+
+.back-arrow:hover {
+    color: #1e3f1a;
+}

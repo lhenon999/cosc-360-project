@@ -4,6 +4,12 @@
     transition: transform 0.3s ease;
 }
 
+.bg-dark .feature-box {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
 .feature-box:hover {
     transform: translateY(-5px);
 }

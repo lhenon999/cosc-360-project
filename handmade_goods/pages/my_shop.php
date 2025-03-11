@@ -19,7 +19,7 @@ include '../config.php';
 $user_email = $_SESSION["user_id"];
 $products = [];
 
-$stmt = $conn->prepare("SELECT id, name, price, img FROM items WHERE user_id = ?");
+$stmt = $conn->prepare("SELECT id, name, price, img, stock FROM items WHERE user_id = ?");
 $stmt->bind_param("s", $user_email);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -57,13 +57,11 @@ $stmt->close();
     <h1 class="text-center">My Shop</h1>
     <p class="text-center">Browse and edit your listings</p>
     <br>
-    <div class="d-flex justify-content-center">
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center mb-5">
             <a class="cta hover-raise" href="create_listing.php">
                 <span class="material-symbols-outlined">add</span> Create a new listing
             </a>
         </div>
-    </div>
 
     <div class="container">
         <div class="scrollable-container">
@@ -75,6 +73,8 @@ $stmt->close();
                         $name = htmlspecialchars($product["name"]);
                         $price = number_format($product["price"], 2);
                         $image = htmlspecialchars($product["img"]);
+                        $stock = intval($product["stock"]);
+                        $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
                         include "../assets/html/product_card.php";
                         ?>
                     <?php endforeach; ?>

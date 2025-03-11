@@ -76,3 +76,42 @@ main {
 .auth-hide {
     display: none !important;
 }
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: green;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.remember-me label {
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.bg-dark .remember-me label {
+    color: #ffffff !important;
+    opacity: 0.5;
+}
+
+.bg-dark a {
+    color: #ffffff !important;
+    opacity: 0.5;
+    transition: color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.bg-dark a:hover {
+    color: #ffcc00 !important;
+    opacity: 1;
+}
+
