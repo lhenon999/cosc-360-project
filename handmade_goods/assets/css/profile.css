@@ -63,7 +63,7 @@
 
 .delete-btn {
     padding: 4px 8px;
-    background-color: #dc3545;
+    background-color: #345418;
     color: white;
     border: none;
     border-radius: 4px;
@@ -74,28 +74,17 @@
 
 .manage-btn{
     padding: 4px 8px;
-    background-color: #426B1F;
+    background-color: #345418;
     color: white;
     border: none;
     border-radius: 4px;
     margin-left: 8px;
     cursor: pointer;
     font-size: 14px;
-}
-
-.manage-btn{
-    padding: 4px 8px;
-    background-color: #426B1F;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    margin-left: 8px;
-    cursor: pointer;
-    font-size: 18px;
 }
 
 .manage-btn:hover {
-    background-color: #365517;
+    background-color: #E67E22;
     transform: scale(1.05);
 }
 
@@ -209,7 +198,7 @@
     background-color: #1e3f1a;
 }
 
-.users-table {
+.users-table{
     width: 100%;
     border-collapse: collapse;
     margin-top: 1.5rem;
@@ -217,6 +206,14 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tab-content h3{
+    font-size: 26px;
+    font-weight: bold;
+    color: #2d5a27;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
 .users-table thead {
@@ -257,24 +254,68 @@
     border-collapse: collapse;
     margin-top: 20px;
     background: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-.inventory-table th,
+.inventory-table th, 
 .inventory-table td {
-    padding: 12px;
+    padding: 14px 18px;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
 
 .inventory-table th {
-    background-color: #f8f9fa;
+    background-color: #426B1F;
+    color: white;
     font-weight: 600;
-    color: #333;
+    text-transform: uppercase;
+}
+
+.inventory-table tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
 .inventory-table tr:hover {
-    background-color: #f5f5f5;
+    background-color: #eef5ea;
+    transition: background-color 0.2s ease-in-out;
+}
+
+
+/* Stock Level Styling */
+.stock-level {
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+}
+
+.stock-level.critical {
+    background-color: #ffe6e6;
+    color: #dc3545;
+}
+
+.stock-level.warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.stock-level.good {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Seller Name Styling */
+.seller-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.seller-link:hover {
+    text-decoration: underline;
 }
 
 .stock-level {
@@ -498,4 +539,11 @@
 .cancel-btn:hover {
     background-color: #545b62;
 }
+
+#userSearch, #listingsSearch {
+    border-radius: 25px;
+}
+
+
+
 
