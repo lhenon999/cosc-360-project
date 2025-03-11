@@ -2,6 +2,9 @@
 session_start();
 require_once '../config.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if (!isset($_SESSION["user_id"])) {
     $_SESSION["error"] = "You must be logged in to view this page.";
     header("Location: ../pages/login.php");
@@ -46,6 +49,24 @@ $stmt->execute();
 $result = $stmt->get_result();
 $order_items = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
+
+foreach ($order_items as $item) {
+    $seller_stmt = $conn->prepare("SELECT user_id FROM items WHERE id = ?");
+    $seller_stmt->bind_param("i", $item['item_id']);
+    $seller_stmt->execute();
+    $seller_stmt->bind_result($seller_id);
+    $seller_stmt->fetch();
+    $seller_stmt->close();
+
+    $insert_sale = $conn->prepare("
+        INSERT INTO sales (order_id, seller_id, buyer_id, item_id, quantity, price)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ");
+    $insert_sale->bind_param("iiiiid", $order_id, $seller_id, $user_id, $item['item_id'], $item['quantity'], $item['price_at_purchase']);
+    $insert_sale->execute();
+    $insert_sale->close();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -91,8 +112,6 @@ $stmt->close();
                 </form>
             </div>
         </div>
-
-
 
         <h3 class="mt-5">Items Ordered:</h3>
         <div class="row mt-4">

@@ -152,10 +152,6 @@ main {
     margin-bottom: 1rem;
 }
 
-input[type="number"].quantity-input {
-    width: 80px;
-}
-
 input[type="number"].quantity-input::-webkit-inner-spin-button {
     opacity: 1;
     background: #f5f5f5;

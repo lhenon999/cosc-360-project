@@ -56,7 +56,6 @@ try {
     $stmt->close();
 
     $conn->commit();
-    $_SESSION["success"] = "Order #" . $order_id . " has been deleted successfully and product stock has been restored.";
 } catch (Exception $e) {
     $conn->rollback();
     $_SESSION["error"] = "Error deleting order: " . $e->getMessage();

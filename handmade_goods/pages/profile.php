@@ -2,6 +2,8 @@
 session_start();
 require_once '../config.php';
 
+$totalEarnings = 3445.67;
+
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
     exit();
@@ -120,7 +122,7 @@ if ($user_type === 'admin') {
                     <?php else: ?>
                         <a href="#orders" class="active">My Orders</a>
                         <a href="#reviews">My Reviews</a>
-                        <a href="#activity">Other Activity</a>
+                        <a href="#sales">Sales</a>
                     <?php endif; ?>
                 </nav>
                 <div class="tab-content">
@@ -145,12 +147,15 @@ if ($user_type === 'admin') {
                                             <tr>
                                                 <td><?= htmlspecialchars($user["name"]) ?></td>
                                                 <td><?= htmlspecialchars($user["email"]) ?></td>
-                                                <td><span class="user-type <?= $user["user_type"] ?>"><?= ucfirst(htmlspecialchars($user["user_type"])) ?></span></td>
+                                                <td><span
+                                                        class="user-type <?= $user["user_type"] ?>"><?= ucfirst(htmlspecialchars($user["user_type"])) ?></span>
+                                                </td>
                                                 <td><?= $user["total_orders"] ?></td>
                                                 <td><?= $user["total_listings"] ?></td>
                                                 <td><?= date('M j, Y', strtotime($user["created_at"])) ?></td>
                                                 <td>
-                                                    <a href="user_profile.php?id=<?= $user["id"] ?>" class="view-btn">View Profile</a>
+                                                    <a href="user_profile.php?id=<?= $user["id"] ?>" class="view-btn">View
+                                                        Profile</a>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -190,7 +195,8 @@ if ($user_type === 'admin') {
                                             <tr class="<?= $item['stock'] < 5 ? 'low-stock' : '' ?>">
                                                 <td><?= htmlspecialchars($item["name"]) ?></td>
                                                 <td>
-                                                    <span class="stock-level <?= $item['stock'] < 5 ? 'critical' : ($item['stock'] < 10 ? 'warning' : 'good') ?>">
+                                                    <span
+                                                        class="stock-level <?= $item['stock'] < 5 ? 'critical' : ($item['stock'] < 10 ? 'warning' : 'good') ?>">
                                                         <?= $item["stock"] ?>
                                                     </span>
                                                 </td>
@@ -203,9 +209,10 @@ if ($user_type === 'admin') {
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a href="user_profile.php?id=<?= $item["user_id"] ?>" class="view-btn">View Seller</a>
-                                                    <form method="POST" action="delete_listing.php" style="display: inline;" 
-                                                          onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone and will remove the product from all users\' views.');">
+                                                    <a href="user_profile.php?id=<?= $item["user_id"] ?>" class="view-btn">View
+                                                        Seller</a>
+                                                    <form method="POST" action="delete_listing.php" style="display: inline;"
+                                                        onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone and will remove the product from all users\' views.');">
                                                         <input type="hidden" name="item_id" value="<?= $item["id"] ?>">
                                                         <button type="submit" class="delete-btn">Delete</button>
                                                     </form>
@@ -257,9 +264,10 @@ if ($user_type === 'admin') {
                                                 </td>
                                                 <td><?= date('M j, Y', strtotime($order["created_at"])) ?></td>
                                                 <td>
-                                                    <a href="order_details.php?order_id=<?= $order["id"] ?>" class="view-btn">View</a>
-                                                    <form method="POST" action="delete_order.php" style="display: inline;" 
-                                                          onsubmit="return confirm('Are you sure you want to delete this order? This cannot be undone.');">
+                                                    <a href="order_details.php?order_id=<?= $order["id"] ?>"
+                                                        class="view-btn">View</a>
+                                                    <form method="POST" action="delete_order.php" style="display: inline;"
+                                                        onsubmit="return confirm('Are you sure you want to delete this order? This cannot be undone.');">
                                                         <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
                                                         <button type="submit" class="delete-btn">Delete</button>
                                                     </form>
@@ -272,31 +280,136 @@ if ($user_type === 'admin') {
                                 <p>You have no orders yet.</p>
                             <?php endif; ?>
                             <?php $stmt->close(); ?>
+                        <?php endif; ?>
+                    </div>
+                    <div id="reviews" class="tab-pane">
+                        <div class="reviews-containers">
+                            <div class="rating-summary">
+                                <h3>Review Summary</h3>
+                                <div class="rating-overall">
+                                    <span class="rating-score">4.1</span>
+                                    <span class="stars">★★★★☆</span>
+                                    <span class="rating-count">167 reviews</span>
+                                </div>
+
+                                <div class="rating-bars">
+                                    <div class="rating-row">
+                                        <span>5</span>
+                                        <div class="bar">
+                                            <div class="filled" style="width: 80%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="rating-row">
+                                        <span>4</span>
+                                        <div class="bar">
+                                            <div class="filled" style="width: 40%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="rating-row">
+                                        <span>3</span>
+                                        <div class="bar">
+                                            <div class="filled" style="width: 20%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="rating-row">
+                                        <span>2</span>
+                                        <div class="bar">
+                                            <div class="filled" style="width: 10%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="rating-row">
+                                        <span>1</span>
+                                        <div class="bar">
+                                            <div class="filled" style="width: 30%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="reviews-summary">
+                                <h3>Reviews</h3>
+
+                                <?php if (!empty($all_users)): ?>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>User Type</th>
+                                                <th>Total Orders</th>
+                                                <th>Total Listings</th>
+                                                <th>Joined</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($all_users as $user): ?>
+                                                <tr>
+                                                    <td><?= htmlspecialchars($user["name"]) ?></td>
+                                                    <td><?= htmlspecialchars($user["email"]) ?></td>
+                                                    <td><span
+                                                            class="user-type <?= htmlspecialchars($user["user_type"]) ?>"><?= ucfirst(htmlspecialchars($user["user_type"])) ?></span>
+                                                    </td>
+                                                    <td><?= htmlspecialchars($user["total_orders"]) ?></td>
+                                                    <td><?= htmlspecialchars($user["total_listings"]) ?></td>
+                                                    <td><?= date('M j, Y', strtotime($user["created_at"])) ?></td>
+                                                    <td>
+                                                        <a href="user_profile.php?id=<?= htmlspecialchars($user["id"]) ?>"
+                                                            class="view-btn">View Profile</a>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                <?php else: ?>
+                                    <p>No users found.</p>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    <?php endif; ?>
+                    </div>
+                    <div id="sales" class="tab-pane">
+                        <div class="sales-container">
+                            <div class="earnings-summary">
+                                <h3>Total Earnings</h3>
+                                <canvas id="earningsChart"></canvas>
+                                <p>Total Earnings: $<span
+                                        id="totalEarnings"><?= number_format($totalEarnings ?? 0, 2) ?></span></p>
+                            </div>
+                            <div class="sales-summary">
+                                <h3>Sales History</h3>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-
     <script>
         document.getElementById("profileInput").addEventListener("change", function () {
             document.getElementById("profilePicForm").submit();
         });
 
         // Tab switching functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const tabLinks = document.querySelectorAll('.tabs-nav a');
             const tabContents = document.querySelectorAll('.tab-pane');
-            
+
             function switchTab(e) {
                 e.preventDefault();
                 const targetId = e.target.getAttribute('href').slice(1);
-                
+
+                const targetTab = document.getElementById(targetId);
+
+                if (!targetTab) {
+                    console.error(`Tab with ID "${targetId}" not found.`);
+                    return; // Stop execution if tab does not exist
+                }
+
                 // Update active states
                 tabLinks.forEach(link => link.classList.remove('active'));
                 tabContents.forEach(content => content.classList.remove('active'));
-                
+
                 e.target.classList.add('active');
                 document.getElementById(targetId).classList.add('active');
 
@@ -316,6 +429,57 @@ if ($user_type === 'admin') {
                 }
             }
         });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let earningsChart;
+
+            function renderEarningsChart() {
+                const totalEarnings = parseFloat("<?= $totalEarnings ?>");
+                const ctx = document.getElementById("earningsChart");
+
+                if (!ctx) {
+                    console.error("Canvas element with ID 'earningsChart' not found.");
+                    return;
+                }
+
+                if (earningsChart instanceof Chart) {
+                    earningsChart.destroy();
+                }
+
+                earningsChart = new Chart(ctx.getContext("2d"), {
+                    type: "doughnut",
+                    data: {
+                        labels: ["Earnings", "Remaining"],
+                        datasets: [{
+                            data: [totalEarnings, Math.max(10000 - totalEarnings, 0)],
+                            backgroundColor: ["#2d5a27", "#e0e0e0"],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: "70%",
+                        plugins: {
+                            legend: { display: false },
+                        }
+                    }
+                });
+
+                console.log("Chart rendered successfully with earnings:", totalEarnings);
+            }
+
+            document.querySelector('a[href="#sales"]').addEventListener("click", function () {
+                setTimeout(renderEarningsChart, 100); 
+            });
+
+            if (document.getElementById("sales").classList.contains("active")) {
+                renderEarningsChart();
+            }
+        });
+
     </script>
 
 </body>

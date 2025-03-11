@@ -1,4 +1,4 @@
--- DROP DATABASE IF EXISTS handmade_goods;
+DROP DATABASE IF EXISTS handmade_goods;
 CREATE DATABASE IF NOT EXISTS handmade_goods;
 USE handmade_goods;
 CREATE TABLE IF NOT EXISTS USERS( id INT auto_increment PRIMARY KEY,
@@ -58,6 +58,18 @@ CREATE TABLE IF NOT EXISTS password_resets (id INT AUTO_INCREMENT PRIMARY KEY,
                                 token VARCHAR(100) NOT NULL,
                                 expires DATETIME NOT NULL,
                                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS sales (id INT AUTO_INCREMENT PRIMARY KEY,
+                                order_id INT NOT NULL,
+                                seller_id INT NOT NULL,
+                                buyer_id INT NOT NULL,
+                                item_id INT NOT NULL,
+                                quantity INT NOT NULL,
+                                price DECIMAL(10,2) NOT NULL,
+                                sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+                                FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE,
+                                FOREIGN KEY (buyer_id) REFERENCES users(id) ON DELETE CASCADE,
+                                FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE);
 
 ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE USERS ADD COLUMN profile_picture VARCHAR(255) NOT NULL DEFAULT '/cosc-360-project/handmade_goods/assets/images/default_profile.png';
