@@ -129,7 +129,8 @@ if ($user_type === 'admin') {
                     <?php if ($user_type === 'admin'): ?>
                         <div id="users" class="tab-pane active">
                             <h3>User Management</h3>
-                            <input type="text" id="userSearch" class="form-control mb-3" placeholder="Search users..." onkeyup="filterTable('usersTable', 'userSearch')">
+                            <input type="text" id="userSearch" class="form-control mb-3" placeholder="Search users..."
+                                onkeyup="filterTable('usersTable', 'userSearch')">
                             <?php if (!empty($all_users)): ?>
                                 <table class="users-table" id="usersTable">
                                     <thead>
@@ -155,8 +156,11 @@ if ($user_type === 'admin') {
                                                 <td><?= $user["total_listings"] ?></td>
                                                 <td><?= date('M j, Y', strtotime($user["created_at"])) ?></td>
                                                 <td>
-                                                    <a href="user_profile.php?id=<?= $user["id"] ?>" class="view-btn">View
-                                                        Profile</a>
+                                                    <a href="user_profile.php?id=<?= $user["id"] ?><?= ($user_type === 'admin') ? '&from=admin' : '' ?>"
+                                                        class="view-btn">
+                                                        View Profile
+                                                    </a>
+
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -168,7 +172,8 @@ if ($user_type === 'admin') {
                         </div>
                         <div id="listings" class="tab-pane">
                             <h3>Product Inventory Management</h3>
-                            <input type="text" id="listingsSearch" class="form-control mb-3" placeholder="Search listings..." onkeyup="filterTable('listingsTable', 'listingsSearch')">
+                            <input type="text" id="listingsSearch" class="form-control mb-3"
+                                placeholder="Search listings..." onkeyup="filterTable('listingsTable', 'listingsSearch')">
 
                             <?php
                             $stmt = $conn->prepare("
@@ -212,8 +217,8 @@ if ($user_type === 'admin') {
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a href="user_profile.php?id=<?= $item["user_id"] ?>" class="view-btn">View
-                                                        Seller</a>
+                                                    <a href="user_profile.php?id=<?= $item["user_id"] ?>&from=admin"
+                                                        class="view-btn">View Seller</a>
                                                     <form method="POST" action="delete_listing.php" style="display: inline;"
                                                         onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone and will remove the product from all users\' views.');">
                                                         <input type="hidden" name="item_id" value="<?= $item["id"] ?>">
@@ -398,9 +403,9 @@ if ($user_type === 'admin') {
     <script src="../assets/js/profile_tab_switching.js"></script>
     <script src="../assets/js/profile_earnings_chart.js"></script>
     <script>
-    let urlParams = new URLSearchParams(window.location.search);
-    let itemName = urlParams.get('item');
-    let userType = "<?= $user_type ?>";
+        let urlParams = new URLSearchParams(window.location.search);
+        let itemName = urlParams.get('item');
+        let userType = "<?= $user_type ?>";
     </script>
     <script src="../assets/js/admin_manage_listing.js"></script>
 </body>

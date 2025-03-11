@@ -12,6 +12,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 }
 
 $from_product = isset($_GET['from_product']) ? $_GET['from_product'] : null;
+$from_admin = isset($_GET['from']) && $_GET['from'] === 'admin';
 
 $user_id = intval($_GET['id']);
 
@@ -67,8 +68,10 @@ $stmt->close();
 
     <div class="profile-container">
         <div class="profile-header">
-            <?php if ($from_product): ?>
-                <a href="<?= htmlspecialchars($from_product) ?>" class="back-arrow">&#8592;</a>
+            <?php if ($from_admin): ?>
+                <a href="profile.php" class="back-arrow" onclick="goBack(event)">&#8592;</a>
+            <?php elseif ($from_product): ?>
+                <a href="<?= htmlspecialchars($from_product) ?>" class="back-arrow" onclick="goBack(event)">&#8592;</a>
             <?php endif; ?>
             <img src="<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" class="profile-pic">
             <div class="profile-info">

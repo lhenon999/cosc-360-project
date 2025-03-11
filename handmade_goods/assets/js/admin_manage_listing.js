@@ -43,20 +43,17 @@ function filterTable(tableId, searchId) {
     }
 }
 
-// Ensure this script runs after the page is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => {
         if (typeof userType !== "undefined" && typeof itemName !== "undefined" && userType === "admin" && itemName) {
             switchTab("listings");
 
-            // Prefill search bar and trigger filtering
             let listingsSearch = document.getElementById("listingsSearch");
             if (listingsSearch) {
                 listingsSearch.value = itemName;
                 filterTable('listingsTable', 'listingsSearch');
             }
 
-            // Update URL hash to reflect Listings tab without scrolling
             history.replaceState(null, null, "#listings");
         }
     }, 300);
