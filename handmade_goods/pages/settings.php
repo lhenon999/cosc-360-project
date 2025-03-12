@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT name, email FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT name, email, user_type FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -18,6 +18,7 @@ $stmt->close();
 $conn->close();
 
 $email = isset($user['email']) ? $user['email'] : '';
+$isAdmin = ($user['user_type'] === 'admin'); 
 ?>
 
 <?php if (isset($_SESSION['success'])): ?>
@@ -78,7 +79,7 @@ $email = isset($user['email']) ? $user['email'] : '';
                     <input type="email" class="form-control" name="email"
                         value="<?= htmlspecialchars($user['email']) ?>" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                <button type="submit" class="btn btn-primary w-100" <?= $isAdmin ? 'disabled' : '' ?>>Save Changes</button>
             </form>
         </div>
 

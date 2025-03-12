@@ -74,6 +74,15 @@ h5 {
     width: 100%;
 }
 
+.btn-primary:disabled {
+    background-color: #ccc !important;
+    color: #666 !important;
+    cursor: not-allowed;
+    border: 1px solid #aaa;
+    opacity: 0.6;
+}
+
+
 .btn-primary:hover {
     background: linear-gradient(135deg, #426b1f, #444);
     transform: scale(1.02);
