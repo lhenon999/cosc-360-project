@@ -84,11 +84,7 @@ $stmt->close();
             <p><strong>Order ID: </strong> <span>#<?= $order["id"] ?></span></p>
 
             <p><strong>Status: </strong>
-                <span class="order-status 
-                    <?= strtolower($order["status"]) === 'pending' ? 'status-pending' : '' ?>
-                    <?= strtolower($order["status"]) === 'shipped' ? 'status-shipped' : '' ?>
-                    <?= strtolower($order["status"]) === 'delivered' ? 'status-delivered' : '' ?>
-                    <?= strtolower($order["status"]) === 'cancelled' ? 'status-cancelled' : '' ?>">
+                <span class="status <?= strtolower($order["status"]) ?>">
                     <?= htmlspecialchars($order["status"]) ?>
                 </span>
             </p>

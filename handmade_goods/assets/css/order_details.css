@@ -35,28 +35,28 @@
     color: #222;
 }
 
-.status-pending {
-    background-color: #ffcc00;
-    color: #664d00;
+.status {
+    font-weight: 500;
+    padding: 8px 14px;
     border-radius: 6px;
+    text-align: center;
+    display: inline-block;
+    font-size: 13px;
 }
 
-.status-shipped {
-    background-color: #17a2b8;
-    color: white;
-    border-radius: 6px;
+.status.pending {
+    background-color: #FFE4B5;
+    color: #9C640C;
 }
 
-.status-delivered {
-    background-color: #28a745;
-    color: white;
-    border-radius: 6px;
+.status.completed {
+    background-color: #DFFFD6;
+    color: #2E7D32;
 }
 
-.status-cancelled {
-    background-color: #dc3545;
-    color: white;
-    border-radius: 6px;
+.status.cancelled {
+    background-color: #FFD6D6;
+    color: #D32F2F;
 }
 
 .order-items-table {
@@ -180,3 +180,5 @@
     display: inline-block;
     font-size: 13px;
 }
+
+
