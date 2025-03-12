@@ -159,14 +159,15 @@ $stmt->close();
         </div>
         <div id="sales" class="tab-pane">
             <div class="sales-container">
-                <div class="earnings-summary">
-                    <div class="chart-container" style="width: 300px; height: 300px;">
-                        <h3>Total Earnings</h3>
-                        <canvas id="earningsChart"></canvas>
-                        <p>Total Earnings: $<span id="totalEarnings"><?= number_format($totalEarnings ?? 0, 2) ?></span>
-                        </p>
+                <?php if ($totalEarnings > 0): ?>
+                    <div class="earnings-summary">
+                        <div class="chart-container" style="width: 300px; height: 300px;">
+                            <h3>Total Earnings</h3>
+                            <canvas id="earningsChart"></canvas>
+                            <p>Total Earnings: $<span id="totalEarnings"><?= number_format($totalEarnings, 2) ?></span></p>
+                        </div>
                     </div>
-                </div>
+                <?php endif; ?>
 
                 <div class="sales-summary">
                     <h3>Sales History</h3>
