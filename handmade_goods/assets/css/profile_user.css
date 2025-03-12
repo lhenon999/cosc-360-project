@@ -100,7 +100,6 @@
 .reviews-summary:hover, .rating-summary:hover, .orders-table:hover, .earnings-summary:hover {
     box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
     transform: translateY(-3px) scale(1.02);
-    background: rgba(255, 255, 255, 0.98);
 }
 
 .rating-overall {
