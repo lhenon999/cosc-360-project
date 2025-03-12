@@ -141,7 +141,7 @@
 .bar {
     width: 200px;
     height: 8px;
-    background: #fff;
+    background: transparent;
     border-radius: 4px;
     position: relative;
 }
@@ -157,4 +157,14 @@
     max-height: 200px;
     display: block;
     margin: 20px auto;
+}
+
+.orders-table img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    vertical-align: middle;
+    margin-right: 10px;
+    border: 2px solid #ddd;
 }

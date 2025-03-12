@@ -1,3 +1,21 @@
+<?php
+// Fetch total earnings
+$stmt = $conn->prepare("
+    SELECT SUM(price * quantity) AS total_earnings 
+    FROM sales 
+    WHERE seller_id = ?
+");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$totalEarnings = 0;
+if ($row = $result->fetch_assoc()) {
+    $totalEarnings = $row["total_earnings"] ?? 0;
+}
+$stmt->close();
+?>
+
+
 <div class="profile-tabs mt-5">
     <nav class="tabs-nav">
         <a href="#orders" class="active">My Orders</a>
@@ -155,11 +173,15 @@
 
                     <?php
                     $stmt = $conn->prepare("
-                SELECT id, order_id, buyer_id, item_id, quantity, price, sale_date
-                FROM sales
-                WHERE seller_id = ?
-                ORDER BY sale_date DESC
-            ");
+        SELECT s.id, s.order_id, s.buyer_id, s.item_id, s.quantity, s.price, s.sale_date,
+               u.name AS buyer_name, u.profile_picture,
+               i.name AS item_name
+        FROM sales s
+        JOIN users u ON s.buyer_id = u.id
+        JOIN items i ON s.item_id = i.id
+        WHERE s.seller_id = ?
+        ORDER BY s.sale_date DESC
+    ");
                     $stmt->bind_param("i", $user_id);
                     $stmt->execute();
                     $result = $stmt->get_result();
@@ -169,9 +191,8 @@
                             <thead>
                                 <tr>
                                     <th>Sale ID</th>
-                                    <th>Order ID</th>
-                                    <th>Buyer ID</th>
-                                    <th>Item ID</th>
+                                    <th>Buyer</th>
+                                    <th>Item</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
                                     <th>Sale Date</th>
@@ -181,12 +202,14 @@
                                 <?php while ($sale = $result->fetch_assoc()): ?>
                                     <tr>
                                         <td>#<?= $sale["id"] ?></td>
-                                        <td>#<?= $sale["order_id"] ?></td>
-                                        <td><?= htmlspecialchars($sale["buyer_id"]) ?></td>
-                                        <td><?= htmlspecialchars($sale["item_id"]) ?></td>
+                                        <td>
+                                            <img src="<?= htmlspecialchars($sale["profile_picture"]) ?>" alt="Profile Picture">
+                                            <?= htmlspecialchars($sale["buyer_name"]) ?>
+                                        </td>
+                                        <td><?= htmlspecialchars($sale["item_name"]) ?></td>
                                         <td><?= htmlspecialchars($sale["quantity"]) ?></td>
                                         <td>$<?= number_format($sale["price"], 2) ?></td>
-                                        <td><?= date('M j, Y - H:i', strtotime($sale["sale_date"])) ?></td>
+                                        <td><?= date('M j, Y', strtotime($sale["sale_date"])) ?></td>
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>
@@ -197,6 +220,8 @@
                     $stmt->close();
                     ?>
                 </div>
+
+
             </div>
         </div>
 

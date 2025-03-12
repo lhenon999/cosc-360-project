@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
             data: {
                 labels: ["Earnings", "Remaining"],
                 datasets: [{
-                    data: [totalEarnings, Math.max(2000 - totalEarnings, 0)],
+                    data: [totalEarnings, Math.max(200 - totalEarnings, 0)],
                     backgroundColor: ["#2d5a27", "#e0e0e0"],
                     borderWidth: 1
                 }]

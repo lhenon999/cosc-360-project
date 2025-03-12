@@ -2,8 +2,6 @@
 session_start();
 require_once '../config.php';
 
-$totalEarnings = 1400.67;
-
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
     exit();
