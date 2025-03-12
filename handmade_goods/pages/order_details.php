@@ -81,8 +81,9 @@ $stmt->close();
         <h2>Order Details</h2>
 
         <div class="order-info">
-            <p><strong>Order ID:</strong> #<?= $order["id"] ?></p>
-            <p><strong>Status:</strong>
+            <p><strong>Order ID: </strong> <span>#<?= $order["id"] ?></span></p>
+
+            <p><strong>Status: </strong>
                 <span class="order-status 
                     <?= strtolower($order["status"]) === 'pending' ? 'status-pending' : '' ?>
                     <?= strtolower($order["status"]) === 'shipped' ? 'status-shipped' : '' ?>
@@ -91,11 +92,15 @@ $stmt->close();
                     <?= htmlspecialchars($order["status"]) ?>
                 </span>
             </p>
-            <p><strong>Total Price:</strong> $<?= number_format($order["total_price"], 2) ?></p>
-            <p><strong>Order Date:</strong> <?= $order["created_at"] ?></p>
+
+            <p><strong>Total Price: </strong> <span>$<?= number_format($order["total_price"], 2) ?></span></p>
+
+            <p><strong>Order Date: </strong>
+                <span><?= date('F j, Y', strtotime($order["created_at"])) ?></span>
+            </p>
         </div>
 
-        <h3>Items</h3>
+        <h3>Ordered Items</h3>
         <table class="order-items-table">
             <thead>
                 <tr>
@@ -123,16 +128,16 @@ $stmt->close();
             </tbody>
         </table>
 
-        <div class="action-buttons mt-4">
-            <div class="button-wrapper">
-                <a href="../pages/profile.php" class="back-btn">Back to Profile</a>
-                <form method="POST" action="delete_order.php" style="display: inline;" 
-                    onsubmit="return confirm('Are you sure you want to delete this order? <?= $user_type === 'admin' ? 'The stock will be returned to inventory.' : 'This cannot be undone.' ?>');">
-                    <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
-                    <button type="submit" class="delete-btn">Delete Order</button>
-                </form>
-            </div>
+        <div class="action-buttons">
+            <a href="../pages/profile.php" class="back-btn">Back</a>
+            <form method="POST" action="delete_order.php" class="delete-form"
+                onsubmit="return confirm('Are you sure you want to cancel this order? <?= $user_type === 'admin' ? 'The stock will be returned to inventory.' : 'This cannot be undone.' ?>');">
+                <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
+                <button type="submit" class="delete-btn">Cancel Order</button>
+            </form>
         </div>
+    </div>
+
     </div>
 </body>
 
