@@ -142,15 +142,64 @@
         <div id="sales" class="tab-pane">
             <div class="sales-container">
                 <div class="earnings-summary">
-                    <h3>Total Earnings</h3>
-                    <canvas id="earningsChart"></canvas>
-                    <p>Total Earnings: $<span id="totalEarnings"><?= number_format($totalEarnings ?? 0, 2) ?></span></p>
+                    <div class="chart-container" style="width: 300px; height: 300px;">
+                        <h3>Total Earnings</h3>
+                        <canvas id="earningsChart"></canvas>
+                        <p>Total Earnings: $<span id="totalEarnings"><?= number_format($totalEarnings ?? 0, 2) ?></span>
+                        </p>
+                    </div>
                 </div>
+
                 <div class="sales-summary">
                     <h3>Sales History</h3>
+
+                    <?php
+                    $stmt = $conn->prepare("
+                SELECT id, order_id, buyer_id, item_id, quantity, price, sale_date
+                FROM sales
+                WHERE seller_id = ?
+                ORDER BY sale_date DESC
+            ");
+                    $stmt->bind_param("i", $user_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    if ($result->num_rows > 0): ?>
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Sale ID</th>
+                                    <th>Order ID</th>
+                                    <th>Buyer ID</th>
+                                    <th>Item ID</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Sale Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($sale = $result->fetch_assoc()): ?>
+                                    <tr>
+                                        <td>#<?= $sale["id"] ?></td>
+                                        <td>#<?= $sale["order_id"] ?></td>
+                                        <td><?= htmlspecialchars($sale["buyer_id"]) ?></td>
+                                        <td><?= htmlspecialchars($sale["item_id"]) ?></td>
+                                        <td><?= htmlspecialchars($sale["quantity"]) ?></td>
+                                        <td>$<?= number_format($sale["price"], 2) ?></td>
+                                        <td><?= date('M j, Y - H:i', strtotime($sale["sale_date"])) ?></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p>You have no sales history yet.</p>
+                    <?php endif;
+                    $stmt->close();
+                    ?>
                 </div>
             </div>
         </div>
+
 
     </div>
 </div>

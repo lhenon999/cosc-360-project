@@ -2,7 +2,7 @@
 session_start();
 require_once '../config.php';
 
-$totalEarnings = 3445.67;
+$totalEarnings = 1400.67;
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
@@ -129,9 +129,10 @@ if ($user_type === 'admin') {
             document.getElementById("profilePicForm").submit();
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../assets/js/profile_handle_modal.js"></script>
     <script src="../assets/js/profile_tab_switching.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>const totalEarnings = <?= json_encode($totalEarnings) ?>;</script>
     <script src="../assets/js/profile_earnings_chart.js"></script>
     <script>
         let urlParams = new URLSearchParams(window.location.search);
