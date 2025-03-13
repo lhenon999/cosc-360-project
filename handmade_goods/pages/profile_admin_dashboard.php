@@ -45,7 +45,7 @@
                                     <td><?= $user["total_listings"] ?></td>
                                     <td><?= date('M j, Y', strtotime($user["created_at"])) ?></td>
                                     <td>
-                                        <a href="user_profile.php?id=<?= $user["id"] ?><?= ($user_type === 'admin') ? '&from=admin' : '' ?>"
+                                        <a href="user_profile.php?id=<?= $user["id"] ?><?= ($user_type === 'admin') ? '&from=profile_users' : '' ?>"
                                             class="view-btn">
                                             View Profile
                                         </a>

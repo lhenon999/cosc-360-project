@@ -6,6 +6,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+$product_id = intval($_GET['id']);
 
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     header("Location: home.php");
@@ -14,6 +15,8 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 $from_product = isset($_GET['from_product']) ? $_GET['from_product'] : null;
 $from_admin = isset($_GET['from']) && $_GET['from'] === 'admin';
 $from_profile_listings = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
+$from_profile_listings_user = isset($_GET['from']) && $_GET['from'] === 'profile_listing_users';
+$from_profile_users = isset($_GET['from']) && $_GET['from'] === 'profile_users';
 
 $user_id = intval($_GET['id']);
 
@@ -79,12 +82,16 @@ $stmt->close();
                     <p><?= htmlspecialchars($user['email']) ?></p>
                 </div>
                 <?php if ($from_admin): ?>
-                    <a href="profile.php" class="btn btn-outline-secondary w-100"</a>Back</a>
+                    <a href="profile.php" class="btn btn-outline-secondary w-100">Back</a>
                 <?php elseif ($from_product): ?>
                     <a href="<?= htmlspecialchars($from_product . ($from_profile_listings ? (strpos($from_product, '?') !== false ? '&' : '?') . 'from=profile_listings' : '')) ?>"
-                        class="btn btn-outline-secondary w-100" onclick="goBack(event)" align-self:"top">Back</a>
-                    </a>
+                        class="btn btn-outline-secondary w-100" onclick="goBack(event)">Back</a>
+                <?php elseif ($from_profile_listings_user): ?>
+                    <a href="profile.php#listings" class="btn btn-outline-secondary w-100">Back</a>
+                <?php elseif ($from_profile_users): ?>
+                    <a href="profile.php#users" class="btn btn-outline-secondary w-100">Back</a>
                 <?php endif; ?>
+
             </div>
             <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
                 <a href="profile.php?from=admin&user=<?= urlencode($user['name']) ?>" class="manage-btn">
