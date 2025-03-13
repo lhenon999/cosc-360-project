@@ -2,7 +2,7 @@
     <nav class="tabs-nav">
         <?php if ($user_type === 'admin'): ?>
             <label>
-                <a href="#users" class="tab-link active">Users</a>
+                <a href="#users" class="tab-link">Users</a>
             </label>
             <label>
                 <a href="#listings" class="tab-link">Listings</a>
