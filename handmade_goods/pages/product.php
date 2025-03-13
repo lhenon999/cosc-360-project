@@ -14,9 +14,12 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     exit();
 }
 $product_id = intval($_GET['id']);
+$from_products = isset($_GET['from_product']) ? $_GET['from_product'] : null;
 
-$from_profile = isset($_GET['from']) && $_GET['from'] === 'user_profile';
-$from_dashboard = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
+$from_profile = isset($_GET['and']) && $_GET['and'] === 'user_profile';
+$from_listings = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
+$from_listing_users = isset($_GET['from']) && $_GET['from'] === 'profile_listing_users';
+$from_users = isset($_GET['from']) && $_GET['from'] === 'profile_users';
 
 $stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock FROM items WHERE id = ?");
 $stmt->bind_param("i", $product_id);
@@ -149,15 +152,36 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
                     <?php endif; ?>
                 <?php endif; ?>
 
-                <a href="<?= $from_dashboard ? 'profile.php#listings' : ($from_profile ? 'user_profile.php?id=' . $user_id : 'products.php') ?>"
-                    class="btn btn-outline-secondary mt-3">
-                    Back to
-                    <?= $from_dashboard ? 'Dashboard' : ($from_profile ? htmlspecialchars($first_name) . "'s Shop" : 'Products') ?>
+                <?php
+                if (!empty($from_listings)) {
+                    $backUrl = 'profile.php#listings';
+                    $backText = 'Dashboard';
+                } elseif (!empty($from_listing_users)) {
+                    $backUrl = 'user_profile.php?id=' . $user_id . '&from=profile_listing_users';
+                    $backText = htmlspecialchars($first_name) . "'s Profile";
+                } elseif (!empty($from_users)) {
+                    $backUrl = 'user_profile.php?id=' . $user_id . '&from=profile_users';
+                    $backText = htmlspecialchars($first_name) . "'s Profile";
+                } elseif (!empty($from_profile)) {
+                    $backUrl = 'user_profile.php?id=' . $user_id;
+                    $backText = htmlspecialchars($first_name) . "'s Profile";
+                } else{
+                    $backUrl = 'products.php';
+                    $backText = 'Products';
+                }
+                
+                if (!empty($from_products)) {
+                    $productParam = '&from_product=product.php?id=' . $product_id;
+                    $backUrl .= $productParam;
+                }
+                ?>
+
+                <a href="<?= $backUrl ?>" class="btn btn-outline-secondary mt-3">
+                    Back to <?= $backText ?>
                 </a>
 
+
             <?php endif; ?>
-
-
 
         </div>
     </main>
