@@ -8,6 +8,8 @@
     border-radius: 12px;
     overflow: hidden;
     backdrop-filter: blur(10px);
+    border: none;
+    color: #333;
 }
 .orders-table thead {
     background-color: #ECECEC;
@@ -53,10 +55,6 @@
 .status.cancelled {
     background-color: #FFD6D6;
     color: #D32F2F;
-}
-
-.orders-table {
-    border: none;
 }
 
 .reviews-containers, .sales-container {

@@ -91,7 +91,7 @@ h5 {
 
 #delete-btn:hover {
     background-color: #E57373;
-    border-color: #E57373;
+    border: none;
 }
 
 .form-check-input {
@@ -128,7 +128,6 @@ h5 {
     cursor: pointer;
     position: relative;
     z-index: 2;
-    transition: color 0.3s ease-in-out;
 }
 
 .theme-toggle input {
@@ -172,7 +171,7 @@ h5 {
 .advanced-settings-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s ease-in-out;
+    transition: max-height 0.3s ease-in-out;
     padding-top: 20px;
 }
 
