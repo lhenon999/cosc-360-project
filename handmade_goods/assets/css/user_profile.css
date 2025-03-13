@@ -79,8 +79,8 @@
 
 .profile-details {
     padding: 15px;
+    padding-bottom: 10px;
     border-radius: 10px;
-    margin-bottom: 20px;
 }
 
 .profile-name {
@@ -217,18 +217,6 @@
 
 .contact-label{
     margin: 0 !important;
-}
-
-.back-arrow {
-    font-size: 68px;
-    text-decoration: none;
-    color: #2d5a27;
-    font-weight: 600;
-    transition: color 0.3s ease-in-out;
-}
-
-.back-arrow:hover {
-    color: #1e3f1a;
 }
 
 .manage-btn {

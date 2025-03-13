@@ -71,14 +71,6 @@ $stmt->close();
 
     <div class="profile-container">
         <div class="profile-header">
-            <?php if ($from_admin): ?>
-                <a href="profile.php" class="back-arrow" onclick="goBack(event)">&#8592;</a>
-            <?php elseif ($from_product): ?>
-                <a href="<?= htmlspecialchars($from_product . ($from_profile_listings ? (strpos($from_product, '?') !== false ? '&' : '?') . 'from=profile_listings' : '')) ?>"
-                    class="back-arrow" onclick="goBack(event)">&#8592;
-                </a>
-            <?php endif; ?>
-
             <img src="<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" class="profile-pic">
             <div class="profile-info">
                 <h1><?= htmlspecialchars($user['name']) ?></h1>
@@ -86,6 +78,13 @@ $stmt->close();
                     <h3 class="contact-label">Contact</h3>
                     <p><?= htmlspecialchars($user['email']) ?></p>
                 </div>
+                <?php if ($from_admin): ?>
+                    <a href="profile.php" class="btn btn-outline-secondary w-100"</a>Back</a>
+                <?php elseif ($from_product): ?>
+                    <a href="<?= htmlspecialchars($from_product . ($from_profile_listings ? (strpos($from_product, '?') !== false ? '&' : '?') . 'from=profile_listings' : '')) ?>"
+                        class="btn btn-outline-secondary w-100" onclick="goBack(event)" align-self:"top">Back</a>
+                    </a>
+                <?php endif; ?>
             </div>
             <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
                 <a href="profile.php?from=admin&user=<?= urlencode($user['name']) ?>" class="manage-btn">
