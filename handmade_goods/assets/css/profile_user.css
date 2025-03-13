@@ -91,7 +91,6 @@
     flex: 1; 
     height: 350px;
     min-width: 850px;
-    /* box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08); */
     transition: all 0.3s ease-in-out;
     padding: 20px;
 }
