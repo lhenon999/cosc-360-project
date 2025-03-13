@@ -18,7 +18,7 @@ $stmt->close();
 $conn->close();
 
 $email = isset($user['email']) ? $user['email'] : '';
-$isAdmin = ($user['user_type'] === 'admin'); 
+$isAdmin = ($user['user_type'] === 'admin');
 ?>
 
 <?php if (isset($_SESSION['success'])): ?>
@@ -62,7 +62,6 @@ $isAdmin = ($user['user_type'] === 'admin');
 
     <div class="settings-container">
         <div class="settings-header">
-            <a href="profile.php" class="back-arrow">&#8592;</a>
             <h2><i class="bi bi-gear-fill"></i> Settings</h2>
         </div>
 
@@ -72,14 +71,15 @@ $isAdmin = ($user['user_type'] === 'admin');
                 <div class="mb-3">
                     <label class="form-label">Name</label>
                     <input type="text" class="form-control" name="name" value="<?= htmlspecialchars($user['name']) ?>"
-                        required>
+                        required <?= $isAdmin ? 'disabled' : '' ?>>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
                     <input type="email" class="form-control" name="email"
-                        value="<?= htmlspecialchars($user['email']) ?>" required>
+                        value="<?= htmlspecialchars($user['email']) ?>" required <?= $isAdmin ? 'disabled' : '' ?>>
                 </div>
-                <button type="submit" class="btn btn-primary w-100" <?= $isAdmin ? 'disabled' : '' ?>>Save Changes</button>
+                <button type="submit" class="btn btn-primary w-100" <?= $isAdmin ? 'disabled' : '' ?>>Save
+                    Changes</button>
             </form>
         </div>
 
@@ -91,53 +91,54 @@ $isAdmin = ($user['user_type'] === 'admin');
             </a>
 
         </div>
-
         <div class="mb-4">
             <h5>Preferences</h5>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="darkModeToggle" <?= $dark_mode_checked ?>>
-                <label class="form-check-label" for="darkModeToggle">Enable Dark Mode</label>
+            <div class="theme-toggle">
+                <input type="radio" id="light-theme" name="theme" />
+                <label for="light-theme">
+                    <span>
+                        <i class="bi bi-brightness-high"></i> Light
+                    </span>
+                </label>
+                <input type="radio" id="dark-theme" name="theme" />
+                <label for="dark-theme">
+                    <span>
+                        <i class="bi bi-moon"></i> Dark
+                    </span>
+                </label>
+                <div class="theme-slider"></div>
             </div>
         </div>
+        <button id="advanced-settings-btn" class="btn btn-outline-secondary w-100 w-100">Advanced Settings</button>
 
-        <div>
-            <button class="btn btn-delete">Delete My Account</button>
+        <div id="advanced-settings" class="advanced-settings-content">
+            <div class="mb-4">
+                <h5>Advanced Settings</h5>
+                <label class="form-label">Account Deletion</label>
+                </select>
+                <button class="btn btn-delete">Delete My Account</button>
+            </div>
         </div>
-    </div>
+        <div>
+                <a href="profile.php" class="btn btn-outline-secondary w-100" </a>Back</a>
+        </div>
+        <script src="../assets/js/bg-dark.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const advancedSettingsButton = document.getElementById("advanced-settings-btn");
+                const advancedSettingsContent = document.getElementById("advanced-settings");
 
-    <script>
-        document.getElementById('darkModeToggle').addEventListener('change', function () {
-            document.body.classList.toggle('bg-dark');
-            document.body.classList.toggle('text-light');
-        });
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const darkModeToggle = document.getElementById("darkModeToggle");
-
-            let darkModeLocal = localStorage.getItem("darkMode") === "enabled";
-            if (darkModeLocal) {
-                document.body.classList.add("bg-dark", "text-light");
-                darkModeToggle.checked = true;
-            }
-
-            darkModeToggle.addEventListener("change", function () {
-                let darkMode = this.checked ? 1 : 0;
-
-                document.body.classList.toggle("bg-dark", darkMode);
-                document.body.classList.toggle("text-light", darkMode);
-
-                localStorage.setItem("darkMode", darkMode ? "enabled" : "disabled");
-
-                fetch("../dark_mode.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: "dark_mode=" + darkMode
+                advancedSettingsButton.addEventListener("click", function () {
+                    if (advancedSettingsContent.classList.contains("expanded")) {
+                        advancedSettingsContent.classList.remove("expanded");
+                        advancedSettingsButton.textContent = "Advanced Settings";
+                    } else {
+                        advancedSettingsContent.classList.add("expanded");
+                        advancedSettingsButton.textContent = "Hide";
+                    }
                 });
             });
-        });
-    </script>
+        </script>
 </body>
 
 </html>
