@@ -1,38 +1,41 @@
-// Tab switching functionality
-        document.addEventListener('DOMContentLoaded', function () {
-            const tabLinks = document.querySelectorAll('.tabs-nav a');
-            const tabContents = document.querySelectorAll('.tab-pane');
+document.addEventListener("DOMContentLoaded", function () {
 
-            function switchTab(e) {
-                e.preventDefault();
-                const targetId = e.target.getAttribute('href').slice(1);
+    const tabLinks = document.querySelectorAll(".tabs-nav a");
+    const tabContents = document.querySelectorAll(".tab-pane");
 
-                const targetTab = document.getElementById(targetId);
+    function switchTab(event) {
+        event.preventDefault();
 
-                if (!targetTab) {
-                    console.error(`Tab with ID "${targetId}" not found.`);
-                    return; // Stop execution if tab does not exist
-                }
+        const targetId = event.target.getAttribute("href").substring(1);
+        const targetTab = document.getElementById(targetId);
 
-                // Update active states
-                tabLinks.forEach(link => link.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-
-                e.target.classList.add('active');
-                document.getElementById(targetId).classList.add('active');
-
-                history.pushState(null, null, '#' + targetId);
-            }
-
-            tabLinks.forEach(link => {
-                link.addEventListener('click', switchTab);
-            });
-
-            // Handle initial load with hash
-            if (window.location.hash) {
-                const targetLink = document.querySelector(`a[href="${window.location.hash}"]`);
-                if (targetLink) {
-                    targetLink.click();
-                }
-            }
+        tabLinks.forEach(link => link.classList.remove("active"));
+        tabContents.forEach(content => {
+            content.style.display = "none";
+            content.classList.remove("active");
         });
+
+        event.target.classList.add("active");
+        targetTab.style.display = "block";
+        targetTab.classList.add("active");
+
+        history.pushState(null, null, `#${targetId}`);
+    }
+
+    tabLinks.forEach(link => {
+        link.addEventListener("click", switchTab);
+    });
+
+    if (window.location.hash) {
+        const activeTab = document.querySelector(`a[href="${window.location.hash}"]`);
+        if (activeTab) {
+            activeTab.classList.add("active");
+            document.getElementById(activeTab.getAttribute("href").substring(1)).style.display = "block";
+            document.getElementById(activeTab.getAttribute("href").substring(1)).classList.add("active");
+        }
+    } else {
+        tabLinks[0].classList.add("active");
+        tabContents[0].style.display = "block";
+        tabContents[0].classList.add("active");
+    }
+});

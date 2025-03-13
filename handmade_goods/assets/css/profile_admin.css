@@ -314,3 +314,26 @@
 #profile-img-users-table:hover {
     transform: scale(1.1);
 }
+
+.tab-slider-admin {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 25px;
+    transition: 0.3s;
+    width: 50%;
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+    z-index: 1;
+}
+
+.tabs-nav label:nth-child(2):hover ~ .tab-slider-admin,
+.tabs-nav label:nth-child(2) a:focus ~ .tab-slider,
+#listings:target ~ .tabs-nav .tab-slider-admin {
+    transform: translateX(100%);
+}
+    

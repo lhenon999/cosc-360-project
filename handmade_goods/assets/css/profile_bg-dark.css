@@ -88,3 +88,11 @@
     transform: scale(1.05);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
+
+.bg-dark .tab-slider, .bg-dark .tab-slider-admin {
+    background: hwb(0 13% 87%);
+}
+
+.bg-dark .tabs-nav {
+    background: #333;
+}

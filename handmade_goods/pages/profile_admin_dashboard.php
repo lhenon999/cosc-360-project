@@ -1,10 +1,16 @@
 <div class="profile-tabs mt-5">
     <nav class="tabs-nav">
         <?php if ($user_type === 'admin'): ?>
-            <a href="#users" class="active">Users</a>
-            <a href="#listings">Listings</a>
+            <label>
+                <a href="#users" class="tab-link active">Users</a>
+            </label>
+            <label>
+                <a href="#listings" class="tab-link">Listings</a>
+            </label>
+            <div class="tab-slider-admin"></div>
         <?php endif; ?>
     </nav>
+</div>
 
     <div class="tab-content">
         <?php if ($user_type === 'admin'): ?>

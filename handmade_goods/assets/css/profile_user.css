@@ -163,3 +163,38 @@
     margin-right: 10px;
     border: 2px solid #ddd;
 }
+
+.tab-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 25px;
+    transition: 0.3s;
+    width: 33.333%;
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+    z-index: 1;
+}
+
+.tab-pane {
+display: none;
+opacity: 0;
+transform: translateY(10px);
+transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.tabs-nav label:nth-child(2):hover ~ .tab-slider,
+.tabs-nav label:nth-child(2) a:focus ~ .tab-slider,
+#reviews:target ~ .tabs-nav .tab-slider {
+    transform: translateX(100%);
+}
+
+.tabs-nav label:nth-child(3):hover ~ .tab-slider,
+.tabs-nav label:nth-child(3) a:focus ~ .tab-slider,
+#sales:target ~ .tabs-nav .tab-slider {
+    transform: translateX(200%);
+}
