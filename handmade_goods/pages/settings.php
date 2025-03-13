@@ -116,7 +116,7 @@ $isAdmin = ($user['user_type'] === 'admin');
                 <h5>Advanced Settings</h5>
                 <label class="form-label">Account Deletion</label>
                 </select>
-                <button class="btn btn-delete">Delete My Account</button>
+                <button id="delete-btn" class="btn btn-outline-secondary" <?= $isAdmin ? 'disabled' : '' ?>>Delete My Account</button>
             </div>
         </div>
         <div>
