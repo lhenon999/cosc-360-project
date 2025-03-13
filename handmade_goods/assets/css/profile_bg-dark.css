@@ -3,36 +3,35 @@
 }
 
 .bg-dark .inventory-table, 
-.bg-dark .users-table {
+.bg-dark .users-table, .orders-table {
     background: rgba(30, 30, 30, 0.9);
     box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
     color: #ddd;
 }
 
 .bg-dark .inventory-table th, 
-.bg-dark .users-table th {
+.bg-dark .users-table th, .bg-dark .orders-table th {
     background: rgba(40, 40, 40, 1);
     color: #f5f5f5;
 }
 
 .bg-dark .inventory-table tr:nth-child(even), 
-.bg-dark .users-table tr:nth-child(even) {
+.bg-dark .users-table tr:nth-child(even), .bg-dark .orders-table:nth-child(even) {
     background: rgba(50, 50, 50, 0.8);
 }
 
 .bg-dark .inventory-table tr:nth-child(odd), 
-.bg-dark .users-table tr:nth-child(odd) {
+.bg-dark .users-table tr:nth-child(odd), .bg-dark .orders-table:nth-child(odd) {
     background: rgba(40, 40, 40, 0.9);
 }
 
-
 .bg-dark .inventory-table td, 
-.bg-dark .users-table td {
+.bg-dark .users-table td, .bg-dark .orders-table td {
     color: #ddd;
 }
 
 .bg-dark .inventory-table tr:hover, 
-.bg-dark .users-table tr:hover {
+.bg-dark .users-table tr:hover, .bg-dark .orders-table tr:hover {
     background: rgba(70, 70, 70, 1);
 }
 

@@ -8,6 +8,11 @@
     align-items: left;
 }
 
+.bg-dark .order-details-container {
+    background-color: rgba(30, 30, 30, 0.9);
+    color: #ddd;
+}
+
 .order-details-container h2 {
     font-size: 2rem;
     color: #2d5a27;
@@ -22,6 +27,11 @@
     max-width: 400px;
 }
 
+.bg-dark .order-info {
+    background: rgba(40, 40, 40, 0.9);
+    color: #ddd;
+}
+
 .order-info p {
     display: flex;
     align-items: center;
@@ -33,6 +43,10 @@
 .order-info strong {
     font-weight: bold;
     color: #222;
+}
+
+.bg-dark .order-info strong {
+    color: #ddd;
 }
 
 .status {
@@ -57,32 +71,6 @@
 .status.cancelled {
     background-color: #FFD6D6;
     color: #D32F2F;
-}
-
-.order-items-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.order-items-table thead {
-    background-color: #426B1F;
-    color: white;
-}
-
-.order-items-table th, .order-items-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-    font-size: 16px;
-}
-
-.order-items-table th {
-    font-weight: 600;
 }
 
 .action-buttons {
@@ -133,7 +121,6 @@
 .order-items-table th, .order-items-table td {
     padding: 14px 18px;
     text-align: left;
-    border-bottom: 1px solid #E5E5E5;
 }
 
 .order-items-table th {
@@ -145,6 +132,30 @@
 .order-items-table tbody tr:hover {
     background-color: #F1F1F1;
     transition: background 0.2s ease-in-out;
+}
+
+.bg-dark .order-items-table tbody tr:hover {
+    background-color: #424242;
+    transition: background 0.2s ease-in-out;
+}
+
+.bg-dark .order-items-table {
+    background-color: rgba(40, 40, 40, 0.9);
+    color: #ddd;
+}
+
+.order-items-table thead {
+    background-color: #426B1F;
+    color: white;
+}
+
+.bg-dark .order-items-table thead {
+    background-color: #1e1e1e;
+    color: #ddd;
+}
+
+.bg-dark .order-items-table th, .bg-dark .order-items-table td {
+    color: #ddd;
 }
 
 .order-items-table .status {
