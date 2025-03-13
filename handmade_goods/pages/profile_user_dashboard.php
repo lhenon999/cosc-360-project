@@ -19,13 +19,13 @@ $stmt->close();
 <div class="profile-tabs mt-5">
     <nav class="tabs-nav">
         <label>
-            <a href="#orders" class="active">My Orders</a>
+            <a href="#orders" class="tab-link active">My Orders</a>
         </label>
         <label>
-            <a href="#reviews">My Reviews</a>
+            <a href="#reviews" class="tab-link">My Reviews</a>
         </label>
         <label>
-            <a href="#sales">My Sales</a>
+            <a href="#sales" class="tab-link">My Sales</a>
         </label>
         <div class="tab-slider"></div>
     </nav>

@@ -18,7 +18,7 @@
 
 .delete-btn:hover {
     color: white;
-    background-color: #c82333;
+    background-color: #E57373;
     transform: scale(1.05);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
@@ -248,7 +248,7 @@
 
 
 .confirm-btn {
-    background-color: #d9534f;
+    background-color: #E57373;
     color: white;
 }
 
@@ -257,7 +257,7 @@
 }
 
 .freeze-btn {
-    background-color: #f0ad4e;
+    background-color: #f0ac4ec1;
     color: white;
 }
 
@@ -331,9 +331,7 @@
     z-index: 1;
 }
 
-.tabs-nav label:nth-child(2):hover ~ .tab-slider-admin,
-.tabs-nav label:nth-child(2) a:focus ~ .tab-slider,
-#listings:target ~ .tabs-nav .tab-slider-admin {
+/* .tabs-nav label:nth-child(2):hover ~ .tab-slider-admin{
     transform: translateX(100%);
-}
-    
+} */
+
