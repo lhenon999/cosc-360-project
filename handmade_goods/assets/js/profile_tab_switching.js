@@ -3,6 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const tabLinks = document.querySelectorAll(".tabs-nav a");
     const tabContents = document.querySelectorAll(".tab-pane");
 
+    if (tabLinks.length === 0 || tabContents.length === 0) {
+        return;
+    }
+
     function switchTab(event) {
         event.preventDefault();
 
@@ -65,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         tab.addEventListener("click", function (e) {
             e.preventDefault();
-            
+
             tabLinks.forEach((t) => t.classList.remove("active"));
             this.classList.add("active");
 
@@ -80,10 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateSliderPosition(activeTab);
 });
-
-
-
-
 
 
 

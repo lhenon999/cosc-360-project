@@ -1,60 +1,63 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const currentHash = window.location.hash.substring(1);
-    let activeTabId = currentHash || "users";
+    if (typeof userType !== "undefined" && userType === "admin") {
+        const currentHash = window.location.hash.substring(1);
+        let activeTabId = currentHash || "users";
 
-    document.querySelectorAll('.tab-pane').forEach(content => {
-        content.style.display = content.id === activeTabId ? "block" : "none";
-    });
+        document.querySelectorAll('.tab-pane').forEach(content => {
+            content.style.display = content.id === activeTabId ? "block" : "none";
+        });
 
-    setTimeout(() => {
-        if (typeof userType !== "undefined" && typeof itemName !== "undefined" && userType === "admin") {
-            if (itemName) {
-                switchTab("listings");
-                let listingsSearch = document.getElementById("listingsSearch");
-                if (listingsSearch) {
-                    listingsSearch.value = itemName;
-                    filterTable("listingsTable", "listingsSearch");
+        setTimeout(() => {
+            if (typeof userType !== "undefined" && typeof itemName !== "undefined" && userType === "admin") {
+                if (itemName) {
+                    switchTab("listings");
+                    let listingsSearch = document.getElementById("listingsSearch");
+                    if (listingsSearch) {
+                        listingsSearch.value = itemName;
+                        filterTable("listingsTable", "listingsSearch");
+                    }
+                    history.replaceState(null, null, "#listings");
+                } else if (userName) {
+                    switchTab("users");
+                    let userSearch = document.getElementById("userSearch");
+                    if (userSearch) {
+                        userSearch.value = userName;
+                        filterTable("usersTable", "userSearch");
+                    }
+                    history.replaceState(null, null, "#users");
                 }
-                history.replaceState(null, null, "#listings");
-            } else if (userName) {
-                switchTab("users");
-                let userSearch = document.getElementById("userSearch");
-                if (userSearch) {
-                    userSearch.value = userName;
-                    filterTable("usersTable", "userSearch");
-                }
-                history.replaceState(null, null, "#users");
+            } else {
+                switchTab(activeTabId);
             }
-        } else {
-            switchTab(activeTabId);
-        }
-    }, 300);
+        }, 300);
+    }
 });
 
 function switchTab(tabId) {
-    activeTabId = tabId;
+    if (typeof userType !== "undefined" && userType === "admin") {
+        activeTabId = tabId;
 
-    document.querySelectorAll('.tabs-nav a').forEach(link => link.classList.remove('active'));
-    document.querySelectorAll('.tab-pane').forEach(content => {
-        content.style.display = (content.id === tabId) ? "block" : "none";
-        content.classList.toggle('active', content.id === tabId);
-    });
+        document.querySelectorAll('.tabs-nav a').forEach(link => link.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(content => {
+            content.style.display = (content.id === tabId) ? "block" : "none";
+            content.classList.toggle('active', content.id === tabId);
+        });
 
-    let targetLink = document.querySelector(`.tabs-nav a[href="#${tabId}"]`);
-    if (targetLink) {
-        targetLink.classList.add('active');
-        updateSliderPosition(tabId);
-    } else {
-        console.error(`Tab with ID "${tabId}" not found.`);
+        let targetLink = document.querySelector(`.tabs-nav a[href="#${tabId}"]`);
+        if (targetLink) {
+            targetLink.classList.add('active');
+            updateSliderPosition(tabId);
+        } else {
+            console.error(`Tab with ID "${tabId}" not found.`);
+        }
     }
 }
 
 function updateSliderPosition(tabId) {
     const tabLinks = document.querySelectorAll(".tabs-nav .tab-link");
-    const slider = document.querySelector(".tab-slider") || document.querySelector(".tab-slider-admin");
+    const slider = document.querySelector(".tab-slider-admin");
 
     if (!slider) {
-        console.warn("No slider found. Skipping update.");
         return;
     }
 
@@ -66,26 +69,28 @@ function updateSliderPosition(tabId) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const tabLinks = document.querySelectorAll(".tabs-nav .tab-link");
+    if (typeof userType !== "undefined" && userType === "admin") {
+        const tabLinks = document.querySelectorAll(".tabs-nav .tab-link");
 
-    tabLinks.forEach((tab) => {
-        tab.addEventListener("mouseover", function () {
-            updateSliderPosition(this.getAttribute("href").substring(1));
+        tabLinks.forEach((tab) => {
+            tab.addEventListener("mouseover", function () {
+                updateSliderPosition(this.getAttribute("href").substring(1));
+            });
+
+            tab.addEventListener("click", function (e) {
+                e.preventDefault();
+                switchTab(this.getAttribute("href").substring(1));
+            });
         });
 
-        tab.addEventListener("click", function (e) {
-            e.preventDefault();
-            switchTab(this.getAttribute("href").substring(1));
+        document.querySelector(".tabs-nav").addEventListener("mouseleave", function () {
+            if (activeTabId) { 
+                updateSliderPosition(activeTabId); 
+            }
         });
-    });
 
-    document.querySelector(".tabs-nav").addEventListener("mouseleave", function () {
-        if (activeTabId) { 
-            updateSliderPosition(activeTabId); 
-        }
-    });
-
-    updateSliderPosition(activeTabId);
+        updateSliderPosition(activeTabId);
+    }
 });
 
 function filterTable(tableId, searchId) {
