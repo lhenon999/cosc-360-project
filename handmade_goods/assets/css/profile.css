@@ -27,6 +27,12 @@
     object-fit: cover;
 }
 
+.profile-image img:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+
 .profile-info h2 {
     font-size: 2rem;
     margin-bottom: 0.5rem;
