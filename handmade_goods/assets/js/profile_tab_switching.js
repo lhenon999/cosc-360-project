@@ -20,26 +20,26 @@ document.addEventListener("DOMContentLoaded", function () {
         event.target.classList.add("active");
     
         document.querySelectorAll(".tab-pane").forEach(tab => {
-            tab.style.transition = "";
+            tab.style.transition = "none";
             tab.style.opacity = "0";
+            tab.style.transform = "translateX(50px)";
             tab.style.visibility = "hidden";
             tab.classList.remove("active");
         });
     
-        setTimeout(() => {
-            targetTab.classList.add("active");
-            targetTab.style.visibility = "visible";
-            targetTab.style.opacity = "0";
+        targetTab.classList.add("active");
+        targetTab.style.visibility = "visible";
+        targetTab.style.opacity = "0";
+        targetTab.style.transform = "translateX(50px)";
     
-            targetTab.offsetHeight;
+        targetTab.offsetHeight;
     
-            targetTab.style.transition = "opacity 1.2s ease-in-out";
-            targetTab.style.opacity = "1";
-        }, 50);
+        targetTab.style.transition = "opacity 0.6s ease-in-out, transform 0.6s ease-out";
+        targetTab.style.opacity = "1";
+        targetTab.style.transform = "translateX(0)";
     
         history.pushState(null, null, `#${targetId}`);
-    }
-     
+    }    
     
 
     tabLinks.forEach(link => {
