@@ -98,7 +98,7 @@ $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 
 
             <p class="mt-4"><?= $description ?></p>
 
-            <?php if (!$from_profile): ?>
+            <?php if ($session_user_id !== $user_id && !$from_profile): ?>
                 <div class="seller-info mt-4 d-flex align-items-center mb-3">
                     <?php
                     $isAdmin = isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin';
