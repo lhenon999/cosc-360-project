@@ -265,7 +265,3 @@ $rating_stmt->close();
         });
     </script>
 </body>
-
-<?php include "../assets/html/footer.php"; ?>
-
-</html>
