@@ -72,7 +72,7 @@
     align-items: center;
     max-height: 40px;
     gap: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 .tabs-nav label {
@@ -86,18 +86,18 @@
 }
 
 .tab-pane {
-    display: none;
     opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    visibility: hidden;
+    position: absolute;
+    width: 100%;
 }
 
 .tab-pane.active {
-    display: block;
+    display: block !important;
     opacity: 1;
-    transform: translateY(0);
+    visibility: visible;
+    position: relative;
 }
-
 .tabs-nav a {
     display: block;
     padding: 15px 20px;

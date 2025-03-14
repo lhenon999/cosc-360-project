@@ -9,40 +9,68 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function switchTab(event) {
         event.preventDefault();
-
+    
         const targetId = event.target.getAttribute("href").substring(1);
         const targetTab = document.getElementById(targetId);
+        const activeTab = document.querySelector(".tab-pane.active");
+    
+        if (!targetTab || activeTab === targetTab) return;
+    
+        tabLinks.forEach(link => link.classList.remove("active"));
+        event.target.classList.add("active");
+    
+        document.querySelectorAll(".tab-pane").forEach(tab => {
+            tab.style.transition = "";
+            tab.style.opacity = "0";
+            tab.style.visibility = "hidden";
+            tab.classList.remove("active");
+        });
+    
+        setTimeout(() => {
+            targetTab.classList.add("active");
+            targetTab.style.visibility = "visible";
+            targetTab.style.opacity = "0";
+    
+            targetTab.offsetHeight;
+    
+            targetTab.style.transition = "opacity 1.2s ease-in-out";
+            targetTab.style.opacity = "1";
+        }, 50);
+    
+        history.pushState(null, null, `#${targetId}`);
+    }
+     
+    
 
+    tabLinks.forEach(link => {
+        link.addEventListener("click", switchTab);
+    });
+
+    function setActiveTabFromURL() {
         tabLinks.forEach(link => link.classList.remove("active"));
         tabContents.forEach(content => {
             content.style.display = "none";
             content.classList.remove("active");
         });
 
-        event.target.classList.add("active");
-        targetTab.style.display = "block";
-        targetTab.classList.add("active");
-
-        history.pushState(null, null, `#${targetId}`);
-    }
-
-    tabLinks.forEach(link => {
-        link.addEventListener("click", switchTab);
-    });
-
-    if (window.location.hash) {
-        const activeTab = document.querySelector(`a[href="${window.location.hash}"]`);
-        if (activeTab) {
-            activeTab.classList.add("active");
-            document.getElementById(activeTab.getAttribute("href").substring(1)).style.display = "block";
-            document.getElementById(activeTab.getAttribute("href").substring(1)).classList.add("active");
+        if (window.location.hash) {
+            const activeTab = document.querySelector(`a[href="${window.location.hash}"]`);
+            if (activeTab) {
+                activeTab.classList.add("active");
+                const targetTab = document.getElementById(activeTab.getAttribute("href").substring(1));
+                targetTab.style.display = "block";
+                targetTab.classList.add("active");
+            }
+        } else {
+            tabLinks[0].classList.add("active");
+            tabContents[0].style.display = "block";
+            tabContents[0].classList.add("active");
         }
-    } else {
-        tabLinks[0].classList.add("active");
-        tabContents[0].style.display = "block";
-        tabContents[0].classList.add("active");
     }
+
+    setActiveTabFromURL();
 });
+
 
 //slider behaviours
 document.addEventListener("DOMContentLoaded", function () {
