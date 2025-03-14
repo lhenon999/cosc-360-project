@@ -134,6 +134,10 @@
     color: white;
 }
 
+.profile-info a[href*="logout"]:hover {
+    background: #626262;
+}
+
 .profile-info a.round-btn:hover .material-symbols-outlined {
     color: white !important;
     transition: none;
