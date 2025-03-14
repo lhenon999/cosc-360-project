@@ -96,7 +96,6 @@
     visibility: hidden;
     position: absolute;
     width: 100%;
-    transform: translateX(50px);
 }
 
 .tab-pane.active {
