@@ -57,11 +57,11 @@
 
 .bg-dark .stock-level {
     background-color: transparent;
-    color: #12cd32;
+    color: #62a73b;
 }
 
 .bg-dark .view-btn, .bg-dark .manage-btn, .bg-dark .delete-btn {
-    color: #12cd32;
+    color: #62a73b;
 }
 
 .bg-dark .tab-content h3{
@@ -84,7 +84,7 @@
 
 .bg-dark .view-btn:hover{
     color: white;
-    background-color: #426B1F;
+    background-color: #62a73b;
     transform: scale(1.05);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
