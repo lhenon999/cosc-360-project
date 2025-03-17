@@ -15,7 +15,7 @@ if (!isset($conn)) {
     </div>
     <div class="navright">
         <form action="../pages/products.php" method="GET" class="search-form">
-            <input type="text" name="search" placeholder="Search products and people..." class="search-input"
+            <input type="text" name="search" placeholder="Products, categories, or sellers" class="search-input"
                 aria-label="Search">
             <input type="hidden" name="search_type" value="products">
             <button type="submit" class="search-button">
