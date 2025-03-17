@@ -10,12 +10,13 @@ $price_to = isset($_GET['price-to']) && $_GET['price-to'] !== '' ? floatval($_GE
 $search = isset($_GET['search']) && $_GET['search'] !== '' ? trim($_GET['search']) : null;
 $rating_filter = isset($_GET['rating']) && $_GET['rating'] !== '' ? intval($_GET['rating']) : null;
 
-//auto suggestions for users
+//auto suggestions
 if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     header('Content-Type: application/json');
     $search_param = "%" . $search . "%";
-    $results = ["products" => [], "users" => []];
+    $results = ["products" => [], "users" => [], "categories" => []];
 
+    // for products
     $query = "SELECT id, name, img, user_id FROM items WHERE name LIKE ? LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $search_param);
@@ -24,12 +25,22 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $results["products"] = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
+    // for users
     $query = "SELECT id, name, profile_picture FROM users WHERE (name LIKE ? OR email LIKE ?) AND user_type != 'admin' LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $search_param, $search_param);
     $stmt->execute();
     $result = $stmt->get_result();
     $results["users"] = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    // for categories
+    $query = "SELECT DISTINCT category FROM items WHERE category LIKE ? LIMIT 5";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $search_param);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $results["categories"] = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
     echo json_encode($results);

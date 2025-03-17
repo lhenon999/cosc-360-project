@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (data.users.length > 0) {
                         let userSection = document.createElement("div");
-                        userSection.innerHTML = `<p class="suggestion-label">People</p>`;
+                        userSection.innerHTML = `<p class="suggestion-label">Sellers</p>`;
                         data.users.forEach(u => {
                             if (loggedInUserId && u.id == loggedInUserId) return;
                             let profileImage = u.profile_picture ? `<img src="${u.profile_picture}" class="profile-pic" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">` : `<span class="material-symbols-outlined icon">person</span>`;
@@ -63,7 +63,23 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     }
 
-                    if ((data.products.length > 0 || data.users.length > 0) && noValidSuggestions == false) {
+                    if (data.categories.length > 0) {
+                        let categorySection = document.createElement("div");
+                        categorySection.innerHTML = `<p class="suggestion-label">Categories</p>`;
+                        data.categories.forEach(c => {
+                            let categoryImage = `<span class="material-symbols-outlined icon">category</span>`;
+                            let item = document.createElement("div");
+                            item.innerHTML = `<a href="../pages/products.php?category=${c.category}" class="suggestion-item">${categoryImage} ${c.category}</a>`;
+                            categorySection.appendChild(item);
+                        });
+                        if (categorySection.querySelectorAll('.suggestion-item').length > 0) {
+                            suggestionsBox.appendChild(categorySection);
+                        } else{
+                            noValidSuggestions = true;
+                        }
+                    }
+
+                    if ((data.products.length > 0 || data.users.length > 0 || data.categories.length > 0) && noValidSuggestions == false) {
                         suggestionsBox.style.display = "block";
                     } else {
                         suggestionsBox.style.display = "none";
