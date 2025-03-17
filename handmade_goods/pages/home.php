@@ -19,6 +19,7 @@ include '../config.php';
         <link rel="stylesheet" href="../assets/css/navbar.css">
         <link rel="stylesheet" href="../assets/css/footer.css">
         <link rel="stylesheet" href="../assets/css/home.css">
+        <link rel="stylesheet" href="../assets/css/landing_slider.css">
         <link rel="stylesheet" href="../assets/css/product_card.css">
     </head>
 
@@ -29,23 +30,7 @@ include '../config.php';
             <h1 >Welcome to Handmade Goods</h1>
             <p class="text-muted mb-5">Discover unique local products crafted with care</p>
 
-            <div class="img-container mt-5">
-                <div class="home-img">
-                    <img src="../assets/images/image1.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/image2.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/image3.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/image4.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/stock_image.webp">
-                </div>
-            </div>
+            <?php include '../assets/html/landing_slider.php'; ?>
 
             <script>
                 $(document).ready(function () {
