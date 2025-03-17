@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="../../assets/css/product_card.css">
-
 <div class="listing-item-container">
     <a class="listing-item" href="../pages/product.php?id=<?= $id ?><?= isset($isFromProfile) && $isFromProfile ? '&from=user_profile' : '' ?>">
         <div class="product-image-container">
