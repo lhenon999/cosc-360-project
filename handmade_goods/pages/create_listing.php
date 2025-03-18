@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($errors)) {
         $maxSize = 2 * 1024 * 1024;
-        $target_dir = "../assets/images/product_images/";
+        $target_dir = "/cosc-360-project/handmade_goods/assets/images/product_images/";
         $image_name = basename($_FILES["image"]["name"]);
         $target_file = $target_dir . time() . "_" . $image_name;
         $image_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
@@ -102,13 +102,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <link rel="stylesheet" href="../assets/css/globals.css">
         <link rel="stylesheet" href="../assets/css/navbar.css">
         <link rel="stylesheet" href="../assets/css/footer.css">
+        <link rel="stylesheet" href="../assets/css/create_listing.css">
     </head>
 
     <body>
         <?php include '../assets/html/navbar.php'; ?>
 
-        <h1 class="text-center">Create a New Listing</h1>
-        <p class="text-center">Fill in the details to add your product</p>
+        <h1 class="text-center mt-5">Create a New Listing</h1>
+        <p class="text-center">Fill in the details to add your product to our directory!</p>
         <br>
 
         <?php if (!empty($errors)): ?>
@@ -120,86 +121,125 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </ul>
             </div>
         <?php endif; ?>
-
-        <div class="text-center mt-4 d-flex justify-content-center">
-            <form action="create_listing.php" id="listingForm" method="POST" enctype="multipart/form-data" class="mt-4">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Product Name</label>
-                    <input type="text" name="name" id="name" class="form-control" required value="<?= isset($name) ? htmlspecialchars($name) : '' ?>">
+        
+        <section>
+            <div class="preview-container">
+                <div class="listing-item-container" id="productPreview">
+                    <div class="product-image-container">
+                    <img src="" id="previewDiv" class="card-img-top" style="background-color: #BBB; width: 100%; height: 100%;">
+                    <img src="" id="previewImage" class="card-img-top" style="diplay:none;">
+                    </div>
+                    <div class="product-info">
+                        <h1 id="previewTitle">Product Preview</h1>
+                        <h2>$<span id="previewPrice">0.01</span></h2>
+                    </div>
                 </div>
+            </div>
 
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea name="description" id="description" class="form-control" required><?= isset($description) ? htmlspecialchars($description) : '' ?></textarea>
-                </div>
+            <div class="listing-form-container">
+                <form action="create_listing.php" id="listingForm" method="POST" enctype="multipart/form-data" class="mt-4">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Product Name</label>
+                        <input type="text" name="name" id="name" class="form-control" required  oninput="updatePreview()" value="<?= isset($name) ? htmlspecialchars($name) : '' ?>">
+                    </div>
 
-                <div class="mb-3">
-                    <label for="price" class="form-label">Price ($)</label>
-                    <input type="number" name="price" id="price" class="form-control" step="0.01" required min="0.01" value="<?= isset($price) ? htmlspecialchars($price) : '' ?>">
-                </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" class="form-control" required  oninput="updatePreview()"><?= isset($description) ? htmlspecialchars($description) : '' ?></textarea>
+                    </div>
 
-                <div class="mb-3">
-                    <label for="stock" class="form-label">Stock</label>
-                    <input type="number" name="stock" id="stock" class="form-control" required min="1" value="<?= isset($stock) ? htmlspecialchars($stock) : '' ?>">
-                </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Price ($)</label>
+                        <input type="number" name="price" id="price" class="form-control" step="0.01" required min="0.01" value="<?= isset($price) ? htmlspecialchars($price) : '' ?>"  oninput="updatePreview()">
+                    </div>
 
-                <div class="mb-3">
-                    <label for="category" class="form-label">Category</label>
-                    <select name="category" id="category" class="form-control" required>
-                        <option value="">Select a Category</option>
-                        <option value="Kitchenware" <?= (isset($category) && $category === 'Kitchenware') ? 'selected' : '' ?>>Kitchenware</option>
-                        <option value="Accessories" <?= (isset($category) && $category === 'Accessories') ? 'selected' : '' ?>>Accessories</option>
-                        <option value="Apparel" <?= (isset($category) && $category === 'Apparel') ? 'selected' : '' ?>>Apparel</option>
-                        <option value="Home Decor" <?= (isset($category) && $category === 'Home Decor') ? 'selected' : '' ?>>Home Decor</option>
-                        <option value="Personal Care" <?= (isset($category) && $category === 'Personal Care') ? 'selected' : '' ?>>Personal Care</option>
-                        <option value="Stationery" <?= (isset($category) && $category === 'Stationery') ? 'selected' : '' ?>>Stationery</option>
-                        <option value="Toys" <?= (isset($category) && $category === 'Toys') ? 'selected' : '' ?>>Toys</option>
-                        <option value="Art" <?= (isset($category) && $category === 'Art') ? 'selected' : '' ?>>Art</option>
-                        <option value="Seasonal" <?= (isset($category) && $category === 'Seasonal') ? 'selected' : '' ?>>Seasonal</option>
-                        <option value="Gift Sets" <?= (isset($category) && $category === 'Gift Sets') ? 'selected' : '' ?>>Gift Sets</option>
-                        <option value="Wallets and Purses" <?= (isset($category) && $category === 'Wallets and Purses') ? 'selected' : '' ?>>Wallets and Purses</option>
-                        <option value="Storage" <?= (isset($category) && $category === 'Storage') ? 'selected' : '' ?>>Storage</option>
-                    </select>
-                </div>
+                    <div class="mb-3">
+                        <label for="stock" class="form-label">Stock</label>
+                        <input type="number" name="stock" id="stock" class="form-control" required min="1" value="<?= isset($stock) ? htmlspecialchars($stock) : '' ?>">
+                    </div>
 
-                <div class="mb-3">
-                    <label for="image" class="form-label">Product Image</label>
-                    <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
-                </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <select name="category" id="category" class="form-control" required>
+                            <option value="">Select a Category</option>
+                            <option value="Kitchenware" <?= (isset($category) && $category === 'Kitchenware') ? 'selected' : '' ?>>Kitchenware</option>
+                            <option value="Accessories" <?= (isset($category) && $category === 'Accessories') ? 'selected' : '' ?>>Accessories</option>
+                            <option value="Apparel" <?= (isset($category) && $category === 'Apparel') ? 'selected' : '' ?>>Apparel</option>
+                            <option value="Home Decor" <?= (isset($category) && $category === 'Home Decor') ? 'selected' : '' ?>>Home Decor</option>
+                            <option value="Personal Care" <?= (isset($category) && $category === 'Personal Care') ? 'selected' : '' ?>>Personal Care</option>
+                            <option value="Stationery" <?= (isset($category) && $category === 'Stationery') ? 'selected' : '' ?>>Stationery</option>
+                            <option value="Toys" <?= (isset($category) && $category === 'Toys') ? 'selected' : '' ?>>Toys</option>
+                            <option value="Art" <?= (isset($category) && $category === 'Art') ? 'selected' : '' ?>>Art</option>
+                            <option value="Seasonal" <?= (isset($category) && $category === 'Seasonal') ? 'selected' : '' ?>>Seasonal</option>
+                            <option value="Gift Sets" <?= (isset($category) && $category === 'Gift Sets') ? 'selected' : '' ?>>Gift Sets</option>
+                            <option value="Wallets and Purses" <?= (isset($category) && $category === 'Wallets and Purses') ? 'selected' : '' ?>>Wallets and Purses</option>
+                            <option value="Storage" <?= (isset($category) && $category === 'Storage') ? 'selected' : '' ?>>Storage</option>
+                        </select>
+                    </div>
 
-                <div class="d-flex justify-content-center">
-                    <a class="cta hover-raise" href="my_shop.php">
-                        <span class="material-symbols-outlined">delete</span> Cancel
-                    </a>
-                    <button type="button" class="btn btn-warning me-2" onclick="clearFormAndErrors()">
-                    <span class="material-symbols-outlined">ink_eraser</span> Clear Fields & Errors
-                    </button>
-                    <button type="submit" class="cta hover-raise" href="myshop.php">
-                        <span class="material-symbols-outlined">add</span> Create Listing
-                    </button>
-                </div>
-            </form>
-        </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Product Image</label>
+                        <input type="file" name="image" id="image" class="form-control" accept="image/*" required onchange="previewImage()">
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-3 mb-3">
+                        <a class="cancel-btn hover-raise" href="my_shop.php">
+                            <span class="material-symbols-outlined">delete</span> Cancel
+                        </a>
+                        <button type="button" class="hover-raise clear-btn" onclick="clearFormAndErrors()">
+                        <span class="material-symbols-outlined">ink_eraser</span> Clear Fields
+                        </button>
+                        <button type="submit" class="cta hover-raise" href="myshop.php">
+                            <span class="material-symbols-outlined">add</span> Submit Product
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
 
         <script>
+            function updatePreview() {
+                let priceInput = document.getElementById("price").value.trim();
+                let formattedPrice = (priceInput === "" || isNaN(priceInput)) ? "0.00" : parseFloat(priceInput).toFixed(2);
+
+                document.getElementById("previewTitle").innerText = document.getElementById("name").value || "Product Preview";
+                document.getElementById("previewPrice").innerText = `${formattedPrice}`;
+            }
+
+            function previewImage() {
+                const file = document.getElementById("image").files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const previewImage = document.getElementById("previewImage");
+                        const previewDiv = document.getElementById("previewDiv");
+                        previewImage.src = e.target.result;
+                        previewImage.style.display = "block";
+                        previewDiv.style.display = "none";
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
             function clearFormAndErrors() {
                 const errorAlert = document.querySelector('.alert.alert-danger');
                 if (errorAlert) {
                     errorAlert.remove();
                 }
-
                 const form = document.getElementById('listingForm');
                 if (form) {
                     form.reset();
                 }
-
                 const fileInput = document.getElementById('image');
                 if (fileInput) {
                     fileInput.value = "";
                 }
-
                 window.location.href = window.location.pathname;
             }
+
+            document.getElementById("previewTitle").innerText = "Product Preview";
+            document.getElementById("previewPrice").innerText = "0.00";
+            document.getElementById("previewImage").style.display = "none";
         </script>
     </body>
 </html>
