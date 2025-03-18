@@ -4,7 +4,7 @@ STEP 3) Minimal core functionality
 
 Your site should have minimal core functionality and:
 
-- [ ] Client-side security
+- [x] Client-side security
 - [ ] Posted on cosc360.ok.ubc.ca
 - [ ] Server-side security
 - [ ] Discussion thread stored in database
@@ -18,8 +18,8 @@ Minimum Functional Requirements (for a C grade):
 
 - [X] Hand-styled layout with contextual menus (i.e. when user has logged on to site, menus reflect change). Layout frameworks are not permitted other than Bootstrap
 - [X] 2 or 3 column layout using appropriate design principles (i.e. highlighting nav links when hovered over, etc) responsive design
-- [ ] Form validation with JavaScript
-- [ ] Server-side scripting with PHP
+- [x] Form validation with JavaScript
+- [x] Server-side scripting with PHP
 - [X] Data storage in MySQL
 - [ ] Appropriate security for data
 - [X] Site must maintain state (user state being logged on, etc)
@@ -28,7 +28,7 @@ Minimum Functional Requirements (for a C grade):
 - [x] User images (thumbnail) and profile stored in database
 - [ ] Simple discussion (topics) grouping and display
 - [ ] Navigation breadcrumb strategy (i.e. user can determine where they are in threads)
-- [ ] Error handling (bad navigation)
+- [x] Error handling (bad navigation)
 
 Website user’s objectives:
 
@@ -37,17 +37,17 @@ Website user’s objectives:
 - [X] Register at the site by providing their name, e-mail and image
 - [X] Allow user login by providing user id and password
 - [ ] Create and comment (specific for each project) when logged into the site
-- [ ] Users are required to be able to view/edit their profile
+- [x] Users are required to be able to view/edit their profile
 
 Website administrator’s objectives:
 
-- [ ] Search for user by name, email or post
+- [x] Search for user by name, email or post
 - [ ] Enable/disable users
 - [ ] Edit/remove posts items or complete posts (project dependent)
 
 Additional requirements:
 
-- [ ] Search and analysis for topics/items
+- [x] Search and analysis for topics/items
 - [ ] Hot threads/hot item tracking
 - [ ] Visual display of updates, etc (site usage charts, etc)
 - [ ] Activity by date
@@ -55,10 +55,10 @@ Additional requirements:
 - [ ] Collapsible items/treads without page reloading
 - [ ] Alerts on page changes
 - [ ] Admin view reports on usage (with filtering)
-- [ ] Styling flourishes
+- [x] Styling flourishes
 - [ ] Responsive layout for mobile
 - [ ] Tracking comment history from a user’s perspective
-- [ ] Accessibility
+- [x] Accessibility
   Your choice (this is your opportunity to add additional flourish to your site but will need to be documented in the final report)
 
 ## Setup
