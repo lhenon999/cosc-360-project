@@ -6,6 +6,7 @@
     overflow: hidden;
     border: 2px solid #DDD;
     transition: transform ease-in-out 0.2s, box-shadow ease-in-out 0.2s;
+    box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 .bg-dark .listing-item-container {
@@ -14,8 +15,8 @@
 }
 
 .listing-item-container:hover {
-    box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.1);
-    transform: scale(1.01);
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
 }
 
 .listing-item {

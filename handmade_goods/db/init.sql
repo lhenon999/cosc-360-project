@@ -76,6 +76,8 @@ ALTER TABLE USERS ADD COLUMN profile_picture VARCHAR(255) NOT NULL DEFAULT '/cos
 ALTER TABLE password_resets ADD COLUMN short_code VARCHAR(8) NOT NULL;
 ALTER TABLE password_resets ADD UNIQUE (email);
 ALTER TABLE users ADD COLUMN remember_token VARCHAR(255) NULL;
+ALTER TABLE users ADD COLUMN is_frozen TINYINT(1) DEFAULT 0;
+ALTER TABLE items ADD COLUMN status ENUM('active', 'inactive') DEFAULT 'active';
 
 INSERT INTO users (id, name, email, password, user_type)
 SELECT 1, 'administrator', 'admin@handmadegoods.com', '$2y$10$E4LsPni7YFBS96DJ6tK8PeCJVgswuLXnd6XDPUySc3yCgbv6lnyeG', 'admin'
