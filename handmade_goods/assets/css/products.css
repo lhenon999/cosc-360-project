@@ -71,6 +71,42 @@ h1 {
     background-color: rgba(200, 200, 200, 0.4);
 }
 
+.price-label {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    justify-content: sapce-between;
+    align-items: center;
+    width: 100%;
+}
+
+.price-label:hover {
+    background-color: white !important;
+}
+
+.filter-section input[type="number"] {
+    width: 70%;
+    padding: 6px;
+    margin: 0;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #fffcfc;
+    background-color: #eceaea;
+    color: black;
+    text-align: center;
+}
+
+.bg-dark .filter-section input[type="number"] {
+    background-color: #2a2a2a;
+    color: white; 
+}
+
+.filter-section input[type="number"]::placeholder {
+    color: #AAA;
+    font-size: 17px;
+    opacity: 0.8;
+}
+
 .filter-section input[type="radio"],
 .filter-section input[type="checkbox"] {
     appearance: none;
@@ -99,30 +135,6 @@ h1 {
 .filter-section input[type="radio"]:checked + label {
     color: #103e11 !important;
     font-weight: bold;
-}
-
-.filter-section input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: 1px solid #fffcfc;
-    background: #eceaea;
-    color: #282727;
-    transition: border-color 0.3s ease;
-    text-align: center;
-    margin-bottom: 10px; 
-}
-
-.bg-dark .filter-section input[type="number"] {
-    background: #2a2a2a;
-    color: #fff; 
-}
-
-.filter-section input[type="number"]::placeholder {
-    color: #aaa;
-    font-size: 14px;
-    opacity: 0.7;
 }
 
 .clear-filters {

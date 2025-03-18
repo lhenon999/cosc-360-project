@@ -189,8 +189,15 @@ $rating_stmt->close();
 
                 <div class="filter-section">
                     <h4>Price Range</h4>
-                    <input type="number" name="price-from" placeholder="Min Price" min=0>
-                    <input type="number" name="price-to" placeholder="Max Price" min=0>
+                    <label class="price-label">
+                        <span>Min $</span>
+                        <input type="number" name="price-from" id="price-from" placeholder="Min Price" min="0" value="<?= htmlspecialchars($price_from ?? '') ?>">
+                    </label>
+
+                    <label class="price-label">
+                    <span>Max $</span>
+                        <input type="number" name="price-to" id="price-to" placeholder="Max Price" min="0" value="<?= htmlspecialchars($price_to ?? '') ?>">
+                    </label>
 
                 </div>
 
@@ -238,6 +245,25 @@ $rating_stmt->close();
     <?php include '../assets/html/footer.php'; ?>
 
     <script>
+        // validation for price filters
+        const priceFrom = document.getElementById('price-from');
+        const priceTo = document.getElementById('price-to');
+
+        priceFrom.addEventListener('input', function () {
+            const minValue = this.value.trim() !== '' ? Number(this.value) : 0;
+            priceTo.min = minValue;
+
+            if (priceTo.value && Number(priceTo.value) < minValue) {
+                priceTo.value = minValue;
+            }
+        });
+        priceTo.addEventListener('input', function () {
+            const currentMin = priceTo.min ? Number(priceTo.min) : 0;
+            if (this.value && Number(this.value) < currentMin) {
+                this.value = currentMin;
+            }
+        });
+
         // Add client-side validation and handling
         document.getElementById('filter-form').addEventListener('submit', function (e) {
             // Clear empty values before submission
@@ -264,10 +290,8 @@ $rating_stmt->close();
             input.addEventListener('input', function () {
                 clearTimeout(timeout);
                 timeout = setTimeout(() => {
-                    if (this.value.trim() !== '') {
-                        document.getElementById('filter-form').submit();
-                    }
-                }, 1000); // Wait 1 second after user stops typing
+                    document.getElementById('filter-form').submit();
+                }, 1000);
             });
         });
     </script>
