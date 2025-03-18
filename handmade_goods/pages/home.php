@@ -93,34 +93,94 @@ include '../config.php';
             </div>
         </div>
 
-        <div class="container mt-5 mb-3">
-            <h3 class="text-center">Get In Touch</h3>
+        <div class="container mt-5 mb-5">
+            <h3 class="text-center mb-3">Get In Touch</h3>
             <div class="contact-form-container">
-                <form action="" method="POST">
+                <form id="contactForm" method="POST" action="get_in_touch.php" novalidate>
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" name="name" required>
+                        <small class="error-message text-danger" id="nameError"></small>
                     </div>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email" required>
+                        <small class="error-message text-danger" id="emailError"></small>
                     </div>
 
                     <div class="mb-3">
                         <label for="message" class="form-label">Message</label>
                         <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                        <small class="error-message text-danger" id="messageError"></small>
                     </div>
 
-                    <div class="text-center">
+                    <div class="text-center d-flex align-items-center justify-content-center mt-5">
                         <button type="submit" class="cta hover-raise">Submit</button>
                     </div>
+
+                    <div class="status-message text-center mt-3" id="formStatus"></div>
                 </form>
             </div>
         </div>
 
         </div>
         <?php include "../assets/html/footer.php"; ?>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const form = document.getElementById("contactForm");
+                const nameField = document.getElementById("name");
+                const emailField = document.getElementById("email");
+                const messageField = document.getElementById("message");
+                const statusMessage = document.getElementById("formStatus");
+
+                form.addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    let isValid = true;
+
+                    document.querySelectorAll(".error-message").forEach(el => el.textContent = "");
+
+                    if (nameField.value.trim().length < 3) {
+                        document.getElementById("nameError").textContent = "Name must be at least 3 characters.";
+                        isValid = false;
+                    }
+
+                    const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+                    if (!emailPattern.test(emailField.value.trim())) {
+                        document.getElementById("emailError").textContent = "Enter a valid email.";
+                        isValid = false;
+                    }
+
+                    if (messageField.value.trim().length < 10) {
+                        document.getElementById("messageError").textContent = "Message must be at least 10 characters.";
+                        isValid = false;
+                    }
+
+                    if (isValid) {
+                        fetch("get_in_touch.php", {
+                            method: "POST",
+                            body: new FormData(form),
+                        })
+                        .then(response => response.text())
+                        .then(data => {
+                            if (data.trim() === "success") {
+                                statusMessage.textContent = "Message sent successfully!";
+                                statusMessage.style.color = "green";
+                                form.reset();
+                            } else {
+                                statusMessage.textContent = data;
+                                statusMessage.style.color = "red";
+                            }
+                        })
+                        .catch(error => {
+                            statusMessage.textContent = "Something went wrong. Try again!";
+                            statusMessage.style.color = "red";
+                        });
+                    }
+                });
+            });
+        </script>
     </body>
 
 </html>
