@@ -159,86 +159,82 @@ $rating_stmt->close();
 
 <body>
     <?php include '../assets/html/navbar.php'; ?>
-    <h1 class="text-center">Explore our products!</h1>
+
+    <h1 class="text-center">Explore Our Products!</h1>
     <p class="text-center">Browse our collection and discover what suits you</p>
 
-    <div class="container">
+    <main class="mt-5">
         <div class="sidebar">
-            <div class="filter-container">
-                <form action="products.php" method="GET" id="filter-form" class="filter-form">
-                    <?php if ($search): ?>
-                        <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
-                    <?php endif; ?>
-
-                    <div class="filter-section">
-                        <h4>Categories</h4>
-                        <div class="category-options">
-                            <label class="category-label">
-                                <input type="radio" name="category" value="" <?= (!$category_filter) ? 'checked' : '' ?>>
-                                All
-                            </label><br>
-                            <?php foreach ($categories as $cat): ?>
-                                <label class="category-label">
-                                    <input type="radio" name="category" value="<?= htmlspecialchars($cat) ?>"
-                                        <?= ($category_filter === $cat) ? 'checked' : '' ?>>
-                                    <?= htmlspecialchars($cat) ?>
-                                </label><br>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-
-                    <div class="filter-section">
-                        <h4>Price Range</h4>
-                        <input type="number" name="price-from" placeholder="Min Price">
-                        <input type="number" name="price-to" placeholder="Max Price">
-
-                    </div>
-
-                    <div class="filter-section">
-                        <h4>Average Rating</h4>
-                        <label><input type="radio" name="rating" value="5" <?= ($rating_filter === 5) ? 'checked' : '' ?>>
-                            ★ ★ ★ ★ ★</label><br>
-                        <label><input type="radio" name="rating" value="4" <?= ($rating_filter === 4) ? 'checked' : '' ?>>
-                            ★ ★ ★ ★</label><br>
-                        <label><input type="radio" name="rating" value="3" <?= ($rating_filter === 3) ? 'checked' : '' ?>>
-                            ★ ★ ★</label><br>
-                        <label><input type="radio" name="rating" value="2" <?= ($rating_filter === 2) ? 'checked' : '' ?>>
-                            ★ ★</label><br>
-                        <label><input type="radio" name="rating" value="1" <?= ($rating_filter === 1) ? 'checked' : '' ?>>
-                            ★</label><br>
-                    </div>
-
-
-                    <a href="products.php" class="btn btn-secondary w-100">Clear Filters</a>
-                </form>
-            </div>
-        </div>
-        <div class="scrollable-container">
-            <!-- <div class="container">  -->
-            <div class="listing-grid">
-                <?php if (!empty($products)): ?>
-                    <?php foreach ($products as $product): ?>
-                        <?php
-                        $id = htmlspecialchars($product["id"]);
-                        $name = htmlspecialchars($product["name"]);
-                        $price = number_format($product["price"], 2);
-                        $image = htmlspecialchars($product["img"]);
-                        $stock = intval($product["stock"]);
-                        $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
-                        include "../assets/html/product_card.php";
-                        ?>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <div class="no-results text-center">
-                        <p>No products found matching your criteria</p>
-                        <a href="products.php" class="cta hover-raise">Clear Filters</a>
-                    </div>
+            <form action="products.php" method="GET" id="filter-form" class="filter-form">
+                <?php if ($search): ?>
+                    <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
                 <?php endif; ?>
-            </div>
-            <div class="spacer"></div>
-            <!-- </div> -->
+
+                <div class="filter-section">
+                    <h4>Categories</h4>
+                    <div class="category-options">
+                        <label class="category-label">
+                            <input type="radio" name="category" value="" <?= (!$category_filter) ? 'checked' : '' ?>>
+                            All
+                        </label>
+                        <?php foreach ($categories as $cat): ?>
+                            <label class="category-label">
+                                <input type="radio" name="category" value="<?= htmlspecialchars($cat) ?>"
+                                    <?= ($category_filter === $cat) ? 'checked' : '' ?>>
+                                <?= htmlspecialchars($cat) ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Price Range</h4>
+                    <input type="number" name="price-from" placeholder="Min Price" min=0>
+                    <input type="number" name="price-to" placeholder="Max Price" min=0>
+
+                </div>
+
+                <div class="filter-section">
+                    <h4>Average Rating</h4>
+                    <label><input type="radio" name="rating" value="5" <?= ($rating_filter === 5) ? 'checked' : '' ?>>
+                        ★ ★ ★ ★ ★</label>
+                    <label><input type="radio" name="rating" value="4" <?= ($rating_filter === 4) ? 'checked' : '' ?>>
+                        ★ ★ ★ ★</label>
+                    <label><input type="radio" name="rating" value="3" <?= ($rating_filter === 3) ? 'checked' : '' ?>>
+                        ★ ★ ★</label>
+                    <label><input type="radio" name="rating" value="2" <?= ($rating_filter === 2) ? 'checked' : '' ?>>
+                        ★ ★</label>
+                    <label><input type="radio" name="rating" value="1" <?= ($rating_filter === 1) ? 'checked' : '' ?>>
+                        ★</label>
+                </div>
+
+
+                <a href="products.php" class="clear-filters">Clear Filters</a>
+            </form>
         </div>
-    </div>
+
+        <div class="listing-grid">
+            <?php if (!empty($products)): ?>
+                <?php foreach ($products as $product): ?>
+                    <?php
+                    $id = htmlspecialchars($product["id"]);
+                    $name = htmlspecialchars($product["name"]);
+                    $price = number_format($product["price"], 2);
+                    $image = htmlspecialchars($product["img"]);
+                    $stock = intval($product["stock"]);
+                    $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
+                    include "../assets/html/product_card.php";
+                    ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="no-results text-center w-100 d-flex flex-column justify-content-center align-items-center h-100">
+                    <p>No products found matching your criteria. Try adjusting search or filter parameters!</p>
+                    <a href="products.php" class="cta hover-raise mt-5 clear-filters">Clear Filters</a>
+                </div>
+            <?php endif; ?>
+        </div>
+    </main>
+
     <?php include '../assets/html/footer.php'; ?>
 
     <script>

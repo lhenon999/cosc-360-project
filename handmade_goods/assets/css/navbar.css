@@ -197,9 +197,10 @@ h3 {
 .search-form {
     display: flex;
     align-items: center;
-    width: 314px;
+    width: 316px;
     border-radius: 40px;
-    padding: 0 0.5em;
+    height: 50px !important;
+    padding: 0 0.5em !important;
     background-color: #FFF;
     border: 1px solid #426B1F !important;
     overflow: hidden;
