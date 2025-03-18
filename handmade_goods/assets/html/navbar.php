@@ -1,10 +1,10 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if (!isset($conn)) {
-    include_once __DIR__ . '/../../config.php';
-}
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($conn)) {
+        include_once __DIR__ . '/../../config.php';
+    }
 ?>
 <nav>
     <div class="navleft">

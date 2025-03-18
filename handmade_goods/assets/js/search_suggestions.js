@@ -17,6 +17,21 @@ document.addEventListener("DOMContentLoaded", function () {
         suggestionsBox.style.width = `${rect.width}px`;
     }
 
+    categoryIcons = {
+        "Kitchenware": "skillet",
+        "Accessories": "diamond",
+        "Apparel": "apparel",
+        "Home Decor": "cottage",
+        "Personal Care": "health_and_beauty",
+        "Stationery": "stylus_note",
+        "Toys": "toys",
+        "Art": "palette",
+        "Seasonal": "park",
+        "Gift Sets": "featured_seasonal_and_gifts",
+        "Wallets and Purses": "wallet",
+        "Storage": "inventory_2"
+    };
+
     searchInput.addEventListener("input", function () {
         let query = this.value.trim();
         let noValidSuggestions = false;
@@ -67,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         let categorySection = document.createElement("div");
                         categorySection.innerHTML = `<p class="suggestion-label">Categories</p>`;
                         data.categories.forEach(c => {
-                            let categoryImage = `<span class="material-symbols-outlined icon">category</span>`;
+                            let categoryImage = `<span class="material-symbols-outlined icon">${categoryIcons[c.category] != "" ? categoryIcons[c.category] : "category"}</span>`;
                             let item = document.createElement("div");
                             item.innerHTML = `<a href="../pages/products.php?category=${c.category}" class="suggestion-item">${categoryImage} ${c.category}</a>`;
                             categorySection.appendChild(item);

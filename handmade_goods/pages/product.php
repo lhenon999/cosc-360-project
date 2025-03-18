@@ -2,13 +2,6 @@
 session_start();
 include '../config.php';
 
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-
-// var_dump($_POST);
-
-// echo "Debug: User ID = $user_id, Product ID = $item_id, Quantity = $quantity <br>";
-
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("Location: products.php");
     exit();
