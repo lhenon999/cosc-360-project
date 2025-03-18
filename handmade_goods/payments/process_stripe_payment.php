@@ -30,22 +30,13 @@ try {
         throw new Exception("Order is not in pending status");
     }
 
-    // Create a Checkout Session
-    $checkout_session = \Stripe\Checkout\Session::create([
-        'payment_method_types' => ['card'],
-        'line_items' => [[
-            'price_data' => [
-                'currency' => 'usd',
-                'unit_amount' => $amount,
-                'product_data' => [
-                    'name' => 'Order #' . $orderId,
-                ],
-            ],
-            'quantity' => 1,
-        ]],
-        'mode' => 'payment',
-        'success_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/cosc-360-project/handmade_goods/pages/order_confirmation.php?order_id=' . $orderId . '&payment=success',
-        'cancel_url' => 'http://' . $_SERVER['HTTP_HOST'] . '/cosc-360-project/handmade_goods/pages/order_confirmation.php?order_id=' . $orderId . '&payment=cancelled',
+    // Create a PaymentIntent
+    $intent = \Stripe\PaymentIntent::create([
+        'amount' => $amount,
+        'currency' => 'usd',
+        'automatic_payment_methods' => [
+            'enabled' => true,
+        ],
         'metadata' => [
             'order_id' => $orderId
         ]
@@ -53,7 +44,7 @@ try {
 
     echo json_encode([
         'success' => true,
-        'url' => $checkout_session->url
+        'clientSecret' => $intent->client_secret
     ]);
 
 } catch (Exception $e) {
