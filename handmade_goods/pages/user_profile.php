@@ -58,7 +58,6 @@ $stmt->close();
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/product_card.css">
     <link rel="stylesheet" href="../assets/css/user_profile.css">
-    <!-- <link rel="stylesheet" href="../assets/css/profile.css"> -->
 </head>
 
 <body>
