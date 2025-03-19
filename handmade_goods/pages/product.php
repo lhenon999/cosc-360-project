@@ -140,8 +140,9 @@
                     <p class="mb-5">No reviews yet. Be the first to review this product!</p>
                 <?php else: ?>
                     <?php foreach ($reviews as $review): ?>
+                        <?php $userProfileLink = ($review['user_id'] == $_SESSION['user_id']) ? "profile.php" : "user_profile.php?id=" . $review['user_id']; ?>
                         <div class="review mt-2 d-flex flex-column">
-                            <a href="user_profile.php?id=<?= $review['user_id'] ?>" class="review-user">
+                            <a href="<?= htmlspecialchars($userProfileLink) ?>" class="review-user">
                                 <img src="<?= htmlspecialchars($review['profile_picture']) ?>" alt="Profile" class="review-user-img">
                                 <strong><?= htmlspecialchars($review['name']) ?></strong>
                             </a>
