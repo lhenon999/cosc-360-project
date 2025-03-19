@@ -103,14 +103,6 @@ foreach ($order_items as $item) {
             <p><strong>Status:</strong> <span><?= $status ?></span></p>
             <h4 class="mt-4"><strong>Total Amount:</strong> <span
                     class="total-price">$<?= number_format($total_price, 2) ?></span></h4>
-            <div class="ending-div mt-5">
-                <form action="process_payment.php" method="POST">
-                    <input type="hidden" name="order_id" value="<?= $order_id ?>">
-                    <button type="submit" class="cta hover-raise">
-                        <span class="material-symbols-outlined">payment</span> Process Payment
-                    </button>
-                </form>
-            </div>
         </div>
 
         <h3 class="mt-5">Items Ordered:</h3>
@@ -128,7 +120,6 @@ foreach ($order_items as $item) {
                             <p><strong>Item Total:</strong> $<?= number_format($item['price_at_purchase'] * $item['quantity'], 2) ?></p>
                         </div>
                     </div>
-
                 </div>
             <?php endforeach; ?>
         </div>

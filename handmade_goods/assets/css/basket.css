@@ -94,3 +94,22 @@
     font-size: 0.9em;
     margin: 0.5em 0;
 }
+
+#checkoutLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+#checkoutLink .material-symbols-outlined,
+#placeOrderForm .material-symbols-outlined {
+    margin-right: 8px;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 8px;
+    border-width: 0.15em;
+}

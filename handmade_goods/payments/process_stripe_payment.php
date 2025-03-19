@@ -30,8 +30,8 @@ try {
         throw new Exception("Order is not in pending status");
     }
 
-    // Create a PaymentIntent
-    $intent = \Stripe\PaymentIntent::create([
+    // Create a PaymentIntent with Stripe
+    $paymentIntent = \Stripe\PaymentIntent::create([
         'amount' => $amount,
         'currency' => 'usd',
         'automatic_payment_methods' => [
@@ -44,12 +44,13 @@ try {
 
     echo json_encode([
         'success' => true,
-        'clientSecret' => $intent->client_secret
+        'clientSecret' => $paymentIntent->client_secret
     ]);
 
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode([
+        'success' => false,
         'error' => $e->getMessage()
     ]);
 }

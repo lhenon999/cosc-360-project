@@ -135,38 +135,65 @@ $total = $subtotal + $shipping + $tax;
                         <h5 class="summary-total">Total: <span class="float-end">$<?= number_format($total, 2) ?></span>
                         </h5>
                         <?php if (!empty($cart_items)): ?>
-                            <form id="placeOrderForm">
-                                <button type="submit" class="btn btn-success w-100 mt-3">Place Order</button>
+                            <form id="placeOrderForm" class="mb-3">
+                                <button type="submit" class="cta hover-raise w-100">
+                                    <span class="material-symbols-outlined">shopping_cart_checkout</span>
+                                    Place Order
+                                </button>
                             </form>
 
                             <script>
                                 $(document).ready(function () {
                                     $("#placeOrderForm").submit(function (e) {
                                         e.preventDefault();
+                                        const button = $(this).find('button');
+                                        button.prop('disabled', true);
+                                        button.html('<div class="spinner-border spinner-border-sm" role="status"></div> Processing...');
 
+                                        // First create the order
                                         $.ajax({
                                             url: "../basket/place_order.php",
                                             type: "POST",
                                             dataType: "json",
                                             success: function (response) {
-                                                console.log(response);
-
                                                 if (response.success) {
-                                                    alert("Order placed successfully! Order ID: " + response.order_id);
-                                                    window.location.href = "../pages/order_confirmation.php?order_id=" + response.order_id;
+                                                    // Then redirect to Stripe Checkout
+                                                    $.ajax({
+                                                        url: "../payments/process_stripe_checkout.php",
+                                                        type: "POST",
+                                                        contentType: "application/json",
+                                                        data: JSON.stringify({ order_id: response.order_id }),
+                                                        success: function (checkoutResponse) {
+                                                            if (checkoutResponse.success && checkoutResponse.url) {
+                                                                window.location.href = checkoutResponse.url;
+                                                            } else {
+                                                                alert("Error: " + checkoutResponse.error);
+                                                                button.prop('disabled', false);
+                                                                button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
+                                                            }
+                                                        },
+                                                        error: function (xhr, status, error) {
+                                                            console.error("Checkout error:", error);
+                                                            alert("Error creating checkout session. Please try again.");
+                                                            button.prop('disabled', false);
+                                                            button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
+                                                        }
+                                                    });
                                                 } else {
                                                     alert("Error: " + response.error);
+                                                    button.prop('disabled', false);
+                                                    button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
                                                 }
                                             },
                                             error: function (xhr, status, error) {
-                                                console.error("AJAX error: ", error);
-                                                console.error("Server response: ", xhr.responseText);
+                                                console.error("Order error:", error);
                                                 alert("Error processing order. Please try again.");
+                                                button.prop('disabled', false);
+                                                button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
                                             }
                                         });
                                     });
                                 });
-
                             </script>
                         <?php endif; ?>
                     </div>
