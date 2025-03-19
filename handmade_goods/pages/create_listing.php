@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("ssdiiss", $name, $description, $price, $stock, $category, $target_file, $user_email);
 
         if ($stmt->execute()) {
-            header("Location: myshop.php");
+            header("Location: my_shop.php");
             exit();
         } else {
             $errors[] = "Error: Failed to add product.";
@@ -189,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <button type="button" class="hover-raise cta-2" onclick="clearFormAndErrors()">
                         <span class="material-symbols-outlined">ink_eraser</span> Clear Fields
                         </button>
-                        <button type="submit" class="cta hover-raise" href="myshop.php">
+                        <button type="submit" class="cta hover-raise" href="my_shop.php">
                             <span class="material-symbols-outlined">add</span> Submit Product
                         </button>
                     </div>
