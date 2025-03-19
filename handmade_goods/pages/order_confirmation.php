@@ -75,7 +75,7 @@ foreach ($order_items as $item) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank you for your order!</title>
+    <title>Handmade Goods - Thank you for your order!</title>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
@@ -93,6 +93,7 @@ foreach ($order_items as $item) {
 
 <body>
     <?php include '../assets/html/navbar.php'; ?>
+
     <div class="container mt-5">
         <h1>Thank You for Your Order!</h1>
         <p>Your order has been placed successfully.</p>
@@ -113,21 +114,21 @@ foreach ($order_items as $item) {
             </div>
         </div>
 
-        <h3 class="mt-5">Items Ordered:</h3>
+        <h3 class="mt-5">Items Ordered</h3>
         <div class="row mt-4">
             <?php foreach ($order_items as $item): ?>
                 <div class="col-md-6 mb-4">
-                    <div class="order-item d-flex align-items-center">
+                    <a class="order-item hover-raise d-flex align-items-center" href="/cosc-360-project/handmade_goods/pages/product.php?id=<?= htmlspecialchars($item['item_id']) ?>">
                         <img src="<?= htmlspecialchars($item['img'] ?? '../assets/images/product_images/default.webp') ?>" 
-                             alt="<?= htmlspecialchars($item['item_name']) ?>"
-                             class="cart-img me-4">
+                            alt="<?= htmlspecialchars($item['item_name']) ?>"
+                            class="cart-img me-4">
                         <div class="item-desc">
                             <h5><?= htmlspecialchars($item['item_name']) ?></h5>
                             <p class="mt-4"><strong>Quantity:</strong> <?= $item['quantity'] ?></p>
                             <p><strong>Price:</strong> $<?= number_format($item['price_at_purchase'], 2) ?></p>
-                            <p><strong>Item Total:</strong> $<?= number_format($item['price_at_purchase'] * $item['quantity'], 2) ?></p>
+                            <p><strong>Total:</strong> $<?= number_format($item['price_at_purchase'] * $item['quantity'], 2) ?></p>
                         </div>
-                    </div>
+                    </a>
 
                 </div>
             <?php endforeach; ?>
@@ -137,5 +138,6 @@ foreach ($order_items as $item) {
                     class="material-symbols-outlined">shoppingmode</span>Continue Shopping</a>
         </div>
     </div>
+    <?php include '../assets/html/footer.php'; ?>
 </body>
 </html>
