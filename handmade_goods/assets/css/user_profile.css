@@ -1,35 +1,39 @@
-.profile-container {
-    max-width: 1800px;
+main {
     margin: auto;
-    padding: 20px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
     text-align: center;
-    height: auto;
-    flex-wrap: nowrap;
+    justify-content: center;
+    align-self: center;
 }
 
 .reviews-containers {
-    width: 1800px;
+    width: 100%;
     display: flex;
     flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.listings-container {
+    background: #fff;
+    color: #1e1e1e;
     padding: 20px;
-}
-
-.container {
-    flex-wrap: wrap !important;
-    margin: 20px !important;
-    padding: 0px !important;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease-in-out;
     border-radius: 16px;
+    text-align: center;
+    flex: 1;
+    width: 100%;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
-.container:hover{
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
-    transform: translateY(-5px) scale(1.03);
-    background: rgba(255, 255, 255, 0.98);
+.listing-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 12px;
 }
 
 .scrollable-container {
@@ -37,10 +41,9 @@
     height: auto;
     min-height: 0;
     overflow-y: auto;
-    margin-bottom: 40px;
 }
 
-.profile-info{
+.profile-info {
     flex-wrap: wrap !important;
     margin-top: 15px;
     margin-right: 15px;
@@ -48,46 +51,44 @@
     padding: 20px;
 }
 
-.text-center{
-    justify-self: center;
-}
-
-.listings-title{
+.listings-title {
     display: block;
     width: 100%;
 }
 
 .profile-header {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 50px;
     width: 100%;
-    margin-bottom: 20px;
-    justify-content: center;
+    margin-bottom: 2em;
 }
 
 .profile-pic {
     display: block;
     width: 280px;
-    height: 265px;
+    height: 280px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 10px;
-    flex-shrink: 0;
 }
 
-.profile-details {
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
+.profile-info {
+    text-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
-.profile-name {
-    font-size: 28px;
-    font-weight: bold;
-    color: #333;
-    margin-top: 10px;
+.profile-info h1,
+.profile-info a {
+    margin: 0;
+}
+
+.profile-info a {
+    font-size: 20px;
+    text-decoration: underline;;
 }
 
 .rating-score {
@@ -126,15 +127,15 @@
     padding: 20px;
     border-radius: 16px;
     text-align: center;
-    flex: 1; 
-    width: 300px;
+    flex: 1;
+    width: 350px;
     height: 350px;
-    max-width: 300px;
+    max-width: 350px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease-in-out;
 }
 
-.reviews-summary{
+.reviews-summary {
     background: #fff;
     color: #1e1e1e;
     border-radius: 16px;
@@ -145,16 +146,7 @@
     min-width: 500px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease-in-out;
-}
-
-.reviews-summary:hover, .rating-summary:hover, .profile-pic:hover {
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
-    transform: translateY(-3px) scale(1.02);
-    background: rgba(255, 255, 255, 0.98);
-}
-
-.profile-info:hover{
-    transform: translateY(-3px) scale(1.02);
+    padding: 20px;
 }
 
 .bg-dark .reviews-summary, .bg-dark .rating-summary{
@@ -168,10 +160,11 @@
 
 .rating-overall {
     font-size: 18px;
+    margin-top: 20px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
 }
 
 .rating-score {
@@ -191,7 +184,7 @@
 }
 
 .rating-bars {
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .rating-row {
@@ -219,14 +212,8 @@
     margin: 0 !important;
 }
 
-.back-arrow {
-    font-size: 68px;
-    text-decoration: none;
-    color: #2d5a27;
-    font-weight: 600;
-    transition: color 0.3s ease-in-out;
-}
-
-.back-arrow:hover {
-    color: #1e3f1a;
+.back-btn {
+    position: absolute;
+    top: 6.5em;
+    left: 3em;
 }

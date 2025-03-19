@@ -181,26 +181,6 @@ body {
     transition: 0.3s;
 }
 
-.slider::before {
-    content: "";
-    position: absolute;
-    height: 18px;
-    width: 18px;
-    left: 4px;
-    bottom: 3.5px;
-    background-color: white;
-    border-radius: 50%;
-    transition: 0.3s;
-}
-
-input:checked + .slider {
-    background-color: #2d5a27;
-}
-
-input:checked + .slider::before {
-    transform: translateX(24px);
-}
-
 .bg-dark .settings-container {
     border: none !important;
 }
@@ -212,4 +192,37 @@ input:checked + .slider::before {
 
 .bg-dark.container-page .container {
     background-color: #1e1e1e !important;
+}
+
+a.cta-2,
+button.cta-2 {
+    border-radius: 0.4em;
+    padding: 0.75em 1.25em;
+    color: black;
+    border: 2px solid #426B1F;
+    transition: background-color ease-in-out 0.25s, color ease-in-out 0.25s, transform ease-in-out 0.25s;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    background-color: none;
+}
+
+a.cta-2 span,
+button.cta-2 span {
+    color: black;
+    transition: bcolor ease-in-out 0.25s;
+    padding-right: 4px;
+}
+
+a.cta-2:hover,
+button.cta-2:hover {
+    color: white;
+    background-color: #426B1F !important;
+}
+
+a.cta-2:hover span,
+button.cta-2:hover span {
+    color: white;
 }

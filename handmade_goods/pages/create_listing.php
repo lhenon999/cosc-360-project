@@ -183,10 +183,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
 
                     <div class="d-flex justify-content-center gap-3 mb-3">
-                        <a class="cancel-btn hover-raise" href="my_shop.php">
+                        <a class="cta-2 hover-raise" href="my_shop.php">
                             <span class="material-symbols-outlined">delete</span> Cancel
                         </a>
-                        <button type="button" class="hover-raise clear-btn" onclick="clearFormAndErrors()">
+                        <button type="button" class="hover-raise cta-2" onclick="clearFormAndErrors()">
                         <span class="material-symbols-outlined">ink_eraser</span> Clear Fields
                         </button>
                         <button type="submit" class="cta hover-raise" href="myshop.php">
