@@ -117,19 +117,6 @@ input[type="number"].quantity-input:invalid::-webkit-inner-spin-button {
     opacity: 0.7;
 }
 
-.back-btn {
-    border: 2px solid #426b1f;
-    text-align: center;
-    border-radius: 8px;
-    padding: 0.5em;
-    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-}
-
-.back-btn:hover {
-    background-color: #426b1f;
-    color: white;
-}
-
 .reviews {
     width: 80%;
     margin: auto;

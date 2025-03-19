@@ -7,7 +7,7 @@
         exit();
     }
     $product_id = intval($_GET['id']);
-    $from_profile = isset($_GET['from']) && $_GET['from'] === 'user_profile';
+    $from_profile = isset($_GET['from']) && ($_GET['from'] === 'user_profile' || $_GET['from'] === 'my_shop');
 
     $stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock FROM items WHERE id = ?");
     $stmt->bind_param("i", $product_id);
@@ -100,10 +100,10 @@
 
 
                     <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
-                        <a href="edit_listing.php?id=<?= $product_id ?>" class="cta hover-raise atc">
+                        <a href="edit_listing.php?id=<?= $product_id ?>" class="cta hover-raise w-100 mt-5">
                             <span class="material-symbols-outlined">edit</span> Edit Listing
                         </a>
-                        <a href="my_shop.php" class="btn btn-outline-secondary mt-3">Back to My Shop</a>
+                        <a href="my_shop.php" class="cta-2 mt-3 w-100 hover-raise">Back to My Shop</a>
                     <?php else: ?>
                         <?php if ($product['stock'] > 0): ?>
                             <p class="stock-info <?= $product['stock'] < 5 ? 'low-stock' : '' ?>">
@@ -125,7 +125,7 @@
                             </button>
                         <?php endif; ?>
                         <a href="<?= isset($from_profile) && $from_profile ? 'user_profile.php?id=' . $user_id : 'products.php' ?>"
-                            class="back-btn mt-5 w-100 hover-raise">
+                            class="cta-2 mt-5 w-100 hover-raise">
                             Back to
                             <?= isset($from_profile) && $from_profile ? htmlspecialchars($first_name) . "'s Shop" : 'Products' ?>
                         </a>
@@ -137,7 +137,7 @@
                 <h1 class="mb-4">Customer Reviews</h1>
 
                 <?php if (empty($reviews)): ?>
-                    <p class="mb-5">No reviews yet. Be the first to review this product!</p>
+                    <p class="mb-5">No reviews yet. <?php if (!$from_profile): ?>Be the first to review this product!<?php endif; ?></p>
                 <?php else: ?>
                     <?php foreach ($reviews as $review): ?>
                         <?php $userProfileLink = ($review['user_id'] == $_SESSION['user_id']) ? "profile.php" : "user_profile.php?id=" . $review['user_id']; ?>
@@ -155,28 +155,30 @@
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
-
-                <?php if ($session_user_id !== null): ?>
-                    <h3 class="mt-5">Add a Review</h3>
-                    <form action="add_review.php" method="POST" class="add-review-form" novalidate>
-                        <input type="hidden" name="product_id" value="<?= $product_id ?>">
-                        <textarea placeholder="Tell other buyers about your experience with the product..." name="comment" id="comment" rows="3" required></textarea>
-                        <small id="commentError"></small>
-                        <div class="d-flex flex-row align-items-center justify-content-start">
-                            <span class="rating-label">Rating: </span>
-                            <div class="rating-group">
-                                <input type="radio" id="star5" name="rating" value="5"><label for="star5" required>★</label>
-                                <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
-                                <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
-                                <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
-                                <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                
+                <?php if (!$from_profile): ?>
+                    <?php if ($session_user_id !== null): ?>
+                        <h3 class="mt-5">Add a Review</h3>
+                        <form action="add_review.php" method="POST" class="add-review-form" novalidate>
+                            <input type="hidden" name="product_id" value="<?= $product_id ?>">
+                            <textarea placeholder="Tell other buyers about your experience with the product..." name="comment" id="comment" rows="3" required></textarea>
+                            <small id="commentError"></small>
+                            <div class="d-flex flex-row align-items-center justify-content-start">
+                                <span class="rating-label">Rating: </span>
+                                <div class="rating-group">
+                                    <input type="radio" id="star5" name="rating" value="5"><label for="star5" required>★</label>
+                                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                                </div>
+                                <small id="ratingError"></small>
                             </div>
-                            <small id="ratingError"></small>
-                        </div>
-                        <button type="submit" class="cta hover-raise w-100"><span class="material-symbols-outlined">check</span>Submit Review</button>
-                    </form>
-                <?php else: ?>
-                    <p>You must be logged in to leave a review.</p>
+                            <button type="submit" class="cta hover-raise w-100"><span class="material-symbols-outlined">check</span>Submit Review</button>
+                        </form>
+                    <?php else: ?>
+                        <p>You must be logged in to leave a review.</p>
+                    <?php endif; ?>
                 <?php endif; ?>
             </section>
 

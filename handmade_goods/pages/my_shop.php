@@ -67,6 +67,7 @@ $stmt->close();
         <div class="scrollable-container">
             <div class="listing-grid">
                 <?php if (!empty($products)): ?>
+                    <?php $isFromProfile = true; ?>
                     <?php foreach ($products as $product): ?>
                         <?php
                         $id = htmlspecialchars($product["id"]);
@@ -75,6 +76,7 @@ $stmt->close();
                         $image = htmlspecialchars($product["img"]);
                         $stock = intval($product["stock"]);
                         $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
+                        $from_profile = "my_shop";
                         include "../assets/html/product_card.php";
                         ?>
                     <?php endforeach; ?>
