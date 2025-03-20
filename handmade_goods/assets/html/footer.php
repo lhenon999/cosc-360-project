@@ -1,15 +1,23 @@
-<footer>
-    <div class="footerleft">
-    <a href="../pages/home.php"><h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3></a>
-    </div>
-    <div class="footerright">
-        <div class="footerlinks">
+<footer class="footer">
+    <div class="footer-container">
+        
+        <div class="footer-section">
+            <h3>About Handmade Goods</h3>
+            <p>Discover unique local products crafted with care. Supporting artisans worldwide.</p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Customer Support</h3>
             <ul>
-                <li class="hover-raise"><a class="navlink" href="../pages/home.php">Home</a></li>
-                <li class="hover-raise"><a class="navlink" href="../pages/products.php">Shop</a></li>
-                <li class="hover-raise"><a class="navlink" href="../pages/about.php">About</a></li>
-                <li class="hover-raise"><a class="navlink auth-hide" href="../pages/profile.php">My Profile</a></li>
+                <li><a href="contact.php">Contact Us</a></li>
+                <li><a href="">Shipping & Returns</a></li>
+                <li><a href="">FAQs</a></li>
+                <li><a href="">Terms & Conditions</a></li>
             </ul>
         </div>
+    </div>
+
+    <div class="footer-bottom">
+        &copy; <?php echo date('Y'); ?> Handmade Goods. All rights reserved.
     </div>
 </footer>

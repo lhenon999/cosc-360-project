@@ -109,7 +109,6 @@ include '../config.php';
                 <a href="products.php" class="white-button">View More</a>
             </div>
         </div>
-
         <div class="container mt-5 mb-5">
             <h3 class="text-center mb-3">Get In Touch</h3>
             <div class="contact-form-container">
@@ -140,7 +139,6 @@ include '../config.php';
                 </form>
             </div>
         </div>
-
         </div>
         <?php include "../assets/html/footer.php"; ?>
 
