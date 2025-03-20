@@ -16,6 +16,7 @@
     justify-content: space-between;
     padding-bottom: 20px;
     border-bottom: 1px solid #ddd;
+    gap: 200px;
 }
 
 .footer-section {
