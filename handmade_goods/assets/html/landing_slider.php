@@ -64,5 +64,5 @@
     }
 
     showSlide(currentSlide);
-    setInterval(nextSlide, 5000);
+    setInterval(nextSlide, 2000);
 </script>

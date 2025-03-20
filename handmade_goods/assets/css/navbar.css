@@ -199,10 +199,6 @@ h3 {
     align-items: center;
     width: 316px;
     border-radius: 40px;
-    height: 50px !important;
-    padding: 0 0.5em !important;
-    background-color: #FFF;
-    border: 1px solid #426B1F !important;
     overflow: hidden;
     transition: box-shadow 0.3s ease;
     border: none;

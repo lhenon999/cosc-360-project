@@ -226,3 +226,18 @@ a.cta-2:hover span,
 button.cta-2:hover span {
     color: white;
 }
+
+.white-button {
+    padding: 0.9em 1.8em;
+    margin-top: 1.2em;
+    border-radius: 10px;
+    background: white;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: none;
+    color:#345418
+}
+
+.white-button:hover {
+    transform: scale(1.05);
+}

@@ -30,7 +30,23 @@ include '../config.php';
             <h1 >Welcome to Handmade Goods</h1>
             <p class="text-muted mb-5">Discover unique local products crafted with care</p>
 
-            <?php include '../assets/html/landing_slider.php'; ?>
+            <div class="img-container mt-5">
+                <div class="home-img">
+                    <img src="../assets/images/image1.jpg">
+                </div>
+                <div class="home-img">
+                    <img src="../assets/images/image2.jpg">
+                </div>
+                <div class="home-img">
+                    <img src="../assets/images/image3.jpg">
+                </div>
+                <div class="home-img">
+                    <img src="../assets/images/image4.jpg">
+                </div>
+                <div class="home-img">
+                    <img src="../assets/images/stock_image.webp">
+                </div>
+            </div>
 
             <script>
                 $(document).ready(function () {
@@ -66,6 +82,7 @@ include '../config.php';
                     <div class="category-button" onclick="window.location.href='products.php?category=<?= rawurlencode($category) ?>'"><?= htmlspecialchars($category) ?></div>
                 <?php endforeach; ?>
             </div>
+            <?php include '../assets/html/landing_slider.php'; ?>
         </div>
 
         <div class="container mt-5 text-center">
@@ -89,7 +106,7 @@ include '../config.php';
                 ?>
             </div>
             <div class="view-more-container text-center mt-4">
-                <a href="products.php" class="hover-raise cta">View More</a>
+                <a href="products.php" class="white-button">View More</a>
             </div>
         </div>
 
@@ -116,7 +133,7 @@ include '../config.php';
                     </div>
 
                     <div class="text-center d-flex align-items-center justify-content-center mt-5">
-                        <button type="submit" class="cta hover-raise">Submit</button>
+                        <button type="submit" class="white-button">Submit</button>
                     </div>
 
                     <div class="status-message text-center mt-3" id="formStatus"></div>
