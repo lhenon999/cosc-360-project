@@ -1,0 +1,337 @@
+.delete-btn, .manage-btn, .view-btn {
+    background: transparent;
+    color: #2d5a27;
+    font-weight: 500;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.manage-btn:hover {
+    background-color: #E67E22;
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    color: white;
+}
+
+.delete-btn:hover {
+    color: white;
+    background-color: #E57373;
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.view-btn:hover{
+    color: white;
+    background-color: #426B1F;
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+.status-pending {
+    background-color: #ffcc00;
+    color: #664d00;
+}
+
+.status-shipped {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.status-delivered {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-cancelled {
+    background-color: #dc3545;
+    color: white;
+}
+
+
+.users-table th {
+    font-weight: 600;
+}
+
+.user-type {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.user-type.admin {
+    background-color: #dc3545;
+    color: white;
+}
+
+.user-type.normal {
+    background-color: #28a745;
+    color: white;
+}
+
+
+.tab-content h3{
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+
+.inventory-table, .users-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.inventory-table thead, .users-table thead {
+    background: rgba(250, 250, 250, 0.85);
+    font-weight: 500;
+    color: #333;
+    text-transform: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.inventory-table th, .users-table th {
+    padding: 16px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.inventory-table tr, .users-table tr {
+    transition: all 0.2s ease-in-out;
+}
+
+.inventory-table tr:nth-child(even), .users-table tr:nth-child(even) {
+    background-color: rgba(245, 245, 245, 0.6);
+}
+
+.inventory-table tr:hover, .users-table tr:hover {
+    background-color: rgba(230, 230, 230, 0.8);
+    backdrop-filter: blur(8px);
+}
+
+.inventory-table td, .users-table td {
+    padding: 14px 20px;
+    font-size: 14.5px;
+    color: #4a4a4a;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    text-align: left;
+}
+
+.stock-level {
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+}
+
+.stock-level.critical {
+    background-color: #ffe6e6;
+    color: #dc3545;
+}
+
+.stock-level.warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.stock-level.good {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.seller-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.seller-link:hover {
+    text-decoration: underline;
+}
+
+.stock-level {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.stock-level.critical {
+    background-color: #ffe6e6;
+    color: #dc3545;
+}
+
+.stock-level.warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.stock-level.good {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.seller-link {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.seller-link:hover {
+    text-decoration: underline;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    align-items: center;
+}
+
+.modal-account-name{
+    display: inline-block;
+    word-wrap: break-word;
+    max-width: 100%;
+    white-space: normal;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.confirm-btn, .freeze-btn, .cancel-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+
+.confirm-btn {
+    background-color: #E57373;
+    color: white;
+}
+
+.confirm-btn:hover {
+    background-color: #c9302c;
+}
+
+.freeze-btn {
+    background-color: #f0ac4ec1;
+    color: white;
+}
+
+.freeze-btn:hover {
+    background-color: #ec971f;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #545b62;
+}
+
+
+#userSearch, #listingsSearch {
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 16px;
+    border: 1px solid rgba(60, 60, 67, 0.15);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.08);
+    font-size: 16px;
+    color: #333;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 50%;
+}
+
+#userSearch:focus, #listingsSearch:focus {
+    border-color: rgba(44, 104, 40, 0.3);
+    outline: none;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.13);
+}
+
+#userSearch::placeholder, #listingsSearch::placeholder {
+    color: rgba(60, 60, 67, 0.4);
+    font-weight: 400;
+    font-size: 14px;
+}
+
+#profile-img-users-table {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+#profile-img-users-table:hover {
+    transform: scale(1.1);
+}
+
+.tab-slider-admin {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 25px;
+    transition: 0.3s;
+    width: 50%;
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+    z-index: 1;
+}
+
+/* .tabs-nav label:nth-child(2):hover ~ .tab-slider-admin{
+    transform: translateX(100%);
+} */
+
