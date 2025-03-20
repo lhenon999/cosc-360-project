@@ -20,9 +20,9 @@
             <h3>Customer Support</h3>
             <ul>
                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</a></li>
-                <li><a href="#">Shipping & Returns</a></li>
-                <li><a href="#">FAQs</a></li>
-                <li><a href="#">Terms & Conditions</a></li>
+                <li><a href="nf">Shipping & Returns</a></li>
+                <li><a href="nf">FAQs</a></li>
+                <li><a href="nf">Terms & Conditions</a></li>
             </ul>
         </div>
     </div>
