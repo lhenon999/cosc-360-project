@@ -296,5 +296,3 @@ $rating_stmt->close();
         });
     </script>
 </body>
-
-</html>

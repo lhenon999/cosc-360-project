@@ -2,20 +2,13 @@
 session_start();
 include '../config.php';
 
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-
-// var_dump($_POST);
-
-// echo "Debug: User ID = $user_id, Product ID = $item_id, Quantity = $quantity <br>";
-
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("Location: products.php");
     exit();
 }
+
 $product_id = intval($_GET['id']);
 $from_products = isset($_GET['from_product']) ? $_GET['from_product'] : null;
-
 $from_profile = isset($_GET['and']) && $_GET['and'] === 'user_profile';
 $from_listings = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
 $from_listing_users = isset($_GET['from']) && $_GET['from'] === 'profile_listing_users';
@@ -36,11 +29,9 @@ if (!$product) {
 $name = htmlspecialchars($product['name']);
 $description = nl2br(htmlspecialchars($product['description']));
 $price = number_format($product['price'], 2);
-$image = htmlspecialchars($product['img']);
+$image = !empty($product['img']) ? htmlspecialchars($product['img']) : "../assets/images/placeholder.webp";
 $user_id = intval($product['user_id']);
 $session_user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
-$default_image = "../assets/images/placeholder.webp";
-$image_path = !empty($product['img']) ? htmlspecialchars($product['img']) : $default_image;
 $category_name = isset($product['category']) ? htmlspecialchars($product['category']) : null;
 
 $stmt = $conn->prepare("SELECT name, profile_picture FROM users WHERE id = ?");
@@ -51,8 +42,12 @@ $seller = $result->fetch_assoc();
 $stmt->close();
 
 $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 'Seller';
+$sellerProfileUrl = "user_profile.php?id=" . $user_id . "&from_product=product.php?id=" . $product_id;
 
-$stmt = $conn->prepare("SELECT r.rating, r.comment, u.id AS user_id, u.name, u.profile_picture FROM reviews r JOIN users u ON r.user_id = u.id WHERE r.item_id = ? ORDER BY r.created_at DESC");
+$stmt = $conn->prepare("SELECT r.rating, r.comment, u.id AS user_id, u.name, u.profile_picture FROM reviews r 
+                        JOIN users u ON r.user_id = u.id 
+                        WHERE r.item_id = ? 
+                        ORDER BY r.created_at DESC");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $reviews_result = $stmt->get_result();
@@ -64,9 +59,9 @@ $stmt->close();
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $name ?> - Handmade Goods</title>
+    <title>Handmade Goods - Browse</title>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
@@ -77,9 +72,9 @@ $stmt->close();
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
+    <link rel="stylesheet" href="../assets/css/product.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
-    <link rel="stylesheet" href="../assets/css/product.css">
     <link rel="stylesheet" href="../assets/css/product_card.css">
 </head>
 
@@ -88,77 +83,112 @@ $stmt->close();
 
     <main class="mt-5">
         <div class="product-container">
-            <div class="row">
-                <div class="col-md-6 img">
-                    <img src="<?= $image ?>" alt="<?= $name ?>" class="img-fluid product-image">
+            <div class="col-md-6 img">
+                <img src="<?= $image ?>" alt="<?= $name ?>" class="img-fluid product-image">
+            </div>
+
+            <div class="col-md-6 desc">
+                <h1><?= $name ?></h1>
+                <div class="price-category-container d-flex align-items-center">
+                    <p class="text-muted" id="price-label">$<?= $price ?></p>
+                    <?php if (!empty($category_name)): ?>
+                        <a href="products.php?category=<?= rawurlencode($category_name) ?>"
+                            class="btn btn-outline-secondary mt-3" id="category-btn">
+                            <?= $category_name ?>
+                        </a>
+                    <?php endif; ?>
                 </div>
 
-                <div class="col-md-6 desc">
-                    <h1><?= $name ?></h1>
-                    <div class="price-category-container d-flex align-items-center">
-                        <p class="text-muted" id="price-label">$<?= $price ?></p>
-                        <?php if (!empty($category_name)): ?>
-                            <a href="products.php?category=<?= rawurlencode($category_name) ?>"
-                                class="btn btn-outline-secondary mt-3" id="category-btn">
-                                <?= $category_name ?>
-                            </a>
-                        <?php endif; ?>
+                <p class="mt-4"><?= $description ?></p>
+
+                <?php if ($session_user_id !== $user_id && !$from_profile): ?>
+                    <div class="seller-info mt-4 d-flex align-items-center mb-3">
+                        <?php
+                        $isAdmin = isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin';
+                        $fromProfileListings = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
+
+                        $sellerProfileUrl = "user_profile.php?id=" . $user_id . "&from_product=product.php?id=" . $product_id;
+
+                        if ($isAdmin && $fromProfileListings) {
+                            $sellerProfileUrl .= "&from=profile_listings";
+                        }
+                        ?>
+                        <a href="<?= $sellerProfileUrl ?>" class="d-flex align-items-center text-decoration-none text-dark">
+                            <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
+                                class="rounded-circle seller-profile-pic" width="50" height="47">
+                            <p class="ms-3 mb-0">Sold by: <strong><?= htmlspecialchars($seller['name']) ?></strong></p>
+                        </a>
                     </div>
+                <?php endif; ?>
 
-                    <p class="mt-4"><?= $description ?></p>
 
-                    <?php if ($session_user_id !== $user_id && !$from_profile): ?>
-                        <div class="seller-info mt-4 d-flex align-items-center mb-3">
-                            <a href="<?= $sellerProfileUrl ?>"
-                                class="d-flex align-items-center text-decoration-none text-dark">
-                                <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
-                                    class="rounded-circle seller-profile-pic" width="50" height="47">
-                                <p class="ms-3 mb-0">Sold by: <strong><?= htmlspecialchars($seller['name']) ?></strong></p>
-                            </a>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
-                        <a href="edit_listing.php?id=<?= $product_id ?>" class="cta hover-raise atc">
-                            <span class="material-symbols-outlined">edit</span> Edit Listing
+                <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
+                    <a href="edit_listing.php?id=<?= $product_id ?>" class="cta hover-raise atc">
+                        <span class="material-symbols-outlined">edit</span> Edit Listing
+                    </a>
+                    <a href="my_shop.php" class="btn btn-outline-secondary mt-3">Back to My Shop</a>
+                <?php else: ?>
+                    <?php if ($_SESSION['user_type'] === 'admin'): ?>
+                        <a href="profile.php?item=<?= urlencode($name) ?>" class="cta hover-raise atc">
+                            <span class="material-symbols-outlined">manage_accounts</span> Manage Listing
                         </a>
-                        <a href="my_shop.php" class="btn btn-outline-secondary mt-3">Back to My Shop</a>
                     <?php else: ?>
-                        <?php if ($_SESSION['user_type'] === 'admin'): ?>
-                            <a href="profile.php?item=<?= urlencode($name) ?>" class="cta hover-raise atc">
-                                <span class="material-symbols-outlined">manage_accounts</span> Manage Listing
-                            </a>
+                        <?php if ($product['stock'] > 0): ?>
+                            <p class="stock-info <?= $product['stock'] < 5 ? 'low-stock' : '' ?>">
+                                <?= $product['stock'] < 5 ? 'Only ' . $product['stock'] . ' left in stock!' : 'In Stock' ?>
+                            </p>
+                            <form action="/cosc-360-project/handmade_goods/basket/add_to_basket.php" method="POST">
+                                <input type="hidden" name="product_id" value="<?= $product_id ?>">
+                                <div class="quantity-add">
+                                    <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
+                                        class="form-control quantity-input">
+                                    <button type="submit" class="cta hover-raise atc">
+                                        <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
+                                    </button>
+                                </div>
+                            </form>
                         <?php else: ?>
-                            <?php if ($product['stock'] > 0): ?>
-                                <p class="stock-info <?= $product['stock'] < 5 ? 'low-stock' : '' ?>">
-                                    <?= $product['stock'] < 5 ? 'Only ' . $product['stock'] . ' left in stock!' : 'In Stock' ?>
-                                </p>
-                                <form action="/cosc-360-project/handmade_goods/basket/add_to_basket.php" method="POST">
-                                    <input type="hidden" name="product_id" value="<?= $product_id ?>">
-                                    <div class="quantity-add">
-                                        <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
-                                            class="form-control quantity-input">
-                                        <button type="submit" class="cta hover-raise atc">
-                                            <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
-                                        </button>
-                                    </div>
-                                </form>
-                            <?php else: ?>
-                                <p class="out-of-stock">Out of Stock</p>
-                                <button class="cta hover-raise atc" disabled>
-                                    <span class="material-symbols-outlined">add_shopping_cart</span> Out of Stock
-                                </button>
-                            <?php endif; ?>
+                            <p class="out-of-stock">Out of Stock</p>
+                            <button class="cta hover-raise atc" disabled>
+                                <span class="material-symbols-outlined">add_shopping_cart</span> Out of Stock
+                            </button>
                         <?php endif; ?>
-
-                        <a href="<?= $backUrl ?>" class="btn btn-outline-secondary mt-3">
-                            Back to <?= $backText ?>
-                        </a>
-
                     <?php endif; ?>
-                </div>
+
+                    <?php
+                    if (!empty($from_listings)) {
+                        $backUrl = 'profile.php#listings';
+                        $backText = 'Dashboard';
+                    } elseif (!empty($from_listing_users)) {
+                        $backUrl = 'user_profile.php?id=' . $user_id . '&from=profile_listing_users';
+                        $backText = htmlspecialchars($first_name) . "'s Profile";
+                    } elseif (!empty($from_users)) {
+                        $backUrl = 'user_profile.php?id=' . $user_id . '&from=profile_users';
+                        $backText = htmlspecialchars($first_name) . "'s Profile";
+                    } elseif (!empty($from_profile)) {
+                        $backUrl = 'user_profile.php?id=' . $user_id;
+                        $backText = htmlspecialchars($first_name) . "'s Profile";
+                    } else{
+                        $backUrl = 'products.php';
+                        $backText = 'Products';
+                    }
+                    
+                    if (!empty($from_products)) {
+                        $productParam = '&from_product=product.php?id=' . $product_id;
+                        $backUrl .= $productParam;
+                    }
+                    ?>
+
+                    <a href="<?= $backUrl ?>" class="btn btn-outline-secondary mt-3">
+                        Back to <?= $backText ?>
+                    </a>
+
+
+                <?php endif; ?>
+
             </div>
         </div>
+
         <div class="reviews-container">
             <h1 class="mb-4">Customer Reviews</h1>
 
@@ -210,9 +240,11 @@ $stmt->close();
                     <p>You must be logged in to leave a review.</p>
                 <?php endif; ?>
             <?php endif; ?>
+
         </div>
 
     </main>
+
     <script src="../assets/js/product_reviews.js"></script>
 </body>
 

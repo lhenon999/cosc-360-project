@@ -381,4 +381,8 @@ nav .navright form .search-button::-moz-focus-inner {
     color: white;
 }
 
+.bg-dark .search-form{
+    background: #2c2c2c;
+}
+
 

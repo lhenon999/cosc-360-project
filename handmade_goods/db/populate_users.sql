@@ -41,4 +41,3 @@ VALUES ( 9,
          'olivia.martinez@mail.com',
          '$2y$10$UMVoMuujbJG.rHhQxeD9b.fugKgMy7COtMc6lmIhiJ5yD9cPXw2IC',
          'normal' );
--- password is firstname@123 --
