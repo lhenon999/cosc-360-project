@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($errors)) {
         $maxSize = 2 * 1024 * 1024;
-        $target_dir = "/cosc-360-project/handmade_goods/assets/images/product_images/";
+        $target_dir = "../assets/images/uploads/product_images/";
         $image_name = basename($_FILES["image"]["name"]);
         $target_file = $target_dir . time() . "_" . $image_name;
         $image_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
@@ -183,13 +183,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
 
                     <div class="d-flex justify-content-center gap-3 mb-3">
-                        <a class="cta-2 hover-raise" href="my_shop.php">
+                        <a class="white-button" href="my_shop.php">
                             <span class="material-symbols-outlined">delete</span> Cancel
                         </a>
-                        <button type="button" class="hover-raise cta-2" onclick="clearFormAndErrors()">
+                        <button type="button" class="white-button" onclick="clearFormAndErrors()">
                         <span class="material-symbols-outlined">ink_eraser</span> Clear Fields
                         </button>
-                        <button type="submit" class="cta hover-raise" href="my_shop.php">
+                        <button type="submit" class="white-button-green-hover" href="my_shop.php">
                             <span class="material-symbols-outlined">add</span> Submit Product
                         </button>
                     </div>
