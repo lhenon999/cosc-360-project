@@ -30,40 +30,7 @@ include '../config.php';
             <h1 >Welcome to Handmade Goods</h1>
             <p class="text-muted mb-5">Discover unique local products crafted with care</p>
 
-            <div class="img-container mt-5">
-                <div class="home-img">
-                    <img src="../assets/images/image1.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/image2.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/image3.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/image4.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/stock_image.webp">
-                </div>
-            </div>
-
-            <script>
-                $(document).ready(function () {
-                    let counter = 0;
-                    let slides = $(".home-img");
-
-                    function showSlides() {
-                        slides.hide();
-                        counter++;
-                        if (counter > slides.length) { counter = 1; }
-                        slides.eq(counter - 1).fadeIn();
-                        setTimeout(showSlides, 5000);
-                    }
-                    
-                    showSlides();
-                });
-            </script>
+            <?php include '../assets/html/landing_slider.php'; ?>
 
             <h3 class="text-center mt-5">Browse by Category</h3>
             <?php
@@ -82,7 +49,6 @@ include '../config.php';
                     <div class="category-button" onclick="window.location.href='products.php?category=<?= rawurlencode($category) ?>'"><?= htmlspecialchars($category) ?></div>
                 <?php endforeach; ?>
             </div>
-            <?php include '../assets/html/landing_slider.php'; ?>
         </div>
 
         <div class="container mt-5 text-center">
