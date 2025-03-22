@@ -233,7 +233,7 @@ button.cta-2:hover span {
     color: white;
 }
 
-.white-button {
+.white-button, .white-button-green-hover {
     padding: 0.9em 1.8em;
     margin-top: 1.2em;
     border-radius: 10px;
@@ -245,5 +245,11 @@ button.cta-2:hover span {
 }
 
 .white-button:hover {
+    transform: scale(1.05);
+}
+
+.white-button-green-hover:hover{
+    background:#345418;
+    color: white;
     transform: scale(1.05);
 }

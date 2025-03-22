@@ -38,11 +38,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stock = trim($_POST["stock"]);
     $category = trim($_POST["category"]);
 
-    if (empty($name)) $errors[] = "Product name is required.";
-    if (empty($description)) $errors[] = "Description is required.";
-    if (empty($price) || !is_numeric($price) || $price <= 0) $errors[] = "Price must be a positive number.";
-    if (empty($stock) || !ctype_digit($stock) || $stock <= 0) $errors[] = "Stock must be a positive integer.";
-    if (empty($category) || !in_array($category, $categories)) $errors[] = "Please select a valid category.";
+    if (empty($name))
+        $errors[] = "Product name is required.";
+    if (empty($description))
+        $errors[] = "Description is required.";
+    if (empty($price) || !is_numeric($price) || $price <= 0)
+        $errors[] = "Price must be a positive number.";
+    if (empty($stock) || !ctype_digit($stock) || $stock <= 0)
+        $errors[] = "Stock must be a positive integer.";
+    if (empty($category) || !in_array($category, $categories))
+        $errors[] = "Please select a valid category.";
 
     if (!empty($_FILES["image"]["name"])) {
         $maxSize = 2 * 1024 * 1024;
@@ -51,9 +56,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $target_file = $target_dir . time() . "_" . $image_name;
         $image_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        if (getimagesize($_FILES["image"]["tmp_name"]) === false) $errors[] = "Uploaded file is not a valid image.";
-        if ($_FILES["image"]["size"] > $maxSize) $errors[] = "File exceeds maximum allowed size of 2MB.";
-        if (!in_array($image_type, ["jpg", "jpeg", "webp", "png"])) $errors[] = "Only JPG, JPEG, WEBP, and PNG files are allowed.";
+        if (getimagesize($_FILES["image"]["tmp_name"]) === false)
+            $errors[] = "Uploaded file is not a valid image.";
+        if ($_FILES["image"]["size"] > $maxSize)
+            $errors[] = "File exceeds maximum allowed size of 2MB.";
+        if (!in_array($image_type, ["jpg", "jpeg", "webp", "png"]))
+            $errors[] = "Only JPG, JPEG, WEBP, and PNG files are allowed.";
 
         if (empty($errors)) {
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
@@ -66,7 +74,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($errors)) {
         $stmt = $conn->prepare("UPDATE items SET name=?, description=?, price=?, stock=?, category=?, img=? WHERE id=? AND user_id=?");
-        $stmt->bind_param("ssdiisis", $name, $description, $price, $stock, $category, $image_path, $product_id, $user_email);
+        $stmt->bind_param(
+            "ssdissis",
+            $name,
+            $description,
+            $price,
+            $stock,
+            $category,
+            $image_path,
+            $product_id,
+            $user_email
+        );
 
         if ($stmt->execute()) {
             header("Location: my_shop.php");
@@ -81,12 +99,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Handmade Goods - Edit Listing</title>
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
@@ -117,7 +137,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="preview-container">
             <div class="listing-item-container" id="productPreview">
                 <div class="product-image-container">
-                    <img src="<?= htmlspecialchars($image_path) ?>" id="previewImage" class="card-img-top" style="width: 100%; height: 100%;">
+                    <img src="<?= htmlspecialchars($image_path) ?>" id="previewImage" class="card-img-top"
+                        style="width: 100%; height: 100%;">
                 </div>
                 <div class="product-info">
                     <h1 id="previewTitle"><?= htmlspecialchars($product['name']) ?></h1>
@@ -127,25 +148,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="listing-form-container">
-            <form action="edit_listing.php?id=<?= $product_id ?>" id="listingForm" method="POST" enctype="multipart/form-data" class="mt-4">
+            <form action="edit_listing.php?id=<?= $product_id ?>" id="listingForm" method="POST"
+                enctype="multipart/form-data" class="mt-4">
                 <div class="mb-3">
                     <label for="name" class="form-label">Product Name</label>
-                    <input type="text" name="name" id="name" class="form-control" required value="<?= htmlspecialchars($product['name']) ?>" oninput="updatePreview()">
+                    <input type="text" name="name" id="name" class="form-control" required
+                        value="<?= htmlspecialchars($product['name']) ?>" oninput="updatePreview()">
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea name="description" id="description" class="form-control" required><?= htmlspecialchars($product['description']) ?></textarea>
+                    <textarea name="description" id="description" class="form-control"
+                        required><?= htmlspecialchars($product['description']) ?></textarea>
                 </div>
 
                 <div class="mb-3">
                     <label for="price" class="form-label">Price ($)</label>
-                    <input type="number" name="price" id="price" class="form-control" step="0.01" required min="0.01" value="<?= htmlspecialchars($product['price']) ?>" oninput="updatePreview()">
+                    <input type="number" name="price" id="price" class="form-control" step="0.01" required min="0.01"
+                        value="<?= htmlspecialchars($product['price']) ?>" oninput="updatePreview()">
                 </div>
 
                 <div class="mb-3">
                     <label for="stock" class="form-label">Stock</label>
-                    <input type="number" name="stock" id="stock" class="form-control" required min="1" value="<?= htmlspecialchars($product['stock']) ?>">
+                    <input type="number" name="stock" id="stock" class="form-control" required min="1"
+                        value="<?= htmlspecialchars($product['stock']) ?>">
                 </div>
 
                 <div class="mb-3">
@@ -160,12 +186,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="mb-3">
                     <label for="image" class="form-label">Product Image</label>
-                    <input type="file" name="image" id="image" class="form-control" accept="image/*" onchange="previewImage()">
+                    <input type="file" name="image" id="image" class="form-control" accept="image/*"
+                        onchange="previewImage()">
                 </div>
 
                 <div class="d-flex justify-content-center gap-3 mb-3">
-                    <a class="cta-2 hover-raise" href="my_shop.php">Cancel</a>
-                    <button type="submit" class="cta hover-raise">Save Changes</button>
+                    <a class="white-button" href="my_shop.php">Cancel</a>
+                    <button type="submit" class="white-button-green-hover">Save Changes</button>
                 </div>
             </form>
         </div>
@@ -198,4 +225,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         document.getElementById("previewPrice").innerText = "<?= htmlspecialchars($product['price']) ?>";
     </script>
 </body>
+
 </html>
