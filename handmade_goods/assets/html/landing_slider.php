@@ -1,7 +1,7 @@
 <?php 
     $slides = [
         ["Trending Now", "SELECT i.id, i.name, i.description, i.img FROM order_items AS oi JOIN orders AS o ON o.id = oi.order_id JOIN items AS i ON i.id = oi.item_id WHERE o.created_at >= DATE_SUB(NOW(), INTERVAL 3 DAY) GROUP BY i.id ORDER BY sum(oi.quantity) DESC LIMIT 1;"],
-        ["Hot in Clothing", "SELECT i.id, i.name, i.description, i.img FROM order_items AS oi JOIN items AS i ON i.id = oi.item_id WHERE i.category = 'Clothing' GROUP BY i.id ORDER BY SUM(oi.quantity) DESC LIMIT 1;"],
+        ["Hot in Apparel", "SELECT i.id, i.name, i.description, i.img FROM order_items AS oi JOIN items AS i ON i.id = oi.item_id WHERE i.category = 'Clothing' GROUP BY i.id ORDER BY SUM(oi.quantity) DESC LIMIT 1;"],
         ["New Arrivals", "SELECT id, name, description, img from items ORDER BY created_at desc LIMIT 1;"],
         ["Best Selling Kitchenware", "SELECT i.id, i.name, i.description, i.img FROM order_items AS oi JOIN items AS i ON i.id = oi.item_id WHERE i.category = 'Kitchenware' GROUP BY i.id ORDER BY SUM(oi.quantity) DESC LIMIT 1;"],
         ["Selling Out Soon", "SELECT id, name, description, img FROM items ORDER BY stock LIMIT 1;"]
@@ -64,5 +64,5 @@
     }
 
     showSlide(currentSlide);
-    setInterval(nextSlide, 5000);
+    setInterval(nextSlide, 4500);
 </script>
