@@ -2,7 +2,7 @@
     <div class="footer-container">
         
         <div class="footer-section">
-            <h3>About Handmade Goods</h3>
+            <h3>Handmade Goods</h3>
             <p>Discover unique local products crafted with care. Supporting artisans worldwide.</p>
         </div>
 
@@ -16,7 +16,7 @@
             <p><a href="about.php">Learn More</a></p>
         </div>
 
-        <div class="footer-section">
+        <!-- <div class="footer-section">
             <h3>Customer Support</h3>
             <ul>
                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</a></li>
@@ -24,7 +24,7 @@
                 <li><a href="nf">FAQs</a></li>
                 <li><a href="nf">Terms & Conditions</a></li>
             </ul>
-        </div>
+        </div> -->
     </div>
 
     <div class="footer-bottom">
