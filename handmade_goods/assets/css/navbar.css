@@ -198,7 +198,9 @@ h3 {
     display: flex;
     align-items: center;
     width: 316px;
+    background-color: white;
     border-radius: 40px;
+    border: 2px solid #DDD !important;
     overflow: hidden;
     transition: box-shadow 0.3s ease;
     border: none;
@@ -293,7 +295,6 @@ button.search-button {
     transition: background 0.3s ease-in-out;
 }
 
-/* More aggressive targeting for the search button */
 button.search-button,
 nav .navright form .search-button,
 nav .navright form button.search-button,
@@ -309,7 +310,6 @@ nav .navright form button.search-button,
     box-shadow: none !important;
 }
 
-/* Higher specificity for all states */
 button.search-button:focus,
 button.search-button:active,
 button.search-button:hover,
@@ -326,7 +326,6 @@ nav .navright form .search-button:hover,
     -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
 }
 
-/* Target the span inside the button specifically */
 button.search-button span,
 button.search-button .material-symbols-outlined,
 nav .navright form .search-button span,
@@ -336,7 +335,6 @@ nav .navright form .search-button .material-symbols-outlined {
     border: none !important;
 }
 
-/* And all its states with higher specificity */
 button.search-button span:focus,
 button.search-button span:active,
 button.search-button span:hover,
@@ -353,7 +351,6 @@ nav .navright form .search-button .material-symbols-outlined:hover {
     border: none !important;
 }
 
-/* Firefox specific fix */
 button.search-button::-moz-focus-inner,
 nav .navright form .search-button::-moz-focus-inner {
     border: 0 !important;
