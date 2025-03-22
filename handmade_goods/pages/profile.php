@@ -7,7 +7,6 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
-// Ensure only admin can access admin features
 $user_id = $_SESSION["user_id"];
 $user_type = $_SESSION["user_type"];
 
@@ -24,7 +23,6 @@ $stmt->bind_result($name, $email, $profile_picture);
 $stmt->fetch();
 $stmt->close();
 
-// Get all users if admin - Optimized query
 $all_users = [];
 if ($user_type === 'admin') {
     $stmt = $conn->prepare("

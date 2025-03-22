@@ -25,6 +25,7 @@
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .profile-image img:hover{

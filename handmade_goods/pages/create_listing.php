@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $price = trim($_POST["price"] ?? "");
     $stock = trim($_POST["stock"] ?? "");
     $category = trim($_POST["category"] ?? "");
-    $user_email = $_SESSION["user_id"];
+    $user_id = $_SESSION["user_id"];
 
     if (empty($name)) {
         $errors[] = "Product name is required.";
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             "INSERT INTO items (name, description, price, stock, category, img, user_id)
             VALUES (?, ?, ?, ?, ?, ?, ?)"
         );
-        $stmt->bind_param("ssdiiss", $name, $description, $price, $stock, $category, $target_file, $user_email);
+        $stmt->bind_param("ssdissi", $name, $description, $price, $stock, $category, $target_file, $user_id);
 
         if ($stmt->execute()) {
             header("Location: my_shop.php");
