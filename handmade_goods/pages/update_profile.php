@@ -2,9 +2,6 @@
 session_start();
 require '../config.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error'] = "User not logged in.";
     header("Location: settings.php");

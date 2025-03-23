@@ -137,6 +137,8 @@ if ($user_type === 'admin') {
         let userType = "<?= $user_type ?>";
     </script>
     <script src="../assets/js/admin_manage_listing.js"></script>
+
+    <?php include '../assets/html/footer.php'; ?>
 </body>
 
 </html>

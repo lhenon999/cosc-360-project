@@ -54,6 +54,7 @@ $isAdmin = ($user['user_type'] === 'admin');
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/settings.css">
 </head>
 
@@ -122,6 +123,7 @@ $isAdmin = ($user['user_type'] === 'admin');
         <div>
                 <a href="profile.php" class="btn btn-outline-secondary w-100" </a>Back</a>
         </div>
+    </div>
         <script src="../assets/js/bg-dark.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
@@ -138,7 +140,10 @@ $isAdmin = ($user['user_type'] === 'admin');
                     }
                 });
             });
+    
         </script>
+
+<?php include '../assets/html/footer.php'; ?>
 </body>
 
 </html>

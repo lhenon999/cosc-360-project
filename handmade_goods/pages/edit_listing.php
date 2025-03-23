@@ -171,6 +171,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
+    <?php include '../assets/html/footer.php'; ?>
+
     <script>
         function updatePreview() {
             let nameInput = document.getElementById("name").value.trim();

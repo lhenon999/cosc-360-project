@@ -72,13 +72,14 @@ $stmt->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/order_details.css">
 </head>
 
 <body>
     <?php include '../assets/html/navbar.php'; ?>
     <div class="order-details-container">
-        <h2>Order Details</h2>
+        <h2 class="text-center">Order Details</h2>
 
         <div class="order-info">
             <p><strong>Order ID: </strong> <span>#<?= $order["id"] ?></span></p>
@@ -135,6 +136,7 @@ $stmt->close();
     </div>
 
     </div>
+    <?php include '../assets/html/footer.php'; ?>
 </body>
 
 </html>

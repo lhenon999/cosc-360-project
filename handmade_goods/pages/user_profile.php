@@ -2,10 +2,6 @@
 session_start();
 include '../config.php';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 $product_id = intval($_GET['id']);
 
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -49,7 +45,7 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($user['name']) ?>'s Profile</title>
+    <title>Handmade Goods - <?= htmlspecialchars($user['name']) ?>'s Profile</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
     </style>
@@ -63,9 +59,9 @@ $stmt->close();
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/products.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/product_card.css">
     <link rel="stylesheet" href="../assets/css/user_profile.css">
-    <!-- <link rel="stylesheet" href="../assets/css/profile.css"> -->
 </head>
 
 <body>
@@ -177,6 +173,8 @@ $stmt->close();
             <p class="text-center">User has no current listings</p>
         <?php endif; ?>
     </div>
+
+    <?php include '../assets/html/footer.php'; ?>
 </body>
 
 </html>
