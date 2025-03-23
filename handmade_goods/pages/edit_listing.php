@@ -15,7 +15,7 @@ if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
 $product_id = intval($_GET["id"]);
 $user_id = $_SESSION["user_id"];
 
-$stmt = $conn->prepare("SELECT * FROM items WHERE id = ? AND user_id = ?");
+$stmt = $conn->prepare("SELECT * FROM ITEMS WHERE id = ? AND user_id = ?");
 $stmt->bind_param("is", $product_id, $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if (empty($errors)) {
-        $stmt = $conn->prepare("UPDATE items SET name=?, description=?, price=?, stock=?, category=?, img=? WHERE id=? AND user_id=?");
+        $stmt = $conn->prepare("UPDATE ITEMS SET name=?, description=?, price=?, stock=?, category=?, img=? WHERE id=? AND user_id=?");
         $stmt->bind_param("ssdissii", $name, $description, $price, $stock, $category, $image_path, $product_id, $user_id);
 
         if ($stmt->execute()) {

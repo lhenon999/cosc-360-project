@@ -8,7 +8,7 @@ if (isset($_GET["id"])) {
     if (isset($_SESSION["user_id"])) {
         $user_id = $_SESSION["user_id"];
 
-        $stmt = $conn->prepare("SELECT id FROM cart WHERE user_id = ?");
+        $stmt = $conn->prepare("SELECT id FROM CART WHERE user_id = ?");
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -17,12 +17,12 @@ if (isset($_GET["id"])) {
         $stmt->close();
 
         if ($cart_id) {
-            $stmt = $conn->prepare("DELETE FROM cart_items WHERE cart_id = ? AND item_id = ?");
+            $stmt = $conn->prepare("DELETE FROM CART_ITEMS WHERE cart_id = ? AND item_id = ?");
             $stmt->bind_param("ii", $cart_id, $id);
             if ($stmt->execute()) {
-                $_SESSION["message"] = "Item removed from cart.";
+                $_SESSION["message"] = "Item removed from basket.";
             } else {
-                $_SESSION["error"] = "Failed to remove item from cart.";
+                $_SESSION["error"] = "Failed to remove item from basket.";
             }
             $stmt->close();
         }
@@ -34,9 +34,9 @@ if (isset($_GET["id"])) {
                 unset($_SESSION["cart"]);
             }
 
-            $_SESSION["message"] = "Item removed from cart.";
+            $_SESSION["message"] = "Item removed from basket.";
         } else {
-            $_SESSION["error"] = "Item not found in cart.";
+            $_SESSION["error"] = "Item not found in basket.";
         }
     }
 } else {

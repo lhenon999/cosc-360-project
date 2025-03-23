@@ -16,7 +16,7 @@ if (isset($_SESSION['success'])) {
 }
 
 $user_id = intval($_SESSION["user_id"]);
-$stmt = $conn->prepare("SELECT name, email, profile_picture FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT name, email, profile_picture FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $stmt->bind_result($name, $email, $profile_picture);
@@ -32,9 +32,9 @@ if ($user_type === 'admin') {
             u.email, 
             u.user_type, 
             u.created_at,
-            (SELECT COUNT(*) FROM orders WHERE user_id = u.id) as total_orders,
-            (SELECT COUNT(*) FROM items WHERE user_id = u.id) as total_listings
-        FROM users u
+            (SELECT COUNT(*) FROM ORDERS WHERE user_id = u.id) as total_orders,
+            (SELECT COUNT(*) FROM ITEMS WHERE user_id = u.id) as total_listings
+        FROM USERS u
         WHERE u.id != ?
         ORDER BY u.created_at DESC
         LIMIT 50

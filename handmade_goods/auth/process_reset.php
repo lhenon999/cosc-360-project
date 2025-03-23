@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    $user_stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+    $user_stmt = $conn->prepare("SELECT id FROM USERS WHERE email = ?");
     $user_stmt->bind_param("s", $email);
     $user_stmt->execute();
     $user_result = $user_stmt->get_result();
@@ -25,14 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $hashed_password = password_hash($new_password, PASSWORD_BCRYPT);
 
-    $update_stmt = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
+    $update_stmt = $conn->prepare("UPDATE USERS SET password = ? WHERE email = ?");
     if (!$update_stmt) {
         die("Prepare failed: " . $conn->error);
     }
     $update_stmt->bind_param("ss", $hashed_password, $email);
 
     if ($update_stmt->execute()) {
-        $delete_stmt = $conn->prepare("DELETE FROM password_resets WHERE email = ?");
+        $delete_stmt = $conn->prepare("DELETE FROM PASSWORD_RESETS WHERE email = ?");
         $delete_stmt->bind_param("s", $email);
         $delete_stmt->execute();
 

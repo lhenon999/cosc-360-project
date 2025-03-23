@@ -19,9 +19,9 @@ $cart_items = [];
 if ($isLoggedIn) {
     $stmt = $conn->prepare("
         SELECT ci.item_id, i.name, i.price, i.img, ci.quantity, i.stock
-        FROM cart_items ci
-        JOIN items i ON ci.item_id = i.id
-        JOIN cart c ON ci.cart_id = c.id
+        FROM CART_ITEMS ci
+        JOIN ITEMS i ON ci.item_id = i.id
+        JOIN CART c ON ci.cart_id = c.id
         WHERE c.user_id = ?
     ");
     $stmt->bind_param("i", $user_id);
@@ -34,7 +34,7 @@ if ($isLoggedIn) {
 } else {
     if (isset($_SESSION["cart"])) {
         foreach ($_SESSION["cart"] as $id => $cart_data) {
-            $stmt = $conn->prepare("SELECT id, name, price, img, stock FROM items WHERE id = ?");
+            $stmt = $conn->prepare("SELECT id, name, price, img, stock FROM ITEMS WHERE id = ?");
             $stmt->bind_param("i", $id);
             $stmt->execute();
             $result = $stmt->get_result();

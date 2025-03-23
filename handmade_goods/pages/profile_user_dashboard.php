@@ -2,7 +2,7 @@
 // Fetch total earnings
 $stmt = $conn->prepare("
     SELECT SUM(price * quantity) AS total_earnings 
-    FROM sales 
+    FROM SALES 
     WHERE seller_id = ?
 ");
 $stmt->bind_param("i", $user_id);
@@ -37,7 +37,7 @@ $stmt->close();
         <?php
         $stmt = $conn->prepare("
                 SELECT id, total_price, status, created_at
-                FROM orders
+                FROM ORDERS
                 WHERE user_id = ?
                 ORDER BY created_at DESC
             ");
@@ -183,11 +183,11 @@ $stmt->close();
                 <?php
                 $stmt = $conn->prepare("
         SELECT s.id, s.order_id, s.buyer_id, s.item_id, s.quantity, s.price, s.sale_date,
-               u.name AS buyer_name, u.profile_picture,
-               i.name AS item_name
-        FROM sales s
-        JOIN users u ON s.buyer_id = u.id
-        JOIN items i ON s.item_id = i.id
+            u.name AS buyer_name, u.profile_picture,
+            i.name AS item_name
+        FROM SALES s
+        JOIN USERS u ON s.buyer_id = u.id
+        JOIN ITEMS i ON s.item_id = i.id
         WHERE s.seller_id = ?
         ORDER BY s.sale_date DESC
     ");

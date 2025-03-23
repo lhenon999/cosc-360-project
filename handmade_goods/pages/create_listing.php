@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($errors)) {
         $stmt = $conn->prepare(
-            "INSERT INTO items (name, description, price, stock, category, img, user_id)
+            "INSERT INTO ITEMS (name, description, price, stock, category, img, user_id)
             VALUES (?, ?, ?, ?, ?, ?, ?)"
         );
         $stmt->bind_param("ssdissi", $name, $description, $price, $stock, $category, $target_file, $user_id);

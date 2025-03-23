@@ -7,7 +7,7 @@ if (!isset($_SESSION["user_id"]) && isset($_COOKIE["remember_token"])) {
     $token = $_COOKIE["remember_token"];
     $email = $_COOKIE["user_email"];
 
-    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND remember_token = ?");
+    $stmt = $conn->prepare("SELECT id FROM USERS WHERE email = ? AND remember_token = ?");
     $stmt->bind_param("ss", $email, $token);
     $stmt->execute();
     $result = $stmt->get_result();

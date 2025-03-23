@@ -18,7 +18,7 @@ $order_id = intval($_GET["order_id"]);
 // Fetch order details
 $stmt = $conn->prepare("
     SELECT id, total_price, status, created_at
-    FROM orders
+    FROM ORDERS
     WHERE id = ? AND user_id = ?
 ");
 $stmt->bind_param("ii", $order_id, $user_id);
@@ -35,15 +35,15 @@ if (!$order) {
 if ($user_type === 'admin') {
     $stmt = $conn->prepare("
         SELECT oi.item_name, i.id, i.stock, oi.quantity, oi.price_at_purchase
-        FROM order_items oi
-        LEFT JOIN items i ON oi.item_id = i.id
+        FROM ORDER_ITEMS oi
+        LEFT JOIN ITEMS i ON oi.item_id = i.id
         WHERE oi.order_id = ?
         ORDER BY oi.item_name
     ");
 } else {
     $stmt = $conn->prepare("
         SELECT oi.item_name, oi.quantity, oi.price_at_purchase
-        FROM order_items oi
+        FROM ORDER_ITEMS oi
         WHERE oi.order_id = ?
         ORDER BY oi.item_name
     ");

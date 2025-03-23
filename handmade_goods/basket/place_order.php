@@ -9,7 +9,7 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
-$stmt = $conn->prepare("SELECT is_frozen FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT is_frozen FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $_SESSION['user_id']);
 $stmt->execute();
 $stmt->bind_result($is_frozen);
@@ -32,9 +32,9 @@ try {
     // Get cart items with current stock levels and names
     $stmt = $conn->prepare("
         SELECT ci.item_id, i.name, i.price, ci.quantity, i.stock 
-        FROM cart_items ci
-        JOIN items i ON ci.item_id = i.id
-        JOIN cart c ON ci.cart_id = c.id
+        FROM CART_ITEMS ci
+        JOIN ITEMS i ON ci.item_id = i.id
+        JOIN CART c ON ci.cart_id = c.id
         WHERE c.user_id = ?
     ");
 
@@ -95,7 +95,7 @@ try {
 
     // Update stock levels
     foreach ($stock_updates as $update) {
-        $stmt = $conn->prepare("UPDATE items SET stock = stock - ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE ITEMS SET stock = stock - ? WHERE id = ?");
         if (!$stmt) {
             throw new Exception("SQL Error: " . $conn->error);
         }
@@ -106,8 +106,8 @@ try {
 
     // Clear cart
     $stmt = $conn->prepare("
-        DELETE ci FROM cart_items ci
-        JOIN cart c ON ci.cart_id = c.id
+        DELETE ci FROM CART_ITEMS ci
+        JOIN CART c ON ci.cart_id = c.id
         WHERE c.user_id = ?
     ");
     if (!$stmt) {

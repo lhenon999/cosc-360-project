@@ -17,7 +17,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $results = ["products" => [], "users" => [], "categories" => []];
 
     // for products
-    $query = "SELECT id, name, img, user_id FROM items WHERE name LIKE ? LIMIT 5";
+    $query = "SELECT id, name, img, user_id FROM ITEMS WHERE name LIKE ? LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $search_param);
     $stmt->execute();
@@ -26,7 +26,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $stmt->close();
 
     // for users
-    $query = "SELECT id, name, profile_picture FROM users WHERE (name LIKE ? OR email LIKE ?) AND user_type != 'admin' LIMIT 5";
+    $query = "SELECT id, name, profile_picture FROM USERS WHERE (name LIKE ? OR email LIKE ?) AND user_type != 'admin' LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $search_param, $search_param);
     $stmt->execute();
@@ -35,7 +35,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $stmt->close();
 
     // for categories
-    $query = "SELECT DISTINCT category FROM items WHERE category LIKE ? LIMIT 5";
+    $query = "SELECT DISTINCT category FROM ITEMS WHERE category LIKE ? LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $search_param);
     $stmt->execute();
@@ -49,8 +49,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
 
 // Build the base query
 $query = "SELECT DISTINCT i.id, i.name, i.img, i.user_id, i.price, i.stock, IFNULL(AVG(r.rating), 0) as avg_rating 
-          FROM items i 
-          LEFT JOIN reviews r ON i.id = r.item_id";
+        FROM ITEMS i 
+        LEFT JOIN reviews r ON i.id = r.item_id";
 
 // Start WHERE clause
 $where_conditions = [];
@@ -115,7 +115,7 @@ $stmt->close();
 
 // Get all categories for the filter sidebar
 $categories = [];
-$cat_stmt = $conn->prepare("SELECT DISTINCT category FROM items WHERE category IS NOT NULL ORDER BY category");
+$cat_stmt = $conn->prepare("SELECT DISTINCT category FROM ITEMS WHERE category IS NOT NULL ORDER BY category");
 $cat_stmt->execute();
 $cat_result = $cat_stmt->get_result();
 while ($row = $cat_result->fetch_assoc()) {
@@ -125,7 +125,7 @@ $cat_stmt->close();
 
 // Get available ratings
 $ratings = [];
-$rating_stmt = $conn->prepare("SELECT DISTINCT rating FROM reviews ORDER BY rating");
+$rating_stmt = $conn->prepare("SELECT DISTINCT rating FROM REVIEWS ORDER BY rating");
 $rating_stmt->execute();
 $rating_result = $rating_stmt->get_result();
 while ($row = $rating_result->fetch_assoc()) {

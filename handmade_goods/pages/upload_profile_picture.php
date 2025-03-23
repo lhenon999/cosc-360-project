@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_picture"])) {
     if (move_uploaded_file($fileTmpPath, $uploadFile)) {
         $profilePicPath = "/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/" . $newFileName;
 
-        $stmt = $conn->prepare("UPDATE users SET profile_picture = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE USERS SET profile_picture = ? WHERE id = ?");
         $stmt->bind_param("si", $profilePicPath, $user_id);
         $stmt->execute();
         $stmt->close();

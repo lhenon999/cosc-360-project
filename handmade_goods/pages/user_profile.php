@@ -10,7 +10,7 @@
 
     $user_id = intval($_GET['id']);
 
-    $query = "SELECT name, email, profile_picture FROM users WHERE id = ?";
+    $query = "SELECT name, email, profile_picture FROM USERS WHERE id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
@@ -24,7 +24,7 @@
 
     $first_name = explode(' ', trim($user['name']))[0];
 
-    $query = "SELECT id, name, img, price, stock FROM items WHERE user_id = ?";
+    $query = "SELECT id, name, img, price, stock FROM ITEMS WHERE user_id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
