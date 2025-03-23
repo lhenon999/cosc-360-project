@@ -53,6 +53,18 @@ $stmt->execute();
 $reviews_result = $stmt->get_result();
 $reviews = $reviews_result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
+
+$hasPurchased = false;
+if ($session_user_id !== null) {
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM sales WHERE buyer_id = ? AND item_id = ?");
+    $stmt->bind_param("ii", $session_user_id, $product_id);
+    $stmt->execute();
+    $stmt->bind_result($purchaseCount);
+    $stmt->fetch();
+    $stmt->close();
+
+    $hasPurchased = $purchaseCount > 0;
+}
 ?>
 
 <!DOCTYPE html>
@@ -216,26 +228,26 @@ $stmt->close();
 
             <?php if (!$from_profile): ?>
                 <?php if ($session_user_id !== null): ?>
-                    <h3 class="mt-5">Add a Review</h3>
-                    <form action="add_review.php" method="POST" class="add-review-form" novalidate>
-                        <input type="hidden" name="product_id" value="<?= $product_id ?>">
-                        <textarea placeholder="Tell other buyers about your experience with the product..." name="comment"
-                            id="comment" rows="3" required></textarea>
-                        <small id="commentError"></small>
-                        <div class="d-flex flex-row align-items-center justify-content-start">
-                            <span class="rating-label">Rating: </span>
-                            <div class="rating-group">
-                                <input type="radio" id="star5" name="rating" value="5"><label for="star5" required>★</label>
-                                <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
-                                <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
-                                <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
-                                <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                    <?php if ($hasPurchased): ?>
+                        <h3 class="mt-5">Add a Review</h3>
+                        <form action="add_review.php" method="POST" class="add-review-form">
+                            <input type="hidden" name="product_id" value="<?= $product_id ?>">
+                            <textarea placeholder="Tell other buyers about your experience with the product..." name="comment" id="comment" rows="3" required></textarea>
+                            <div class="d-flex flex-row align-items-center justify-content-start">
+                                <span class="rating-label">Rating: </span>
+                                <div class="rating-group">
+                                    <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                                    <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                                    <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                                    <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                                    <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+                                </div>
                             </div>
-                            <small id="ratingError"></small>
-                        </div>
-                        <button type="submit" class="white-button"><span
-                                class="material-symbols-outlined">check</span>Submit Review</button>
-                    </form>
+                            <button type="submit" class="cta hover-raise w-100"><span class="material-symbols-outlined">check</span>Submit Review</button>
+                        </form>
+                    <?php else: ?>
+                        <p>You can only leave a review if you've purchased this product.</p>
+                    <?php endif ?>
                 <?php else: ?>
                     <p>You must be logged in to leave a review.</p>
                 <?php endif; ?>
