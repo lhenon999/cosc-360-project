@@ -1,11 +1,6 @@
 <?php
-<<<<<<< HEAD
-session_start();
-include '../config.php';
-=======
     session_start();
     include __DIR__ . '/../config.php';
->>>>>>> a9b593f (updated file import statements as per server deployment requirements)
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -22,10 +17,9 @@ $from_admin = isset($_GET['from']) && $_GET['from'] === 'admin';
 $from_profile_listings = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
 $from_profile_listings_user = isset($_GET['from']) && $_GET['from'] === 'profile_listing_users';
 $from_profile_users = isset($_GET['from']) && $_GET['from'] === 'profile_users';
-
 $user_id = intval($_GET['id']);
 
-$query = "SELECT name, email, profile_picture FROM users WHERE id = ?";
+$query = "SELECT name, email, profile_picture FROM USERS WHERE id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -33,13 +27,14 @@ $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 $stmt->close();
 
+
 if (!$user) {
     die("User not found.");
 }
 
 $first_name = explode(' ', trim($user['name']))[0];
 
-$query = "SELECT id, name, img, price, stock FROM items WHERE user_id = ?";
+$query = "SELECT id, name, img, price, stock FROM ITEMS WHERE user_id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -187,9 +182,6 @@ $stmt->close();
     </div>
 </body>
 
-<<<<<<< HEAD
-=======
         <?php include __DIR__ . '/../assets/html/footer.php'; ?>
     </body>
->>>>>>> a9b593f (updated file import statements as per server deployment requirements)
 </html>

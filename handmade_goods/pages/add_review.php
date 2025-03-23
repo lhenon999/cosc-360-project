@@ -17,7 +17,7 @@
             die("Invalid input.");
         }
 
-        $stmt = $conn->prepare("INSERT INTO reviews (item_id, user_id, rating, comment) VALUES (?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO REVIEWS (item_id, user_id, rating, comment) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("iiis", $product_id, $user_id, $rating, $comment);
 
         if ($stmt->execute()) {

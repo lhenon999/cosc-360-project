@@ -67,7 +67,7 @@ include __DIR__ . '/../config.php';
 
             <h3 class="text-center mt-5">Browse by Category</h3>
             <?php
-            $cat_stmt = $conn->prepare("SELECT DISTINCT category FROM items WHERE category IS NOT NULL ORDER BY category");
+            $cat_stmt = $conn->prepare("SELECT DISTINCT category FROM ITEMS WHERE category IS NOT NULL ORDER BY category");
             $cat_stmt->execute();
             $cat_result = $cat_stmt->get_result();
             $categories = [];
@@ -90,7 +90,7 @@ include __DIR__ . '/../config.php';
             <p>Discover the latest handmade creations and featured products</p>
             <div class="product-cards-container" id="product-cards-container">
                 <?php
-                $stmt = $conn->prepare("SELECT id, name, price, img, stock FROM items ORDER BY created_at DESC LIMIT 6");
+                $stmt = $conn->prepare("SELECT id, name, price, img, stock FROM ITEMS ORDER BY created_at DESC LIMIT 6");
                 $stmt->execute();
                 $result = $stmt->get_result();
                 while($product = $result->fetch_assoc()):

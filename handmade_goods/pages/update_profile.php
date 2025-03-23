@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }    
 
-    $stmt = $conn->prepare("UPDATE users SET name = ?, email = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE USERS SET name = ?, email = ? WHERE id = ?");
     if (!$stmt) {
         $_SESSION['error'] = "SQL prepare failed: " . $conn->error;
         header("Location: settings.php");

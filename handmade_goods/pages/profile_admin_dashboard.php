@@ -71,9 +71,9 @@
                 <?php
                 $stmt = $conn->prepare("
                     SELECT i.*, u.name as seller_name, u.email as seller_email,
-                           (SELECT COUNT(*) FROM order_items oi WHERE oi.item_id = i.id) as total_orders
-                    FROM items i
-                    JOIN users u ON i.user_id = u.id
+                    (SELECT COUNT(*) FROM ORDER_ITEMS oi WHERE oi.item_id = i.id) as total_orders
+                    FROM ITEMS i
+                    JOIN USERS u ON i.user_id = u.id
                     ORDER BY i.stock ASC, i.name ASC
                 ");
                 $stmt->execute();

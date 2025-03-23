@@ -19,7 +19,7 @@ include __DIR__ . '/../config.php';
 $user_email = $_SESSION["user_id"];
 $products = [];
 
-$stmt = $conn->prepare("SELECT id, name, price, img, stock FROM items WHERE user_id = ?");
+$stmt = $conn->prepare("SELECT id, name, price, img, stock FROM ITEMS WHERE user_id = ?");
 $stmt->bind_param("s", $user_email);
 $stmt->execute();
 $result = $stmt->get_result();

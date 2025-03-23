@@ -14,7 +14,10 @@ $from_listings = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
 $from_listing_users = isset($_GET['from']) && $_GET['from'] === 'profile_listing_users';
 $from_users = isset($_GET['from']) && $_GET['from'] === 'profile_users';
 
-$stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock FROM items WHERE id = ?");
+$backText = $from_users ? "User Profile" : ($from_listing_users ? "Profile Listings" : ($from_listings ? "Listings" : ($from_profile ? "Profile" : ($from_products ? "Products" : "Products"))));
+$backUrl = isset($from_profile) && $from_profile ? 'user_profile.php?id=' . $user_id : 'products.php';
+
+$stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock FROM ITEMS WHERE id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -34,7 +37,7 @@ $user_id = intval($product['user_id']);
 $session_user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
 $category_name = isset($product['category']) ? htmlspecialchars($product['category']) : null;
 
-$stmt = $conn->prepare("SELECT name, profile_picture FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT name, profile_picture FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -44,8 +47,8 @@ $stmt->close();
 $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 'Seller';
 $sellerProfileUrl = "user_profile.php?id=" . $user_id . "&from_product=product.php?id=" . $product_id;
 
-$stmt = $conn->prepare("SELECT r.rating, r.comment, u.id AS user_id, u.name, u.profile_picture FROM reviews r 
-                        JOIN users u ON r.user_id = u.id 
+$stmt = $conn->prepare("SELECT r.rating, r.comment, u.id AS user_id, u.name, u.profile_picture FROM REVIEWS r 
+                        JOIN USERS u ON r.user_id = u.id 
                         WHERE r.item_id = ? 
                         ORDER BY r.created_at DESC");
 $stmt->bind_param("i", $product_id);
@@ -56,7 +59,7 @@ $stmt->close();
 
 $hasPurchased = false;
 if ($session_user_id !== null) {
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM sales WHERE buyer_id = ? AND item_id = ?");
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM SALES WHERE buyer_id = ? AND item_id = ?");
     $stmt->bind_param("ii", $session_user_id, $product_id);
     $stmt->execute();
     $stmt->bind_result($purchaseCount);
@@ -64,6 +67,13 @@ if ($session_user_id !== null) {
     $stmt->close();
 
     $hasPurchased = $purchaseCount > 0;
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM REVIEWS WHERE user_id = ? AND item_id = ?");
+    $stmt->bind_param("ii", $session_user_id, $product_id);
+    $stmt->execute();
+    $stmt->bind_result($reviewCount);
+    $stmt->fetch();
+    $stmt->close();
+    $userHasReviewed = $reviewCount > 0;
 }
 ?>
 
@@ -82,7 +92,6 @@ if ($session_user_id !== null) {
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-<<<<<<< HEAD
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/product.css">
@@ -90,10 +99,8 @@ if ($session_user_id !== null) {
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/product_card.css">
 </head>
-=======
     <body>
         <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
->>>>>>> a9b593f (updated file import statements as per server deployment requirements)
 
 <body>
     <?php include '../assets/html/navbar.php'; ?>
