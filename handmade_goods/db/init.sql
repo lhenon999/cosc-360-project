@@ -39,12 +39,26 @@ CREATE TABLE IF NOT EXISTS CART_ITEMS( id INT auto_increment PRIMARY KEY,
                                   added_at timestamp DEFAULT CURRENT_TIMESTAMP,
                                   FOREIGN KEY ( cart_id ) REFERENCES CART(id) ON DELETE CASCADE,
                                   FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
+CREATE TABLE IF NOT EXISTS ADDRESSES (
+    id INT auto_increment PRIMARY KEY,
+    user_id INT NOT NULL,
+    street_address VARCHAR(255) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    postal_code VARCHAR(20) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    is_default BOOLEAN DEFAULT FALSE,
+    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
+);
 CREATE TABLE IF NOT EXISTS ORDERS( id INT auto_increment PRIMARY KEY,
                                   user_id INT NOT NULL,
+                                  address_id INT,
                                   total_price DECIMAL ( 10, 2 ) NOT NULL,
                                   status ENUM('Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled') DEFAULT 'Pending',
                                   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-                                  FOREIGN KEY ( user_id ) REFERENCES USERS(id) ON DELETE CASCADE );
+                                  FOREIGN KEY ( user_id ) REFERENCES USERS(id) ON DELETE CASCADE,
+                                  FOREIGN KEY ( address_id ) REFERENCES ADDRESSES(id) ON DELETE SET NULL );
 CREATE TABLE IF NOT EXISTS ORDER_ITEMS( id INT auto_increment PRIMARY KEY,
                                   order_id INT NOT NULL,
                                   item_id INT,

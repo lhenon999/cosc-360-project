@@ -1,6 +1,7 @@
 <?php
 session_start();
-include '../config.php';
+require_once '../config.php';
+require_once '../config/stripe.php';
 
 // echo "Debug: User ID = $user_id <br>";
 
@@ -10,6 +11,9 @@ if (!$isLoggedIn) {
     exit();
 }
 $user_id = $isLoggedIn ? $_SESSION["user_id"] : null;
+
+// Make Stripe publishable key available to JavaScript
+$stripe_publishable_key = 'pk_test_51R1OROBSlWUNcExMybmLKuUOMFFhHJ7ZYoaNOHG6XvbnoqxRyQxkLJcf2hgNuIvgd3d03CPS5DvOStmYzOoP80c100G4jIbM8r';
 
 $shipping = 7.99;
 $taxRate = 0.075;
@@ -51,7 +55,7 @@ $subtotal = array_reduce($cart_items, function ($carry, $item) {
     return $carry + ($item['price'] * $item['quantity']);
 }, 0);
 $tax = round($subtotal * $taxRate, 2);
-$total = $subtotal + $shipping + $tax;
+$total = $subtotal + $tax;  // Removed shipping from here since it's handled by Stripe
 ?>
 
 <!DOCTYPE html>
@@ -68,6 +72,7 @@ $total = $subtotal + $shipping + $tax;
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
@@ -143,6 +148,8 @@ $total = $subtotal + $shipping + $tax;
                             </form>
 
                             <script>
+                                const stripe = Stripe('<?= $stripe_publishable_key ?>');
+                                
                                 $(document).ready(function () {
                                     $("#placeOrderForm").submit(function (e) {
                                         e.preventDefault();
@@ -155,6 +162,9 @@ $total = $subtotal + $shipping + $tax;
                                             url: "../basket/place_order.php",
                                             type: "POST",
                                             dataType: "json",
+                                            headers: {
+                                                'X-Requested-With': 'XMLHttpRequest'
+                                            },
                                             success: function (response) {
                                                 if (response.success) {
                                                     // Then redirect to Stripe Checkout
@@ -162,34 +172,79 @@ $total = $subtotal + $shipping + $tax;
                                                         url: "../payments/process_stripe_checkout.php",
                                                         type: "POST",
                                                         contentType: "application/json",
+                                                        headers: {
+                                                            'X-Requested-With': 'XMLHttpRequest'
+                                                        },
                                                         data: JSON.stringify({ order_id: response.order_id }),
                                                         success: function (checkoutResponse) {
                                                             if (checkoutResponse.success && checkoutResponse.url) {
                                                                 window.location.href = checkoutResponse.url;
                                                             } else {
-                                                                alert("Error: " + checkoutResponse.error);
+                                                                alert("Checkout error: " + (checkoutResponse.error || "Unknown error"));
                                                                 button.prop('disabled', false);
                                                                 button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
                                                             }
                                                         },
                                                         error: function (xhr, status, error) {
-                                                            console.error("Checkout error:", error);
+                                                            console.error("Checkout error details:", {
+                                                                status: xhr.status,
+                                                                statusText: xhr.statusText,
+                                                                responseText: xhr.responseText
+                                                            });
                                                             alert("Error creating checkout session. Please try again.");
                                                             button.prop('disabled', false);
                                                             button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
                                                         }
                                                     });
                                                 } else {
-                                                    alert("Error: " + response.error);
+                                                    alert("Order error: " + (response.error || "Unknown error"));
                                                     button.prop('disabled', false);
                                                     button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
                                                 }
                                             },
                                             error: function (xhr, status, error) {
-                                                console.error("Order error:", error);
+                                                console.error("Order error details:", {
+                                                    status: xhr.status,
+                                                    statusText: xhr.statusText,
+                                                    responseText: xhr.responseText
+                                                });
                                                 alert("Error processing order. Please try again.");
                                                 button.prop('disabled', false);
                                                 button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
+                                            }
+                                        });
+                                    });
+
+                                    // Handle quantity changes
+                                    $(".quantity-input").change(function() {
+                                        const itemId = $(this).data("item-id");
+                                        const quantity = $(this).val();
+                                        
+                                        $.ajax({
+                                            url: "../basket/update_basket.php",
+                                            type: "POST",
+                                            data: {
+                                                item_id: itemId,
+                                                quantity: quantity
+                                            },
+                                            success: function() {
+                                                location.reload();
+                                            }
+                                        });
+                                    });
+
+                                    // Handle item removal
+                                    $(".remove-item").click(function() {
+                                        const itemId = $(this).data("item-id");
+                                        
+                                        $.ajax({
+                                            url: "../basket/remove_from_basket.php",
+                                            type: "POST",
+                                            data: {
+                                                item_id: itemId
+                                            },
+                                            success: function() {
+                                                location.reload();
                                             }
                                         });
                                     });

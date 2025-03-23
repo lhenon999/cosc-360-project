@@ -1,0 +1,127 @@
+2025-03-23 07:41:09 - Starting order process - {"user_id":2}
+2025-03-23 07:41:09 - Basket is empty - []
+2025-03-23 07:41:38 - Starting order process - {"user_id":2}
+2025-03-23 07:41:38 - Basket is empty - []
+2025-03-23 07:45:55 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 07:45:55 - Basket is empty - []
+2025-03-23 07:47:08 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 07:47:08 - Basket is empty - []
+2025-03-23 07:47:16 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 07:47:16 - Basket is empty - []
+2025-03-23 07:49:27 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 07:49:27 - Beginning transaction
+2025-03-23 07:49:27 - Created order - {"order_id":11}
+2025-03-23 07:49:27 - Processing cart item - {"item_id":3,"item_name":"Ceramic Vase","quantity":1,"price":"34.99"}
+2025-03-23 07:49:27 - Total order price calculated - {"total_price":34.99}
+2025-03-23 07:49:27 - Transaction committed successfully
+2025-03-23 07:49:27 - Order process complete - {"order_id":11,"is_ajax":true}
+2025-03-23 07:56:13 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 07:56:13 - Basket is empty - []
+2025-03-23 07:59:12 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 07:59:12 - Beginning transaction
+2025-03-23 07:59:12 - Created order - {"order_id":12}
+2025-03-23 07:59:12 - Total order price calculated - {"total_price":54.980000000000004}
+2025-03-23 07:59:12 - Transaction committed successfully
+2025-03-23 07:59:12 - Order process complete - {"order_id":12,"is_ajax":true}
+2025-03-23 08:03:01 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 08:03:01 - Beginning transaction
+2025-03-23 08:03:01 - Created order - {"order_id":13}
+2025-03-23 08:03:01 - Total order price calculated - {"total_price":34.99}
+2025-03-23 08:03:01 - Transaction committed successfully
+2025-03-23 08:03:01 - Order process complete - {"order_id":13,"is_ajax":true}
+2025-03-23 08:05:11 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 08:05:11 - Beginning transaction
+2025-03-23 08:05:11 - Created order - {"order_id":14}
+2025-03-23 08:05:11 - Total order price calculated - {"total_price":34.99}
+2025-03-23 08:05:11 - Transaction committed successfully
+2025-03-23 08:05:11 - Order process complete - {"order_id":14,"is_ajax":true}
+2025-03-23 08:15:28 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 08:15:28 - Beginning transaction
+2025-03-23 08:15:28 - Created order - {"order_id":15}
+2025-03-23 08:15:28 - Total order price calculated - {"total_price":19.99}
+2025-03-23 08:15:28 - Transaction committed successfully
+2025-03-23 08:15:28 - Order process complete - {"order_id":15,"is_ajax":true}
+2025-03-23 08:30:11 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 08:30:11 - Beginning transaction
+2025-03-23 08:30:11 - Created order - {"order_id":16}
+2025-03-23 08:30:12 - Total order price calculated - {"total_price":34.99}
+2025-03-23 08:30:12 - Transaction committed successfully
+2025-03-23 08:30:12 - Order process complete - {"order_id":16,"is_ajax":true}
+2025-03-23 08:30:17 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 08:30:17 - Beginning transaction
+2025-03-23 08:30:17 - Created order - {"order_id":17}
+2025-03-23 08:30:17 - Total order price calculated - {"total_price":34.99}
+2025-03-23 08:30:17 - Transaction committed successfully
+2025-03-23 08:30:17 - Order process complete - {"order_id":17,"is_ajax":true}
+2025-03-23 10:51:28 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 10:51:28 - Beginning transaction
+2025-03-23 10:51:28 - Created order - {"order_id":18}
+2025-03-23 10:51:28 - Total order price calculated - {"total_price":69.98}
+2025-03-23 10:51:28 - Transaction committed successfully
+2025-03-23 10:51:28 - Order process complete - {"order_id":18,"is_ajax":true}
+2025-03-23 11:15:37 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 11:15:37 - Beginning transaction
+2025-03-23 11:15:37 - Created order - {"order_id":19}
+2025-03-23 11:15:37 - Total order price calculated - {"total_price":139.96}
+2025-03-23 11:15:37 - Transaction committed successfully
+2025-03-23 11:15:37 - Order process complete - {"order_id":19,"is_ajax":true}
+2025-03-23 11:18:38 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 11:18:38 - Beginning transaction
+2025-03-23 11:18:38 - Created order - {"order_id":20}
+2025-03-23 11:18:38 - Total order price calculated - {"total_price":174.95000000000002}
+2025-03-23 11:18:38 - Transaction committed successfully
+2025-03-23 11:18:38 - Order process complete - {"order_id":20,"is_ajax":true}
+2025-03-23 11:19:00 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 11:19:00 - Beginning transaction
+2025-03-23 11:19:00 - Created order - {"order_id":21}
+2025-03-23 11:19:00 - Total order price calculated - {"total_price":34.99}
+2025-03-23 11:19:00 - Transaction committed successfully
+2025-03-23 11:19:00 - Order process complete - {"order_id":21,"is_ajax":true}
+2025-03-23 11:27:24 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 11:27:24 - Beginning transaction
+2025-03-23 11:27:24 - Created order - {"order_id":22}
+2025-03-23 11:27:24 - Total order price calculated - {"total_price":34.99}
+2025-03-23 11:27:24 - Transaction committed successfully
+2025-03-23 11:27:24 - Order process complete - {"order_id":22,"is_ajax":true}
+2025-03-23 11:30:29 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 11:30:29 - Beginning transaction
+2025-03-23 11:30:29 - Created order - {"order_id":23}
+2025-03-23 11:30:29 - Total order price calculated - {"total_price":69.98}
+2025-03-23 11:30:29 - Transaction committed successfully
+2025-03-23 11:30:29 - Order process complete - {"order_id":23,"is_ajax":true}
+2025-03-23 11:32:46 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 11:32:46 - Beginning transaction
+2025-03-23 11:32:46 - Created order - {"order_id":24}
+2025-03-23 11:32:46 - Total order price calculated - {"total_price":104.97}
+2025-03-23 11:32:46 - Transaction committed successfully
+2025-03-23 11:32:46 - Order process complete - {"order_id":24,"is_ajax":true}
+2025-03-23 11:34:15 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 11:34:15 - Beginning transaction
+2025-03-23 11:34:15 - Created order - {"order_id":25}
+2025-03-23 11:34:15 - Total order price calculated - {"total_price":139.96}
+2025-03-23 11:34:15 - Transaction committed successfully
+2025-03-23 11:34:15 - Order process complete - {"order_id":25,"is_ajax":true}
+2025-03-23 11:35:43 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 11:35:43 - Beginning transaction
+2025-03-23 11:35:43 - Created order - {"order_id":26}
+2025-03-23 11:35:43 - Total order price calculated - {"total_price":174.95000000000002}
+2025-03-23 11:35:43 - Transaction committed successfully
+2025-03-23 11:35:43 - Order process complete - {"order_id":26,"is_ajax":true}
+2025-03-23 11:37:42 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 11:37:42 - Beginning transaction
+2025-03-23 11:37:42 - Created order - {"order_id":27}
+2025-03-23 11:37:42 - Total order price calculated - {"total_price":209.94}
+2025-03-23 11:37:42 - Transaction committed successfully
+2025-03-23 11:37:42 - Order process complete - {"order_id":27,"is_ajax":true}
+2025-03-23 11:39:21 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 11:39:21 - Beginning transaction
+2025-03-23 11:39:21 - Created order - {"order_id":28}
+2025-03-23 11:39:21 - Total order price calculated - {"total_price":244.93}
+2025-03-23 11:39:21 - Transaction committed successfully
+2025-03-23 11:39:21 - Order process complete - {"order_id":28,"is_ajax":true}
+2025-03-23 11:39:38 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 11:39:38 - Beginning transaction
+2025-03-23 11:39:38 - Created order - {"order_id":29}
+2025-03-23 11:39:38 - Total order price calculated - {"total_price":34.99}
+2025-03-23 11:39:38 - Transaction committed successfully
+2025-03-23 11:39:38 - Order process complete - {"order_id":29,"is_ajax":true}

@@ -17,9 +17,11 @@ $order_id = intval($_GET["order_id"]);
 
 // Fetch order details
 $stmt = $conn->prepare("
-    SELECT id, total_price, status, created_at
-    FROM orders
-    WHERE id = ? AND user_id = ?
+    SELECT o.id, o.total_price, o.status, o.created_at, 
+           a.street_address, a.city, a.state, a.postal_code, a.country
+    FROM orders o
+    LEFT JOIN addresses a ON o.address_id = a.id
+    WHERE o.id = ? AND o.user_id = ?
 ");
 $stmt->bind_param("ii", $order_id, $user_id);
 $stmt->execute();
@@ -93,6 +95,14 @@ $stmt->close();
             </p>
             <p><strong>Total Price:</strong> $<?= number_format($order["total_price"], 2) ?></p>
             <p><strong>Order Date:</strong> <?= $order["created_at"] ?></p>
+            <?php if ($order["street_address"]): ?>
+                <div class="shipping-address mt-4">
+                    <h4>Shipping Address:</h4>
+                    <p><?= htmlspecialchars($order["street_address"]) ?></p>
+                    <p><?= htmlspecialchars($order["city"]) ?>, <?= htmlspecialchars($order["state"]) ?> <?= htmlspecialchars($order["postal_code"]) ?></p>
+                    <p><?= htmlspecialchars($order["country"]) ?></p>
+                </div>
+            <?php endif; ?>
         </div>
 
         <h3>Items</h3>

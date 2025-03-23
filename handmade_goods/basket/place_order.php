@@ -1,114 +1,164 @@
 <?php
 session_start();
-include '../config.php';
+require_once '../config.php';
 
-header('Content-Type: application/json');
+// Check if this is an AJAX request
+$isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
-if (!isset($_SESSION["user_id"])) {
-    echo json_encode(["error" => "User not logged in"]);
-    exit();
+// Create logs directory if it doesn't exist
+$logDir = dirname(dirname(__FILE__)) . '/logs';
+if (!is_dir($logDir)) {
+    mkdir($logDir, 0777, true);
 }
 
-$user_id = $_SESSION["user_id"];
+// Define log file
+$logFile = $logDir . '/order_process.log';
 
-// Start transaction
-$conn->begin_transaction();
+// Log function
+function logOrderProcess($message, $data = null) {
+    global $logFile;
+    $log = date('Y-m-d H:i:s') . " - " . $message;
+    if ($data !== null) {
+        $log .= " - " . (is_array($data) ? json_encode($data) : $data);
+    }
+    file_put_contents($logFile, $log . "\n", FILE_APPEND);
+}
+
+// Log start of order process
+logOrderProcess("Starting order process", ['user_id' => $_SESSION['user_id'] ?? 'not logged in', 'is_ajax' => $isAjax]);
+
+// Redirect if not logged in
+if (!isset($_SESSION['user_id'])) {
+    logOrderProcess("User not logged in");
+    
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'User not logged in']);
+        exit;
+    } else {
+        header('Location: ../auth/login.php?redirect=basket');
+        exit;
+    }
+}
+
+// Check if basket is empty
+$user_id = $_SESSION['user_id'];
+$stmt = $conn->prepare("
+    SELECT COUNT(*) as count 
+    FROM cart_items ci 
+    JOIN cart c ON ci.cart_id = c.id 
+    WHERE c.user_id = ?
+");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$cart_count = $result->fetch_assoc()['count'];
+$stmt->close();
+
+if ($cart_count === 0) {
+    logOrderProcess("Cart is empty");
+    
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Your basket is empty']);
+        exit;
+    } else {
+        $_SESSION['error'] = "Your basket is empty.";
+        header('Location: ../pages/basket.php');
+        exit;
+    }
+}
 
 try {
-    // Get cart items with current stock levels and names
+    logOrderProcess("Beginning transaction");
+    // Start transaction
+    $conn->begin_transaction();
+    
+    // 1. Create order
+    $stmt = $conn->prepare("INSERT INTO orders (user_id, status, created_at) VALUES (?, 'pending', NOW())");
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    if (!$stmt->execute()) {
+        throw new Exception("Failed to create order: " . $stmt->error);
+    }
+    $orderId = $conn->insert_id;
+    $stmt->close();
+    
+    logOrderProcess("Created order", ['order_id' => $orderId]);
+    
+    // 2. Get items from cart and add to order_items
+    $totalPrice = 0;
+    
+    // Get all items from user's cart
     $stmt = $conn->prepare("
-        SELECT ci.item_id, i.name, i.price, ci.quantity, i.stock 
+        SELECT ci.item_id, i.name, i.price, ci.quantity
         FROM cart_items ci
-        JOIN items i ON ci.item_id = i.id
         JOIN cart c ON ci.cart_id = c.id
+        JOIN items i ON ci.item_id = i.id
         WHERE c.user_id = ?
     ");
-
-    if (!$stmt) {
-        throw new Exception("SQL Error: " . $conn->error);
-    }
-
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
-
-    $cart_items = [];
-    $total_price = 0;
-    $stock_updates = [];
-
-    while ($row = $result->fetch_assoc()) {
-        if ($row['stock'] < $row['quantity']) {
-            throw new Exception("Not enough stock available for one or more items in your cart");
+    
+    while ($item = $result->fetch_assoc()) {
+        $itemPrice = $item['price'];
+        $quantity = $item['quantity'];
+        $subtotal = $itemPrice * $quantity;
+        $totalPrice += $subtotal;
+        
+        // Add to order_items
+        $stmt2 = $conn->prepare("INSERT INTO order_items (order_id, item_id, item_name, quantity, price_at_purchase) VALUES (?, ?, ?, ?, ?)");
+        $stmt2->bind_param("iisid", $orderId, $item['item_id'], $item['name'], $quantity, $itemPrice);
+        if (!$stmt2->execute()) {
+            throw new Exception("Failed to create order item: " . $stmt2->error);
         }
-        $cart_items[] = $row;
-        $total_price += $row["price"] * $row["quantity"];
-        $stock_updates[] = [
-            'item_id' => $row['item_id'],
-            'quantity' => $row['quantity']
-        ];
+        $stmt2->close();
     }
     $stmt->close();
-
-    if (empty($cart_items)) {
-        throw new Exception("Your basket is empty");
+    
+    logOrderProcess("Total order price calculated", ['total_price' => $totalPrice]);
+    
+    // 3. Update order with total price
+    $stmt = $conn->prepare("UPDATE orders SET total_price = ? WHERE id = ?");
+    $stmt->bind_param("di", $totalPrice, $orderId);
+    if (!$stmt->execute()) {
+        throw new Exception("Failed to update order with total price: " . $stmt->error);
     }
-
-    $shipping = 7.99;
-    $taxRate = 0.075;
-    $tax = round($total_price * $taxRate, 2);
-    $final_total = $total_price + $shipping + $tax;
-
-    // Create order
-    $stmt = $conn->prepare("INSERT INTO ORDERS (user_id, total_price, status) VALUES (?, ?, 'Pending')");
-    if (!$stmt) {
-        throw new Exception("SQL Error: " . $conn->error);
-    }
-    $stmt->bind_param("id", $user_id, $final_total);
-    $stmt->execute();
-    $order_id = $stmt->insert_id;
     $stmt->close();
-
-    // Add order items with item name
-    foreach ($cart_items as $item) {
-        $stmt = $conn->prepare("INSERT INTO ORDER_ITEMS (order_id, item_id, item_name, quantity, price_at_purchase) VALUES (?, ?, ?, ?, ?)");
-        if (!$stmt) {
-            throw new Exception("SQL Error: " . $conn->error);
-        }
-        $stmt->bind_param("iisid", $order_id, $item["item_id"], $item["name"], $item["quantity"], $item["price"]);
-        $stmt->execute();
-        $stmt->close();
-    }
-
-    // Update stock levels
-    foreach ($stock_updates as $update) {
-        $stmt = $conn->prepare("UPDATE items SET stock = stock - ? WHERE id = ?");
-        if (!$stmt) {
-            throw new Exception("SQL Error: " . $conn->error);
-        }
-        $stmt->bind_param("ii", $update['quantity'], $update['item_id']);
-        $stmt->execute();
-        $stmt->close();
-    }
-
-    // Clear cart
-    $stmt = $conn->prepare("
-        DELETE ci FROM cart_items ci
-        JOIN cart c ON ci.cart_id = c.id
-        WHERE c.user_id = ?
-    ");
-    if (!$stmt) {
-        throw new Exception("SQL Error: " . $conn->error);
-    }
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $stmt->close();
-
-    // If everything is successful, commit the transaction
+    
+    // Commit transaction
     $conn->commit();
-    echo json_encode(["success" => "Order placed successfully", "order_id" => $order_id]);
+    logOrderProcess("Transaction committed successfully");
+    
+    // Clear basket
+    $_SESSION['basket'] = [];
+    $_SESSION['success'] = "Order placed successfully!";
+    
+    logOrderProcess("Order process complete", ['order_id' => $orderId, 'is_ajax' => $isAjax]);
+    
+    // Return different response based on request type
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'order_id' => $orderId]);
+        exit;
+    } else {
+        // Redirect to address collection page for payment
+        header("Location: ../pages/checkout_address.php?order_id=$orderId");
+        exit;
+    }
+    
 } catch (Exception $e) {
-    // If there's an error, rollback changes
+    // Roll back transaction on error
     $conn->rollback();
-    echo json_encode(["error" => $e->getMessage()]);
+    
+    logOrderProcess("ERROR: " . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+    
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+    } else {
+        $_SESSION['error'] = "Error placing order: " . $e->getMessage();
+        header('Location: ../pages/basket.php');
+    }
 }
 ?>

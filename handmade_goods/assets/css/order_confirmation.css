@@ -8,6 +8,26 @@
     color: #3f661e;
 }
 
+.shipping-address {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    border: 1px solid #e9ecef;
+}
+
+.shipping-address h4 {
+    color: #2d5a27;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.shipping-address p {
+    margin-bottom: 0.5rem;
+    color: #444;
+    font-size: 0.95rem;
+}
+
 .order-item {
     border: #DDD 2px solid;
     border-radius: 16px;

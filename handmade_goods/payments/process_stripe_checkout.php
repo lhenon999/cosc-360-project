@@ -3,16 +3,47 @@ session_start();
 require_once '../config.php';
 require_once '../config/stripe.php';
 
-header('Content-Type: application/json');
+// Create logs directory if it doesn't exist
+$logDir = dirname(dirname(__FILE__)) . '/logs';
+if (!is_dir($logDir)) {
+    mkdir($logDir, 0777, true);
+}
+
+// Define log file
+$logFile = $logDir . '/stripe_checkout.log';
+
+// Log function
+function logCheckout($message, $data = null) {
+    global $logFile;
+    $log = date('Y-m-d H:i:s') . " - " . $message;
+    if ($data !== null) {
+        $log .= " - " . (is_array($data) || is_object($data) ? json_encode($data) : $data);
+    }
+    file_put_contents($logFile, $log . "\n", FILE_APPEND);
+}
 
 try {
+    // Start logging
+    logCheckout("Starting checkout process");
+
+    header('Content-Type: application/json');
+
     if (!isset($_SESSION["user_id"])) {
         throw new Exception("User not authenticated");
     }
 
     // Get JSON input
     $input = json_decode(file_get_contents('php://input'), true);
-    $orderId = $input['order_id'];
+    if (!$input) {
+        throw new Exception("Invalid input format: " . file_get_contents('php://input'));
+    }
+    
+    $orderId = $input['order_id'] ?? null;
+    if (!$orderId) {
+        throw new Exception("Missing order ID");
+    }
+
+    logCheckout("Processing order", ['order_id' => $orderId, 'user_id' => $_SESSION["user_id"]]);
 
     // Verify order belongs to user
     $stmt = $conn->prepare("
@@ -25,9 +56,9 @@ try {
     $stmt->bind_param("ii", $orderId, $_SESSION["user_id"]);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
+    // Prepare line items for Stripe
     $line_items = [];
-    $total = 0;
     while ($row = $result->fetch_assoc()) {
         $line_items[] = [
             'price_data' => [
@@ -39,7 +70,6 @@ try {
             ],
             'quantity' => $row['quantity'],
         ];
-        $total = $row['total_price'];
     }
     $stmt->close();
 
@@ -47,37 +77,16 @@ try {
         throw new Exception("Order not found or empty");
     }
 
-    // Add shipping as a separate line item
-    $line_items[] = [
-        'price_data' => [
-            'currency' => 'usd',
-            'unit_amount' => 799,
-            'product_data' => [
-                'name' => 'Shipping',
-            ],
-        ],
-        'quantity' => 1,
-    ];
+    logCheckout("Order items prepared", ['items_count' => count($line_items)]);
 
-    // Add tax as a separate line item
-    $tax_amount = round($total * 0.075 * 100);
-    $line_items[] = [
-        'price_data' => [
-            'currency' => 'usd',
-            'unit_amount' => $tax_amount,
-            'product_data' => [
-                'name' => 'Sales Tax (7.5%)',
-            ],
-        ],
-        'quantity' => 1,
-    ];
-
-    // Get the base URL
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
-    $base_url = $protocol . $_SERVER['HTTP_HOST'] . '/cosc-360-project/handmade_goods';
+    $base_url = $protocol . $_SERVER['HTTP_HOST'] . dirname(dirname($_SERVER['REQUEST_URI']));
+    
+    logCheckout("Base URL determined", ['base_url' => $base_url]);
 
-    // Create Checkout Session using our minimal API implementation
-    $session = $stripe->createCheckoutSession([
+    // Configure the checkout session
+    $shipping_amount = 799; // $7.99
+    $session_params = [
         'payment_method_types' => ['card'],
         'line_items' => $line_items,
         'mode' => 'payment',
@@ -85,20 +94,70 @@ try {
         'cancel_url' => $base_url . '/pages/basket.php',
         'metadata' => [
             'order_id' => $orderId
+        ],
+        'shipping_address_collection' => [
+            'allowed_countries' => ['US', 'CA']
+        ],
+        'shipping_options' => [
+            [
+                'shipping_rate_data' => [
+                    'type' => 'fixed_amount',
+                    'fixed_amount' => [
+                        'amount' => (int)$shipping_amount,  // Cast to integer to avoid formatting issues
+                        'currency' => 'usd',
+                    ],
+                    'display_name' => 'Standard shipping',
+                    'delivery_estimate' => [
+                        'minimum' => [
+                            'unit' => 'business_day',
+                            'value' => 3,
+                        ],
+                        'maximum' => [
+                            'unit' => 'business_day',
+                            'value' => 5,
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'billing_address_collection' => 'required',
+        'payment_intent_data' => [
+            'metadata' => [
+                'order_id' => $orderId
+            ]
         ]
-    ]);
+    ];
 
-    if (isset($session['error'])) {
-        throw new Exception($session['error']['message']);
+    logCheckout("Creating Stripe checkout session", ['params' => $session_params]);
+
+    // Create Checkout Session with error handling
+    try {
+        if (class_exists('\Stripe\Stripe')) {
+            // Using official Stripe PHP SDK
+            $session = $stripe->checkout->sessions->create($session_params);
+        } else {
+            // Using fallback implementation
+            $session = $stripe->createCheckoutSession($session_params);
+        }
+        
+        if (!$session || empty($session->url)) {
+            throw new Exception("Failed to create checkout session - no URL returned");
+        }
+
+        logCheckout("Checkout session created successfully", ['session_id' => $session->id]);
+        
+        echo json_encode([
+            'success' => true,
+            'url' => $session->url
+        ]);
+
+    } catch (Exception $e) {
+        logCheckout("Stripe API Error", ['error' => $e->getMessage()]);
+        throw new Exception("Failed to create checkout session: " . $e->getMessage());
     }
 
-    echo json_encode([
-        'success' => true,
-        'url' => $session['url']
-    ]);
-
 } catch (Exception $e) {
-    error_log('Stripe Checkout Error: ' . $e->getMessage());
+    logCheckout("Error", ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
     http_response_code(500);
     echo json_encode([
         'success' => false,

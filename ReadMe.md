@@ -65,51 +65,104 @@ Additional requirements:
 
 #### Requirements:
 
-- **XAMPP** (Apache, MySQL, PHP)
+- **XAMPP** (Apache, MySQL, PHP) for Windows/Linux or **MAMP** for macOS
+- **PHP 7.4+** with `curl` extension enabled
+- **Internet connection** for initial Stripe CLI download
 
-### 1. Move the Project to the XAMPP Directory:
+### 1. Move the Project to the Web Server Directory:
 
-Place the project folder `handmade_goods` inside the **htdocs** directory.
+#### For XAMPP (Windows/Linux):
+Place the project folder `handmade_goods` inside:
+- Windows: `C:\xampp\htdocs\cosc-360-project`
+- Linux: `/opt/lampp/htdocs/cosc-360-project`
 
-`C:\xampp\htdocs\handmade_goods`
+#### For MAMP (macOS):
+Place the project folder in:
+- `/Applications/MAMP/htdocs/cosc-360-project`
 
----
+### 2. Start the Web Server
 
-### 2. Start XAMPP
+#### For XAMPP:
+Start the **Apache** server and **MySQL** server using XAMPP Control Panel
 
-Start the **Apache** server and **MySQL** server
+#### For MAMP:
+Start the MAMP application and click "Start Servers"
 
----
+The Stripe webhook forwarding will start automatically when you access any page.
 
-### 3. Import db
+### 3. Set File Permissions (macOS/Linux only)
 
-Open **phpMyAdmin**:
-`http://localhost/phpmyadmin`
+```bash
+chmod -R 755 /path/to/cosc-360-project/handmade_goods
+chmod -R 777 /path/to/cosc-360-project/handmade_goods/logs
+chmod -R 777 /path/to/cosc-360-project/handmade_goods/bin
+```
 
-Import `init.sql`, `populate_items.sql`, `populate_users.sql`
+### 4. Import Database
 
----
+#### For XAMPP:
+Open phpMyAdmin: `http://localhost/phpmyadmin`
 
-### 4. Update config.php and test site
+#### For MAMP:
+Open phpMyAdmin: `http://localhost:8888/phpMyAdmin`
 
-`http://localhost/cosc-360-project/handmade_goods/pages/home.php`
+Import the following SQL files in order:
+1. `init.sql`
+2. `populate_items.sql`
+3. `populate_users.sql`
 
-login info:
+### 5. Test the Site
 
-normal user:
+#### For XAMPP:
+Open: `http://localhost/cosc-360-project/handmade_goods/pages/home.php`
 
-user ID: 'johndoe@mail.com'
-password: 'John@123'
+#### For MAMP:
+Open: `http://localhost:8888/cosc-360-project/handmade_goods/pages/home.php`
 
-admin user:
+### Test Accounts
 
-user ID: 'admin@handmadegoods.com'
-password: 'Admin@123'
+Normal user:
+- Email: 'johndoe@mail.com'
+- Password: 'John@123'
 
----
+Admin user:
+- Email: 'admin@handmadegoods.com'
+- Password: 'Admin@123'
 
-Paypal Sandbox API account info:
+### Test Payments
 
-email: sb-r282p34425608@business.example.com
+Use any of these test card numbers:
+- Success: 4242 4242 4242 4242
+- Requires Authentication: 4000 0025 0000 3155
+- Payment Declined: 4000 0000 0000 9995
 
-password: V>C6HtE7
+For all test cards:
+- Any future expiration date
+- Any 3 digits for CVC
+- Any postal code
+
+### Webhook Forwarding
+
+The system will automatically:
+1. Check if Stripe CLI is installed
+2. Download and install it if needed
+3. Start webhook forwarding when the site is accessed
+4. Handle stopping and restarting of webhooks automatically
+
+You can check the webhook status in the logs at:
+`/logs/stripe_cli.log`
+
+### Troubleshooting
+
+1. **Webhook Not Starting:**
+   - Check the logs in `logs/stripe_cli.log`
+   - Ensure PHP has permissions to execute commands
+   - On macOS/Linux, ensure the Stripe CLI binary is executable
+
+2. **Permission Issues (macOS/Linux):**
+   - Run the chmod commands in section 3
+   - Ensure your web server user has write access to logs and bin directories
+
+3. **Port Conflicts:**
+   - Default webhook uses port 3000
+   - If port 3000 is in use, edit stripe_cli_manager.php to use a different port
