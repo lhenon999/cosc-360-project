@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = trim($_POST["email"]);
         $password = $_POST["password"];
         $user_type = 'normal';
-        $profile_picture = "/cosc-360-project/handmade_goods/assets/images/default-profile.jpg";
+        $profile_picture = "/cosc-360-project/handmade_goods/assets/images/default_profile.png";
 
         $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/";
 
