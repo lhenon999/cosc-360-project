@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../config.php';
+include __DIR__ . '/../config.php';
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: login.php");
@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <h1 class="text-center mt-5">Edit Listing</h1>
     <p class="text-center">Modify your product details below</p>
@@ -171,7 +171,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
-    <?php include '../assets/html/footer.php'; ?>
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 
     <script>
         function updatePreview() {

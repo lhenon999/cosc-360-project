@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../config.php';
+require __DIR__ . '/../config.php';
 
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error'] = "User not logged in.";

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../config.php';
+include __DIR__ . '/../config.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("Location: products.php");
@@ -101,7 +101,7 @@ if ($session_user_id !== null) {
     </head>
 
     <body>
-        <?php include '../assets/html/navbar.php'; ?>
+        <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
         <main>
             <section class="main mt-5">
@@ -217,7 +217,7 @@ if ($session_user_id !== null) {
                 <?php endif; ?>
                 </section>
 
-    <?php include '../assets/html/footer.php'; ?>
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
     </main>
     <script src="../assets/js/product_reviews.js"></script>
 </body>

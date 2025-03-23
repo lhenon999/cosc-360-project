@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -92,7 +92,7 @@ foreach ($order_items as $item) {
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <div class="container mt-5">
         <h1>Thank You for Your Order!</h1>
@@ -138,6 +138,6 @@ foreach ($order_items as $item) {
                     class="material-symbols-outlined">shoppingmode</span>Continue Shopping</a>
         </div>
     </div>
-    <?php include '../assets/html/footer.php'; ?>
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 </html>

@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="../assets/css/about.css">
     </head>
     <body>
-        <?php include '../assets/html/navbar.php'; ?>
+        <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
         <div class="container mt-5">
             <h1 class="mb-2">About Us</h1>
@@ -63,6 +63,6 @@
             </div>
         </div>
 
-        <?php include '../assets/html/footer.php'; ?>
+        <?php include __DIR__ . '/../assets/html/footer.php'; ?>
     </body>
 </html> 

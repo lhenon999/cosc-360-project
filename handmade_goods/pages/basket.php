@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../config.php';
+include __DIR__ . '/../config.php';
 
 // echo "Debug: User ID = $user_id <br>";
 
@@ -78,7 +78,7 @@ $total = $subtotal + $shipping + $tax;
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
     <div class="container mt-5">
         <h1>Basket</h1>
         <h4><span class="text-muted"><?= count($cart_items) ?> items</span></h4>

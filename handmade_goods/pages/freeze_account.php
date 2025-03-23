@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include '../config.php';
+    include __DIR__ . '/../config.php';
 
     if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
         header("Location: ../index.php");

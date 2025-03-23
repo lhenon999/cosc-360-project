@@ -1,4 +1,4 @@
-USE handmade_goods;
+USE rsodhi03;
 INSERT INTO USERS(id, name, email, password, user_type)
 VALUES ( 3,
          'Alice Smith',

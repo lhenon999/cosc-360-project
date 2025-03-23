@@ -1,6 +1,6 @@
 <?php 
 session_start();
-include '../config.php';
+include __DIR__ . '/../config.php';
 http_response_code(404);
 ?>
 
@@ -23,7 +23,7 @@ http_response_code(404);
     </head>
 
     <body>
-        <?php include '../assets/html/navbar.php'; ?>
+        <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
         <div class="container text-center d-flex flex-column justify-content-center align-items-center mt-5">
             <h1 class="mt-5">Uh Oh!</h1>

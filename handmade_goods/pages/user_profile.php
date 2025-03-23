@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include '../config.php';
+    include __DIR__ . '/../config.php';
 
     if (!isset($_GET['id']) || empty($_GET['id'])) {
         header("Location: home.php");
@@ -56,7 +56,7 @@
     </head>
 
     <body>
-        <?php include '../assets/html/navbar.php'; ?>
+        <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
         <main class="mt-5">
             <?php if ($from_product): ?>
@@ -148,6 +148,6 @@
             <?php endif; ?>
         </main>
 
-        <?php include '../assets/html/footer.php'; ?>
+        <?php include __DIR__ . '/../assets/html/footer.php'; ?>
     </body>
 </html>

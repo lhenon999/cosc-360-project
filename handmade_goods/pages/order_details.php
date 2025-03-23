@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
@@ -77,7 +77,7 @@ $stmt->close();
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
     <div class="order-details-container">
         <h2 class="text-center">Order Details</h2>
 
@@ -136,7 +136,7 @@ $stmt->close();
     </div>
 
     </div>
-    <?php include '../assets/html/footer.php'; ?>
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
 </html>

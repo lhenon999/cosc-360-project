@@ -1,6 +1,6 @@
 <?php 
 session_start();
-include '../config.php';
+include __DIR__ . '/../config.php';
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +24,7 @@ include '../config.php';
     </head>
 
     <body>
-        <?php include '../assets/html/navbar.php'; ?>
+        <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
         <div class="container text-center">
             <h1 >Welcome to Handmade Goods</h1>
