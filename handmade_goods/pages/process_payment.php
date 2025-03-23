@@ -16,7 +16,7 @@ if (!$order_id) {
     exit();
 }
 
-$stmt = $conn->prepare("SELECT total_price, status FROM orders WHERE id = ? AND user_id = ?");
+$stmt = $conn->prepare("SELECT total_price, status FROM ORDERS WHERE id = ? AND user_id = ?");
 $stmt->bind_param("ii", $order_id, $user_id);
 $stmt->execute();
 $result = $stmt->get_result();

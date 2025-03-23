@@ -20,7 +20,7 @@ $conn->begin_transaction();
 
 try {
     // First check if the order exists and belongs to the user
-    $stmt = $conn->prepare("SELECT id FROM orders WHERE id = ? AND user_id = ?");
+    $stmt = $conn->prepare("SELECT id FROM ORDERS WHERE id = ? AND user_id = ?");
     $stmt->bind_param("ii", $order_id, $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -31,7 +31,7 @@ try {
     $stmt->close();
 
     // Get items to restore stock
-    $stmt = $conn->prepare("SELECT item_id, quantity FROM order_items WHERE order_id = ?");
+    $stmt = $conn->prepare("SELECT item_id, quantity FROM ORDER_ITEMS WHERE order_id = ?");
     $stmt->bind_param("i", $order_id);
     $stmt->execute();
     $items_to_restore = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -39,14 +39,14 @@ try {
 
     // Update stock for each item
     foreach ($items_to_restore as $item) {
-        $stmt = $conn->prepare("UPDATE items SET stock = stock + ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE ITEMS SET stock = stock + ? WHERE id = ?");
         $stmt->bind_param("ii", $item['quantity'], $item['item_id']);
         $stmt->execute();
         $stmt->close();
     }
 
     // Delete the order (order_items will be deleted automatically via ON DELETE CASCADE)
-    $stmt = $conn->prepare("DELETE FROM orders WHERE id = ? AND user_id = ?");
+    $stmt = $conn->prepare("DELETE FROM ORDERS WHERE id = ? AND user_id = ?");
     $stmt->bind_param("ii", $order_id, $user_id);
     $stmt->execute();
     

@@ -9,7 +9,7 @@ setcookie("user_email", "", time() - 3600, "/", "", false, true);
 require_once __DIR__ . '/../config.php';
 if (isset($_SESSION["user_email"])) {
     $email = $_SESSION["user_email"];
-    $stmt = $conn->prepare("UPDATE users SET remember_token = NULL WHERE email = ?");
+    $stmt = $conn->prepare("UPDATE USERS SET remember_token = NULL WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->close();
