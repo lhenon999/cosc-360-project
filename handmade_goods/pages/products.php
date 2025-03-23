@@ -1,7 +1,8 @@
 <?php
 session_start();
-$is_logged_in = isset($_SESSION["user_id"]);
 include __DIR__ . '/../config.php';
+
+$is_logged_in = isset($_SESSION["user_id"]);
 
 // Get filter parameters with proper sanitization
 $category_filter = isset($_GET['category']) && $_GET['category'] !== '' ? trim($_GET['category']) : null;
@@ -49,8 +50,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
 
 // Build the base query
 $query = "SELECT DISTINCT i.id, i.name, i.img, i.user_id, i.price, i.stock, IFNULL(AVG(r.rating), 0) as avg_rating 
-          FROM items i 
-          LEFT JOIN reviews r ON i.id = r.item_id";
+        FROM ITEMS i 
+        LEFT JOIN reviews r ON i.id = r.item_id";
 
 // Start WHERE clause
 $where_conditions = [];
