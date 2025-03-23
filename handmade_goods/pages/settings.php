@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../config.php';
+require __DIR__ . '/../config.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -58,7 +58,7 @@ $isAdmin = ($user['user_type'] === 'admin');
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <div class="settings-container">
         <div class="settings-header">
@@ -139,6 +139,11 @@ $isAdmin = ($user['user_type'] === 'admin');
                 });
             });
         </script>
+<<<<<<< HEAD
+=======
+
+<?php include __DIR__ . '/../assets/html/footer.php'; ?>
+>>>>>>> a9b593f (updated file import statements as per server deployment requirements)
 </body>
 
 </html>

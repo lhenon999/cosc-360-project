@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
@@ -77,7 +77,7 @@ if ($user_type === 'admin') {
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <div class="container">
         <h1 class="text-center mt-5"><?php echo ($user_type === 'admin') ? 'Admin Dashboard' : 'My Profile'; ?></h1>
@@ -115,9 +115,9 @@ if ($user_type === 'admin') {
                 </div>
             </div>
             <?php if ($user_type === 'admin'): ?>
-                <?php include 'profile_admin_dashboard.php'; ?>
+                <?php include __DIR__ . '/profile_admin_dashboard.php'; ?>
             <?php else: ?>
-                <?php include 'profile_user_dashboard.php'; ?>
+                <?php include __DIR__ . '/profile_user_dashboard.php'; ?>
             <?php endif; ?>
 
         </div>
@@ -139,6 +139,8 @@ if ($user_type === 'admin') {
         let userType = "<?= $user_type ?>";
     </script>
     <script src="../assets/js/admin_manage_listing.js"></script>
+
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
 </html>

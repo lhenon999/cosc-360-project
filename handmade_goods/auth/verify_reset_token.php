@@ -26,7 +26,7 @@ $email = urldecode($_GET['email']);
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
     <main class="container text-center">
         <h1>Enter your reset code</h1>
         <p class="text-muted mb-5">Your code has been sent to your email address</p>

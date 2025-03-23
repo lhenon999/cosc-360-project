@@ -9,12 +9,12 @@ if (!$is_logged_in) {
 
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
-// include '../config.php';
+// include __DIR__ . '/../config.php';
 
 // var_dump($_SESSION);
 
 
-include '../config.php';
+include __DIR__ . '/../config.php';
 
 $user_email = $_SESSION["user_id"];
 $products = [];
@@ -52,7 +52,7 @@ $stmt->close();
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <h1 class="text-center">My Shop</h1>
     <p class="text-center">Browse and edit your listings</p>
@@ -89,6 +89,6 @@ $stmt->close();
 
 </body>
 
-<?php include "../assets/html/footer.php"; ?>
+<?php include __DIR__ . "/../assets/html/footer.php"; ?>
 
 </html>

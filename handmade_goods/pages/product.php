@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../config.php';
+include __DIR__ . '/../config.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("Location: products.php");
@@ -82,6 +82,7 @@ if ($session_user_id !== null) {
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+<<<<<<< HEAD
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/product.css">
@@ -89,6 +90,10 @@ if ($session_user_id !== null) {
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/product_card.css">
 </head>
+=======
+    <body>
+        <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
+>>>>>>> a9b593f (updated file import statements as per server deployment requirements)
 
 <body>
     <?php include '../assets/html/navbar.php'; ?>
@@ -255,6 +260,7 @@ if ($session_user_id !== null) {
 
         </div>
 
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
     </main>
 
     <script src="../assets/js/product_reviews.js"></script>

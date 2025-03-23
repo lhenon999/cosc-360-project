@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../config.php';
+require __DIR__ . '/../config.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
     <main class="container text-center">
         <h1>Reset Your Password</h1>
         <div class="login-container">

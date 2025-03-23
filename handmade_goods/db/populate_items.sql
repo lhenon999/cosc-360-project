@@ -1,4 +1,4 @@
-USE handmade_goods;
+USE rsodhi03;
 INSERT INTO ITEMS(name, description, price, stock, category, img, user_id)
 VALUES ( 'Handmade Wooden Bowl',
          'A beautifully handcrafted wooden bowl.',

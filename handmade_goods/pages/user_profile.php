@@ -1,6 +1,11 @@
 <?php
+<<<<<<< HEAD
 session_start();
 include '../config.php';
+=======
+    session_start();
+    include __DIR__ . '/../config.php';
+>>>>>>> a9b593f (updated file import statements as per server deployment requirements)
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -59,6 +64,9 @@ $stmt->close();
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <body>
+        <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/products.css">
@@ -179,4 +187,9 @@ $stmt->close();
     </div>
 </body>
 
+<<<<<<< HEAD
+=======
+        <?php include __DIR__ . '/../assets/html/footer.php'; ?>
+    </body>
+>>>>>>> a9b593f (updated file import statements as per server deployment requirements)
 </html>

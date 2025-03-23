@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
@@ -74,7 +74,7 @@ $total_price = $order["total_price"];
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <div class="container mt-5">
         <h1 class="text-center">Complete Your Payment</h1>

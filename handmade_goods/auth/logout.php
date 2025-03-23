@@ -6,7 +6,7 @@ setcookie("remember_token", "", time() - 3600, "/", "", false, true);
 setcookie("user_email", "", time() - 3600, "/", "", false, true);
 
 //remove cookies
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 if (isset($_SESSION["user_email"])) {
     $email = $_SESSION["user_email"];
     $stmt = $conn->prepare("UPDATE users SET remember_token = NULL WHERE email = ?");

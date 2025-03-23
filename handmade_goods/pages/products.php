@@ -1,7 +1,7 @@
 <?php
 session_start();
 $is_logged_in = isset($_SESSION["user_id"]);
-include '../config.php';
+include __DIR__ . '/../config.php';
 
 // Get filter parameters with proper sanitization
 $category_filter = isset($_GET['category']) && $_GET['category'] !== '' ? trim($_GET['category']) : null;
@@ -158,7 +158,7 @@ $rating_stmt->close();
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <h1 class="text-center">Explore Our Products!</h1>
     <p class="text-center">Browse our collection and discover what suits you</p>
@@ -242,7 +242,7 @@ $rating_stmt->close();
         </div>
     </main>
 
-    <?php include '../assets/html/footer.php'; ?>
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 
     <script>
         // validation for price filters

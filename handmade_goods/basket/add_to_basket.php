@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../config.php';
+include __DIR__ . '/../config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"], $_POST["quantity"])) {
     $item_id = intval($_POST["product_id"]);

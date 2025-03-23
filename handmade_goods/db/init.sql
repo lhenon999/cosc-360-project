@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS handmade_goods;
-CREATE DATABASE IF NOT EXISTS handmade_goods;
-USE handmade_goods;
+DROP DATABASE IF EXISTS rsodhi03;
+CREATE DATABASE IF NOT EXISTS rsodhi03;
+USE rsodhi03;
 CREATE TABLE IF NOT EXISTS USERS( id INT auto_increment PRIMARY KEY,
                                   name VARCHAR ( 100 ) NOT NULL,
                                   email VARCHAR ( 255 ) NOT NULL UNIQUE,
@@ -60,32 +60,32 @@ CREATE TABLE IF NOT EXISTS PASSWORD_RESETS( id INT auto_increment PRIMARY KEY,
                                             expires DATETIME NOT NULL,
                                             created_at timestamp DEFAULT CURRENT_TIMESTAMP );
 CREATE TABLE IF NOT EXISTS SALES( id INT auto_increment PRIMARY KEY,
-                                  order_id INT NOT NULL,
-                                  seller_id INT NOT NULL,
-                                  buyer_id INT NOT NULL,
-                                  item_id INT NOT NULL,
-                                  quantity INT NOT NULL,
-                                  price DECIMAL ( 10, 2 ) NOT NULL,
-                                  sale_date timestamp DEFAULT CURRENT_TIMESTAMP,
-                                  FOREIGN KEY ( order_id ) REFERENCES ORDERS(id) ON DELETE CASCADE,
-                                                                                    FOREIGN KEY ( seller_id ) REFERENCES USERS(id) ON DELETE CASCADE,
-                                                                                                                                      FOREIGN KEY ( buyer_id ) REFERENCES USERS(id) ON DELETE CASCADE,
-                                                                                                                                                                                       FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
-ALTER TABLE users convert TO character
+                                order_id INT NOT NULL,
+                                seller_id INT NOT NULL,
+                                buyer_id INT NOT NULL,
+                                item_id INT NOT NULL,
+                                quantity INT NOT NULL,
+                                price DECIMAL ( 10, 2 ) NOT NULL,
+                                sale_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                FOREIGN KEY ( order_id ) REFERENCES ORDERS(id) ON DELETE CASCADE,
+                                FOREIGN KEY ( seller_id ) REFERENCES USERS(id) ON DELETE CASCADE,
+                                FOREIGN KEY ( buyer_id ) REFERENCES USERS(id) ON DELETE CASCADE,
+                                FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
+ALTER TABLE USERS convert TO character
 SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE users
+ALTER TABLE USERS
 ADD COLUMN profile_picture VARCHAR ( 255 ) NOT NULL DEFAULT '/cosc-360-project/handmade_goods/assets/images/default_profile.png';
-ALTER TABLE password_resets
+ALTER TABLE PASSWORD_RESETS
 ADD COLUMN short_code VARCHAR ( 8 ) NOT NULL;
-ALTER TABLE password_resets
+ALTER TABLE PASSWORD_RESETS
 ADD UNIQUE ( email );
-ALTER TABLE users
+ALTER TABLE USERS
 ADD COLUMN remember_token VARCHAR ( 255 ) NULL;
-ALTER TABLE users
+ALTER TABLE USERS
 ADD COLUMN is_frozen TINYINT ( 1 ) DEFAULT 0;
-ALTER TABLE items
+ALTER TABLE ITEMS
 ADD COLUMN status ENUM('active', 'inactive') DEFAULT 'active';
-ALTER TABLE reviews
+ALTER TABLE REVIEWS
 ADD UNIQUE ( user_id, item_id );
 INSERT INTO USERS(id, name, email, password, user_type)
 SELECT 1,
@@ -93,11 +93,11 @@ SELECT 1,
        'admin@handmadegoods.com',
        '$2y$10$E4LsPni7YFBS96DJ6tK8PeCJVgswuLXnd6XDPUySc3yCgbv6lnyeG',
        'admin'
-WHERE NOT EXISTS ( SELECT 1 FROM users WHERE email = 'admin@handmadegoods.com' );
+WHERE NOT EXISTS ( SELECT 1 FROM USERS WHERE email = 'admin@handmadegoods.com' );
 INSERT INTO USERS(id, name, email, password, user_type)
 SELECT 2,
        'John Doe',
        'johndoe@mail.com',
        '$2y$10$6FRuRI3lBFOpHtYhd29XIOs.sT7WeAYXWxs8ORhzLIvAqQApYchRu',
        'normal'
-WHERE NOT EXISTS ( SELECT 1 FROM users WHERE email = 'johndoe@mail.com' );
+WHERE NOT EXISTS ( SELECT 1 FROM USERS WHERE email = 'johndoe@mail.com' );
