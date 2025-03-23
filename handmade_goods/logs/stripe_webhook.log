@@ -6797,3 +6797,3811 @@ Received webhook with signature: t=1742725287,v1=83c607378608a15359cc0b22b4b1499
 
 Webhook processed successfully with 200 response
 Webhook processed successfully with 200 response
+
+
+2025-03-23 12:29:54 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4271
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742729496,v1=1239f5d363f5b3b5dd4da87e42de89edf83ba4d68b8ff7de79022aa9560511d7,v0=7dde03a2ebcbd21d57e11ab6a02a48b6c33dc2dee507270e11fc25c4e4d0f556
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5mkdBSlWUNcExM1SE098VV",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742729496,
+  "data": {
+    "object": {
+      "id": "ch_3R5mkdBSlWUNcExM13wDzIL2",
+      "object": "charge",
+      "amount": 27291,
+      "amount_captured": 27291,
+      "amount_refunded": 0,
+      "application": null,
+      "application_fee": null,
+      "application_fee_amount": null,
+      "balance_transaction": null,
+      "billing_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": null,
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "Priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null
+      },
+      "calculated_statement_descriptor": "Stripe",
+      "captured": true,
+      "created": 1742729496,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "destination": null,
+      "dispute": null,
+      "disputed": false,
+      "failure_balance_transaction": null,
+      "failure_code": null,
+      "failure_message": null,
+      "fraud_details": {
+      },
+      "invoice": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "40"
+      },
+      "on_behalf_of": null,
+      "order": null,
+      "outcome": {
+        "advice_code": null,
+        "network_advice_code": null,
+        "network_decline_code": null,
+        "network_status": "approved_by_network",
+        "reason": null,
+        "risk_level": "normal",
+        "risk_score": 9,
+        "seller_message": "Payment complete.",
+        "type": "authorized"
+      },
+      "paid": true,
+      "payment_intent": "pi_3R5mkdBSlWUNcExM1ESdQZMn",
+      "payment_method": "pm_1R5mkdBSlWUNcExMSkEZxlgR",
+      "payment_method_details": {
+        "card": {
+          "amount_authorized": 27291,
+          "authorization_code": null,
+          "brand": "mastercard",
+          "checks": {
+            "address_line1_check": "pass",
+            "address_postal_code_check": "pass",
+            "cvc_check": null
+          },
+          "country": "US",
+          "exp_month": 9,
+          "exp_year": 2026,
+          "extended_authorization": {
+            "status": "disabled"
+          },
+          "fingerprint": "5FmgLbVv0leHowle",
+          "funding": "credit",
+          "incremental_authorization": {
+            "status": "unavailable"
+          },
+          "installments": null,
+          "last4": "5138",
+          "mandate": null,
+          "multicapture": {
+            "status": "unavailable"
+          },
+          "network": "mastercard",
+          "network_token": {
+            "used": false
+          },
+          "network_transaction_id": "MCC5FMGLB0323",
+          "overcapture": {
+            "maximum_amount_capturable": 27291,
+            "status": "unavailable"
+          },
+          "regulated_status": "unregulated",
+          "three_d_secure": null,
+          "wallet": {
+            "dynamic_last4": "4444",
+            "google_pay": {
+            },
+            "type": "google_pay"
+          }
+        },
+        "type": "card"
+      },
+      "radar_options": {
+      },
+      "receipt_email": null,
+      "receipt_number": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKJji_74GMgZC6egmYYI6LBYiU2-OwEmrsfgWR7j1ODKCkB99MqnBLK0g751XZS_5OIrR8nmGQiNxv3rv",
+      "refunded": false,
+      "review": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 201C",
+          "postal_code": "V1V1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "source_transfer": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 3,
+  "request": {
+    "id": null,
+    "idempotency_key": "bf17513a-ede3-451a-bb3f-5bb6fbaed7eb"
+  },
+  "type": "charge.succeeded"
+}
+Received webhook with signature: t=1742729496,v1=1239f5d363f5b3b5dd4da87e42de89edf83ba4d68b8ff7de79022aa9560511d7,v0=7dde03a2ebcbd21d57e11ab6a02a48b6c33dc2dee507270e11fc25c4e4d0f556
+2025-03-23 12:29:54 - Expected signature: 1239f5d363f5b3b5dd4da87e42de89edf83ba4d68b8ff7de79022aa9560511d7
+2025-03-23 12:29:54 - Received signature: 1239f5d363f5b3b5dd4da87e42de89edf83ba4d68b8ff7de79022aa9560511d7
+[2025-03-23 12:29:54] ::1 - Stripe Webhook: [success] Event: charge.succeeded (ID: evt_3R5mkdBSlWUNcExM1SE098VV) 
+
+[2025-03-23 12:29:54] ::1 - Stripe Webhook: [unhandled] Event: charge.succeeded (ID: evt_3R5mkdBSlWUNcExM1SE098VV) 
+
+Webhook processed successfully with 200 response
+
+
+2025-03-23 12:29:54 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4271
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742729496,v1=1239f5d363f5b3b5dd4da87e42de89edf83ba4d68b8ff7de79022aa9560511d7,v0=7dde03a2ebcbd21d57e11ab6a02a48b6c33dc2dee507270e11fc25c4e4d0f556
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5mkdBSlWUNcExM1SE098VV",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742729496,
+  "data": {
+    "object": {
+      "id": "ch_3R5mkdBSlWUNcExM13wDzIL2",
+      "object": "charge",
+      "amount": 27291,
+      "amount_captured": 27291,
+      "amount_refunded": 0,
+      "application": null,
+      "application_fee": null,
+      "application_fee_amount": null,
+      "balance_transaction": null,
+      "billing_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": null,
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "Priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null
+      },
+      "calculated_statement_descriptor": "Stripe",
+      "captured": true,
+      "created": 1742729496,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "destination": null,
+      "dispute": null,
+      "disputed": false,
+      "failure_balance_transaction": null,
+      "failure_code": null,
+      "failure_message": null,
+      "fraud_details": {
+      },
+      "invoice": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "40"
+      },
+      "on_behalf_of": null,
+      "order": null,
+      "outcome": {
+        "advice_code": null,
+        "network_advice_code": null,
+        "network_decline_code": null,
+        "network_status": "approved_by_network",
+        "reason": null,
+        "risk_level": "normal",
+        "risk_score": 9,
+        "seller_message": "Payment complete.",
+        "type": "authorized"
+      },
+      "paid": true,
+      "payment_intent": "pi_3R5mkdBSlWUNcExM1ESdQZMn",
+      "payment_method": "pm_1R5mkdBSlWUNcExMSkEZxlgR",
+      "payment_method_details": {
+        "card": {
+          "amount_authorized": 27291,
+          "authorization_code": null,
+          "brand": "mastercard",
+          "checks": {
+            "address_line1_check": "pass",
+            "address_postal_code_check": "pass",
+            "cvc_check": null
+          },
+          "country": "US",
+          "exp_month": 9,
+          "exp_year": 2026,
+          "extended_authorization": {
+            "status": "disabled"
+          },
+          "fingerprint": "5FmgLbVv0leHowle",
+          "funding": "credit",
+          "incremental_authorization": {
+            "status": "unavailable"
+          },
+          "installments": null,
+          "last4": "5138",
+          "mandate": null,
+          "multicapture": {
+            "status": "unavailable"
+          },
+          "network": "mastercard",
+          "network_token": {
+            "used": false
+          },
+          "network_transaction_id": "MCC5FMGLB0323",
+          "overcapture": {
+            "maximum_amount_capturable": 27291,
+            "status": "unavailable"
+          },
+          "regulated_status": "unregulated",
+          "three_d_secure": null,
+          "wallet": {
+            "dynamic_last4": "4444",
+            "google_pay": {
+            },
+            "type": "google_pay"
+          }
+        },
+        "type": "card"
+      },
+      "radar_options": {
+      },
+      "receipt_email": null,
+      "receipt_number": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKJji_74GMgZC6egmYYI6LBYiU2-OwEmrsfgWR7j1ODKCkB99MqnBLK0g751XZS_5OIrR8nmGQiNxv3rv",
+      "refunded": false,
+      "review": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 201C",
+          "postal_code": "V1V1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "source_transfer": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 3,
+  "request": {
+    "id": null,
+    "idempotency_key": "bf17513a-ede3-451a-bb3f-5bb6fbaed7eb"
+  },
+  "type": "charge.succeeded"
+}
+Received webhook with signature: t=1742729496,v1=1239f5d363f5b3b5dd4da87e42de89edf83ba4d68b8ff7de79022aa9560511d7,v0=7dde03a2ebcbd21d57e11ab6a02a48b6c33dc2dee507270e11fc25c4e4d0f556
+2025-03-23 12:29:54 - Expected signature: 1239f5d363f5b3b5dd4da87e42de89edf83ba4d68b8ff7de79022aa9560511d7
+2025-03-23 12:29:54 - Received signature: 1239f5d363f5b3b5dd4da87e42de89edf83ba4d68b8ff7de79022aa9560511d7
+[2025-03-23 12:29:54] ::1 - Stripe Webhook: [success] Event: charge.succeeded (ID: evt_3R5mkdBSlWUNcExM1SE098VV) 
+
+[2025-03-23 12:29:54] ::1 - Stripe Webhook: [unhandled] Event: charge.succeeded (ID: evt_3R5mkdBSlWUNcExM1SE098VV) 
+
+Webhook processed successfully with 200 response
+
+
+2025-03-23 12:29:54 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4486
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742729496,v1=a54a1807392e3edb622ae962814b1bce20702407c873071dee80c921c0b01e2f,v0=269765be5f6ef443c43f9073f20e7e993b27101cf0e21d373b0793fa71a16561
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_1R5mkeBSlWUNcExMfSiLvGwC",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742729496,
+  "data": {
+    "object": {
+      "id": "cs_test_b10GeL7TytmylVqCgSCmiaiyM3h1OGoPO7xqtvKz5MRMhiGloR2vdOJZre",
+      "object": "checkout.session",
+      "adaptive_pricing": {
+        "enabled": false
+      },
+      "after_expiration": null,
+      "allow_promotion_codes": null,
+      "amount_subtotal": 26492,
+      "amount_total": 27291,
+      "automatic_tax": {
+        "enabled": false,
+        "liability": null,
+        "status": null
+      },
+      "billing_address_collection": "required",
+      "cancel_url": "http://localhost/cosc-360-project/handmade_goods/pages/basket.php",
+      "client_reference_id": null,
+      "client_secret": null,
+      "collected_information": {
+        "shipping_details": {
+          "address": {
+            "city": "Kelowna",
+            "country": "CA",
+            "line1": "3174 Lower Residence Lane",
+            "line2": "Cascade E, 201C",
+            "postal_code": "V1V1V8",
+            "state": "BC"
+          },
+          "name": "Priyansh Mathur"
+        }
+      },
+      "consent": null,
+      "consent_collection": null,
+      "created": 1742729483,
+      "currency": "usd",
+      "currency_conversion": null,
+      "custom_fields": [
+
+      ],
+      "custom_text": {
+        "after_submit": null,
+        "shipping_address": null,
+        "submit": null,
+        "terms_of_service_acceptance": null
+      },
+      "customer": null,
+      "customer_creation": "if_required",
+      "customer_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": null,
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "Priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tax_exempt": "none",
+        "tax_ids": [
+
+        ]
+      },
+      "customer_email": null,
+      "discounts": [
+
+      ],
+      "expires_at": 1742815882,
+      "invoice": null,
+      "invoice_creation": {
+        "enabled": false,
+        "invoice_data": {
+          "account_tax_ids": null,
+          "custom_fields": null,
+          "description": null,
+          "footer": null,
+          "issuer": null,
+          "metadata": {
+          },
+          "rendering_options": null
+        }
+      },
+      "livemode": false,
+      "locale": null,
+      "metadata": {
+        "order_id": "40"
+      },
+      "mode": "payment",
+      "payment_intent": "pi_3R5mkdBSlWUNcExM1ESdQZMn",
+      "payment_link": null,
+      "payment_method_collection": "if_required",
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "payment_status": "paid",
+      "permissions": null,
+      "phone_number_collection": {
+        "enabled": false
+      },
+      "recovered_from": null,
+      "saved_payment_method_options": null,
+      "setup_intent": null,
+      "shipping_address_collection": {
+        "allowed_countries": [
+          "US",
+          "CA"
+        ]
+      },
+      "shipping_cost": {
+        "amount_subtotal": 799,
+        "amount_tax": 0,
+        "amount_total": 799,
+        "shipping_rate": "shr_1R5mkQBSlWUNcExM9ZhU0cbt"
+      },
+      "shipping_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 201C",
+          "postal_code": "V1V1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "shipping_options": [
+        {
+          "shipping_amount": 799,
+          "shipping_rate": "shr_1R5mkQBSlWUNcExM9ZhU0cbt"
+        }
+      ],
+      "status": "complete",
+      "submit_type": null,
+      "subscription": null,
+      "success_url": "http://localhost/cosc-360-project/handmade_goods/pages/order_confirmation.php?order_id=40",
+      "total_details": {
+        "amount_discount": 0,
+        "amount_shipping": 799,
+        "amount_tax": 0
+      },
+      "ui_mode": "hosted",
+      "url": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "checkout.session.completed"
+}
+Received webhook with signature: t=1742729496,v1=a54a1807392e3edb622ae962814b1bce20702407c873071dee80c921c0b01e2f,v0=269765be5f6ef443c43f9073f20e7e993b27101cf0e21d373b0793fa71a16561
+2025-03-23 12:29:54 - Expected signature: a54a1807392e3edb622ae962814b1bce20702407c873071dee80c921c0b01e2f
+2025-03-23 12:29:54 - Received signature: a54a1807392e3edb622ae962814b1bce20702407c873071dee80c921c0b01e2f
+[2025-03-23 12:29:54] ::1 - Stripe Webhook: [success] Event: checkout.session.completed (ID: evt_1R5mkeBSlWUNcExMfSiLvGwC) 
+Session data: Array
+(
+    [id] => cs_test_b10GeL7TytmylVqCgSCmiaiyM3h1OGoPO7xqtvKz5MRMhiGloR2vdOJZre
+    [object] => checkout.session
+    [adaptive_pricing] => Array
+        (
+            [enabled] => 
+        )
+
+    [after_expiration] => 
+    [allow_promotion_codes] => 
+    [amount_subtotal] => 26492
+    [amount_total] => 27291
+    [automatic_tax] => Array
+        (
+            [enabled] => 
+            [liability] => 
+            [status] => 
+        )
+
+    [billing_address_collection] => required
+    [cancel_url] => http://localhost/cosc-360-project/handmade_goods/pages/basket.php
+    [client_reference_id] => 
+    [client_secret] => 
+    [collected_information] => Array
+        (
+            [shipping_details] => Array
+                (
+                    [address] => Array
+                        (
+                            [city] => Kelowna
+                            [country] => CA
+                            [line1] => 3174 Lower Residence Lane
+                            [line2] => Cascade E, 201C
+                            [postal_code] => V1V1V8
+                            [state] => BC
+                        )
+
+                    [name] => Priyansh Mathur
+                )
+
+        )
+
+    [consent] => 
+    [consent_collection] => 
+    [created] => 1742729483
+    [currency] => usd
+    [currency_conversion] => 
+    [custom_fields] => Array
+        (
+        )
+
+    [custom_text] => Array
+        (
+            [after_submit] => 
+            [shipping_address] => 
+            [submit] => 
+            [terms_of_service_acceptance] => 
+        )
+
+    [customer] => 
+    [customer_creation] => if_required
+    [customer_details] => Array
+        (
+            [address] => Array
+                (
+                    [city] => Kelowna
+                    [country] => CA
+                    [line1] => 3174 Lower Residence Lane
+                    [line2] => 
+                    [postal_code] => V1V 1V8
+                    [state] => BC
+                )
+
+            [email] => Priyanshmathur19@gmail.com
+            [name] => Priyansh Mathur
+            [phone] => 
+            [tax_exempt] => none
+            [tax_ids] => Array
+                (
+                )
+
+        )
+
+    [customer_email] => 
+    [discounts] => Array
+        (
+        )
+
+    [expires_at] => 1742815882
+    [invoice] => 
+    [invoice_creation] => Array
+        (
+            [enabled] => 
+            [invoice_data] => Array
+                (
+                    [account_tax_ids] => 
+                    [custom_fields] => 
+                    [description] => 
+                    [footer] => 
+                    [issuer] => 
+                    [metadata] => Array
+                        (
+                        )
+
+                    [rendering_options] => 
+                )
+
+        )
+
+    [livemode] => 
+    [locale] => 
+    [metadata] => Array
+        (
+            [order_id] => 40
+        )
+
+    [mode] => payment
+    [payment_intent] => pi_3R5mkdBSlWUNcExM1ESdQZMn
+    [payment_link] => 
+    [payment_method_collection] => if_required
+    [payment_method_configuration_details] => 
+    [payment_method_options] => Array
+        (
+            [card] => Array
+                (
+                    [request_three_d_secure] => automatic
+                )
+
+        )
+
+    [payment_method_types] => Array
+        (
+            [0] => card
+        )
+
+    [payment_status] => paid
+    [permissions] => 
+    [phone_number_collection] => Array
+        (
+            [enabled] => 
+        )
+
+    [recovered_from] => 
+    [saved_payment_method_options] => 
+    [setup_intent] => 
+    [shipping_address_collection] => Array
+        (
+            [allowed_countries] => Array
+                (
+                    [0] => US
+                    [1] => CA
+                )
+
+        )
+
+    [shipping_cost] => Array
+        (
+            [amount_subtotal] => 799
+            [amount_tax] => 0
+            [amount_total] => 799
+            [shipping_rate] => shr_1R5mkQBSlWUNcExM9ZhU0cbt
+        )
+
+    [shipping_details] => Array
+        (
+            [address] => Array
+                (
+                    [city] => Kelowna
+                    [country] => CA
+                    [line1] => 3174 Lower Residence Lane
+                    [line2] => Cascade E, 201C
+                    [postal_code] => V1V1V8
+                    [state] => BC
+                )
+
+            [carrier] => 
+            [name] => Priyansh Mathur
+            [phone] => 
+            [tracking_number] => 
+        )
+
+    [shipping_options] => Array
+        (
+            [0] => Array
+                (
+                    [shipping_amount] => 799
+                    [shipping_rate] => shr_1R5mkQBSlWUNcExM9ZhU0cbt
+                )
+
+        )
+
+    [status] => complete
+    [submit_type] => 
+    [subscription] => 
+    [success_url] => http://localhost/cosc-360-project/handmade_goods/pages/order_confirmation.php?order_id=40
+    [total_details] => Array
+        (
+            [amount_discount] => 0
+            [amount_shipping] => 799
+            [amount_tax] => 0
+        )
+
+    [ui_mode] => hosted
+    [url] => 
+)
+
+No shipping data in session
+
+Processing order: 40, User ID: 2
+Full session data: {"id":"cs_test_b10GeL7TytmylVqCgSCmiaiyM3h1OGoPO7xqtvKz5MRMhiGloR2vdOJZre","object":"checkout.session","adaptive_pricing":{"enabled":false},"after_expiration":null,"allow_promotion_codes":null,"amount_subtotal":26492,"amount_total":27291,"automatic_tax":{"enabled":false,"liability":null,"status":null},"billing_address_collection":"required","cancel_url":"http:\/\/localhost\/cosc-360-project\/handmade_goods\/pages\/basket.php","client_reference_id":null,"client_secret":null,"collected_information":{"shipping_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 201C","postal_code":"V1V1V8","state":"BC"},"name":"Priyansh Mathur"}},"consent":null,"consent_collection":null,"created":1742729483,"currency":"usd","currency_conversion":null,"custom_fields":[],"custom_text":{"after_submit":null,"shipping_address":null,"submit":null,"terms_of_service_acceptance":null},"customer":null,"customer_creation":"if_required","customer_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":null,"postal_code":"V1V 1V8","state":"BC"},"email":"Priyanshmathur19@gmail.com","name":"Priyansh Mathur","phone":null,"tax_exempt":"none","tax_ids":[]},"customer_email":null,"discounts":[],"expires_at":1742815882,"invoice":null,"invoice_creation":{"enabled":false,"invoice_data":{"account_tax_ids":null,"custom_fields":null,"description":null,"footer":null,"issuer":null,"metadata":[],"rendering_options":null}},"livemode":false,"locale":null,"metadata":{"order_id":"40"},"mode":"payment","payment_intent":"pi_3R5mkdBSlWUNcExM1ESdQZMn","payment_link":null,"payment_method_collection":"if_required","payment_method_configuration_details":null,"payment_method_options":{"card":{"request_three_d_secure":"automatic"}},"payment_method_types":["card"],"payment_status":"paid","permissions":null,"phone_number_collection":{"enabled":false},"recovered_from":null,"saved_payment_method_options":null,"setup_intent":null,"shipping_address_collection":{"allowed_countries":["US","CA"]},"shipping_cost":{"amount_subtotal":799,"amount_tax":0,"amount_total":799,"shipping_rate":"shr_1R5mkQBSlWUNcExM9ZhU0cbt"},"shipping_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 201C","postal_code":"V1V1V8","state":"BC"},"carrier":null,"name":"Priyansh Mathur","phone":null,"tracking_number":null},"shipping_options":[{"shipping_amount":799,"shipping_rate":"shr_1R5mkQBSlWUNcExM9ZhU0cbt"}],"status":"complete","submit_type":null,"subscription":null,"success_url":"http:\/\/localhost\/cosc-360-project\/handmade_goods\/pages\/order_confirmation.php?order_id=40","total_details":{"amount_discount":0,"amount_shipping":799,"amount_tax":0},"ui_mode":"hosted","url":null}
+Using customer_details address as fallback: {"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":null,"postal_code":"V1V 1V8","state":"BC"}
+Inserting address from customer_details: {"user_id":2,"street":"3174 Lower Residence Lane","city":"Kelowna","state":"BC","postal_code":"V1V 1V8","country":"CA"}
+Successfully inserted address with ID: 10
+Successfully linked address to order
+
+
+2025-03-23 12:29:54 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4486
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742729496,v1=a54a1807392e3edb622ae962814b1bce20702407c873071dee80c921c0b01e2f,v0=269765be5f6ef443c43f9073f20e7e993b27101cf0e21d373b0793fa71a16561
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_1R5mkeBSlWUNcExMfSiLvGwC",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742729496,
+  "data": {
+    "object": {
+      "id": "cs_test_b10GeL7TytmylVqCgSCmiaiyM3h1OGoPO7xqtvKz5MRMhiGloR2vdOJZre",
+      "object": "checkout.session",
+      "adaptive_pricing": {
+        "enabled": false
+      },
+      "after_expiration": null,
+      "allow_promotion_codes": null,
+      "amount_subtotal": 26492,
+      "amount_total": 27291,
+      "automatic_tax": {
+        "enabled": false,
+        "liability": null,
+        "status": null
+      },
+      "billing_address_collection": "required",
+      "cancel_url": "http://localhost/cosc-360-project/handmade_goods/pages/basket.php",
+      "client_reference_id": null,
+      "client_secret": null,
+      "collected_information": {
+        "shipping_details": {
+          "address": {
+            "city": "Kelowna",
+            "country": "CA",
+            "line1": "3174 Lower Residence Lane",
+            "line2": "Cascade E, 201C",
+            "postal_code": "V1V1V8",
+            "state": "BC"
+          },
+          "name": "Priyansh Mathur"
+        }
+      },
+      "consent": null,
+      "consent_collection": null,
+      "created": 1742729483,
+      "currency": "usd",
+      "currency_conversion": null,
+      "custom_fields": [
+
+      ],
+      "custom_text": {
+        "after_submit": null,
+        "shipping_address": null,
+        "submit": null,
+        "terms_of_service_acceptance": null
+      },
+      "customer": null,
+      "customer_creation": "if_required",
+      "customer_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": null,
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "Priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tax_exempt": "none",
+        "tax_ids": [
+
+        ]
+      },
+      "customer_email": null,
+      "discounts": [
+
+      ],
+      "expires_at": 1742815882,
+      "invoice": null,
+      "invoice_creation": {
+        "enabled": false,
+        "invoice_data": {
+          "account_tax_ids": null,
+          "custom_fields": null,
+          "description": null,
+          "footer": null,
+          "issuer": null,
+          "metadata": {
+          },
+          "rendering_options": null
+        }
+      },
+      "livemode": false,
+      "locale": null,
+      "metadata": {
+        "order_id": "40"
+      },
+      "mode": "payment",
+      "payment_intent": "pi_3R5mkdBSlWUNcExM1ESdQZMn",
+      "payment_link": null,
+      "payment_method_collection": "if_required",
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "payment_status": "paid",
+      "permissions": null,
+      "phone_number_collection": {
+        "enabled": false
+      },
+      "recovered_from": null,
+      "saved_payment_method_options": null,
+      "setup_intent": null,
+      "shipping_address_collection": {
+        "allowed_countries": [
+          "US",
+          "CA"
+        ]
+      },
+      "shipping_cost": {
+        "amount_subtotal": 799,
+        "amount_tax": 0,
+        "amount_total": 799,
+        "shipping_rate": "shr_1R5mkQBSlWUNcExM9ZhU0cbt"
+      },
+      "shipping_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 201C",
+          "postal_code": "V1V1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "shipping_options": [
+        {
+          "shipping_amount": 799,
+          "shipping_rate": "shr_1R5mkQBSlWUNcExM9ZhU0cbt"
+        }
+      ],
+      "status": "complete",
+      "submit_type": null,
+      "subscription": null,
+      "success_url": "http://localhost/cosc-360-project/handmade_goods/pages/order_confirmation.php?order_id=40",
+      "total_details": {
+        "amount_discount": 0,
+        "amount_shipping": 799,
+        "amount_tax": 0
+      },
+      "ui_mode": "hosted",
+      "url": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "checkout.session.completed"
+}
+Received webhook with signature: t=1742729496,v1=a54a1807392e3edb622ae962814b1bce20702407c873071dee80c921c0b01e2f,v0=269765be5f6ef443c43f9073f20e7e993b27101cf0e21d373b0793fa71a16561
+2025-03-23 12:29:54 - Expected signature: a54a1807392e3edb622ae962814b1bce20702407c873071dee80c921c0b01e2f
+2025-03-23 12:29:54 - Received signature: a54a1807392e3edb622ae962814b1bce20702407c873071dee80c921c0b01e2f
+[2025-03-23 12:29:54] ::1 - Stripe Webhook: [success] Event: checkout.session.completed (ID: evt_1R5mkeBSlWUNcExMfSiLvGwC) 
+Session data: Array
+(
+    [id] => cs_test_b10GeL7TytmylVqCgSCmiaiyM3h1OGoPO7xqtvKz5MRMhiGloR2vdOJZre
+    [object] => checkout.session
+    [adaptive_pricing] => Array
+        (
+            [enabled] => 
+        )
+
+    [after_expiration] => 
+    [allow_promotion_codes] => 
+    [amount_subtotal] => 26492
+    [amount_total] => 27291
+    [automatic_tax] => Array
+        (
+            [enabled] => 
+            [liability] => 
+            [status] => 
+        )
+
+    [billing_address_collection] => required
+    [cancel_url] => http://localhost/cosc-360-project/handmade_goods/pages/basket.php
+    [client_reference_id] => 
+    [client_secret] => 
+    [collected_information] => Array
+        (
+            [shipping_details] => Array
+                (
+                    [address] => Array
+                        (
+                            [city] => Kelowna
+                            [country] => CA
+                            [line1] => 3174 Lower Residence Lane
+                            [line2] => Cascade E, 201C
+                            [postal_code] => V1V1V8
+                            [state] => BC
+                        )
+
+                    [name] => Priyansh Mathur
+                )
+
+        )
+
+    [consent] => 
+    [consent_collection] => 
+    [created] => 1742729483
+    [currency] => usd
+    [currency_conversion] => 
+    [custom_fields] => Array
+        (
+        )
+
+    [custom_text] => Array
+        (
+            [after_submit] => 
+            [shipping_address] => 
+            [submit] => 
+            [terms_of_service_acceptance] => 
+        )
+
+    [customer] => 
+    [customer_creation] => if_required
+    [customer_details] => Array
+        (
+            [address] => Array
+                (
+                    [city] => Kelowna
+                    [country] => CA
+                    [line1] => 3174 Lower Residence Lane
+                    [line2] => 
+                    [postal_code] => V1V 1V8
+                    [state] => BC
+                )
+
+            [email] => Priyanshmathur19@gmail.com
+            [name] => Priyansh Mathur
+            [phone] => 
+            [tax_exempt] => none
+            [tax_ids] => Array
+                (
+                )
+
+        )
+
+    [customer_email] => 
+    [discounts] => Array
+        (
+        )
+
+    [expires_at] => 1742815882
+    [invoice] => 
+    [invoice_creation] => Array
+        (
+            [enabled] => 
+            [invoice_data] => Array
+                (
+                    [account_tax_ids] => 
+                    [custom_fields] => 
+                    [description] => 
+                    [footer] => 
+                    [issuer] => 
+                    [metadata] => Array
+                        (
+                        )
+
+                    [rendering_options] => 
+                )
+
+        )
+
+    [livemode] => 
+    [locale] => 
+    [metadata] => Array
+        (
+            [order_id] => 40
+        )
+
+    [mode] => payment
+    [payment_intent] => pi_3R5mkdBSlWUNcExM1ESdQZMn
+    [payment_link] => 
+    [payment_method_collection] => if_required
+    [payment_method_configuration_details] => 
+    [payment_method_options] => Array
+        (
+            [card] => Array
+                (
+                    [request_three_d_secure] => automatic
+                )
+
+        )
+
+    [payment_method_types] => Array
+        (
+            [0] => card
+        )
+
+    [payment_status] => paid
+    [permissions] => 
+    [phone_number_collection] => Array
+        (
+            [enabled] => 
+        )
+
+    [recovered_from] => 
+    [saved_payment_method_options] => 
+    [setup_intent] => 
+    [shipping_address_collection] => Array
+        (
+            [allowed_countries] => Array
+                (
+                    [0] => US
+                    [1] => CA
+                )
+
+        )
+
+    [shipping_cost] => Array
+        (
+            [amount_subtotal] => 799
+            [amount_tax] => 0
+            [amount_total] => 799
+            [shipping_rate] => shr_1R5mkQBSlWUNcExM9ZhU0cbt
+        )
+
+    [shipping_details] => Array
+        (
+            [address] => Array
+                (
+                    [city] => Kelowna
+                    [country] => CA
+                    [line1] => 3174 Lower Residence Lane
+                    [line2] => Cascade E, 201C
+                    [postal_code] => V1V1V8
+                    [state] => BC
+                )
+
+            [carrier] => 
+            [name] => Priyansh Mathur
+            [phone] => 
+            [tracking_number] => 
+        )
+
+    [shipping_options] => Array
+        (
+            [0] => Array
+                (
+                    [shipping_amount] => 799
+                    [shipping_rate] => shr_1R5mkQBSlWUNcExM9ZhU0cbt
+                )
+
+        )
+
+    [status] => complete
+    [submit_type] => 
+    [subscription] => 
+    [success_url] => http://localhost/cosc-360-project/handmade_goods/pages/order_confirmation.php?order_id=40
+    [total_details] => Array
+        (
+            [amount_discount] => 0
+            [amount_shipping] => 799
+            [amount_tax] => 0
+        )
+
+    [ui_mode] => hosted
+    [url] => 
+)
+
+No shipping data in session
+
+
+
+2025-03-23 12:29:54 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 2313
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742729496,v1=09f1a024ae3bdd5b00acb4c1aa0a8ee16ca17afa13cf8780b7ef5dfefa0c16e2,v0=20026f43241dc399a8113644a9522f1b00a4cc7acec2380fee170a4d6e175e07
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5mkdBSlWUNcExM12JzYGlE",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742729496,
+  "data": {
+    "object": {
+      "id": "pi_3R5mkdBSlWUNcExM1ESdQZMn",
+      "object": "payment_intent",
+      "amount": 27291,
+      "amount_capturable": 0,
+      "amount_details": {
+        "tip": {
+        }
+      },
+      "amount_received": 27291,
+      "application": null,
+      "application_fee_amount": null,
+      "automatic_payment_methods": null,
+      "canceled_at": null,
+      "cancellation_reason": null,
+      "capture_method": "automatic_async",
+      "client_secret": "pi_3R5mkdBSlWUNcExM1ESdQZMn_secret_FscC1hQo7M4A06jb5E6T23LN2",
+      "confirmation_method": "automatic",
+      "created": 1742729495,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "invoice": null,
+      "last_payment_error": null,
+      "latest_charge": "ch_3R5mkdBSlWUNcExM13wDzIL2",
+      "livemode": false,
+      "metadata": {
+        "order_id": "40"
+      },
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": "pm_1R5mkdBSlWUNcExMSkEZxlgR",
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "installments": null,
+          "mandate_options": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "processing": null,
+      "receipt_email": null,
+      "review": null,
+      "setup_future_usage": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 201C",
+          "postal_code": "V1V1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": "bf17513a-ede3-451a-bb3f-5bb6fbaed7eb"
+  },
+  "type": "payment_intent.succeeded"
+}
+Received webhook with signature: t=1742729496,v1=09f1a024ae3bdd5b00acb4c1aa0a8ee16ca17afa13cf8780b7ef5dfefa0c16e2,v0=20026f43241dc399a8113644a9522f1b00a4cc7acec2380fee170a4d6e175e07
+2025-03-23 12:29:54 - Expected signature: 09f1a024ae3bdd5b00acb4c1aa0a8ee16ca17afa13cf8780b7ef5dfefa0c16e2
+2025-03-23 12:29:54 - Received signature: 09f1a024ae3bdd5b00acb4c1aa0a8ee16ca17afa13cf8780b7ef5dfefa0c16e2
+[2025-03-23 12:29:54] ::1 - Stripe Webhook: [success] Event: payment_intent.succeeded (ID: evt_3R5mkdBSlWUNcExM12JzYGlE) 
+
+[2025-03-23 12:29:54] ::1 - Stripe Webhook: [unhandled] Event: payment_intent.succeeded (ID: evt_3R5mkdBSlWUNcExM12JzYGlE) 
+
+Webhook processed successfully with 200 response
+Processing order: 40, User ID: 2
+Full session data: {"id":"cs_test_b10GeL7TytmylVqCgSCmiaiyM3h1OGoPO7xqtvKz5MRMhiGloR2vdOJZre","object":"checkout.session","adaptive_pricing":{"enabled":false},"after_expiration":null,"allow_promotion_codes":null,"amount_subtotal":26492,"amount_total":27291,"automatic_tax":{"enabled":false,"liability":null,"status":null},"billing_address_collection":"required","cancel_url":"http:\/\/localhost\/cosc-360-project\/handmade_goods\/pages\/basket.php","client_reference_id":null,"client_secret":null,"collected_information":{"shipping_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 201C","postal_code":"V1V1V8","state":"BC"},"name":"Priyansh Mathur"}},"consent":null,"consent_collection":null,"created":1742729483,"currency":"usd","currency_conversion":null,"custom_fields":[],"custom_text":{"after_submit":null,"shipping_address":null,"submit":null,"terms_of_service_acceptance":null},"customer":null,"customer_creation":"if_required","customer_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":null,"postal_code":"V1V 1V8","state":"BC"},"email":"Priyanshmathur19@gmail.com","name":"Priyansh Mathur","phone":null,"tax_exempt":"none","tax_ids":[]},"customer_email":null,"discounts":[],"expires_at":1742815882,"invoice":null,"invoice_creation":{"enabled":false,"invoice_data":{"account_tax_ids":null,"custom_fields":null,"description":null,"footer":null,"issuer":null,"metadata":[],"rendering_options":null}},"livemode":false,"locale":null,"metadata":{"order_id":"40"},"mode":"payment","payment_intent":"pi_3R5mkdBSlWUNcExM1ESdQZMn","payment_link":null,"payment_method_collection":"if_required","payment_method_configuration_details":null,"payment_method_options":{"card":{"request_three_d_secure":"automatic"}},"payment_method_types":["card"],"payment_status":"paid","permissions":null,"phone_number_collection":{"enabled":false},"recovered_from":null,"saved_payment_method_options":null,"setup_intent":null,"shipping_address_collection":{"allowed_countries":["US","CA"]},"shipping_cost":{"amount_subtotal":799,"amount_tax":0,"amount_total":799,"shipping_rate":"shr_1R5mkQBSlWUNcExM9ZhU0cbt"},"shipping_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 201C","postal_code":"V1V1V8","state":"BC"},"carrier":null,"name":"Priyansh Mathur","phone":null,"tracking_number":null},"shipping_options":[{"shipping_amount":799,"shipping_rate":"shr_1R5mkQBSlWUNcExM9ZhU0cbt"}],"status":"complete","submit_type":null,"subscription":null,"success_url":"http:\/\/localhost\/cosc-360-project\/handmade_goods\/pages\/order_confirmation.php?order_id=40","total_details":{"amount_discount":0,"amount_shipping":799,"amount_tax":0},"ui_mode":"hosted","url":null}
+Using customer_details address as fallback: {"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":null,"postal_code":"V1V 1V8","state":"BC"}
+Inserting address from customer_details: {"user_id":2,"street":"3174 Lower Residence Lane","city":"Kelowna","state":"BC","postal_code":"V1V 1V8","country":"CA"}
+
+
+2025-03-23 12:29:54 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 2313
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742729496,v1=09f1a024ae3bdd5b00acb4c1aa0a8ee16ca17afa13cf8780b7ef5dfefa0c16e2,v0=20026f43241dc399a8113644a9522f1b00a4cc7acec2380fee170a4d6e175e07
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5mkdBSlWUNcExM12JzYGlE",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742729496,
+  "data": {
+    "object": {
+      "id": "pi_3R5mkdBSlWUNcExM1ESdQZMn",
+      "object": "payment_intent",
+      "amount": 27291,
+      "amount_capturable": 0,
+      "amount_details": {
+        "tip": {
+        }
+      },
+      "amount_received": 27291,
+      "application": null,
+      "application_fee_amount": null,
+      "automatic_payment_methods": null,
+      "canceled_at": null,
+      "cancellation_reason": null,
+      "capture_method": "automatic_async",
+      "client_secret": "pi_3R5mkdBSlWUNcExM1ESdQZMn_secret_FscC1hQo7M4A06jb5E6T23LN2",
+      "confirmation_method": "automatic",
+      "created": 1742729495,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "invoice": null,
+      "last_payment_error": null,
+      "latest_charge": "ch_3R5mkdBSlWUNcExM13wDzIL2",
+      "livemode": false,
+      "metadata": {
+        "order_id": "40"
+      },
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": "pm_1R5mkdBSlWUNcExMSkEZxlgR",
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "installments": null,
+          "mandate_options": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "processing": null,
+      "receipt_email": null,
+      "review": null,
+      "setup_future_usage": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 201C",
+          "postal_code": "V1V1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": "bf17513a-ede3-451a-bb3f-5bb6fbaed7eb"
+  },
+  "type": "payment_intent.succeeded"
+}
+Received webhook with signature: t=1742729496,v1=09f1a024ae3bdd5b00acb4c1aa0a8ee16ca17afa13cf8780b7ef5dfefa0c16e2,v0=20026f43241dc399a8113644a9522f1b00a4cc7acec2380fee170a4d6e175e07
+2025-03-23 12:29:54 - Expected signature: 09f1a024ae3bdd5b00acb4c1aa0a8ee16ca17afa13cf8780b7ef5dfefa0c16e2
+2025-03-23 12:29:54 - Received signature: 09f1a024ae3bdd5b00acb4c1aa0a8ee16ca17afa13cf8780b7ef5dfefa0c16e2
+[2025-03-23 12:29:54] ::1 - Stripe Webhook: [success] Event: payment_intent.succeeded (ID: evt_3R5mkdBSlWUNcExM12JzYGlE) 
+
+[2025-03-23 12:29:54] ::1 - Stripe Webhook: [unhandled] Event: payment_intent.succeeded (ID: evt_3R5mkdBSlWUNcExM12JzYGlE) 
+
+Webhook processed successfully with 200 response
+Successfully inserted address with ID: 11
+Updating order with payment details: PaymentIntent=pi_3R5mkdBSlWUNcExM1ESdQZMn, Method=card
+Successfully linked address to order
+Transaction committed successfully
+Transaction rolled back: Insufficient stock for item 3
+[2025-03-23 12:29:55] ::1 - Stripe Webhook: [failed] Event: error (ID: N/A) Error: Insufficient stock for item 3
+
+Webhook Error: Insufficient stock for item 3
+
+
+2025-03-23 12:29:55 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 1918
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742729496,v1=52e7bd97a57a9d5bd52512ecbc876a7f09d710084767aa85b9737aa0af70856d,v0=8b05e9b184a8cb9b1927a02dc678aeed7c7e427158ab1a68ee98da2fcb8293cd
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5mkdBSlWUNcExM19p2fxdO",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742729495,
+  "data": {
+    "object": {
+      "id": "pi_3R5mkdBSlWUNcExM1ESdQZMn",
+      "object": "payment_intent",
+      "amount": 27291,
+      "amount_capturable": 0,
+      "amount_details": {
+        "tip": {
+        }
+      },
+      "amount_received": 0,
+      "application": null,
+      "application_fee_amount": null,
+      "automatic_payment_methods": null,
+      "canceled_at": null,
+      "cancellation_reason": null,
+      "capture_method": "automatic_async",
+      "client_secret": "pi_3R5mkdBSlWUNcExM1ESdQZMn_secret_FscC1hQo7M4A06jb5E6T23LN2",
+      "confirmation_method": "automatic",
+      "created": 1742729495,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "invoice": null,
+      "last_payment_error": null,
+      "latest_charge": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "40"
+      },
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": null,
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "installments": null,
+          "mandate_options": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "processing": null,
+      "receipt_email": null,
+      "review": null,
+      "setup_future_usage": null,
+      "shipping": null,
+      "source": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "requires_payment_method",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": "bf17513a-ede3-451a-bb3f-5bb6fbaed7eb"
+  },
+  "type": "payment_intent.created"
+}
+Received webhook with signature: t=1742729496,v1=52e7bd97a57a9d5bd52512ecbc876a7f09d710084767aa85b9737aa0af70856d,v0=8b05e9b184a8cb9b1927a02dc678aeed7c7e427158ab1a68ee98da2fcb8293cd
+2025-03-23 12:29:55 - Expected signature: 52e7bd97a57a9d5bd52512ecbc876a7f09d710084767aa85b9737aa0af70856d
+2025-03-23 12:29:55 - Received signature: 52e7bd97a57a9d5bd52512ecbc876a7f09d710084767aa85b9737aa0af70856d
+[2025-03-23 12:29:55] ::1 - Stripe Webhook: [success] Event: payment_intent.created (ID: evt_3R5mkdBSlWUNcExM19p2fxdO) 
+
+[2025-03-23 12:29:55] ::1 - Stripe Webhook: [unhandled] Event: payment_intent.created (ID: evt_3R5mkdBSlWUNcExM19p2fxdO) 
+
+Webhook processed successfully with 200 response
+Verification after commit - Order #40: payment_id=pi_3R5mkdBSlWUNcExM1ESdQZMn, payment_method=card, address_id=10
+Webhook processed successfully with 200 response
+
+
+2025-03-23 12:29:55 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 1918
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742729496,v1=52e7bd97a57a9d5bd52512ecbc876a7f09d710084767aa85b9737aa0af70856d,v0=8b05e9b184a8cb9b1927a02dc678aeed7c7e427158ab1a68ee98da2fcb8293cd
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5mkdBSlWUNcExM19p2fxdO",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742729495,
+  "data": {
+    "object": {
+      "id": "pi_3R5mkdBSlWUNcExM1ESdQZMn",
+      "object": "payment_intent",
+      "amount": 27291,
+      "amount_capturable": 0,
+      "amount_details": {
+        "tip": {
+        }
+      },
+      "amount_received": 0,
+      "application": null,
+      "application_fee_amount": null,
+      "automatic_payment_methods": null,
+      "canceled_at": null,
+      "cancellation_reason": null,
+      "capture_method": "automatic_async",
+      "client_secret": "pi_3R5mkdBSlWUNcExM1ESdQZMn_secret_FscC1hQo7M4A06jb5E6T23LN2",
+      "confirmation_method": "automatic",
+      "created": 1742729495,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "invoice": null,
+      "last_payment_error": null,
+      "latest_charge": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "40"
+      },
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": null,
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "installments": null,
+          "mandate_options": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "processing": null,
+      "receipt_email": null,
+      "review": null,
+      "setup_future_usage": null,
+      "shipping": null,
+      "source": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "requires_payment_method",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": "bf17513a-ede3-451a-bb3f-5bb6fbaed7eb"
+  },
+  "type": "payment_intent.created"
+}
+Received webhook with signature: t=1742729496,v1=52e7bd97a57a9d5bd52512ecbc876a7f09d710084767aa85b9737aa0af70856d,v0=8b05e9b184a8cb9b1927a02dc678aeed7c7e427158ab1a68ee98da2fcb8293cd
+2025-03-23 12:29:55 - Expected signature: 52e7bd97a57a9d5bd52512ecbc876a7f09d710084767aa85b9737aa0af70856d
+2025-03-23 12:29:55 - Received signature: 52e7bd97a57a9d5bd52512ecbc876a7f09d710084767aa85b9737aa0af70856d
+[2025-03-23 12:29:55] ::1 - Stripe Webhook: [success] Event: payment_intent.created (ID: evt_3R5mkdBSlWUNcExM19p2fxdO) 
+
+[2025-03-23 12:29:55] ::1 - Stripe Webhook: [unhandled] Event: payment_intent.created (ID: evt_3R5mkdBSlWUNcExM19p2fxdO) 
+
+Webhook processed successfully with 200 response
+
+
+2025-03-23 12:29:57 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4512
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742729499,v1=caaae9237a93de0dc8240bf1a3d2dbf721651da35b493981dee2d01331deb8df,v0=3d444178bc9ebec93a60e30050ef2646a6a23b6e1ddacf684182ce7abb7be3d7
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5mkdBSlWUNcExM1vCGM3Q6",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742729498,
+  "data": {
+    "object": {
+      "id": "ch_3R5mkdBSlWUNcExM13wDzIL2",
+      "object": "charge",
+      "amount": 27291,
+      "amount_captured": 27291,
+      "amount_refunded": 0,
+      "application": null,
+      "application_fee": null,
+      "application_fee_amount": null,
+      "balance_transaction": "txn_3R5mkdBSlWUNcExM1C43Ocpr",
+      "billing_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": null,
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "Priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null
+      },
+      "calculated_statement_descriptor": "Stripe",
+      "captured": true,
+      "created": 1742729496,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "destination": null,
+      "dispute": null,
+      "disputed": false,
+      "failure_balance_transaction": null,
+      "failure_code": null,
+      "failure_message": null,
+      "fraud_details": {
+      },
+      "invoice": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "40"
+      },
+      "on_behalf_of": null,
+      "order": null,
+      "outcome": {
+        "advice_code": null,
+        "network_advice_code": null,
+        "network_decline_code": null,
+        "network_status": "approved_by_network",
+        "reason": null,
+        "risk_level": "normal",
+        "risk_score": 9,
+        "seller_message": "Payment complete.",
+        "type": "authorized"
+      },
+      "paid": true,
+      "payment_intent": "pi_3R5mkdBSlWUNcExM1ESdQZMn",
+      "payment_method": "pm_1R5mkdBSlWUNcExMSkEZxlgR",
+      "payment_method_details": {
+        "card": {
+          "amount_authorized": 27291,
+          "authorization_code": null,
+          "brand": "mastercard",
+          "checks": {
+            "address_line1_check": "pass",
+            "address_postal_code_check": "pass",
+            "cvc_check": null
+          },
+          "country": "US",
+          "exp_month": 9,
+          "exp_year": 2026,
+          "extended_authorization": {
+            "status": "disabled"
+          },
+          "fingerprint": "5FmgLbVv0leHowle",
+          "funding": "credit",
+          "incremental_authorization": {
+            "status": "unavailable"
+          },
+          "installments": null,
+          "last4": "5138",
+          "mandate": null,
+          "multicapture": {
+            "status": "unavailable"
+          },
+          "network": "mastercard",
+          "network_token": {
+            "used": false
+          },
+          "network_transaction_id": "MCC5FMGLB0323",
+          "overcapture": {
+            "maximum_amount_capturable": 27291,
+            "status": "unavailable"
+          },
+          "regulated_status": "unregulated",
+          "three_d_secure": null,
+          "wallet": {
+            "dynamic_last4": "4444",
+            "google_pay": {
+            },
+            "type": "google_pay"
+          }
+        },
+        "type": "card"
+      },
+      "radar_options": {
+      },
+      "receipt_email": null,
+      "receipt_number": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKJri_74GMgZn-heGonI6LBYDTBsL3bBJl8k4rwX8UwZh9R90zYYcuhDJMdIWKlyfyLaqlQzU5RgC0Dkq",
+      "refunded": false,
+      "review": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 201C",
+          "postal_code": "V1V1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "source_transfer": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    },
+    "previous_attributes": {
+      "balance_transaction": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKJri_74GMgaR_rDiELA6LBZGvAeaBCvzs-21zL3bfjx-sLLZzjx37_3TX3QdJliDh5RKCp_rJ3zt-2eb"
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "charge.updated"
+}
+
+
+2025-03-23 12:29:57 - New webhook request received
+Received webhook with signature: t=1742729499,v1=caaae9237a93de0dc8240bf1a3d2dbf721651da35b493981dee2d01331deb8df,v0=3d444178bc9ebec93a60e30050ef2646a6a23b6e1ddacf684182ce7abb7be3d7
+Remote IP: ::1
+2025-03-23 12:29:57 - Expected signature: caaae9237a93de0dc8240bf1a3d2dbf721651da35b493981dee2d01331deb8df
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4512
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742729499,v1=caaae9237a93de0dc8240bf1a3d2dbf721651da35b493981dee2d01331deb8df,v0=3d444178bc9ebec93a60e30050ef2646a6a23b6e1ddacf684182ce7abb7be3d7
+    [Accept-Encoding] => gzip
+)
+
+2025-03-23 12:29:57 - Received signature: caaae9237a93de0dc8240bf1a3d2dbf721651da35b493981dee2d01331deb8df
+Raw payload: {
+  "id": "evt_3R5mkdBSlWUNcExM1vCGM3Q6",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742729498,
+  "data": {
+    "object": {
+      "id": "ch_3R5mkdBSlWUNcExM13wDzIL2",
+      "object": "charge",
+      "amount": 27291,
+      "amount_captured": 27291,
+      "amount_refunded": 0,
+      "application": null,
+      "application_fee": null,
+      "application_fee_amount": null,
+      "balance_transaction": "txn_3R5mkdBSlWUNcExM1C43Ocpr",
+      "billing_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": null,
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "Priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null
+      },
+      "calculated_statement_descriptor": "Stripe",
+      "captured": true,
+      "created": 1742729496,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "destination": null,
+      "dispute": null,
+      "disputed": false,
+      "failure_balance_transaction": null,
+      "failure_code": null,
+      "failure_message": null,
+      "fraud_details": {
+      },
+      "invoice": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "40"
+      },
+      "on_behalf_of": null,
+      "order": null,
+      "outcome": {
+        "advice_code": null,
+        "network_advice_code": null,
+        "network_decline_code": null,
+        "network_status": "approved_by_network",
+        "reason": null,
+        "risk_level": "normal",
+        "risk_score": 9,
+        "seller_message": "Payment complete.",
+        "type": "authorized"
+      },
+      "paid": true,
+      "payment_intent": "pi_3R5mkdBSlWUNcExM1ESdQZMn",
+      "payment_method": "pm_1R5mkdBSlWUNcExMSkEZxlgR",
+      "payment_method_details": {
+        "card": {
+          "amount_authorized": 27291,
+          "authorization_code": null,
+          "brand": "mastercard",
+          "checks": {
+            "address_line1_check": "pass",
+            "address_postal_code_check": "pass",
+            "cvc_check": null
+          },
+          "country": "US",
+          "exp_month": 9,
+          "exp_year": 2026,
+          "extended_authorization": {
+            "status": "disabled"
+          },
+          "fingerprint": "5FmgLbVv0leHowle",
+          "funding": "credit",
+          "incremental_authorization": {
+            "status": "unavailable"
+          },
+          "installments": null,
+          "last4": "5138",
+          "mandate": null,
+          "multicapture": {
+            "status": "unavailable"
+          },
+          "network": "mastercard",
+          "network_token": {
+            "used": false
+          },
+          "network_transaction_id": "MCC5FMGLB0323",
+          "overcapture": {
+            "maximum_amount_capturable": 27291,
+            "status": "unavailable"
+          },
+          "regulated_status": "unregulated",
+          "three_d_secure": null,
+          "wallet": {
+            "dynamic_last4": "4444",
+            "google_pay": {
+            },
+            "type": "google_pay"
+          }
+        },
+        "type": "card"
+      },
+      "radar_options": {
+      },
+      "receipt_email": null,
+      "receipt_number": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKJri_74GMgZn-heGonI6LBYDTBsL3bBJl8k4rwX8UwZh9R90zYYcuhDJMdIWKlyfyLaqlQzU5RgC0Dkq",
+      "refunded": false,
+      "review": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 201C",
+          "postal_code": "V1V1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "source_transfer": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    },
+    "previous_attributes": {
+      "balance_transaction": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKJri_74GMgaR_rDiELA6LBZGvAeaBCvzs-21zL3bfjx-sLLZzjx37_3TX3QdJliDh5RKCp_rJ3zt-2eb"
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "charge.updated"
+}
+Received webhook with signature: t=1742729499,v1=caaae9237a93de0dc8240bf1a3d2dbf721651da35b493981dee2d01331deb8df,v0=3d444178bc9ebec93a60e30050ef2646a6a23b6e1ddacf684182ce7abb7be3d7
+2025-03-23 12:29:57 - Expected signature: caaae9237a93de0dc8240bf1a3d2dbf721651da35b493981dee2d01331deb8df
+[2025-03-23 12:29:57] ::1 - Stripe Webhook: [success] Event: charge.updated (ID: evt_3R5mkdBSlWUNcExM1vCGM3Q6) 
+
+2025-03-23 12:29:57 - Received signature: caaae9237a93de0dc8240bf1a3d2dbf721651da35b493981dee2d01331deb8df
+[2025-03-23 12:29:57] ::1 - Stripe Webhook: [unhandled] Event: charge.updated (ID: evt_3R5mkdBSlWUNcExM1vCGM3Q6) 
+
+Webhook processed successfully with 200 response
+[2025-03-23 12:29:57] ::1 - Stripe Webhook: [success] Event: charge.updated (ID: evt_3R5mkdBSlWUNcExM1vCGM3Q6) 
+
+[2025-03-23 12:29:57] ::1 - Stripe Webhook: [unhandled] Event: charge.updated (ID: evt_3R5mkdBSlWUNcExM1vCGM3Q6) 
+
+Webhook processed successfully with 200 response
+
+
+2025-03-23 21:59:56 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4152
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742763698,v1=50fc3da3ee45c382d8fa87798b4dff94cfb4796826907ea6a162dbaaae9ab470,v0=6724e9e1e86c42ede1701ac98f3ef2a0fbe9f0b2c8f3437e9eb8412873fb61f0
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5veGBSlWUNcExM00UGPKqy",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742763697,
+  "data": {
+    "object": {
+      "id": "ch_3R5veGBSlWUNcExM0Q4hhxOI",
+      "object": "charge",
+      "amount": 2798,
+      "amount_captured": 2798,
+      "amount_refunded": 0,
+      "application": null,
+      "application_fee": null,
+      "application_fee_amount": null,
+      "balance_transaction": null,
+      "billing_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null
+      },
+      "calculated_statement_descriptor": "Stripe",
+      "captured": true,
+      "created": 1742763697,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "destination": null,
+      "dispute": null,
+      "disputed": false,
+      "failure_balance_transaction": null,
+      "failure_code": null,
+      "failure_message": null,
+      "fraud_details": {
+      },
+      "invoice": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "41"
+      },
+      "on_behalf_of": null,
+      "order": null,
+      "outcome": {
+        "advice_code": null,
+        "network_advice_code": null,
+        "network_decline_code": null,
+        "network_status": "approved_by_network",
+        "reason": null,
+        "risk_level": "normal",
+        "risk_score": 48,
+        "seller_message": "Payment complete.",
+        "type": "authorized"
+      },
+      "paid": true,
+      "payment_intent": "pi_3R5veGBSlWUNcExM0aRF9AZ5",
+      "payment_method": "pm_1R5veGBSlWUNcExMq1tLgesZ",
+      "payment_method_details": {
+        "card": {
+          "amount_authorized": 2798,
+          "authorization_code": null,
+          "brand": "visa",
+          "checks": {
+            "address_line1_check": "pass",
+            "address_postal_code_check": "pass",
+            "cvc_check": "pass"
+          },
+          "country": "US",
+          "exp_month": 9,
+          "exp_year": 2029,
+          "extended_authorization": {
+            "status": "disabled"
+          },
+          "fingerprint": "HkPtudLGKTx9HPZY",
+          "funding": "credit",
+          "incremental_authorization": {
+            "status": "unavailable"
+          },
+          "installments": null,
+          "last4": "4242",
+          "mandate": null,
+          "multicapture": {
+            "status": "unavailable"
+          },
+          "network": "visa",
+          "network_token": {
+            "used": false
+          },
+          "network_transaction_id": "721078011611710",
+          "overcapture": {
+            "maximum_amount_capturable": 2798,
+            "status": "unavailable"
+          },
+          "regulated_status": "unregulated",
+          "three_d_secure": null,
+          "wallet": null
+        },
+        "type": "card"
+      },
+      "radar_options": {
+      },
+      "receipt_email": null,
+      "receipt_number": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKLHtgb8GMgYWa7-8unM6LBYz0d8ytDmma8TGTXgMy_2n03sJM282AqPkHppxKx1T2aMOXkYLaCccckbh",
+      "refunded": false,
+      "review": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "source_transfer": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": "1c6f1956-f070-4e37-92c6-cb3ee5e79d7e"
+  },
+  "type": "charge.succeeded"
+}
+Received webhook with signature: t=1742763698,v1=50fc3da3ee45c382d8fa87798b4dff94cfb4796826907ea6a162dbaaae9ab470,v0=6724e9e1e86c42ede1701ac98f3ef2a0fbe9f0b2c8f3437e9eb8412873fb61f0
+2025-03-23 21:59:56 - Expected signature: 50fc3da3ee45c382d8fa87798b4dff94cfb4796826907ea6a162dbaaae9ab470
+2025-03-23 21:59:56 - Received signature: 50fc3da3ee45c382d8fa87798b4dff94cfb4796826907ea6a162dbaaae9ab470
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [success] Event: charge.succeeded (ID: evt_3R5veGBSlWUNcExM00UGPKqy) 
+
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [unhandled] Event: charge.succeeded (ID: evt_3R5veGBSlWUNcExM00UGPKqy) 
+
+Webhook processed successfully with 200 response
+
+
+2025-03-23 21:59:56 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4152
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742763698,v1=50fc3da3ee45c382d8fa87798b4dff94cfb4796826907ea6a162dbaaae9ab470,v0=6724e9e1e86c42ede1701ac98f3ef2a0fbe9f0b2c8f3437e9eb8412873fb61f0
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5veGBSlWUNcExM00UGPKqy",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742763697,
+  "data": {
+    "object": {
+      "id": "ch_3R5veGBSlWUNcExM0Q4hhxOI",
+      "object": "charge",
+      "amount": 2798,
+      "amount_captured": 2798,
+      "amount_refunded": 0,
+      "application": null,
+      "application_fee": null,
+      "application_fee_amount": null,
+      "balance_transaction": null,
+      "billing_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null
+      },
+      "calculated_statement_descriptor": "Stripe",
+      "captured": true,
+      "created": 1742763697,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "destination": null,
+      "dispute": null,
+      "disputed": false,
+      "failure_balance_transaction": null,
+      "failure_code": null,
+      "failure_message": null,
+      "fraud_details": {
+      },
+      "invoice": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "41"
+      },
+      "on_behalf_of": null,
+      "order": null,
+      "outcome": {
+        "advice_code": null,
+        "network_advice_code": null,
+        "network_decline_code": null,
+        "network_status": "approved_by_network",
+        "reason": null,
+        "risk_level": "normal",
+        "risk_score": 48,
+        "seller_message": "Payment complete.",
+        "type": "authorized"
+      },
+      "paid": true,
+      "payment_intent": "pi_3R5veGBSlWUNcExM0aRF9AZ5",
+      "payment_method": "pm_1R5veGBSlWUNcExMq1tLgesZ",
+      "payment_method_details": {
+        "card": {
+          "amount_authorized": 2798,
+          "authorization_code": null,
+          "brand": "visa",
+          "checks": {
+            "address_line1_check": "pass",
+            "address_postal_code_check": "pass",
+            "cvc_check": "pass"
+          },
+          "country": "US",
+          "exp_month": 9,
+          "exp_year": 2029,
+          "extended_authorization": {
+            "status": "disabled"
+          },
+          "fingerprint": "HkPtudLGKTx9HPZY",
+          "funding": "credit",
+          "incremental_authorization": {
+            "status": "unavailable"
+          },
+          "installments": null,
+          "last4": "4242",
+          "mandate": null,
+          "multicapture": {
+            "status": "unavailable"
+          },
+          "network": "visa",
+          "network_token": {
+            "used": false
+          },
+          "network_transaction_id": "721078011611710",
+          "overcapture": {
+            "maximum_amount_capturable": 2798,
+            "status": "unavailable"
+          },
+          "regulated_status": "unregulated",
+          "three_d_secure": null,
+          "wallet": null
+        },
+        "type": "card"
+      },
+      "radar_options": {
+      },
+      "receipt_email": null,
+      "receipt_number": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKLHtgb8GMgYWa7-8unM6LBYz0d8ytDmma8TGTXgMy_2n03sJM282AqPkHppxKx1T2aMOXkYLaCccckbh",
+      "refunded": false,
+      "review": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "source_transfer": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": "1c6f1956-f070-4e37-92c6-cb3ee5e79d7e"
+  },
+  "type": "charge.succeeded"
+}
+Received webhook with signature: t=1742763698,v1=50fc3da3ee45c382d8fa87798b4dff94cfb4796826907ea6a162dbaaae9ab470,v0=6724e9e1e86c42ede1701ac98f3ef2a0fbe9f0b2c8f3437e9eb8412873fb61f0
+2025-03-23 21:59:56 - Expected signature: 50fc3da3ee45c382d8fa87798b4dff94cfb4796826907ea6a162dbaaae9ab470
+2025-03-23 21:59:56 - Received signature: 50fc3da3ee45c382d8fa87798b4dff94cfb4796826907ea6a162dbaaae9ab470
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [success] Event: charge.succeeded (ID: evt_3R5veGBSlWUNcExM00UGPKqy) 
+
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [unhandled] Event: charge.succeeded (ID: evt_3R5veGBSlWUNcExM00UGPKqy) 
+
+Webhook processed successfully with 200 response
+
+
+2025-03-23 21:59:56 - New webhook request received
+Remote IP: ::1
+
+
+2025-03-23 21:59:56 - New webhook request received
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 2312
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742763698,v1=b9b387c7064cfa25f14fa8beec001dd881c5aa15549840e729ef80c3e6fe42b5,v0=8e0fd6bb53d1614c36920974633aa234a681311c75b9a0701d054b815a31c928
+    [Accept-Encoding] => gzip
+)
+
+Remote IP: ::1
+Raw payload: {
+  "id": "evt_3R5veGBSlWUNcExM0MEjHWtn",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742763697,
+  "data": {
+    "object": {
+      "id": "pi_3R5veGBSlWUNcExM0aRF9AZ5",
+      "object": "payment_intent",
+      "amount": 2798,
+      "amount_capturable": 0,
+      "amount_details": {
+        "tip": {
+        }
+      },
+      "amount_received": 2798,
+      "application": null,
+      "application_fee_amount": null,
+      "automatic_payment_methods": null,
+      "canceled_at": null,
+      "cancellation_reason": null,
+      "capture_method": "automatic_async",
+      "client_secret": "pi_3R5veGBSlWUNcExM0aRF9AZ5_secret_TFfCj3Xv56nLM0nkfGZwxjUAG",
+      "confirmation_method": "automatic",
+      "created": 1742763696,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "invoice": null,
+      "last_payment_error": null,
+      "latest_charge": "ch_3R5veGBSlWUNcExM0Q4hhxOI",
+      "livemode": false,
+      "metadata": {
+        "order_id": "41"
+      },
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": "pm_1R5veGBSlWUNcExMq1tLgesZ",
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "installments": null,
+          "mandate_options": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "processing": null,
+      "receipt_email": null,
+      "review": null,
+      "setup_future_usage": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": "1c6f1956-f070-4e37-92c6-cb3ee5e79d7e"
+  },
+  "type": "payment_intent.succeeded"
+}
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 2312
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742763698,v1=b9b387c7064cfa25f14fa8beec001dd881c5aa15549840e729ef80c3e6fe42b5,v0=8e0fd6bb53d1614c36920974633aa234a681311c75b9a0701d054b815a31c928
+    [Accept-Encoding] => gzip
+)
+
+Received webhook with signature: t=1742763698,v1=b9b387c7064cfa25f14fa8beec001dd881c5aa15549840e729ef80c3e6fe42b5,v0=8e0fd6bb53d1614c36920974633aa234a681311c75b9a0701d054b815a31c928
+Raw payload: {
+  "id": "evt_3R5veGBSlWUNcExM0MEjHWtn",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742763697,
+  "data": {
+    "object": {
+      "id": "pi_3R5veGBSlWUNcExM0aRF9AZ5",
+      "object": "payment_intent",
+      "amount": 2798,
+      "amount_capturable": 0,
+      "amount_details": {
+        "tip": {
+        }
+      },
+      "amount_received": 2798,
+      "application": null,
+      "application_fee_amount": null,
+      "automatic_payment_methods": null,
+      "canceled_at": null,
+      "cancellation_reason": null,
+      "capture_method": "automatic_async",
+      "client_secret": "pi_3R5veGBSlWUNcExM0aRF9AZ5_secret_TFfCj3Xv56nLM0nkfGZwxjUAG",
+      "confirmation_method": "automatic",
+      "created": 1742763696,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "invoice": null,
+      "last_payment_error": null,
+      "latest_charge": "ch_3R5veGBSlWUNcExM0Q4hhxOI",
+      "livemode": false,
+      "metadata": {
+        "order_id": "41"
+      },
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": "pm_1R5veGBSlWUNcExMq1tLgesZ",
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "installments": null,
+          "mandate_options": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "processing": null,
+      "receipt_email": null,
+      "review": null,
+      "setup_future_usage": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": "1c6f1956-f070-4e37-92c6-cb3ee5e79d7e"
+  },
+  "type": "payment_intent.succeeded"
+}
+2025-03-23 21:59:56 - Expected signature: b9b387c7064cfa25f14fa8beec001dd881c5aa15549840e729ef80c3e6fe42b5
+Received webhook with signature: t=1742763698,v1=b9b387c7064cfa25f14fa8beec001dd881c5aa15549840e729ef80c3e6fe42b5,v0=8e0fd6bb53d1614c36920974633aa234a681311c75b9a0701d054b815a31c928
+2025-03-23 21:59:56 - Received signature: b9b387c7064cfa25f14fa8beec001dd881c5aa15549840e729ef80c3e6fe42b5
+2025-03-23 21:59:56 - Expected signature: b9b387c7064cfa25f14fa8beec001dd881c5aa15549840e729ef80c3e6fe42b5
+2025-03-23 21:59:56 - Received signature: b9b387c7064cfa25f14fa8beec001dd881c5aa15549840e729ef80c3e6fe42b5
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [success] Event: payment_intent.succeeded (ID: evt_3R5veGBSlWUNcExM0MEjHWtn) 
+
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [success] Event: payment_intent.succeeded (ID: evt_3R5veGBSlWUNcExM0MEjHWtn) 
+
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [unhandled] Event: payment_intent.succeeded (ID: evt_3R5veGBSlWUNcExM0MEjHWtn) 
+
+Webhook processed successfully with 200 response
+
+
+2025-03-23 21:59:56 - New webhook request received
+Remote IP: ::1
+59:56] ::1 - Stripe Webhook: [unhandled] Event: payment_intent.succeeded (ID: evt_3R5veGBSlWUNcExM0MEjHWtn) 
+
+Webhook processed successfully with 200 response
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4499
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742763698,v1=780893e5a5b7cc045d606b78d29fe66a12d75d955655d379e3f32c3b905d8330,v0=ba9ea30f3068a8be621e7b286acd25a2bb98f88b052ba82edeb6aa660ffc32ee
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_1R5veHBSlWUNcExMlu48La4d",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742763697,
+  "data": {
+    "object": {
+      "id": "cs_test_a16nE12BHJJQhDTl9mATqCvznwCautlBNQ9mAAgmESDpEn3YhXS7XkDaUG",
+      "object": "checkout.session",
+      "adaptive_pricing": {
+        "enabled": false
+      },
+      "after_expiration": null,
+      "allow_promotion_codes": null,
+      "amount_subtotal": 1999,
+      "amount_total": 2798,
+      "automatic_tax": {
+        "enabled": false,
+        "liability": null,
+        "status": null
+      },
+      "billing_address_collection": "required",
+      "cancel_url": "http://localhost/cosc-360-project/handmade_goods/pages/basket.php",
+      "client_reference_id": null,
+      "client_secret": null,
+      "collected_information": {
+        "shipping_details": {
+          "address": {
+            "city": "Kelowna",
+            "country": "CA",
+            "line1": "3174 Lower Residence Lane",
+            "line2": "Cascade E, 205C",
+            "postal_code": "V1V 1V8",
+            "state": "BC"
+          },
+          "name": "Priyansh Mathur"
+        }
+      },
+      "consent": null,
+      "consent_collection": null,
+      "created": 1742763666,
+      "currency": "usd",
+      "currency_conversion": null,
+      "custom_fields": [
+
+      ],
+      "custom_text": {
+        "after_submit": null,
+        "shipping_address": null,
+        "submit": null,
+        "terms_of_service_acceptance": null
+      },
+      "customer": null,
+      "customer_creation": "if_required",
+      "customer_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tax_exempt": "none",
+        "tax_ids": [
+
+        ]
+      },
+      "customer_email": null,
+      "discounts": [
+
+      ],
+      "expires_at": 1742850066,
+      "invoice": null,
+      "invoice_creation": {
+        "enabled": false,
+        "invoice_data": {
+          "account_tax_ids": null,
+          "custom_fields": null,
+          "description": null,
+          "footer": null,
+          "issuer": null,
+          "metadata": {
+          },
+          "rendering_options": null
+        }
+      },
+      "livemode": false,
+      "locale": null,
+      "metadata": {
+        "order_id": "41"
+      },
+      "mode": "payment",
+      "payment_intent": "pi_3R5veGBSlWUNcExM0aRF9AZ5",
+      "payment_link": null,
+      "payment_method_collection": "if_required",
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "payment_status": "paid",
+      "permissions": null,
+      "phone_number_collection": {
+        "enabled": false
+      },
+      "recovered_from": null,
+      "saved_payment_method_options": null,
+      "setup_intent": null,
+      "shipping_address_collection": {
+        "allowed_countries": [
+          "US",
+          "CA"
+        ]
+      },
+      "shipping_cost": {
+        "amount_subtotal": 799,
+        "amount_tax": 0,
+        "amount_total": 799,
+        "shipping_rate": "shr_1R5vdmBSlWUNcExMFz0gHoKt"
+      },
+      "shipping_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "shipping_options": [
+        {
+          "shipping_amount": 799,
+          "shipping_rate": "shr_1R5vdmBSlWUNcExMFz0gHoKt"
+        }
+      ],
+      "status": "complete",
+      "submit_type": null,
+      "subscription": null,
+      "success_url": "http://localhost/cosc-360-project/handmade_goods/pages/order_confirmation.php?order_id=41",
+      "total_details": {
+        "amount_discount": 0,
+        "amount_shipping": 799,
+        "amount_tax": 0
+      },
+      "ui_mode": "hosted",
+      "url": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "checkout.session.completed"
+}
+Received webhook with signature: t=1742763698,v1=780893e5a5b7cc045d606b78d29fe66a12d75d955655d379e3f32c3b905d8330,v0=ba9ea30f3068a8be621e7b286acd25a2bb98f88b052ba82edeb6aa660ffc32ee
+2025-03-23 21:59:56 - Expected signature: 780893e5a5b7cc045d606b78d29fe66a12d75d955655d379e3f32c3b905d8330
+2025-03-23 21:59:56 - Received signature: 780893e5a5b7cc045d606b78d29fe66a12d75d955655d379e3f32c3b905d8330
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [success] Event: checkout.session.completed (ID: evt_1R5veHBSlWUNcExMlu48La4d) 
+Session data: Array
+(
+    [id] => cs_test_a16nE12BHJJQhDTl9mATqCvznwCautlBNQ9mAAgmESDpEn3YhXS7XkDaUG
+    [object] => checkout.session
+    [adaptive_pricing] => Array
+        (
+            [enabled] => 
+        )
+
+    [after_expiration] => 
+    [allow_promotion_codes] => 
+    [amount_subtotal] => 1999
+    [amount_total] => 2798
+    [automatic_tax] => Array
+        (
+            [enabled] => 
+            [liability] => 
+            [status] => 
+        )
+
+    [billing_address_collection] => required
+    [cancel_url] => http://localhost/cosc-360-project/handmade_goods/pages/basket.php
+    [client_reference_id] => 
+    [client_secret] => 
+    [collected_information] => Array
+        (
+            [shipping_details] => Array
+                (
+                    [address] => Array
+                        (
+                            [city] => Kelowna
+                            [country] => CA
+                            [line1] => 3174 Lower Residence Lane
+                            [line2] => Cascade E, 205C
+                            [postal_code] => V1V 1V8
+                            [state] => BC
+                        )
+
+                    [name] => Priyansh Mathur
+                )
+
+        )
+
+    [consent] => 
+    [consent_collection] => 
+    [created] => 1742763666
+    [currency] => usd
+    [currency_conversion] => 
+    [custom_fields] => Array
+        (
+        )
+
+    [custom_text] => Array
+        (
+            [after_submit] => 
+            [shipping_address] => 
+            [submit] => 
+            [terms_of_service_acceptance] => 
+        )
+
+    [customer] => 
+    [customer_creation] => if_required
+    [customer_details] => Array
+        (
+            [address] => Array
+                (
+                    [city] => Kelowna
+                    [country] => CA
+                    [line1] => 3174 Lower Residence Lane
+                    [line2] => Cascade E, 205C
+                    [postal_code] => V1V 1V8
+                    [state] => BC
+                )
+
+            [email] => priyanshmathur19@gmail.com
+            [name] => Priyansh Mathur
+            [phone] => 
+            [tax_exempt] => none
+            [tax_ids] => Array
+                (
+                )
+
+        )
+
+    [customer_email] => 
+    [discounts] => Array
+        (
+        )
+
+    [expires_at] => 1742850066
+    [invoice] => 
+    [invoice_creation] => Array
+        (
+            [enabled] => 
+            [invoice_data] => Array
+                (
+                    [account_tax_ids] => 
+                    [custom_fields] => 
+                    [description] => 
+                    [footer] => 
+                    [issuer] => 
+                    [metadata] => Array
+                        (
+                        )
+
+                    [rendering_options] => 
+                )
+
+        )
+
+    [livemode] => 
+    [locale] => 
+    [metadata] => Array
+        (
+            [order_id] => 41
+        )
+
+    [mode] => payment
+    [payment_intent] => pi_3R5veGBSlWUNcExM0aRF9AZ5
+    [payment_link] => 
+    [payment_method_collection] => if_required
+    [payment_method_configuration_details] => 
+    [payment_method_options] => Array
+        (
+            [card] => Array
+                (
+                    [request_three_d_secure] => automatic
+                )
+
+        )
+
+    [payment_method_types] => Array
+        (
+            [0] => card
+        )
+
+    [payment_status] => paid
+    [permissions] => 
+    [phone_number_collection] => Array
+        (
+            [enabled] => 
+        )
+
+    [recovered_from] => 
+    [saved_payment_method_options] => 
+    [setup_intent] => 
+    [shipping_address_collection] => Array
+        (
+            [allowed_countries] => Array
+                (
+                    [0] => US
+                    [1] => CA
+                )
+
+        )
+
+    [shipping_cost] => Array
+        (
+            [amount_subtotal] => 799
+            [amount_tax] => 0
+            [amount_total] => 799
+            [shipping_rate] => shr_1R5vdmBSlWUNcExMFz0gHoKt
+        )
+
+    [shipping_details] => Array
+        (
+            [address] => Array
+                (
+                    [city] => Kelowna
+                    [country] => CA
+                    [line1] => 3174 Lower Residence Lane
+                    [line2] => Cascade E, 205C
+                    [postal_code] => V1V 1V8
+                    [state] => BC
+                )
+
+            [carrier] => 
+            [name] => Priyansh Mathur
+            [phone] => 
+            [tracking_number] => 
+        )
+
+    [shipping_options] => Array
+        (
+            [0] => Array
+                (
+                    [shipping_amount] => 799
+                    [shipping_rate] => shr_1R5vdmBSlWUNcExMFz0gHoKt
+                )
+
+        )
+
+    [status] => complete
+    [submit_type] => 
+    [subscription] => 
+    [success_url] => http://localhost/cosc-360-project/handmade_goods/pages/order_confirmation.php?order_id=41
+    [total_details] => Array
+        (
+            [amount_discount] => 0
+            [amount_shipping] => 799
+            [amount_tax] => 0
+        )
+
+    [ui_mode] => hosted
+    [url] => 
+)
+
+No shipping data in session
+
+
+
+2025-03-23 21:59:56 - New webhook request received
+
+
+2025-03-23 21:59:56 - New webhook request received
+Remote IP: ::1
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 1917
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742763698,v1=3bb4d37eedf441e64d5d96b86f20b1fec69a34779d378c8fc45b991207f0b182,v0=784b77fd67242ec50b14f1643aa50c7a9fc51c0e24a6a0df00db41812d891e7c
+    [Accept-Encoding] => gzip
+)
+
+Processing order: 41, User ID: 2
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4499
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742763698,v1=780893e5a5b7cc045d606b78d29fe66a12d75d955655d379e3f32c3b905d8330,v0=ba9ea30f3068a8be621e7b286acd25a2bb98f88b052ba82edeb6aa660ffc32ee
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5veGBSlWUNcExM0FTSG99P",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742763696,
+  "data": {
+    "object": {
+      "id": "pi_3R5veGBSlWUNcExM0aRF9AZ5",
+      "object": "payment_intent",
+      "amount": 2798,
+      "amount_capturable": 0,
+      "amount_details": {
+        "tip": {
+        }
+      },
+      "amount_received": 0,
+      "application": null,
+      "application_fee_amount": null,
+      "automatic_payment_methods": null,
+      "canceled_at": null,
+      "cancellation_reason": null,
+      "capture_method": "automatic_async",
+      "client_secret": "pi_3R5veGBSlWUNcExM0aRF9AZ5_secret_TFfCj3Xv56nLM0nkfGZwxjUAG",
+      "confirmation_method": "automatic",
+      "created": 1742763696,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "invoice": null,
+      "last_payment_error": null,
+      "latest_charge": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "41"
+      },
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": null,
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "installments": null,
+          "mandate_options": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "processing": null,
+      "receipt_email": null,
+      "review": null,
+      "setup_future_usage": null,
+      "shipping": null,
+      "source": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "requires_payment_method",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": "1c6f1956-f070-4e37-92c6-cb3ee5e79d7e"
+  },
+  "type": "payment_intent.created"
+}
+Full session data: {"id":"cs_test_a16nE12BHJJQhDTl9mATqCvznwCautlBNQ9mAAgmESDpEn3YhXS7XkDaUG","object":"checkout.session","adaptive_pricing":{"enabled":false},"after_expiration":null,"allow_promotion_codes":null,"amount_subtotal":1999,"amount_total":2798,"automatic_tax":{"enabled":false,"liability":null,"status":null},"billing_address_collection":"required","cancel_url":"http:\/\/localhost\/cosc-360-project\/handmade_goods\/pages\/basket.php","client_reference_id":null,"client_secret":null,"collected_information":{"shipping_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 205C","postal_code":"V1V 1V8","state":"BC"},"name":"Priyansh Mathur"}},"consent":null,"consent_collection":null,"created":1742763666,"currency":"usd","currency_conversion":null,"custom_fields":[],"custom_text":{"after_submit":null,"shipping_address":null,"submit":null,"terms_of_service_acceptance":null},"customer":null,"customer_creation":"if_required","customer_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 205C","postal_code":"V1V 1V8","state":"BC"},"email":"priyanshmathur19@gmail.com","name":"Priyansh Mathur","phone":null,"tax_exempt":"none","tax_ids":[]},"customer_email":null,"discounts":[],"expires_at":1742850066,"invoice":null,"invoice_creation":{"enabled":false,"invoice_data":{"account_tax_ids":null,"custom_fields":null,"description":null,"footer":null,"issuer":null,"metadata":[],"rendering_options":null}},"livemode":false,"locale":null,"metadata":{"order_id":"41"},"mode":"payment","payment_intent":"pi_3R5veGBSlWUNcExM0aRF9AZ5","payment_link":null,"payment_method_collection":"if_required","payment_method_configuration_details":null,"payment_method_options":{"card":{"request_three_d_secure":"automatic"}},"payment_method_types":["card"],"payment_status":"paid","permissions":null,"phone_number_collection":{"enabled":false},"recovered_from":null,"saved_payment_method_options":null,"setup_intent":null,"shipping_address_collection":{"allowed_countries":["US","CA"]},"shipping_cost":{"amount_subtotal":799,"amount_tax":0,"amount_total":799,"shipping_rate":"shr_1R5vdmBSlWUNcExMFz0gHoKt"},"shipping_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 205C","postal_code":"V1V 1V8","state":"BC"},"carrier":null,"name":"Priyansh Mathur","phone":null,"tracking_number":null},"shipping_options":[{"shipping_amount":799,"shipping_rate":"shr_1R5vdmBSlWUNcExMFz0gHoKt"}],"status":"complete","submit_type":null,"subscription":null,"success_url":"http:\/\/localhost\/cosc-360-project\/handmade_goods\/pages\/order_confirmation.php?order_id=41","total_details":{"amount_discount":0,"amount_shipping":799,"amount_tax":0},"ui_mode":"hosted","url":null}
+Received webhook with signature: t=1742763698,v1=3bb4d37eedf441e64d5d96b86f20b1fec69a34779d378c8fc45b991207f0b182,v0=784b77fd67242ec50b14f1643aa50c7a9fc51c0e24a6a0df00db41812d891e7c
+_test_a16nE12BHJJQhDTl9mATqCvznwCautlBNQ9mAAgmESDpEn3YhXS7XkDaUG",
+      "object": "checkout.session",
+      "adaptive_pricing": {
+        "enabled": false
+      },
+      "after_expiration": null,
+      "allow_promotion_codes": null,
+      "amount_subtotal": 1999,
+      "amount_total": 2798,
+      "automatic_tax": {
+        "enabled": false,
+        "liability": null,
+        "status": null
+      },
+      "billing_address_collection": "required",
+      "cancel_url": "http://localhost/cosc-360-project/handmade_goods/pages/basket.php",
+      "client_reference_id": null,
+      "client_secret": null,
+      "collected_information": {
+        "shipping_details": {
+          "address": {
+            "city": "Kelowna",
+            "country": "CA",
+            "line1": "3174 Lower Residence Lane",
+            "line2": "Cascade E, 205C",
+            "postal_code": "V1V 1V8",
+            "state": "BC"
+          },
+          "name": "Priyansh Mathur"
+        }
+      },
+      "consent": null,
+      "consent_collection": null,
+      "created": 1742763666,
+      "currency": "usd",
+      "currency_conversion": null,
+      "custom_fields": [
+
+      ],
+      "custom_text": {
+        "after_submit": null,
+        "shipping_address": null,
+        "submit": null,
+        "terms_of_service_acceptance": null
+      },
+      "customer": null,
+      "customer_creation": "if_required",
+      "customer_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tax_exempt": "none",
+        "tax_ids": [
+
+        ]
+      },
+      "customer_email": null,
+      "discounts": [
+
+      ],
+      "expires_at": 1742850066,
+      "invoice": null,
+      "invoice_creation": {
+        "enabled": false,
+        "invoice_data": {
+          "account_tax_ids": null,
+          "custom_fields": null,
+          "description": null,
+          "footer": null,
+          "issuer": null,
+          "metadata": {
+          },
+          "rendering_options": null
+        }
+      },
+      "livemode": false,
+      "locale": null,
+      "metadata": {
+        "order_id": "41"
+      },
+      "mode": "payment",
+      "payment_intent": "pi_3R5veGBSlWUNcExM0aRF9AZ5",
+      "payment_link": null,
+      "payment_method_collection": "if_required",
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "payment_status": "paid",
+      "permissions": null,
+      "phone_number_collection": {
+        "enabled": false
+      },
+      "recovered_from": null,
+      "saved_payment_method_options": null,
+      "setup_intent": null,
+      "shipping_address_collection": {
+        "allowed_countries": [
+          "US",
+          "CA"
+        ]
+      },
+      "shipping_cost": {
+        "amount_subtotal": 799,
+        "amount_tax": 0,
+        "amount_total": 799,
+        "shipping_rate": "shr_1R5vdmBSlWUNcExMFz0gHoKt"
+      },
+      "shipping_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "shipping_options": [
+        {
+          "shipping_amount": 799,
+          "shipping_rate": "shr_1R5vdmBSlWUNcExMFz0gHoKt"
+        }
+      ],
+      "status": "complete",
+      "submit_type": null,
+      "subscription": null,
+      "success_url": "http://localhost/cosc-360-project/handmade_goods/pages/order_confirmation.php?order_id=41",
+      "total_details": {
+        "amount_discount": 0,
+        "amount_shipping": 799,
+        "amount_tax": 0
+      },
+      "ui_mode": "hosted",
+      "url": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "checkout.session.completed"
+}
+Using customer_details address as fallback: {"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 205C","postal_code":"V1V 1V8","state":"BC"}
+Received webhook with signature: t=1742763698,v1=780893e5a5b7cc045d606b78d29fe66a12d75d955655d379e3f32c3b905d8330,v0=ba9ea30f3068a8be621e7b286acd25a2bb98f88b052ba82edeb6aa660ffc32ee
+
+
+2025-03-23 21:59:56 - New webhook request received
+441e64d5d96b86f20b1fec69a34779d378c8fc45b991207f0b182
+Inserting address from customer_details: {"user_id":2,"street":"3174 Lower Residence Lane, Cascade E, 205C","city":"Kelowna","state":"BC","postal_code":"V1V 1V8","country":"CA"}
+2025-03-23 21:59:56 - Expected signature: 780893e5a5b7cc045d606b78d29fe66a12d75d955655d379e3f32c3b905d8330
+2025-03-23 21:59:56 - Received signature: 3bb4d37eedf441e64d5d96b86f20b1fec69a34779d378c8fc45b991207f0b182
+Remote IP: ::1
+2025-03-23 21:59:56 - Received signature: 780893e5a5b7cc045d606b78d29fe66a12d75d955655d379e3f32c3b905d8330
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 1917
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742763698,v1=3bb4d37eedf441e64d5d96b86f20b1fec69a34779d378c8fc45b991207f0b182,v0=784b77fd67242ec50b14f1643aa50c7a9fc51c0e24a6a0df00db41812d891e7c
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5veGBSlWUNcExM0FTSG99P",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742763696,
+  "data": {
+    "object": {
+      "id": "pi_3R5veGBSlWUNcExM0aRF9AZ5",
+      "object": "payment_intent",
+      "amount": 2798,
+      "amount_capturable": 0,
+      "amount_details": {
+        "tip": {
+        }
+      },
+      "amount_received": 0,
+      "application": null,
+      "application_fee_amount": null,
+      "automatic_payment_methods": null,
+      "canceled_at": null,
+      "cancellation_reason": null,
+      "capture_method": "automatic_async",
+      "client_secret": "pi_3R5veGBSlWUNcExM0aRF9AZ5_secret_TFfCj3Xv56nLM0nkfGZwxjUAG",
+      "confirmation_method": "automatic",
+      "created": 1742763696,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "invoice": null,
+      "last_payment_error": null,
+      "latest_charge": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "41"
+      },
+      "next_action": null,
+      "on_behalf_of": null,
+      "payment_method": null,
+      "payment_method_configuration_details": null,
+      "payment_method_options": {
+        "card": {
+          "installments": null,
+          "mandate_options": null,
+          "network": null,
+          "request_three_d_secure": "automatic"
+        }
+      },
+      "payment_method_types": [
+        "card"
+      ],
+      "processing": null,
+      "receipt_email": null,
+      "review": null,
+      "setup_future_usage": null,
+      "shipping": null,
+      "source": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "requires_payment_method",
+      "transfer_data": null,
+      "transfer_group": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": "1c6f1956-f070-4e37-92c6-cb3ee5e79d7e"
+  },
+  "type": "payment_intent.created"
+}
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [success] Event: payment_intent.created (ID: evt_3R5veGBSlWUNcExM0FTSG99P) 
+
+Received webhook with signature: t=1742763698,v1=3bb4d37eedf441e64d5d96b86f20b1fec69a34779d378c8fc45b991207f0b182,v0=784b77fd67242ec50b14f1643aa50c7a9fc51c0e24a6a0df00db41812d891e7c
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [success] Event: checkout.session.completed (ID: evt_1R5veHBSlWUNcExMlu48La4d) 
+Session data: Array
+(
+    [id] => cs_test_a16nE12BHJJQhDTl9mATqCvznwCautlBNQ9mAAgmESDpEn3YhXS7XkDaUG
+    [object] => checkout.session
+    [adaptive_pricing] => Array
+        (
+            [enabled] => 
+        )
+
+    [after_expiration] => 
+    [allow_promotion_codes] => 
+    [amount_subtotal] => 1999
+    [amount_total] => 2798
+    [automatic_tax] => Array
+        (
+            [enabled] => 
+            [liability] => 
+            [status] => 
+        )
+
+    [billing_address_collection] => required
+    [cancel_url] => http://localhost/cosc-360-project/handmade_goods/pages/basket.php
+    [client_reference_id] => 
+    [client_secret] => 
+    [collected_information] => Array
+        (
+            [shipping_details] => Array
+                (
+                    [address] => Array
+                        (
+                            [city] => Kelowna
+                            [country] => CA
+                            [line1] => 3174 Lower Residence Lane
+                            [line2] => Cascade E, 205C
+                            [postal_code] => V1V 1V8
+                            [state] => BC
+                        )
+
+                    [name] => Priyansh Mathur
+                )
+
+        )
+
+    [consent] => 
+    [consent_collection] => 
+    [created] => 1742763666
+    [currency] => usd
+    [currency_conversion] => 
+    [custom_fields] => Array
+        (
+        )
+
+    [custom_text] => Array
+        (
+            [after_submit] => 
+            [shipping_address] => 
+            [submit] => 
+            [terms_of_service_acceptance] => 
+        )
+
+    [customer] => 
+    [customer_creation] => if_required
+    [customer_details] => Array
+        (
+            [address] => Array
+                (
+                    [city] => Kelowna
+                    [country] => CA
+                    [line1] => 3174 Lower Residence Lane
+                    [line2] => Cascade E, 205C
+                    [postal_code] => V1V 1V8
+                    [state] => BC
+                )
+
+            [email] => priyanshmathur19@gmail.com
+            [name] => Priyansh Mathur
+            [phone] => 
+            [tax_exempt] => none
+            [tax_ids] => Array
+                (
+                )
+
+        )
+
+    [customer_email] => 
+    [discounts] => Array
+        (
+        )
+
+    [expires_at] => 1742850066
+    [invoice] => 
+    [invoice_creation] => Array
+        (
+            [enabled] => 
+            [invoice_data] => Array
+                (
+                    [account_tax_ids] => 
+                    [custom_fields] => 
+                    [description] => 
+                    [footer] => 
+                    [issuer] => 
+                    [metadata] => Array
+                        (
+                        )
+
+                    [rendering_options] => 
+                )
+
+        )
+
+    [livemode] => 
+    [locale] => 
+    [metadata] => Array
+        (
+            [order_id] => 41
+        )
+
+    [mode] => payment
+    [payment_intent] => pi_3R5veGBSlWUNcExM0aRF9AZ5
+    [payment_link] => 
+    [payment_method_collection] => if_required
+    [payment_method_configuration_details] => 
+    [payment_method_options] => Array
+        (
+            [card] => Array
+                (
+                    [request_three_d_secure] => automatic
+                )
+
+        )
+
+    [payment_method_types] => Array
+        (
+            [0] => card
+        )
+
+    [payment_status] => paid
+    [permissions] => 
+    [phone_number_collection] => Array
+        (
+            [enabled] => 
+        )
+
+    [recovered_from] => 
+    [saved_payment_method_options] => 
+    [setup_intent] => 
+    [shipping_address_collection] => Array
+        (
+            [allowed_countries] => Array
+                (
+                    [0] => US
+                    [1] => CA
+                )
+
+        )
+
+    [shipping_cost] => Array
+        (
+            [amount_subtotal] => 799
+            [amount_tax] => 0
+            [amount_total] => 799
+            [shipping_rate] => shr_1R5vdmBSlWUNcExMFz0gHoKt
+        )
+
+    [shipping_details] => Array
+        (
+            [address] => Array
+                (
+                    [city] => Kelowna
+                    [country] => CA
+                    [line1] => 3174 Lower Residence Lane
+                    [line2] => Cascade E, 205C
+                    [postal_code] => V1V 1V8
+                    [state] => BC
+                )
+
+            [carrier] => 
+            [name] => Priyansh Mathur
+            [phone] => 
+            [tracking_number] => 
+        )
+
+    [shipping_options] => Array
+        (
+            [0] => Array
+                (
+                    [shipping_amount] => 799
+                    [shipping_rate] => shr_1R5vdmBSlWUNcExMFz0gHoKt
+                )
+
+        )
+
+    [status] => complete
+    [submit_type] => 
+    [subscription] => 
+    [success_url] => http://localhost/cosc-360-project/handmade_goods/pages/order_confirmation.php?order_id=41
+    [total_details] => Array
+        (
+            [amount_discount] => 0
+            [amount_shipping] => 799
+            [amount_tax] => 0
+        )
+
+    [ui_mode] => hosted
+    [url] => 
+)
+
+No shipping data in session
+
+2025-03-23 21:59:56 - Expected signature: 3bb4d37eedf441e64d5d96b86f20b1fec69a34779d378c8fc45b991207f0b182
+2025-03-23 21:59:56 - Received signature: 3bb4d37eedf441e64d5d96b86f20b1fec69a34779d378c8fc45b991207f0b182
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [unhandled] Event: payment_intent.created (ID: evt_3R5veGBSlWUNcExM0FTSG99P) 
+
+Webhook processed successfully with 200 response
+Processing order: 41, User ID: 2
+Full session data: {"id":"cs_test_a16nE12BHJJQhDTl9mATqCvznwCautlBNQ9mAAgmESDpEn3YhXS7XkDaUG","object":"checkout.session","adaptive_pricing":{"enabled":false},"after_expiration":null,"allow_promotion_codes":null,"amount_subtotal":1999,"amount_total":2798,"automatic_tax":{"enabled":false,"liability":null,"status":null},"billing_address_collection":"required","cancel_url":"http:\/\/localhost\/cosc-360-project\/handmade_goods\/pages\/basket.php","client_reference_id":null,"client_secret":null,"collected_information":{"shipping_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 205C","postal_code":"V1V 1V8","state":"BC"},"name":"Priyansh Mathur"}},"consent":null,"consent_collection":null,"created":1742763666,"currency":"usd","currency_conversion":null,"custom_fields":[],"custom_text":{"after_submit":null,"shipping_address":null,"submit":null,"terms_of_service_acceptance":null},"customer":null,"customer_creation":"if_required","customer_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 205C","postal_code":"V1V 1V8","state":"BC"},"email":"priyanshmathur19@gmail.com","name":"Priyansh Mathur","phone":null,"tax_exempt":"none","tax_ids":[]},"customer_email":null,"discounts":[],"expires_at":1742850066,"invoice":null,"invoice_creation":{"enabled":false,"invoice_data":{"account_tax_ids":null,"custom_fields":null,"description":null,"footer":null,"issuer":null,"metadata":[],"rendering_options":null}},"livemode":false,"locale":null,"metadata":{"order_id":"41"},"mode":"payment","payment_intent":"pi_3R5veGBSlWUNcExM0aRF9AZ5","payment_link":null,"payment_method_collection":"if_required","payment_method_configuration_details":null,"payment_method_options":{"card":{"request_three_d_secure":"automatic"}},"payment_method_types":["card"],"payment_status":"paid","permissions":null,"phone_number_collection":{"enabled":false},"recovered_from":null,"saved_payment_method_options":null,"setup_intent":null,"shipping_address_collection":{"allowed_countries":["US","CA"]},"shipping_cost":{"amount_subtotal":799,"amount_tax":0,"amount_total":799,"shipping_rate":"shr_1R5vdmBSlWUNcExMFz0gHoKt"},"shipping_details":{"address":{"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 205C","postal_code":"V1V 1V8","state":"BC"},"carrier":null,"name":"Priyansh Mathur","phone":null,"tracking_number":null},"shipping_options":[{"shipping_amount":799,"shipping_rate":"shr_1R5vdmBSlWUNcExMFz0gHoKt"}],"status":"complete","submit_type":null,"subscription":null,"success_url":"http:\/\/localhost\/cosc-360-project\/handmade_goods\/pages\/order_confirmation.php?order_id=41","total_details":{"amount_discount":0,"amount_shipping":799,"amount_tax":0},"ui_mode":"hosted","url":null}
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [success] Event: payment_intent.created (ID: evt_3R5veGBSlWUNcExM0FTSG99P) 
+
+Using customer_details address as fallback: {"city":"Kelowna","country":"CA","line1":"3174 Lower Residence Lane","line2":"Cascade E, 205C","postal_code":"V1V 1V8","state":"BC"}
+[2025-03-23 21:59:56] ::1 - Stripe Webhook: [unhandled] Event: payment_intent.created (ID: evt_3R5veGBSlWUNcExM0FTSG99P) 
+
+Inserting address from customer_details: {"user_id":2,"street":"3174 Lower Residence Lane, Cascade E, 205C","city":"Kelowna","state":"BC","postal_code":"V1V 1V8","country":"CA"}
+Webhook processed successfully with 200 response
+Successfully inserted address with ID: 12
+Successfully inserted address with ID: 13
+Successfully linked address to order
+Updating order with payment details: PaymentIntent=pi_3R5veGBSlWUNcExM0aRF9AZ5, Method=card
+Transaction committed successfully
+Successfully linked address to order
+Verification after commit - Order #41: payment_id=pi_3R5veGBSlWUNcExM0aRF9AZ5, payment_method=card, address_id=12
+Webhook processed successfully with 200 response
+Updating order with payment details: PaymentIntent=pi_3R5veGBSlWUNcExM0aRF9AZ5, Method=card
+Transaction committed successfully
+Verification after commit - Order #41: payment_id=pi_3R5veGBSlWUNcExM0aRF9AZ5, payment_method=card, address_id=13
+Webhook processed successfully with 200 response
+
+
+2025-03-23 21:59:58 - New webhook request received
+Remote IP: ::1
+:59:58 - New webhook request received
+Remote IP: ::1
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4393
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742763700,v1=cfd83033ef5649c5cfe652cc8556f3e3e7688d2be8ef129a808d2e5d5003142e,v0=703aadad7313576ac6a0656f5f1f0724252ee29ba36adcd31a6c605e839358e8
+    [Accept-Encoding] => gzip
+)
+
+HTTP Headers: Array
+(
+    [Host] => localhost
+    [User-Agent] => Stripe/1.0 (+https://stripe.com/docs/webhooks)
+    [Content-Length] => 4393
+    [Accept] => */*; q=0.5, application/xml
+    [Cache-Control] => no-cache
+    [Content-Type] => application/json; charset=utf-8
+    [Stripe-Signature] => t=1742763700,v1=cfd83033ef5649c5cfe652cc8556f3e3e7688d2be8ef129a808d2e5d5003142e,v0=703aadad7313576ac6a0656f5f1f0724252ee29ba36adcd31a6c605e839358e8
+    [Accept-Encoding] => gzip
+)
+
+Raw payload: {
+  "id": "evt_3R5veGBSlWUNcExM0kTuk2c7",
+  "object": "event",
+  "api_version": "2025-02-24.acacia",
+  "created": 1742763700,
+  "data": {
+    "object": {
+      "id": "ch_3R5veGBSlWUNcExM0Q4hhxOI",
+      "object": "charge",
+      "amount": 2798,
+      "amount_captured": 2798,
+      "amount_refunded": 0,
+      "application": null,
+      "application_fee": null,
+      "application_fee_amount": null,
+      "balance_transaction": "txn_3R5veGBSlWUNcExM0WWUG9V2",
+      "billing_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null
+      },
+      "calculated_statement_descriptor": "Stripe",
+      "captured": true,
+      "created": 1742763697,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "destination": null,
+      "dispute": null,
+      "disputed": false,
+      "failure_balance_transaction": null,
+      "failure_code": null,
+      "failure_message": null,
+      "fraud_details": {
+      },
+      "invoice": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "41"
+      },
+      "on_behalf_of": null,
+      "order": null,
+      "outcome": {
+        "advice_code": null,
+        "network_advice_code": null,
+        "network_decline_code": null,
+        "network_status": "approved_by_network",
+        "reason": null,
+        "risk_level": "normal",
+        "risk_score": 48,
+        "seller_message": "Payment complete.",
+        "type": "authorized"
+      },
+      "paid": true,
+      "payment_intent": "pi_3R5veGBSlWUNcExM0aRF9AZ5",
+      "payment_method": "pm_1R5veGBSlWUNcExMq1tLgesZ",
+      "payment_method_details": {
+        "card": {
+          "amount_authorized": 2798,
+          "authorization_code": null,
+          "brand": "visa",
+          "checks": {
+            "address_line1_check": "pass",
+            "address_postal_code_check": "pass",
+            "cvc_check": "pass"
+          },
+          "country": "US",
+          "exp_month": 9,
+          "exp_year": 2029,
+          "extended_authorization": {
+            "status": "disabled"
+          },
+          "fingerprint": "HkPtudLGKTx9HPZY",
+          "funding": "credit",
+          "incremental_authorization": {
+            "status": "unavailable"
+          },
+          "installments": null,
+          "last4": "4242",
+          "mandate": null,
+          "multicapture": {
+            "status": "unavailable"
+          },
+          "network": "visa",
+          "network_token": {
+            "used": false
+          },
+          "network_transaction_id": "721078011611710",
+          "overcapture": {
+            "maximum_amount_capturable": 2798,
+            "status": "unavailable"
+          },
+          "regulated_status": "unregulated",
+          "three_d_secure": null,
+          "wallet": null
+        },
+        "type": "card"
+      },
+      "radar_options": {
+      },
+      "receipt_email": null,
+      "receipt_number": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKLTtgb8GMgaciRQN1rc6LBYceiQ05lBih5TrJcPAQvFa3sxoh-KOKXctW4BzhvSmkxxNeGhotuXxjLiC",
+      "refunded": false,
+      "review": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "source_transfer": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    },
+    "previous_attributes": {
+      "balance_transaction": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKLTtgb8GMgYjBF5F9PE6LBZ1ssmLHd24MQPaZx1p_BId1IRYp2WI01tuewyL2GAyl5R1w1lkcFbVC8HG"
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "charge.updated"
+}
+Received webhook with signature: t=1742763700,v1=cfd83033ef5649c5cfe652cc8556f3e3e7688d2be8ef129a808d2e5d5003142e,v0=703aadad7313576ac6a0656f5f1f0724252ee29ba36adcd31a6c605e839358e8
+_3R5veGBSlWUNcExM0Q4hhxOI",
+      "object": "charge",
+      "amount": 2798,
+      "amount_captured": 2798,
+      "amount_refunded": 0,
+      "application": null,
+      "application_fee": null,
+      "application_fee_amount": null,
+      "balance_transaction": "txn_3R5veGBSlWUNcExM0WWUG9V2",
+      "billing_details": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "email": "priyanshmathur19@gmail.com",
+        "name": "Priyansh Mathur",
+        "phone": null
+      },
+      "calculated_statement_descriptor": "Stripe",
+      "captured": true,
+      "created": 1742763697,
+      "currency": "usd",
+      "customer": null,
+      "description": null,
+      "destination": null,
+      "dispute": null,
+      "disputed": false,
+      "failure_balance_transaction": null,
+      "failure_code": null,
+      "failure_message": null,
+      "fraud_details": {
+      },
+      "invoice": null,
+      "livemode": false,
+      "metadata": {
+        "order_id": "41"
+      },
+      "on_behalf_of": null,
+      "order": null,
+      "outcome": {
+        "advice_code": null,
+        "network_advice_code": null,
+        "network_decline_code": null,
+        "network_status": "approved_by_network",
+        "reason": null,
+        "risk_level": "normal",
+        "risk_score": 48,
+        "seller_message": "Payment complete.",
+        "type": "authorized"
+      },
+      "paid": true,
+      "payment_intent": "pi_3R5veGBSlWUNcExM0aRF9AZ5",
+      "payment_method": "pm_1R5veGBSlWUNcExMq1tLgesZ",
+      "payment_method_details": {
+        "card": {
+          "amount_authorized": 2798,
+          "authorization_code": null,
+          "brand": "visa",
+          "checks": {
+            "address_line1_check": "pass",
+            "address_postal_code_check": "pass",
+            "cvc_check": "pass"
+          },
+          "country": "US",
+          "exp_month": 9,
+          "exp_year": 2029,
+          "extended_authorization": {
+            "status": "disabled"
+          },
+          "fingerprint": "HkPtudLGKTx9HPZY",
+          "funding": "credit",
+          "incremental_authorization": {
+            "status": "unavailable"
+          },
+          "installments": null,
+          "last4": "4242",
+          "mandate": null,
+          "multicapture": {
+            "status": "unavailable"
+          },
+          "network": "visa",
+          "network_token": {
+            "used": false
+          },
+          "network_transaction_id": "721078011611710",
+          "overcapture": {
+            "maximum_amount_capturable": 2798,
+            "status": "unavailable"
+          },
+          "regulated_status": "unregulated",
+          "three_d_secure": null,
+          "wallet": null
+        },
+        "type": "card"
+      },
+      "radar_options": {
+      },
+      "receipt_email": null,
+      "receipt_number": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKLTtgb8GMgaciRQN1rc6LBYceiQ05lBih5TrJcPAQvFa3sxoh-KOKXctW4BzhvSmkxxNeGhotuXxjLiC",
+      "refunded": false,
+      "review": null,
+      "shipping": {
+        "address": {
+          "city": "Kelowna",
+          "country": "CA",
+          "line1": "3174 Lower Residence Lane",
+          "line2": "Cascade E, 205C",
+          "postal_code": "V1V 1V8",
+          "state": "BC"
+        },
+        "carrier": null,
+        "name": "Priyansh Mathur",
+        "phone": null,
+        "tracking_number": null
+      },
+      "source": null,
+      "source_transfer": null,
+      "statement_descriptor": null,
+      "statement_descriptor_suffix": null,
+      "status": "succeeded",
+      "transfer_data": null,
+      "transfer_group": null
+    },
+    "previous_attributes": {
+      "balance_transaction": null,
+      "receipt_url": "https://pay.stripe.com/receipts/payment/CAcaFwoVYWNjdF8xUjFPUk9CU2xXVU5jRXhNKLTtgb8GMgYjBF5F9PE6LBZ1ssmLHd24MQPaZx1p_BId1IRYp2WI01tuewyL2GAyl5R1w1lkcFbVC8HG"
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "charge.updated"
+}
+Received webhook with signature: t=1742763700,v1=cfd83033ef5649c5cfe652cc8556f3e3e7688d2be8ef129a808d2e5d5003142e,v0=703aadad7313576ac6a0656f5f1f0724252ee29ba36adcd31a6c605e839358e8
+2025-03-23 21:59:58 - Expected signature: cfd83033ef5649c5cfe652cc8556f3e3e7688d2be8ef129a808d2e5d5003142e
+2025-03-23 21:59:58 - Expected signature: cfd83033ef5649c5cfe652cc8556f3e3e7688d2be8ef129a808d2e5d5003142e
+2025-03-23 21:59:58 - Received signature: cfd83033ef5649c5cfe652cc8556f3e3e7688d2be8ef129a808d2e5d5003142e
+2025-03-23 21:59:58 - Received signature: cfd83033ef5649c5cfe652cc8556f3e3e7688d2be8ef129a808d2e5d5003142e
+[2025-03-23 21:59:58] ::1 - Stripe Webhook: [success] Event: charge.updated (ID: evt_3R5veGBSlWUNcExM0kTuk2c7) 
+
+[2025-03-23 21:59:58] ::1 - Stripe Webhook: [success] Event: charge.updated (ID: evt_3R5veGBSlWUNcExM0kTuk2c7) 
+
+[2025-03-23 21:59:58] ::1 - Stripe Webhook: [unhandled] Event: charge.updated (ID: evt_3R5veGBSlWUNcExM0kTuk2c7) 
+
+[2025-03-23 21:59:58] ::1 - Stripe Webhook: [unhandled] Event: charge.updated (ID: evt_3R5veGBSlWUNcExM0kTuk2c7) 
+
+Webhook processed successfully with 200 response
+Webhook processed successfully with 200 response

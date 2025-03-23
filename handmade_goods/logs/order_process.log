@@ -125,3 +125,33 @@
 2025-03-23 11:39:38 - Total order price calculated - {"total_price":34.99}
 2025-03-23 11:39:38 - Transaction committed successfully
 2025-03-23 11:39:38 - Order process complete - {"order_id":29,"is_ajax":true}
+2025-03-23 12:14:35 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 12:14:35 - Beginning transaction
+2025-03-23 12:14:35 - Created order - {"order_id":37}
+2025-03-23 12:14:35 - Total order price calculated - {"total_price":159.95000000000002}
+2025-03-23 12:14:35 - Transaction committed successfully
+2025-03-23 12:14:35 - Order process complete - {"order_id":37,"is_ajax":true}
+2025-03-23 12:20:20 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 12:20:20 - Beginning transaction
+2025-03-23 12:20:20 - Created order - {"order_id":38}
+2025-03-23 12:20:20 - Total order price calculated - {"total_price":194.94000000000003}
+2025-03-23 12:20:20 - Transaction committed successfully
+2025-03-23 12:20:20 - Order process complete - {"order_id":38,"is_ajax":true}
+2025-03-23 12:25:51 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 12:25:51 - Beginning transaction
+2025-03-23 12:25:51 - Created order - {"order_id":39}
+2025-03-23 12:25:51 - Total order price calculated - {"total_price":229.93}
+2025-03-23 12:25:51 - Transaction committed successfully
+2025-03-23 12:25:51 - Order process complete - {"order_id":39,"is_ajax":true}
+2025-03-23 12:29:40 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 12:29:40 - Beginning transaction
+2025-03-23 12:29:40 - Created order - {"order_id":40}
+2025-03-23 12:29:40 - Total order price calculated - {"total_price":264.92}
+2025-03-23 12:29:40 - Transaction committed successfully
+2025-03-23 12:29:40 - Order process complete - {"order_id":40,"is_ajax":true}
+2025-03-23 21:59:21 - Starting order process - {"user_id":2,"is_ajax":true}
+2025-03-23 21:59:21 - Beginning transaction
+2025-03-23 21:59:21 - Created order - {"order_id":41}
+2025-03-23 21:59:21 - Total order price calculated - {"total_price":19.99}
+2025-03-23 21:59:21 - Transaction committed successfully
+2025-03-23 21:59:21 - Order process complete - {"order_id":41,"is_ajax":true}
