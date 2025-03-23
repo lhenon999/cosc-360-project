@@ -63,7 +63,7 @@ $isAdmin = ($user['user_type'] === 'admin');
 
     <div class="settings-container">
         <div class="settings-header">
-            <h2><i class="bi bi-gear-fill"></i> Settings</h2>
+            <h2>Settings</h2>
         </div>
 
         <div class="mb-4">
@@ -73,6 +73,17 @@ $isAdmin = ($user['user_type'] === 'admin');
                     <label class="form-label">Name</label>
                     <input type="text" class="form-control" name="name" value="<?= htmlspecialchars($user['name']) ?>"
                         required <?= $isAdmin ? 'disabled' : '' ?>>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Profile Picture</label>
+                    <input type="file" name="profile_picture" class="form-control" accept="image/*">
+                    <?php if (!empty($user['profile_picture']) && $user['profile_picture'] !== '/cosc-360-project/handmade_goods/assets/images/default_profile.png'): ?>
+                        <img src="<?= htmlspecialchars($user['profile_picture']) ?>" width="100" class="mt-2 rounded">
+                        <div class="form-check mt-2">
+                            <input type="checkbox" name="remove_picture" class="form-check-input" id="removePicture">
+                            <label for="removePicture" class="form-check-label">Remove current picture</label>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Email</label>
