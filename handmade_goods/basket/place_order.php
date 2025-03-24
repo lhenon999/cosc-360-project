@@ -24,8 +24,26 @@ function logOrderProcess($message, $data = null) {
     file_put_contents($logFile, $log . "\n", FILE_APPEND);
 }
 
-// Log start of order process
-logOrderProcess("Starting order process", ['user_id' => $_SESSION['user_id'] ?? 'not logged in', 'is_ajax' => $isAjax]);
+// Process JSON input if content type is application/json
+$input = null;
+if (isset($_SERVER['CONTENT_TYPE']) && strpos($_SERVER['CONTENT_TYPE'], 'application/json') !== false) {
+    $input = json_decode(file_get_contents('php://input'), true);
+}
+
+// Get address ID from input
+$address_id = null;
+if ($isAjax) {
+    $address_id = isset($_POST['address_id']) ? intval($_POST['address_id']) : null;
+    if (!$address_id && isset($input['address_id'])) {
+        $address_id = intval($input['address_id']);
+    }
+}
+
+logOrderProcess("Starting order process", [
+    'user_id' => $_SESSION['user_id'] ?? 'not logged in', 
+    'is_ajax' => $isAjax,
+    'address_id' => $address_id
+]);
 
 // Redirect if not logged in
 if (!isset($_SESSION['user_id'])) {
@@ -69,21 +87,54 @@ if ($cart_count === 0) {
     }
 }
 
+// Validate the address_id if provided
+if ($address_id) {
+    $stmt = $conn->prepare("SELECT id FROM addresses WHERE id = ? AND user_id = ?");
+    $stmt->bind_param("ii", $address_id, $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows === 0) {
+        logOrderProcess("Invalid address ID", ['address_id' => $address_id]);
+        
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Invalid shipping address']);
+            exit;
+        } else {
+            $_SESSION['error'] = "Invalid shipping address.";
+            header('Location: ../pages/basket.php');
+            exit;
+        }
+    }
+    
+    $stmt->close();
+    logOrderProcess("Address validated", ['address_id' => $address_id]);
+} else {
+    logOrderProcess("No address_id provided");
+}
+
 try {
     logOrderProcess("Beginning transaction");
     // Start transaction
     $conn->begin_transaction();
     
-    // 1. Create order
-    $stmt = $conn->prepare("INSERT INTO orders (user_id, status, created_at) VALUES (?, 'pending', NOW())");
-    $stmt->bind_param("i", $_SESSION['user_id']);
+    // 1. Create order with address_id if provided
+    if ($address_id) {
+        $stmt = $conn->prepare("INSERT INTO orders (user_id, address_id, status, created_at) VALUES (?, ?, 'Pending', NOW())");
+        $stmt->bind_param("ii", $_SESSION['user_id'], $address_id);
+    } else {
+        $stmt = $conn->prepare("INSERT INTO orders (user_id, status, created_at) VALUES (?, 'Pending', NOW())");
+        $stmt->bind_param("i", $_SESSION['user_id']);
+    }
+    
     if (!$stmt->execute()) {
         throw new Exception("Failed to create order: " . $stmt->error);
     }
     $orderId = $conn->insert_id;
     $stmt->close();
     
-    logOrderProcess("Created order", ['order_id' => $orderId]);
+    logOrderProcess("Created order", ['order_id' => $orderId, 'address_id' => $address_id]);
     
     // 2. Get items from cart and add to order_items
     $totalPrice = 0;
@@ -126,6 +177,36 @@ try {
     }
     $stmt->close();
     
+    // 4. Save the cart in session for recovery if payment isn't completed
+    // Store the current cart items in the session for recovery if needed
+    $stmt = $conn->prepare("
+        SELECT ci.item_id, ci.quantity
+        FROM cart_items ci
+        JOIN cart c ON ci.cart_id = c.id
+        WHERE c.user_id = ?
+    ");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $savedCart = [];
+    while ($item = $result->fetch_assoc()) {
+        $savedCart[$item['item_id']] = [
+            'quantity' => $item['quantity']
+        ];
+    }
+    $stmt->close();
+    
+    // Store in session for recovery
+    $_SESSION['pending_order_cart'] = $savedCart;
+    $_SESSION['pending_order_id'] = $orderId;
+    
+    // Clear the cart from database
+    $stmt = $conn->prepare("DELETE ci FROM cart_items ci JOIN cart c ON ci.cart_id = c.id WHERE c.user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $stmt->close();
+    
     // Commit transaction
     $conn->commit();
     logOrderProcess("Transaction committed successfully");
@@ -142,8 +223,8 @@ try {
         echo json_encode(['success' => true, 'order_id' => $orderId]);
         exit;
     } else {
-        // Redirect to address collection page for payment
-        header("Location: ../pages/checkout_address.php?order_id=$orderId");
+        // Redirect to order confirmation page
+        header("Location: ../pages/order_confirmation.php?order_id=$orderId");
         exit;
     }
     

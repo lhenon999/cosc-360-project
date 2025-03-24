@@ -12,6 +12,78 @@ if (!$isLoggedIn) {
 }
 $user_id = $isLoggedIn ? $_SESSION["user_id"] : null;
 
+// Check if we need to restore a cart from a canceled checkout
+if (isset($_SESSION['pending_order_cart']) && isset($_SESSION['pending_order_id'])) {
+    // Get the user's cart ID
+    $stmt = $conn->prepare("SELECT id FROM cart WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        $cart = $result->fetch_assoc();
+        $cart_id = $cart['id'];
+    } else {
+        // Create a new cart if one doesn't exist
+        $stmt = $conn->prepare("INSERT INTO cart (user_id) VALUES (?)");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $cart_id = $conn->insert_id;
+    }
+    $stmt->close();
+    
+    // Restore saved cart items
+    foreach ($_SESSION['pending_order_cart'] as $item_id => $item_data) {
+        $quantity = $item_data['quantity'];
+        
+        // Check if item already exists in cart
+        $stmt = $conn->prepare("SELECT quantity FROM cart_items WHERE cart_id = ? AND item_id = ?");
+        $stmt->bind_param("ii", $cart_id, $item_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            // Update existing item
+            $existing = $result->fetch_assoc();
+            $new_quantity = $existing['quantity'] + $quantity;
+            
+            $stmt = $conn->prepare("UPDATE cart_items SET quantity = ? WHERE cart_id = ? AND item_id = ?");
+            $stmt->bind_param("iii", $new_quantity, $cart_id, $item_id);
+            $stmt->execute();
+        } else {
+            // Add new item to cart
+            $stmt = $conn->prepare("INSERT INTO cart_items (cart_id, item_id, quantity) VALUES (?, ?, ?)");
+            $stmt->bind_param("iii", $cart_id, $item_id, $quantity);
+            $stmt->execute();
+        }
+    }
+    
+    // Update order status to canceled
+    $stmt = $conn->prepare("UPDATE orders SET status = 'Cancelled' WHERE id = ? AND user_id = ?");
+    $stmt->bind_param("ii", $_SESSION['pending_order_id'], $user_id);
+    $stmt->execute();
+    $stmt->close();
+    
+    // Clear the pending order data
+    unset($_SESSION['pending_order_cart']);
+    unset($_SESSION['pending_order_id']);
+}
+
+// Get existing user addresses
+$addresses = [];
+if ($isLoggedIn) {
+    $stmt = $conn->prepare("
+        SELECT id, street_address, city, state, postal_code, country 
+        FROM addresses 
+        WHERE user_id = ? 
+        ORDER BY id DESC
+    ");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $addresses = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+}
+
 // Make Stripe publishable key available to JavaScript
 $stripe_publishable_key = 'pk_test_51R1OROBSlWUNcExMybmLKuUOMFFhHJ7ZYoaNOHG6XvbnoqxRyQxkLJcf2hgNuIvgd3d03CPS5DvOStmYzOoP80c100G4jIbM8r';
 
@@ -80,6 +152,119 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/basket.css">
     <link rel="stylesheet" href="../assets/css/product_card.css">
+    <link rel="stylesheet" href="../assets/css/form.css">
+    <style>
+        .address-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        
+        .address-option {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+        }
+        
+        .address-option input {
+            margin-right: 15px;
+            margin-top: 5px;
+        }
+        
+        .address-option.selected {
+            border-color: #4CAF50;
+            background-color: #f0f9f0;
+        }
+        
+        .address-actions {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+        
+        .delete-address-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        
+        .delete-address-btn:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+        }
+        
+        .delete-address-btn .material-symbols-outlined {
+            font-size: 18px;
+        }
+        
+        .address-form {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row > div {
+            flex: 1;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Confirmation modal styles */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .modal-dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1001;
+            width: 90%;
+            max-width: 400px;
+        }
+        
+        .modal-header {
+            margin-bottom: 15px;
+        }
+        
+        .modal-footer {
+            margin-top: 20px;
+            text-align: right;
+        }
+        
+        .modal-footer button {
+            margin-left: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -116,6 +301,99 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                             <h5 class="text-end">$<?= number_format($item['price'] * $item['quantity'], 2) ?></h5>
                         </div>
                     <?php endforeach; ?>
+
+                    <div class="address-container mt-4">
+                        <h3>Shipping Address</h3>
+                        
+                        <?php if (count($addresses) > 0): ?>
+                            <form id="address-selection-form">
+                                <?php foreach ($addresses as $index => $address): ?>
+                                    <label class="address-option">
+                                        <input type="radio" name="address_option" value="existing_<?php echo $address['id']; ?>" <?php echo $index === 0 ? 'checked' : ''; ?>>
+                                        <div>
+                                            <strong><?php echo htmlspecialchars($address['street_address']); ?></strong><br>
+                                            <?php echo htmlspecialchars($address['city']); ?>, <?php echo htmlspecialchars($address['state']); ?> <?php echo htmlspecialchars($address['postal_code']); ?><br>
+                                            <?php echo htmlspecialchars($address['country']); ?>
+                                        </div>
+                                        <div class="address-actions">
+                                            <button type="button" class="delete-address-btn" data-address-id="<?php echo $address['id']; ?>">
+                                                <span class="material-symbols-outlined">delete</span>
+                                            </button>
+                                        </div>
+                                    </label>
+                                <?php endforeach; ?>
+                                
+                                <label class="address-option">
+                                    <input type="radio" name="address_option" value="new" <?php echo count($addresses) === 0 ? 'checked' : ''; ?>>
+                                    <div>
+                                        <strong>Use a new shipping address</strong>
+                                    </div>
+                                </label>
+                            </form>
+                        <?php else: ?>
+                            <p>Please enter your shipping address to continue.</p>
+                        <?php endif; ?>
+                        
+                        <div class="address-form <?php echo count($addresses) > 0 ? 'hidden' : ''; ?>" id="new-address-form">
+                            <h4>New Shipping Address</h4>
+                            <form id="address-form">
+                                <div class="form-row">
+                                    <div>
+                                        <label for="address-line1">Address Line 1 *</label>
+                                        <input type="text" id="address-line1" name="line1" required placeholder="Street address, P.O. box">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div>
+                                        <label for="address-line2">Address Line 2</label>
+                                        <input type="text" id="address-line2" name="line2" placeholder="Apartment, suite, unit, building, floor, etc.">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div>
+                                        <label for="address-city">City *</label>
+                                        <input type="text" id="address-city" name="city" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="address-state">State/Province *</label>
+                                        <input type="text" id="address-state" name="state" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div>
+                                        <label for="address-postal">ZIP/Postal Code *</label>
+                                        <input type="text" id="address-postal" name="postal_code" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="address-country">Country *</label>
+                                        <select id="address-country" name="country" required>
+                                            <option value="US">United States</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="GB">United Kingdom</option>
+                                            <option value="AU">Australia</option>
+                                            <option value="FR">France</option>
+                                            <option value="DE">Germany</option>
+                                            <option value="JP">Japan</option>
+                                            <option value="IT">Italy</option>
+                                            <option value="ES">Spain</option>
+                                            <option value="NZ">New Zealand</option>
+                                            <option value="MX">Mexico</option>
+                                            <option value="SG">Singapore</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3">
+                                    <button type="button" id="save-address" class="btn btn-primary">Save Address</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 <?php else: ?>
                     <p class="text-muted">Your basket is empty.</p>
                     <div class="text-center">
@@ -157,11 +435,32 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         button.prop('disabled', true);
                                         button.html('<div class="spinner-border spinner-border-sm" role="status"></div> Processing...');
 
+                                        // Check if address is selected
+                                        const selectedOption = $('input[name="address_option"]:checked').val();
+                                        if (!selectedOption) {
+                                            alert('Please select a shipping address');
+                                            button.prop('disabled', false);
+                                            button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
+                                            return;
+                                        }
+
+                                        // If "new" address is selected but not saved yet
+                                        if (selectedOption === 'new') {
+                                            alert('Please save your shipping address');
+                                            button.prop('disabled', false);
+                                            button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
+                                            return;
+                                        }
+
+                                        // Extract address ID from the selected option
+                                        const addressId = selectedOption.split('_')[1];
+
                                         // First create the order
                                         $.ajax({
                                             url: "../basket/place_order.php",
                                             type: "POST",
                                             dataType: "json",
+                                            data: { address_id: addressId },
                                             headers: {
                                                 'X-Requested-With': 'XMLHttpRequest'
                                             },
@@ -250,6 +549,112 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                     });
                                 });
                             </script>
+                            <script>
+                                $(document).ready(function () {
+                                    // Toggle address form visibility based on selection
+                                    $('input[name="address_option"]').change(function() {
+                                        if (this.value === 'new') {
+                                            $('#new-address-form').removeClass('hidden');
+                                        } else {
+                                            $('#new-address-form').addClass('hidden');
+                                        }
+                                        
+                                        // Add selected class to parent
+                                        $('.address-option').removeClass('selected');
+                                        $(this).closest('.address-option').addClass('selected');
+                                    });
+                                    
+                                    // Save address form submission
+                                    $('#save-address').click(function() {
+                                        const form = document.getElementById('address-form');
+                                        
+                                        if (!form.checkValidity()) {
+                                            form.reportValidity();
+                                            return;
+                                        }
+                                        
+                                        const button = $(this);
+                                        button.prop('disabled', true);
+                                        button.html('Saving...');
+                                        
+                                        const formData = new FormData(form);
+                                        const addressData = {};
+                                        for (let [key, value] of formData.entries()) {
+                                            addressData[key] = value;
+                                        }
+                                        
+                                        // Save address to database
+                                        $.ajax({
+                                            url: '../basket/save_address.php',
+                                            type: 'POST',
+                                            contentType: 'application/json',
+                                            data: JSON.stringify(addressData),
+                                            success: function(response) {
+                                                if (response.success) {
+                                                    const address = response.address;
+                                                    
+                                                    // Create new radio option with the new address
+                                                    const newOption = `
+                                                        <label class="address-option selected">
+                                                            <input type="radio" name="address_option" value="existing_${address.id}" checked>
+                                                            <div>
+                                                                <strong>${address.street_address}</strong><br>
+                                                                ${address.city}, ${address.state} ${address.postal_code}<br>
+                                                                ${address.country}
+                                                            </div>
+                                                            <div class="address-actions">
+                                                                <button type="button" class="delete-address-btn" data-address-id="${address.id}">
+                                                                    <span class="material-symbols-outlined">delete</span>
+                                                                </button>
+                                                            </div>
+                                                        </label>
+                                                    `;
+                                                    
+                                                    // Insert at the beginning of the form (before the "Use a new address" option)
+                                                    $('#address-selection-form label:last-child').before(newOption);
+                                                    
+                                                    // Explicitly check the new radio button
+                                                    $(`input[value="existing_${address.id}"]`).prop('checked', true);
+                                                    
+                                                    // Hide the form and clear it
+                                                    $('#new-address-form').addClass('hidden');
+                                                    form.reset();
+                                                    
+                                                    // Remove the 'selected' class from all other options
+                                                    $('.address-option').removeClass('selected');
+                                                    $(`input[value="existing_${address.id}"]`).closest('.address-option').addClass('selected');
+                                                    
+                                                    // Update the radio button event handlers
+                                                    $('input[name="address_option"]').off('change').on('change', function() {
+                                                        if (this.value === 'new') {
+                                                            $('#new-address-form').removeClass('hidden');
+                                                        } else {
+                                                            $('#new-address-form').addClass('hidden');
+                                                        }
+                                                        
+                                                        $('.address-option').removeClass('selected');
+                                                        $(this).closest('.address-option').addClass('selected');
+                                                    });
+                                                    
+                                                    // Re-initialize delete buttons for newly created addresses
+                                                    initDeleteButtons();
+                                                    
+                                                } else {
+                                                    alert('Error saving address: ' + (response.error || 'Unknown error'));
+                                                }
+                                                
+                                                button.prop('disabled', false);
+                                                button.html('Save Address');
+                                            },
+                                            error: function() {
+                                                alert('Server error while saving address. Please try again.');
+                                                button.prop('disabled', false);
+                                                button.html('Save Address');
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -259,5 +664,130 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
 </div>
 
 </body>
+
+<!-- Confirmation Modal -->
+<div class="modal-backdrop" id="deleteConfirmationModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Address</h5>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this address?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        let addressToDelete = null;
+        let addressOptionElement = null;
+
+        // Function to initialize delete buttons
+        function initDeleteButtons() {
+            // Unbind existing handlers to avoid duplicates
+            $('.delete-address-btn').off('click');
+            
+            // Handle delete button click
+            $('.delete-address-btn').click(function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                addressToDelete = $(this).data('address-id');
+                addressOptionElement = $(this).closest('.address-option');
+                
+                // Show confirmation modal
+                $('#deleteConfirmationModal').fadeIn(200);
+            });
+        }
+
+        // Initialize delete buttons on page load
+        initDeleteButtons();
+        
+        // Handle cancel button in modal
+        $('#cancelDeleteBtn').click(function() {
+            $('#deleteConfirmationModal').fadeOut(200);
+            addressToDelete = null;
+            addressOptionElement = null;
+        });
+        
+        // Handle confirm delete button in modal
+        $('#confirmDeleteBtn').click(function() {
+            if (!addressToDelete) {
+                $('#deleteConfirmationModal').fadeOut(200);
+                return;
+            }
+            
+            const button = $(this);
+            button.prop('disabled', true);
+            button.text('Deleting...');
+            
+            // Send delete request to server
+            $.ajax({
+                url: '../basket/delete_address.php',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    address_id: addressToDelete
+                }),
+                success: function(response) {
+                    $('#deleteConfirmationModal').fadeOut(200);
+                    
+                    if (response.success) {
+                        // Check if the deleted address was selected
+                        const wasSelected = addressOptionElement.hasClass('selected');
+                        
+                        // Remove the address from DOM
+                        addressOptionElement.slideUp(300, function() {
+                            // After animation complete, remove element
+                            $(this).remove();
+                            
+                            // If there are no more addresses except the "Use a new address" option
+                            if ($('.address-option').length <= 1) {
+                                // Select the "new address" option and show the form
+                                $('input[value="new"]').prop('checked', true);
+                                $('#new-address-form').removeClass('hidden');
+                                $('.address-option:last').addClass('selected');
+                            } else if (wasSelected) {
+                                // If the deleted address was selected, select the first one
+                                const firstRadio = $('input[name="address_option"]:first');
+                                firstRadio.prop('checked', true);
+                                firstRadio.closest('.address-option').addClass('selected');
+                            }
+                        });
+                    } else {
+                        alert('Error deleting address: ' + (response.error || 'Unknown error'));
+                        button.prop('disabled', false);
+                        button.text('Delete');
+                    }
+                },
+                error: function() {
+                    $('#deleteConfirmationModal').fadeOut(200);
+                    alert('Server error while deleting address. Please try again.');
+                    button.prop('disabled', false);
+                    button.text('Delete');
+                },
+                complete: function() {
+                    addressToDelete = null;
+                    addressOptionElement = null;
+                }
+            });
+        });
+        
+        // Close modal when clicking outside
+        $('#deleteConfirmationModal').click(function(e) {
+            if (e.target === this) {
+                $(this).fadeOut(200);
+                addressToDelete = null;
+                addressOptionElement = null;
+            }
+        });
+    });
+</script>
 
 </html>

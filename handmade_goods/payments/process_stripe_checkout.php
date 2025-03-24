@@ -45,15 +45,34 @@ try {
 
     logCheckout("Processing order", ['order_id' => $orderId, 'user_id' => $_SESSION["user_id"]]);
 
-    // Verify order belongs to user
+    // Verify order belongs to user and has an address
     $stmt = $conn->prepare("
-        SELECT o.id, o.total_price, o.status, i.name as item_name, oi.quantity, oi.price_at_purchase
+        SELECT o.id, o.total_price, o.status, o.address_id
         FROM orders o
-        JOIN order_items oi ON o.id = oi.order_id
-        JOIN items i ON oi.item_id = i.id
         WHERE o.id = ? AND o.user_id = ?
     ");
     $stmt->bind_param("ii", $orderId, $_SESSION["user_id"]);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $order = $result->fetch_assoc();
+    $stmt->close();
+    
+    if (!$order) {
+        throw new Exception("Order not found or doesn't belong to you");
+    }
+    
+    if (!$order['address_id']) {
+        throw new Exception("No shipping address associated with this order");
+    }
+
+    // Get order items
+    $stmt = $conn->prepare("
+        SELECT i.name as item_name, oi.quantity, oi.price_at_purchase
+        FROM order_items oi
+        JOIN items i ON oi.item_id = i.id
+        WHERE oi.order_id = ?
+    ");
+    $stmt->bind_param("i", $orderId);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -74,7 +93,7 @@ try {
     $stmt->close();
 
     if (empty($line_items)) {
-        throw new Exception("Order not found or empty");
+        throw new Exception("Order has no items");
     }
 
     logCheckout("Order items prepared", ['items_count' => count($line_items)]);
@@ -84,7 +103,7 @@ try {
     
     logCheckout("Base URL determined", ['base_url' => $base_url]);
 
-    // Configure the checkout session
+    // Configure the checkout session (without shipping address collection)
     $shipping_amount = 799; // $7.99
     $session_params = [
         'payment_method_types' => ['card'],
@@ -95,15 +114,12 @@ try {
         'metadata' => [
             'order_id' => $orderId
         ],
-        'shipping_address_collection' => [
-            'allowed_countries' => ['US', 'CA']
-        ],
         'shipping_options' => [
             [
                 'shipping_rate_data' => [
                     'type' => 'fixed_amount',
                     'fixed_amount' => [
-                        'amount' => (int)$shipping_amount,  // Cast to integer to avoid formatting issues
+                        'amount' => (int)$shipping_amount,
                         'currency' => 'usd',
                     ],
                     'display_name' => 'Standard shipping',
@@ -120,7 +136,7 @@ try {
                 ],
             ],
         ],
-        'billing_address_collection' => 'required',
+        // Removed billing_address_collection setting to use the default 'auto' option
         'payment_intent_data' => [
             'metadata' => [
                 'order_id' => $orderId

@@ -133,24 +133,7 @@
     background-color: #c82333;
 }
 
-.shipping-address {
-    background-color: var(--background-alt);
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-top: 1.5rem;
-}
-
-.shipping-address h4 {
-    color: var(--text-color);
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
-}
-
-.shipping-address p {
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-    font-size: 0.95rem;
-}
+/* Removed shipping-address specific styles since they're no longer needed */
 
 @media (max-width: 768px) {
     .order-details-container {

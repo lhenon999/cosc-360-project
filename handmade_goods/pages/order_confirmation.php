@@ -11,6 +11,12 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
+// Clear any pending order data since the payment was successful
+if (isset($_SESSION['pending_order_cart']) && isset($_SESSION['pending_order_id'])) {
+    unset($_SESSION['pending_order_cart']);
+    unset($_SESSION['pending_order_id']);
+}
+
 $user_id = $_SESSION["user_id"];
 
 // Get order ID from URL if available, otherwise get latest order

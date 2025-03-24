@@ -96,12 +96,13 @@ $stmt->close();
             <p><strong>Total Price:</strong> $<?= number_format($order["total_price"], 2) ?></p>
             <p><strong>Order Date:</strong> <?= $order["created_at"] ?></p>
             <?php if ($order["street_address"]): ?>
-                <div class="shipping-address mt-4">
-                    <h4>Shipping Address:</h4>
-                    <p><?= htmlspecialchars($order["street_address"]) ?></p>
-                    <p><?= htmlspecialchars($order["city"]) ?>, <?= htmlspecialchars($order["state"]) ?> <?= htmlspecialchars($order["postal_code"]) ?></p>
-                    <p><?= htmlspecialchars($order["country"]) ?></p>
-                </div>
+                <p><strong>Shipping Address:</strong> 
+                    <?= htmlspecialchars($order["street_address"]) ?>,
+                    <?= htmlspecialchars($order["city"]) ?>, 
+                    <?= htmlspecialchars($order["state"]) ?> 
+                    <?= htmlspecialchars($order["postal_code"]) ?>,
+                    <?= htmlspecialchars($order["country"]) ?>
+                </p>
             <?php endif; ?>
         </div>
 
