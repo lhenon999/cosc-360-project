@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS SALES( id INT auto_increment PRIMARY KEY,
 ALTER TABLE USERS convert TO character
 SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE USERS
-ADD COLUMN profile_picture VARCHAR ( 255 ) NOT NULL DEFAULT '/cosc-360-project/handmade_goods/assets/images/default_profile.png';
+ADD COLUMN profile_picture VARCHAR ( 255 ) NOT NULL DEFAULT '/~rsodhi03/cosc-360-project/handmade_goods/assets/images/default_profile.png';
 ALTER TABLE PASSWORD_RESETS
 ADD COLUMN short_code VARCHAR ( 8 ) NOT NULL;
 ALTER TABLE PASSWORD_RESETS
