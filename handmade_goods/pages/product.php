@@ -32,7 +32,7 @@ if (!$product) {
 $name = htmlspecialchars($product['name']);
 $description = nl2br(htmlspecialchars($product['description']));
 $price = number_format($product['price'], 2);
-$image = !empty($product['img']) ? htmlspecialchars($product['img']) : "../assets/images/placeholder.webp";
+$image = !empty($product['img']) ? htmlspecialchars($product['img']) : "~/public_html/cosc-360-project/handmade_goods/assets/images/placeholder.webp";
 $user_id = intval($product['user_id']);
 $session_user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
 $category_name = isset($product['category']) ? htmlspecialchars($product['category']) : null;
