@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+include __DIR__ . '/../config.php';
 
 // Check if this is an AJAX request
 $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
