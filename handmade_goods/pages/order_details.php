@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
@@ -18,7 +18,7 @@ $order_id = intval($_GET["order_id"]);
 // Fetch order details
 $stmt = $conn->prepare("
     SELECT id, total_price, status, created_at
-    FROM orders
+    FROM ORDERS
     WHERE id = ? AND user_id = ?
 ");
 $stmt->bind_param("ii", $order_id, $user_id);
@@ -35,15 +35,15 @@ if (!$order) {
 if ($user_type === 'admin') {
     $stmt = $conn->prepare("
         SELECT oi.item_name, i.id, i.stock, oi.quantity, oi.price_at_purchase
-        FROM order_items oi
-        LEFT JOIN items i ON oi.item_id = i.id
+        FROM ORDER_ITEMS oi
+        LEFT JOIN ITEMS i ON oi.item_id = i.id
         WHERE oi.order_id = ?
         ORDER BY oi.item_name
     ");
 } else {
     $stmt = $conn->prepare("
         SELECT oi.item_name, oi.quantity, oi.price_at_purchase
-        FROM order_items oi
+        FROM ORDER_ITEMS oi
         WHERE oi.order_id = ?
         ORDER BY oi.item_name
     ");
@@ -72,30 +72,32 @@ $stmt->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/order_details.css">
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
     <div class="order-details-container">
-        <h2>Order Details</h2>
+        <h2 class="text-center">Order Details</h2>
 
         <div class="order-info">
-            <p><strong>Order ID:</strong> #<?= $order["id"] ?></p>
-            <p><strong>Status:</strong>
-                <span class="order-status 
-                    <?= strtolower($order["status"]) === 'pending' ? 'status-pending' : '' ?>
-                    <?= strtolower($order["status"]) === 'shipped' ? 'status-shipped' : '' ?>
-                    <?= strtolower($order["status"]) === 'delivered' ? 'status-delivered' : '' ?>
-                    <?= strtolower($order["status"]) === 'cancelled' ? 'status-cancelled' : '' ?>">
+            <p><strong>Order ID: </strong> <span>#<?= $order["id"] ?></span></p>
+
+            <p><strong>Status: </strong>
+                <span class="status <?= strtolower($order["status"]) ?>">
                     <?= htmlspecialchars($order["status"]) ?>
                 </span>
             </p>
-            <p><strong>Total Price:</strong> $<?= number_format($order["total_price"], 2) ?></p>
-            <p><strong>Order Date:</strong> <?= $order["created_at"] ?></p>
+
+            <p><strong>Total Price: </strong> <span>$<?= number_format($order["total_price"], 2) ?></span></p>
+
+            <p><strong>Order Date: </strong>
+                <span><?= date('F j, Y', strtotime($order["created_at"])) ?></span>
+            </p>
         </div>
 
-        <h3>Items</h3>
+        <h3>Ordered Items</h3>
         <table class="order-items-table">
             <thead>
                 <tr>
@@ -123,17 +125,18 @@ $stmt->close();
             </tbody>
         </table>
 
-        <div class="action-buttons mt-4">
-            <div class="button-wrapper">
-                <a href="../pages/profile.php" class="back-btn">Back to Profile</a>
-                <form method="POST" action="delete_order.php" style="display: inline;" 
-                    onsubmit="return confirm('Are you sure you want to delete this order? <?= $user_type === 'admin' ? 'The stock will be returned to inventory.' : 'This cannot be undone.' ?>');">
-                    <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
-                    <button type="submit" class="delete-btn">Delete Order</button>
-                </form>
-            </div>
+        <div class="action-buttons">
+            <a href="../pages/profile.php" class="btn btn-outline-secondary" id="back-btn">Back</a>
+            <form method="POST" action="delete_order.php" class="delete-form"
+                onsubmit="return confirm('Are you sure you want to cancel this order? <?= $user_type === 'admin' ? 'The stock will be returned to inventory.' : 'This cannot be undone.' ?>');">
+                <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
+                <button type="submit" class="btn btn-outline-secondary" id="cancel-btn">Cancel Order</button>
+            </form>
         </div>
     </div>
+
+    </div>
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
 </html>

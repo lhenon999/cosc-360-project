@@ -1,10 +1,10 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if (!isset($conn)) {
-    include_once __DIR__ . '/../../config.php';
-}
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($conn)) {
+        include_once __DIR__ . '/../../config.php';
+    }
 ?>
 <nav>
     <div class="navleft">
@@ -15,7 +15,7 @@ if (!isset($conn)) {
     </div>
     <div class="navright">
         <form action="../pages/products.php" method="GET" class="search-form">
-            <input type="text" name="search" placeholder="Search products and people..." class="search-input"
+            <input type="text" name="search" placeholder="Products, categories, or sellers" class="search-input"
                 aria-label="Search">
             <input type="hidden" name="search_type" value="products">
             <button type="submit" class="search-button">

@@ -9,17 +9,17 @@ if (!$is_logged_in) {
 
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
-// include '../config.php';
+// include __DIR__ . '/../config.php';
 
 // var_dump($_SESSION);
 
 
-include '../config.php';
+include __DIR__ . '/../config.php';
 
 $user_email = $_SESSION["user_id"];
 $products = [];
 
-$stmt = $conn->prepare("SELECT id, name, price, img, stock FROM items WHERE user_id = ?");
+$stmt = $conn->prepare("SELECT id, name, price, img, stock FROM ITEMS WHERE user_id = ?");
 $stmt->bind_param("s", $user_email);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -52,7 +52,7 @@ $stmt->close();
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <h1 class="text-center">My Shop</h1>
     <p class="text-center">Browse and edit your listings</p>
@@ -67,6 +67,7 @@ $stmt->close();
         <div class="scrollable-container">
             <div class="listing-grid">
                 <?php if (!empty($products)): ?>
+                    <?php $isFromProfile = true; ?>
                     <?php foreach ($products as $product): ?>
                         <?php
                         $id = htmlspecialchars($product["id"]);
@@ -75,6 +76,7 @@ $stmt->close();
                         $image = htmlspecialchars($product["img"]);
                         $stock = intval($product["stock"]);
                         $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
+                        $from_profile = "my_shop";
                         include "../assets/html/product_card.php";
                         ?>
                     <?php endforeach; ?>
@@ -86,5 +88,7 @@ $stmt->close();
     </div>
 
 </body>
+
+<?php include __DIR__ . "/../assets/html/footer.php"; ?>
 
 </html>

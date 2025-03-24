@@ -1,11 +1,10 @@
 <?php
 session_start();
-require '../config.php';
+require __DIR__ . '/../config.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 date_default_timezone_set('America/Los_Angeles');
- 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
@@ -19,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Database connection failed: " . mysqli_connect_error());
     }
 
-    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT id FROM USERS WHERE email = ?");
     if (!$stmt) {
         die("Prepare failed: " . $conn->error);
     }
@@ -36,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // rate limits 1 per hour
     $stmt = $conn->prepare("
-     SELECT created_at FROM password_resets WHERE email = ?
+    SELECT created_at FROM PASSWORD_RESETS WHERE email = ?
     ");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -68,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $short_code = substr(hash('sha256', $full_token), 0, 8);
 
     $expires = date("Y-m-d H:i:s", strtotime("+30 minutes"));
-    $stmt = $conn->prepare("INSERT INTO password_resets (email, token, short_code, expires, created_at) 
+    $stmt = $conn->prepare("INSERT INTO PASSWORD_RESETS (email, token, short_code, expires, created_at) 
                                     VALUES (?, ?, ?, ?, NOW()) 
                                     ON DUPLICATE KEY UPDATE 
                                     token = ?, 

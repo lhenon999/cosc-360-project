@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS handmade_goods;
-CREATE DATABASE IF NOT EXISTS handmade_goods;
-USE handmade_goods;
+DROP DATABASE IF EXISTS rsodhi03;
+CREATE DATABASE IF NOT EXISTS rsodhi03;
+USE rsodhi03;
 CREATE TABLE IF NOT EXISTS USERS( id INT auto_increment PRIMARY KEY,
                                   name VARCHAR ( 100 ) NOT NULL,
                                   email VARCHAR ( 255 ) NOT NULL UNIQUE,
@@ -17,70 +17,87 @@ CREATE TABLE IF NOT EXISTS ITEMS( id INT auto_increment PRIMARY KEY,
                                   user_id INT NOT NULL,
                                   created_at timestamp DEFAULT CURRENT_TIMESTAMP );
 CREATE TABLE IF NOT EXISTS ITEM_IMAGES( id INT auto_increment PRIMARY KEY,
-                                  item_id INT NOT NULL,
-                                  image_url VARCHAR ( 255 ) NOT NULL,
-                                  FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
+                                        item_id INT NOT NULL,
+                                        image_url VARCHAR ( 255 ) NOT NULL,
+                                        FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
 CREATE TABLE IF NOT EXISTS REVIEWS( id INT auto_increment PRIMARY KEY,
-                                  item_id INT NOT NULL,
-                                  user_id INT NOT NULL,
-                                  rating INT CHECK ( rating BETWEEN 1 AND 5 ),
-                                  comment TEXT,
-                                  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-                                  FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE,
-                                  FOREIGN KEY ( user_id ) REFERENCES USERS(id) ON DELETE CASCADE );
+                                    item_id INT NOT NULL,
+                                    user_id INT NOT NULL,
+                                    rating INT CHECK ( rating BETWEEN 1 AND 5 ),
+                                    comment TEXT,
+                                    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+                                    FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE,
+                                                                                    FOREIGN KEY ( user_id ) REFERENCES USERS(id) ON DELETE CASCADE );
 CREATE TABLE IF NOT EXISTS CART( id INT auto_increment PRIMARY KEY,
-                                  user_id INT NOT NULL,
-                                  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-                                  FOREIGN KEY ( user_id ) REFERENCES USERS(id) ON DELETE CASCADE );
+                                 user_id INT NOT NULL,
+                                 created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+                                 FOREIGN KEY ( user_id ) REFERENCES USERS(id) ON DELETE CASCADE );
 CREATE TABLE IF NOT EXISTS CART_ITEMS( id INT auto_increment PRIMARY KEY,
-                                  cart_id INT NOT NULL,
-                                  item_id INT NOT NULL,
-                                  quantity INT NOT NULL DEFAULT 1,
-                                  added_at timestamp DEFAULT CURRENT_TIMESTAMP,
-                                  FOREIGN KEY ( cart_id ) REFERENCES CART(id) ON DELETE CASCADE,
-                                  FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
+                                       cart_id INT NOT NULL,
+                                       item_id INT NOT NULL,
+                                       quantity INT NOT NULL DEFAULT 1,
+                                       added_at timestamp DEFAULT CURRENT_TIMESTAMP,
+                                       FOREIGN KEY ( cart_id ) REFERENCES CART(id) ON DELETE CASCADE,
+                                                                                      FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
 CREATE TABLE IF NOT EXISTS ORDERS( id INT auto_increment PRIMARY KEY,
-                                  user_id INT NOT NULL,
-                                  total_price DECIMAL ( 10, 2 ) NOT NULL,
-                                  status ENUM('Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled') DEFAULT 'Pending',
-                                  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-                                  FOREIGN KEY ( user_id ) REFERENCES USERS(id) ON DELETE CASCADE );
+                                   user_id INT NOT NULL,
+                                   total_price DECIMAL ( 10, 2 ) NOT NULL,
+                                   status ENUM('Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled') DEFAULT 'Pending',
+                                   created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+                                   FOREIGN KEY ( user_id ) REFERENCES USERS(id) ON DELETE CASCADE );
 CREATE TABLE IF NOT EXISTS ORDER_ITEMS( id INT auto_increment PRIMARY KEY,
-                                  order_id INT NOT NULL,
-                                  item_id INT,
-                                  item_name VARCHAR(255) NOT NULL,
-                                  quantity INT NOT NULL,
-                                  price_at_purchase DECIMAL ( 10, 2 ) NOT NULL,
-                                  FOREIGN KEY ( order_id ) REFERENCES ORDERS(id) ON DELETE CASCADE,
-                                  FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE SET NULL );
-CREATE TABLE IF NOT EXISTS password_resets (id INT AUTO_INCREMENT PRIMARY KEY,
-                                email VARCHAR(255) NOT NULL,
-                                token VARCHAR(100) NOT NULL,
-                                expires DATETIME NOT NULL,
-                                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
-CREATE TABLE IF NOT EXISTS sales (id INT AUTO_INCREMENT PRIMARY KEY,
+                                        order_id INT NOT NULL,
+                                        item_id INT,
+                                        item_name VARCHAR ( 255 ) NOT NULL,
+                                        quantity INT NOT NULL,
+                                        price_at_purchase DECIMAL ( 10, 2 ) NOT NULL,
+                                        FOREIGN KEY ( order_id ) REFERENCES ORDERS(id) ON DELETE CASCADE,
+                                                                                          FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE
+                                        SET NULL );
+CREATE TABLE IF NOT EXISTS PASSWORD_RESETS( id INT auto_increment PRIMARY KEY,
+                                            email VARCHAR ( 255 ) NOT NULL,
+                                            token VARCHAR ( 100 ) NOT NULL,
+                                            expires DATETIME NOT NULL,
+                                            created_at timestamp DEFAULT CURRENT_TIMESTAMP );
+CREATE TABLE IF NOT EXISTS SALES( id INT auto_increment PRIMARY KEY,
                                 order_id INT NOT NULL,
                                 seller_id INT NOT NULL,
                                 buyer_id INT NOT NULL,
                                 item_id INT NOT NULL,
                                 quantity INT NOT NULL,
-                                price DECIMAL(10,2) NOT NULL,
-                                sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                                FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
-                                FOREIGN KEY (seller_id) REFERENCES users(id) ON DELETE CASCADE,
-                                FOREIGN KEY (buyer_id) REFERENCES users(id) ON DELETE CASCADE,
-                                FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE);
-
-ALTER TABLE users CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE USERS ADD COLUMN profile_picture VARCHAR(255) NOT NULL DEFAULT '/cosc-360-project/handmade_goods/assets/images/default_profile.png';
-ALTER TABLE password_resets ADD COLUMN short_code VARCHAR(8) NOT NULL;
-ALTER TABLE password_resets ADD UNIQUE (email);
-ALTER TABLE users ADD COLUMN remember_token VARCHAR(255) NULL;
-
-INSERT INTO users (id, name, email, password, user_type)
-SELECT 1, 'administrator', 'admin@handmadegoods.com', '$2y$10$E4LsPni7YFBS96DJ6tK8PeCJVgswuLXnd6XDPUySc3yCgbv6lnyeG', 'admin'
-WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@handmadegoods.com');
-
-INSERT INTO users (id, name, email, password, user_type)
-SELECT 2, 'John Doe', 'johndoe@mail.com', '$2y$10$6FRuRI3lBFOpHtYhd29XIOs.sT7WeAYXWxs8ORhzLIvAqQApYchRu', 'normal'
-WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'johndoe@mail.com');
+                                price DECIMAL ( 10, 2 ) NOT NULL,
+                                sale_date timestamp DEFAULT CURRENT_TIMESTAMP,
+                                FOREIGN KEY ( order_id ) REFERENCES ORDERS(id) ON DELETE CASCADE,
+                                FOREIGN KEY ( seller_id ) REFERENCES USERS(id) ON DELETE CASCADE,
+                                FOREIGN KEY ( buyer_id ) REFERENCES USERS(id) ON DELETE CASCADE,
+                                FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
+ALTER TABLE USERS convert TO character
+SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE USERS
+ADD COLUMN profile_picture VARCHAR ( 255 ) NOT NULL DEFAULT '/cosc-360-project/handmade_goods/assets/images/default_profile.png';
+ALTER TABLE PASSWORD_RESETS
+ADD COLUMN short_code VARCHAR ( 8 ) NOT NULL;
+ALTER TABLE PASSWORD_RESETS
+ADD UNIQUE ( email );
+ALTER TABLE USERS
+ADD COLUMN remember_token VARCHAR ( 255 ) NULL;
+ALTER TABLE USERS
+ADD COLUMN is_frozen TINYINT ( 1 ) DEFAULT 0;
+ALTER TABLE ITEMS
+ADD COLUMN status ENUM('active', 'inactive') DEFAULT 'active';
+ALTER TABLE REVIEWS
+ADD UNIQUE ( user_id, item_id );
+INSERT INTO USERS(id, name, email, password, user_type)
+SELECT 1,
+       'administrator',
+       'admin@handmadegoods.com',
+       '$2y$10$E4LsPni7YFBS96DJ6tK8PeCJVgswuLXnd6XDPUySc3yCgbv6lnyeG',
+       'admin'
+WHERE NOT EXISTS ( SELECT 1 FROM USERS WHERE email = 'admin@handmadegoods.com' );
+INSERT INTO USERS(id, name, email, password, user_type)
+SELECT 2,
+       'John Doe',
+       'johndoe@mail.com',
+       '$2y$10$6FRuRI3lBFOpHtYhd29XIOs.sT7WeAYXWxs8ORhzLIvAqQApYchRu',
+       'normal'
+WHERE NOT EXISTS ( SELECT 1 FROM USERS WHERE email = 'johndoe@mail.com' );
