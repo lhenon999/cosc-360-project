@@ -1,0 +1,6 @@
+ErrorDocument 404 /cosc-360-project/handmade_goods/pages/not_found.php
+
+<FilesMatch "(^\.|config\.php|\.sql|\.env|composer\.json)">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>

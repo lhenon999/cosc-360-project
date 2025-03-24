@@ -8,6 +8,7 @@
                 0px 4px 12px rgba(0, 0, 0, 0.06);
     border: 1px solid rgba(200, 200, 200, 0.4); 
     transition: all 0.3s ease-in-out;
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
 }
 

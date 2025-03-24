@@ -1,13 +1,13 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 
 //auto login
 if (!isset($_SESSION["user_id"]) && isset($_COOKIE["remember_token"])) {
     $token = $_COOKIE["remember_token"];
     $email = $_COOKIE["user_email"];
 
-    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND remember_token = ?");
+    $stmt = $conn->prepare("SELECT id FROM USERS WHERE email = ? AND remember_token = ?");
     $stmt->bind_param("ss", $email, $token);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -46,7 +46,7 @@ if (!isset($_SESSION["user_id"]) && isset($_COOKIE["remember_token"])) {
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
     <main class="container text-center">
         <h1>Welcome Back</h1>
         <div class="login-container">

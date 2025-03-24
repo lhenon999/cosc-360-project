@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -15,7 +15,7 @@ $user_id = $_SESSION["user_id"];
 
 $stmt = $conn->prepare("
     SELECT id, total_price, status, created_at
-    FROM orders
+    FROM ORDERS
     WHERE user_id = ?
     ORDER BY created_at DESC
     LIMIT 1
@@ -39,8 +39,8 @@ $order_date = date("F j, Y, g:i a", strtotime($order["created_at"]));
 
 $stmt = $conn->prepare("
     SELECT oi.item_id, oi.item_name, i.img, oi.quantity, oi.price_at_purchase
-    FROM order_items oi
-    LEFT JOIN items i ON oi.item_id = i.id
+    FROM ORDER_ITEMS oi
+    LEFT JOIN ITEMS i ON oi.item_id = i.id
     WHERE oi.order_id = ?
     ORDER BY oi.item_name
 ");
@@ -51,7 +51,7 @@ $order_items = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
 foreach ($order_items as $item) {
-    $seller_stmt = $conn->prepare("SELECT user_id FROM items WHERE id = ?");
+    $seller_stmt = $conn->prepare("SELECT user_id FROM ITEMS WHERE id = ?");
     $seller_stmt->bind_param("i", $item['item_id']);
     $seller_stmt->execute();
     $seller_stmt->bind_result($seller_id);
@@ -59,7 +59,7 @@ foreach ($order_items as $item) {
     $seller_stmt->close();
 
     $insert_sale = $conn->prepare("
-        INSERT INTO sales (order_id, seller_id, buyer_id, item_id, quantity, price)
+        INSERT INTO SALES (order_id, seller_id, buyer_id, item_id, quantity, price)
         VALUES (?, ?, ?, ?, ?, ?)
     ");
     $insert_sale->bind_param("iiiiid", $order_id, $seller_id, $user_id, $item['item_id'], $item['quantity'], $item['price_at_purchase']);
@@ -75,7 +75,7 @@ foreach ($order_items as $item) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank you for your order!</title>
+    <title>Handmade Goods - Thank you for your order!</title>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap');
@@ -92,7 +92,8 @@ foreach ($order_items as $item) {
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
+
     <div class="container mt-5">
         <h1>Thank You for Your Order!</h1>
         <p>Your order has been placed successfully.</p>
@@ -113,21 +114,21 @@ foreach ($order_items as $item) {
             </div>
         </div>
 
-        <h3 class="mt-5">Items Ordered:</h3>
+        <h3 class="mt-5">Items Ordered</h3>
         <div class="row mt-4">
             <?php foreach ($order_items as $item): ?>
                 <div class="col-md-6 mb-4">
-                    <div class="order-item d-flex align-items-center">
+                    <a class="order-item hover-raise d-flex align-items-center" href="/cosc-360-project/handmade_goods/pages/product.php?id=<?= htmlspecialchars($item['item_id']) ?>">
                         <img src="<?= htmlspecialchars($item['img'] ?? '../assets/images/product_images/default.webp') ?>" 
-                             alt="<?= htmlspecialchars($item['item_name']) ?>"
-                             class="cart-img me-4">
+                            alt="<?= htmlspecialchars($item['item_name']) ?>"
+                            class="cart-img me-4">
                         <div class="item-desc">
                             <h5><?= htmlspecialchars($item['item_name']) ?></h5>
                             <p class="mt-4"><strong>Quantity:</strong> <?= $item['quantity'] ?></p>
                             <p><strong>Price:</strong> $<?= number_format($item['price_at_purchase'], 2) ?></p>
-                            <p><strong>Item Total:</strong> $<?= number_format($item['price_at_purchase'] * $item['quantity'], 2) ?></p>
+                            <p><strong>Total:</strong> $<?= number_format($item['price_at_purchase'] * $item['quantity'], 2) ?></p>
                         </div>
-                    </div>
+                    </a>
 
                 </div>
             <?php endforeach; ?>
@@ -137,5 +138,6 @@ foreach ($order_items as $item) {
                     class="material-symbols-outlined">shoppingmode</span>Continue Shopping</a>
         </div>
     </div>
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 </html>

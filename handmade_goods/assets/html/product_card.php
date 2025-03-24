@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="../../assets/css/product_card.css">
-
 <div class="listing-item-container">
     <?php
     $from = '';

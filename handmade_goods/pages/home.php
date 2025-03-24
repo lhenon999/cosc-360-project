@@ -1,6 +1,6 @@
 <?php 
 session_start();
-include '../config.php';
+include __DIR__ . '/../config.php';
 ?>
 
 <!DOCTYPE html>
@@ -19,54 +19,22 @@ include '../config.php';
         <link rel="stylesheet" href="../assets/css/navbar.css">
         <link rel="stylesheet" href="../assets/css/footer.css">
         <link rel="stylesheet" href="../assets/css/home.css">
+        <link rel="stylesheet" href="../assets/css/landing_slider.css">
         <link rel="stylesheet" href="../assets/css/product_card.css">
     </head>
 
     <body>
-        <?php include '../assets/html/navbar.php'; ?>
+        <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
         <div class="container text-center">
             <h1 >Welcome to Handmade Goods</h1>
             <p class="text-muted mb-5">Discover unique local products crafted with care</p>
 
-            <div class="img-container mt-5">
-                <div class="home-img">
-                    <img src="../assets/images/image1.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/image2.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/image3.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/image4.jpg">
-                </div>
-                <div class="home-img">
-                    <img src="../assets/images/stock_image.webp">
-                </div>
-            </div>
-
-            <script>
-                $(document).ready(function () {
-                    let counter = 0;
-                    let slides = $(".home-img");
-
-                    function showSlides() {
-                        slides.hide();
-                        counter++;
-                        if (counter > slides.length) { counter = 1; }
-                        slides.eq(counter - 1).fadeIn();
-                        setTimeout(showSlides, 5000);
-                    }
-                    
-                    showSlides();
-                });
-            </script>
+            <?php include '../assets/html/landing_slider.php'; ?>
 
             <h3 class="text-center mt-5">Browse by Category</h3>
             <?php
-            $cat_stmt = $conn->prepare("SELECT DISTINCT category FROM items WHERE category IS NOT NULL ORDER BY category");
+            $cat_stmt = $conn->prepare("SELECT DISTINCT category FROM ITEMS WHERE category IS NOT NULL ORDER BY category");
             $cat_stmt->execute();
             $cat_result = $cat_stmt->get_result();
             $categories = [];
@@ -88,7 +56,7 @@ include '../config.php';
             <p>Discover the latest handmade creations and featured products</p>
             <div class="product-cards-container" id="product-cards-container">
                 <?php
-                $stmt = $conn->prepare("SELECT id, name, price, img, stock FROM items ORDER BY created_at DESC LIMIT 6");
+                $stmt = $conn->prepare("SELECT id, name, price, img, stock FROM ITEMS ORDER BY created_at DESC LIMIT 6");
                 $stmt->execute();
                 $result = $stmt->get_result();
                 while($product = $result->fetch_assoc()):
@@ -104,38 +72,66 @@ include '../config.php';
                 ?>
             </div>
             <div class="view-more-container text-center mt-4">
-                <a href="products.php" class="hover-raise cta">View More</a>
+                <a href="products.php" class="white-button">View More</a>
             </div>
         </div>
-
-        <div class="container mt-5 mb-3">
-            <h3 class="text-center">Get In Touch</h3>
-            <div class="contact-form-container">
-                <form action="" method="POST">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="message" class="form-label">Message</label>
-                        <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="submit" class="cta hover-raise">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
         </div>
         <?php include "../assets/html/footer.php"; ?>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const form = document.getElementById("contactForm");
+                const nameField = document.getElementById("name");
+                const emailField = document.getElementById("email");
+                const messageField = document.getElementById("message");
+                const statusMessage = document.getElementById("formStatus");
+
+                form.addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    let isValid = true;
+
+                    document.querySelectorAll(".error-message").forEach(el => el.textContent = "");
+
+                    if (nameField.value.trim().length < 3) {
+                        document.getElementById("nameError").textContent = "Name must be at least 3 characters.";
+                        isValid = false;
+                    }
+
+                    const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+                    if (!emailPattern.test(emailField.value.trim())) {
+                        document.getElementById("emailError").textContent = "Enter a valid email.";
+                        isValid = false;
+                    }
+
+                    if (messageField.value.trim().length < 10) {
+                        document.getElementById("messageError").textContent = "Message must be at least 10 characters.";
+                        isValid = false;
+                    }
+
+                    if (isValid) {
+                        fetch("get_in_touch.php", {
+                            method: "POST",
+                            body: new FormData(form),
+                        })
+                        .then(response => response.text())
+                        .then(data => {
+                            if (data.trim() === "success") {
+                                statusMessage.textContent = "Message sent successfully!";
+                                statusMessage.style.color = "green";
+                                form.reset();
+                            } else {
+                                statusMessage.textContent = data;
+                                statusMessage.style.color = "red";
+                            }
+                        })
+                        .catch(error => {
+                            statusMessage.textContent = "Something went wrong. Try again!";
+                            statusMessage.style.color = "red";
+                        });
+                    }
+                });
+            });
+        </script>
     </body>
 
 </html>

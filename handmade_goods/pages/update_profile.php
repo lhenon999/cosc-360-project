@@ -1,9 +1,6 @@
 <?php
 session_start();
-require '../config.php';
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+require __DIR__ . '/../config.php';
 
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['error'] = "User not logged in.";
@@ -35,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }    
 
-    $stmt = $conn->prepare("UPDATE users SET name = ?, email = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE USERS SET name = ?, email = ? WHERE id = ?");
     if (!$stmt) {
         $_SESSION['error'] = "SQL prepare failed: " . $conn->error;
         header("Location: settings.php");

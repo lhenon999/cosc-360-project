@@ -175,6 +175,18 @@ body {
     height: 0;
 }
 
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
 .bg-dark .settings-container {
     border: none !important;
 }
@@ -186,4 +198,52 @@ body {
 
 .bg-dark.container-page .container {
     background-color: #1e1e1e !important;
+}
+
+a.cta-2,
+button.cta-2 {
+    border-radius: 0.4em;
+    padding: 0.75em 1.25em;
+    color: black;
+    border: 2px solid #426B1F;
+    transition: background-color ease-in-out 0.25s, color ease-in-out 0.25s, transform ease-in-out 0.25s;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    background-color: none;
+}
+
+a.cta-2 span,
+button.cta-2 span {
+    color: black;
+    transition: bcolor ease-in-out 0.25s;
+    padding-right: 4px;
+}
+
+a.cta-2:hover,
+button.cta-2:hover {
+    color: white;
+    background-color: #426B1F !important;
+}
+
+a.cta-2:hover span,
+button.cta-2:hover span {
+    color: white;
+}
+
+.white-button {
+    padding: 0.9em 1.8em;
+    margin-top: 1.2em;
+    border-radius: 10px;
+    background: white;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: none;
+    color:#345418
+}
+
+.white-button:hover {
+    transform: scale(1.05);
 }

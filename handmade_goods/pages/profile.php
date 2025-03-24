@@ -1,13 +1,12 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
     exit();
 }
 
-// Ensure only admin can access admin features
 $user_id = $_SESSION["user_id"];
 $user_type = $_SESSION["user_type"];
 
@@ -17,14 +16,13 @@ if (isset($_SESSION['success'])) {
 }
 
 $user_id = intval($_SESSION["user_id"]);
-$stmt = $conn->prepare("SELECT name, email, profile_picture FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT name, email, profile_picture FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $stmt->bind_result($name, $email, $profile_picture);
 $stmt->fetch();
 $stmt->close();
 
-// Get all users if admin - Optimized query
 $all_users = [];
 if ($user_type === 'admin') {
     $stmt = $conn->prepare("
@@ -34,9 +32,9 @@ if ($user_type === 'admin') {
             u.email, 
             u.user_type, 
             u.created_at,
-            (SELECT COUNT(*) FROM orders WHERE user_id = u.id) as total_orders,
-            (SELECT COUNT(*) FROM items WHERE user_id = u.id) as total_listings
-        FROM users u
+            (SELECT COUNT(*) FROM ORDERS WHERE user_id = u.id) as total_orders,
+            (SELECT COUNT(*) FROM ITEMS WHERE user_id = u.id) as total_listings
+        FROM USERS u
         WHERE u.id != ?
         ORDER BY u.created_at DESC
         LIMIT 50
@@ -77,7 +75,7 @@ if ($user_type === 'admin') {
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <div class="container">
         <h1 class="text-center mt-5"><?php echo ($user_type === 'admin') ? 'Admin Dashboard' : 'My Profile'; ?></h1>
@@ -115,9 +113,9 @@ if ($user_type === 'admin') {
                 </div>
             </div>
             <?php if ($user_type === 'admin'): ?>
-                <?php include 'profile_admin_dashboard.php'; ?>
+                <?php include __DIR__ . '/profile_admin_dashboard.php'; ?>
             <?php else: ?>
-                <?php include 'profile_user_dashboard.php'; ?>
+                <?php include __DIR__ . '/profile_user_dashboard.php'; ?>
             <?php endif; ?>
 
         </div>
@@ -139,6 +137,8 @@ if ($user_type === 'admin') {
         let userType = "<?= $user_type ?>";
     </script>
     <script src="../assets/js/admin_manage_listing.js"></script>
+
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 session_start();
 session_regenerate_id(true);
 error_reporting(E_ALL);
@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = trim($_POST["email"]);
         $password = $_POST["password"];
         $user_type = 'normal';
-        $profile_picture = "/cosc-360-project/handmade_goods/assets/images/default-profile.jpg";
+        $profile_picture = "/cosc-360-project/handmade_goods/assets/images/default_profile.png";
 
         $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/";
 
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
         
-        $check = $conn->prepare("SELECT email FROM users WHERE email = ?");
+        $check = $conn->prepare("SELECT email FROM USERS WHERE email = ?");
         $check->bind_param("s", $email);
         $check->execute();
         $check->store_result();
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-        $stmt = $conn->prepare("INSERT INTO users (name, email, password, user_type, profile_picture) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO USERS (name, email, password, user_type, profile_picture) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssss", $name, $email, $hashed_password, $user_type, $profile_picture);
 
         if ($stmt->execute()) {
@@ -108,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($remember) {
             $token = bin2hex(random_bytes(32));
     
-            $cookie_stmt = $conn->prepare("UPDATE users SET remember_token = ? WHERE email = ?");
+            $cookie_stmt = $conn->prepare("UPDATE USERS SET remember_token = ? WHERE email = ?");
             $cookie_stmt->bind_param("ss", $token, $email);
             
             if (!$cookie_stmt->execute()) {
@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     
         
-        $stmt = $conn->prepare("SELECT id, name, password, user_type, profile_picture FROM users WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, name, password, user_type, profile_picture FROM USERS WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();

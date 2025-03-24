@@ -1,118 +1,247 @@
 <?php
 session_start();
-include '../config.php';
+include __DIR__ . '/../config.php';
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: login.php");
     exit();
 }
 
+$errors = [];
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = trim($_POST["name"]);
-    $description = trim($_POST["description"]);
-    $price = trim($_POST["price"]);
-    $stock = trim($_POST["stock"]);
-    $category = trim($_POST["category"]);
-    $user_email = $_SESSION["user_id"];
+    $name = trim($_POST["name"] ?? "");
+    $description = trim($_POST["description"] ?? "");
+    $price = trim($_POST["price"] ?? "");
+    $stock = trim($_POST["stock"] ?? "");
+    $category = trim($_POST["category"] ?? "");
+    $user_id = $_SESSION["user_id"];
 
-    $target_dir = "../uploads/";
-    $image_name = basename($_FILES["image"]["name"]);
-    $target_file = $target_dir . time() . "_" . $image_name;
-    $image_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-    if (getimagesize($_FILES["image"]["tmp_name"]) === false) {
-        die("Error: Uploaded file is not a valid image.");
+    if (empty($name)) {
+        $errors[] = "Product name is required.";
+    }
+    if (empty($description)) {
+        $errors[] = "Description is required.";
+    }
+    if (empty($price)) {
+        $errors[] = "Price is required.";
+    } elseif (!is_numeric($price) || $price <= 0) {
+        $errors[] = "Price must be a positive number.";
+    }
+    if (empty($stock)) {
+        $errors[] = "Stock is required.";
+    } elseif (!ctype_digit($stock) || $stock <= 0) {
+        $errors[] = "Stock must be a positive integer.";
+    }
+    if (empty($category)) {
+        $errors[] = "Please select a category.";
+    }
+    if (!isset($_FILES["image"]) || $_FILES["image"]["error"] != UPLOAD_ERR_OK) {
+        $errors[] = "Product image is required.";
     }
 
-    if (!in_array($image_type, ["jpg", "jpeg", "png", "gif"])) {
-        die("Error: Only JPG, JPEG, PNG & GIF files are allowed.");
+    if (empty($errors)) {
+        $maxSize = 2 * 1024 * 1024;
+        $target_dir = "../assets/images/uploads/product_images/";
+        $image_name = basename($_FILES["image"]["name"]);
+        $target_file = $target_dir . time() . "_" . $image_name;
+        $image_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        if (!isset($_FILES["image"]) || $_FILES["image"]["error"] != UPLOAD_ERR_OK) {
+            $errors[] = "Product image is required. Error Code: " . $_FILES["image"]["error"];
+        }
+        if (getimagesize($_FILES["image"]["tmp_name"]) === false) {
+            $errors[] = "Uploaded file is not a valid image.";
+        }
+        if ($_FILES["image"]["size"] > $maxSize) {
+            $errors[] = "File exceeds maximum allowed size of 2MB.";
+        }
+        if ($_FILES["image"]["size"] === 0) {
+            $errors[] = "File is empty or not properly uploaded.";
+        }
+        if (!in_array($image_type, ["jpg", "jpeg", "webp", "png"])) {
+            $errors[] = "Only JPG, JPEG, WEBP, and PNG files are allowed.";
+        }
+        if (empty($errors)) {
+            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                $errors[] = "Failed to upload image.";
+            }
+        }
     }
 
-    if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-        die("Error: Failed to upload image.");
+    if (empty($errors)) {
+        $stmt = $conn->prepare(
+            "INSERT INTO ITEMS (name, description, price, stock, category, img, user_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)"
+        );
+        $stmt->bind_param("ssdissi", $name, $description, $price, $stock, $category, $target_file, $user_id);
+
+        if ($stmt->execute()) {
+            header("Location: my_shop.php");
+            exit();
+        } else {
+            $errors[] = "Error: Failed to add product.";
+        }
+        $stmt->close();
     }
-
-    $stmt = $conn->prepare("INSERT INTO items (name, description, price, stock, category, img, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssdiiss", $name, $description, $price, $stock, $category, $target_file, $user_email);
-
-    if ($stmt->execute()) {
-        header("Location: myshop.php");
-        exit();
-    } else {
-        echo "Error: Failed to add product.";
-    }
-
-    $stmt->close();
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Handmade Goods - Create Listing</title>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Handmade Goods - Browse</title>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../assets/css/globals.css">
+        <link rel="stylesheet" href="../assets/css/navbar.css">
+        <link rel="stylesheet" href="../assets/css/footer.css">
+        <link rel="stylesheet" href="../assets/css/create_listing.css">
+    </head>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/globals.css">
-    <link rel="stylesheet" href="../assets/css/products.css?v=1">
-    <link rel="stylesheet" href="../assets/css/navbar.css">
-    <link rel="stylesheet" href="../assets/css/footer.css">
-    <link rel="stylesheet" href="../assets/css/product_card.css">
-</head>
+    <body>
+        <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
-<body>
-    <?php include '../assets/html/navbar.php'; ?>
+        <h1 class="text-center mt-5">Create a New Listing</h1>
+        <p class="text-center">Fill in the details to add your product to our directory!</p>
+        <br>
 
-    <h1 class="text-center">Create a New Listing</h1>
-    <p class="text-center">Fill in the details to add your product</p>
-    <br>
-
-    <div class="container mt-4 d-flex justify-content-center">
-        <form action="create_listing.php" method="POST" enctype="multipart/form-data" class="mt-4">
-            <div class="mb-3">
-                <label for="name" class="form-label">Product Name</label>
-                <input type="text" name="name" id="name" class="form-control" required>
+        <?php if (!empty($errors)): ?>
+            <div class="alert alert-danger">
+                <ul>
+                <?php foreach($errors as $error): ?>
+                    <li><?= htmlspecialchars($error) ?></li>
+                <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+        
+        <section>
+            <div class="preview-container">
+                <div class="listing-item-container" id="productPreview">
+                    <div class="product-image-container">
+                    <img src="" id="previewDiv" class="card-img-top" style="background-color: #BBB; width: 100%; height: 100%;">
+                    <img src="" id="previewImage" class="card-img-top" style="diplay:none;">
+                    </div>
+                    <div class="product-info">
+                        <h1 id="previewTitle">Product Preview</h1>
+                        <h2>$<span id="previewPrice">0.01</span></h2>
+                    </div>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea name="description" id="description" class="form-control" required></textarea>
+            <div class="listing-form-container">
+                <form action="create_listing.php" id="listingForm" method="POST" enctype="multipart/form-data" class="mt-4">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Product Name</label>
+                        <input type="text" name="name" id="name" class="form-control" required  oninput="updatePreview()" value="<?= isset($name) ? htmlspecialchars($name) : '' ?>">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" class="form-control" required  oninput="updatePreview()"><?= isset($description) ? htmlspecialchars($description) : '' ?></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Price ($)</label>
+                        <input type="number" name="price" id="price" class="form-control" step="0.01" required min="0.01" value="<?= isset($price) ? htmlspecialchars($price) : '' ?>"  oninput="updatePreview()">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="stock" class="form-label">Stock</label>
+                        <input type="number" name="stock" id="stock" class="form-control" required min="1" value="<?= isset($stock) ? htmlspecialchars($stock) : '' ?>">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <select name="category" id="category" class="form-control" required>
+                            <option value="">Select a Category</option>
+                            <option value="Kitchenware" <?= (isset($category) && $category === 'Kitchenware') ? 'selected' : '' ?>>Kitchenware</option>
+                            <option value="Accessories" <?= (isset($category) && $category === 'Accessories') ? 'selected' : '' ?>>Accessories</option>
+                            <option value="Apparel" <?= (isset($category) && $category === 'Apparel') ? 'selected' : '' ?>>Apparel</option>
+                            <option value="Home Decor" <?= (isset($category) && $category === 'Home Decor') ? 'selected' : '' ?>>Home Decor</option>
+                            <option value="Personal Care" <?= (isset($category) && $category === 'Personal Care') ? 'selected' : '' ?>>Personal Care</option>
+                            <option value="Stationery" <?= (isset($category) && $category === 'Stationery') ? 'selected' : '' ?>>Stationery</option>
+                            <option value="Toys" <?= (isset($category) && $category === 'Toys') ? 'selected' : '' ?>>Toys</option>
+                            <option value="Art" <?= (isset($category) && $category === 'Art') ? 'selected' : '' ?>>Art</option>
+                            <option value="Seasonal" <?= (isset($category) && $category === 'Seasonal') ? 'selected' : '' ?>>Seasonal</option>
+                            <option value="Gift Sets" <?= (isset($category) && $category === 'Gift Sets') ? 'selected' : '' ?>>Gift Sets</option>
+                            <option value="Wallets and Purses" <?= (isset($category) && $category === 'Wallets and Purses') ? 'selected' : '' ?>>Wallets and Purses</option>
+                            <option value="Storage" <?= (isset($category) && $category === 'Storage') ? 'selected' : '' ?>>Storage</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Product Image</label>
+                        <input type="file" name="image" id="image" class="form-control" accept="image/*" required onchange="previewImage()">
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-3 mb-3">
+                        <a class="cta-2 hover-raise" href="my_shop.php">
+                            <span class="material-symbols-outlined">delete</span> Cancel
+                        </a>
+                        <button type="button" class="hover-raise cta-2" onclick="clearFormAndErrors()">
+                        <span class="material-symbols-outlined">ink_eraser</span> Clear Fields
+                        </button>
+                        <button type="submit" class="cta hover-raise" href="my_shop.php">
+                            <span class="material-symbols-outlined">add</span> Submit Product
+                        </button>
+                    </div>
+                </form>
             </div>
+        </section>
 
-            <div class="mb-3">
-                <label for="price" class="form-label">Price ($)</label>
-                <input type="number" name="price" id="price" class="form-control" step="0.01" required>
-            </div>
+        <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 
-            <div class="mb-3">
-                <label for="stock" class="form-label">Stock</label>
-                <input type="number" name="stock" id="stock" class="form-control" required>
-            </div>
+        <script>
+            function updatePreview() {
+                let priceInput = document.getElementById("price").value.trim();
+                let formattedPrice = (priceInput === "" || isNaN(priceInput)) ? "0.00" : parseFloat(priceInput).toFixed(2);
 
-            <div class="mb-3">
-                <label for="category" class="form-label">Category</label>
-                <input type="text" name="category" id="category" class="form-control" required>
-            </div>
+                document.getElementById("previewTitle").innerText = document.getElementById("name").value || "Product Preview";
+                document.getElementById("previewPrice").innerText = `${formattedPrice}`;
+            }
 
-            <div class="mb-3">
-                <label for="image" class="form-label">Product Image</label>
-                <input type="file" name="image" id="image" class="form-control" accept="image/*" required>
-            </div>
+            function previewImage() {
+                const file = document.getElementById("image").files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const previewImage = document.getElementById("previewImage");
+                        const previewDiv = document.getElementById("previewDiv");
+                        previewImage.src = e.target.result;
+                        previewImage.style.display = "block";
+                        previewDiv.style.display = "none";
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
 
-            <div class="d-flex justify-content-center">
-                <a class="cta hover-raise" href="myshop.php">
-                    <span class="material-symbols-outlined"></span> Create Listing
-                </a>
-            </div>
-        </form>
-    </div>
+            function clearFormAndErrors() {
+                const errorAlert = document.querySelector('.alert.alert-danger');
+                if (errorAlert) {
+                    errorAlert.remove();
+                }
+                const form = document.getElementById('listingForm');
+                if (form) {
+                    form.reset();
+                }
+                const fileInput = document.getElementById('image');
+                if (fileInput) {
+                    fileInput.value = "";
+                }
+                window.location.href = window.location.pathname;
+            }
 
-</body>
-
+            document.getElementById("previewTitle").innerText = "Product Preview";
+            document.getElementById("previewPrice").innerText = "0.00";
+            document.getElementById("previewImage").style.display = "none";
+        </script>
+    </body>
 </html>
