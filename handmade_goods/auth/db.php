@@ -14,9 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = trim($_POST["email"]);
         $password = $_POST["password"];
         $user_type = 'normal';
-        $profile_picture = "/cosc-360-project/handmade_goods/assets/images/default_profile.png";
+        $profile_picture = "/~rsodhi03/cosc-360-project/handmade_goods/assets/images/default_profile.png";
 
-        $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/";
+        $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "/~rsodhi03/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/";
 
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0775, true);
@@ -31,18 +31,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $target_file = $upload_dir . $file_name;
 
                 if (!file_exists($_FILES["profile_picture"]["tmp_name"])) {
-                    header("Location: /cosc-360-project/handmade_goods/auth/register.php?error=temp_file_missing");
+                    header("Location: /~rsodhi03/cosc-360-project/handmade_goods/auth/register.php?error=temp_file_missing");
                     exit();
                 }
 
                 if (!move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
-                    header("Location: /cosc-360-project/handmade_goods/auth/register.php?error=file_upload_failed");
+                    header("Location: /~rsodhi03/cosc-360-project/handmade_goods/auth/register.php?error=file_upload_failed");
                     exit();
                 } else {
                     $profile_picture = str_replace($_SERVER['DOCUMENT_ROOT'], '', $target_file);
                 }
             } else {
-                header("Location: /cosc-360-project/handmade_goods/auth/register.php?error=invalid_file");
+                header("Location: /~rsodhi03/cosc-360-project/handmade_goods/auth/register.php?error=invalid_file");
                 exit();
             }
         }
@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check->store_result();
 
         if ($check->num_rows > 0) {
-            header("Location: ../auth/register.php?error=email_taken");
+            header("Location: /~rsodhi03/cosc-360-project/handmade_goods/auth/register.php?error=email_taken");
             exit();
         }
         $check->close();
@@ -89,10 +89,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $response = curl_exec($ch);
             curl_close($ch);
             
-            header("Location: /cosc-360-project/handmade_goods/pages/home.php");
+            header("Location: /~rsodhi03/cosc-360-project/handmade_goods/pages/home.php");
             exit();
         } else {
-            header("Location: /cosc-360-project/handmade_goods/auth/register.php?error=registration_failed");
+            header("Location: /~rsodhi03/cosc-360-project/handmade_goods/auth/register.php?error=registration_failed");
             exit();
         }
         $stmt->close();
@@ -136,14 +136,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["user_name"] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
                 $_SESSION["user_type"] = $user_type;
                 $_SESSION["profile_picture"] = $profile_picture;
-                header("Location: http://localhost/cosc-360-project/handmade_goods/pages/home.php");
+                header("Location: https://cosc360.ok.ubc.ca/~rsodhi03/cosc-360-project/handmade_goods/pages/product.php?id=3cosc-360-project/handmade_goods/pages/home.php");
                 exit();
             } else {
                 header("Location: /cosc-360-project/handmade_goods/auth/login.php?error=invalid");
                 exit();
             }
         } else {
-            header("Location: http://localhost/cosc-360-project/handmade_goods/auth/login.php?error=nouser");
+            header("Location: https://cosc360.ok.ubc.ca/~rsodhi03/cosc-360-project/handmade_goods/auth/login.php?error=nouser");
             exit();
 
         }
