@@ -118,7 +118,7 @@ foreach ($order_items as $item) {
         <div class="row mt-4">
             <?php foreach ($order_items as $item): ?>
                 <div class="col-md-6 mb-4">
-                    <a class="order-item hover-raise d-flex align-items-center" href="/cosc-360-project/handmade_goods/pages/product.php?id=<?= htmlspecialchars($item['item_id']) ?>">
+                    <a class="order-item hover-raise d-flex align-items-center" href="/~rsodhi03/cosc-360-project/handmade_goods/pages/product.php?id=<?= htmlspecialchars($item['item_id']) ?>">
                         <img src="<?= htmlspecialchars($item['img'] ?? '/~rsodhi03/cosc-360-project/handmade_goods/assets/images/product_images/default.webp') ?>" 
                             alt="<?= htmlspecialchars($item['item_name']) ?>"
                             class="cart-img me-4">

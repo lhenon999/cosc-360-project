@@ -10,7 +10,7 @@ if (!isset($_SESSION["user_id"])) {
 $user_id = $_SESSION["user_id"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_picture"])) {
-    $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/";
+    $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "/~rsodhi03/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/";
 
     $allowedTypes = ["jpg", "jpeg", "png", "gif"];
     $maxFileSize = 2 * 1024 * 1024;
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profile_picture"])) {
     $uploadFile = $upload_dir . $newFileName;
 
     if (move_uploaded_file($fileTmpPath, $uploadFile)) {
-        $profilePicPath = "/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/" . $newFileName;
+        $profilePicPath = "/~rsodhi03/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/" . $newFileName;
 
         $stmt = $conn->prepare("UPDATE USERS SET profile_picture = ? WHERE id = ?");
         $stmt->bind_param("si", $profilePicPath, $user_id);

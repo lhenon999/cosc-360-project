@@ -139,7 +139,7 @@ if ($session_user_id !== null) {
                             <p class="stock-info <?= $product['stock'] < 5 ? 'low-stock' : '' ?>">
                                 <?= $product['stock'] < 5 ? 'Only ' . $product['stock'] . ' left in stock!' : 'In Stock' ?>
                             </p>
-                            <form action="/cosc-360-project/handmade_goods/basket/add_to_basket.php" method="POST" class="user-options">
+                            <form action="/~rsodhi03/cosc-360-project/handmade_goods/basket/add_to_basket.php" method="POST" class="user-options">
                                 <input type="hidden" name="product_id" value="<?= $product_id ?>">
                                 <?php if ($_SESSION['user_type'] === 'admin'): ?>
                                     <a href="profile.php?item=<?= urlencode($name) ?>" class="cta hover-raise atc">
