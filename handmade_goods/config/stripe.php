@@ -49,7 +49,8 @@ if (!defined('STRIPE_INCLUDED')) {
                     throw new \Exception($response['error']['message'] ?? 'Unknown Stripe error');
                 }
                 
-                return $response;
+                // Convert response to a standard object format for consistency with the Stripe SDK
+                return json_decode(json_encode($response));
             }
             
             private function request($endpoint, $method = 'GET', $params = []) {
@@ -65,11 +66,14 @@ if (!defined('STRIPE_INCLUDED')) {
                 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
                 
                 if ($method === 'POST' && !empty($params)) {
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+                    // Flatten the params array for proper format expected by Stripe
+                    $flatParams = $this->flattenParams($params);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($flatParams));
                 }
                 
                 $response = curl_exec($ch);
                 $err = curl_error($ch);
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                 
                 curl_close($ch);
                 
@@ -77,7 +81,42 @@ if (!defined('STRIPE_INCLUDED')) {
                     throw new \Exception('cURL Error: ' . $err);
                 }
                 
-                return json_decode($response, true);
+                $decoded = json_decode($response, true);
+                
+                if ($httpCode >= 400) {
+                    throw new \Exception($decoded['error']['message'] ?? 'Stripe API Error: ' . $response);
+                }
+                
+                return $decoded;
+            }
+            
+            // Helper function to flatten nested arrays for Stripe's API format
+            private function flattenParams($params, $prefix = '') {
+                $result = [];
+                
+                foreach ($params as $key => $value) {
+                    $newKey = $prefix ? "{$prefix}[{$key}]" : $key;
+                    
+                    if (is_array($value)) {
+                        if (isset($value[0]) || empty($value)) {
+                            // Indexed array needs special handling
+                            foreach ($value as $i => $item) {
+                                if (is_array($item)) {
+                                    $result = array_merge($result, $this->flattenParams($item, "{$newKey}[{$i}]"));
+                                } else {
+                                    $result["{$newKey}[{$i}]"] = $item;
+                                }
+                            }
+                        } else {
+                            // Associative array
+                            $result = array_merge($result, $this->flattenParams($value, $newKey));
+                        }
+                    } else {
+                        $result[$newKey] = $value;
+                    }
+                }
+                
+                return $result;
             }
         }
         

@@ -523,6 +523,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                                 }
                                                             } catch (e) {
                                                                 console.error("Error parsing error response:", e);
+                                                                console.error("Raw response:", xhr.responseText);
                                                             }
                                                             
                                                             console.error("Checkout error details:", {

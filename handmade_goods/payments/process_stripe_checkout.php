@@ -22,11 +22,12 @@ function logCheckout($message, $data = null) {
     file_put_contents($logFile, $log . "\n", FILE_APPEND);
 }
 
+// Set proper content type for JSON response
+header('Content-Type: application/json');
+
 try {
     // Start logging
     logCheckout("Starting checkout process");
-
-    header('Content-Type: application/json');
 
     if (!isset($_SESSION["user_id"])) {
         throw new Exception("User not authenticated");
@@ -141,7 +142,6 @@ try {
                 ],
             ],
         ],
-        // Removed billing_address_collection setting to use the default 'auto' option
         'payment_intent_data' => [
             'metadata' => [
                 'order_id' => $orderId
@@ -152,28 +152,46 @@ try {
     logCheckout("Creating Stripe checkout session", ['params' => $session_params]);
 
     // Create Checkout Session with error handling
+    $session = null;
+    $errorMessage = '';
+    
     try {
         if (class_exists('\Stripe\Stripe')) {
             // Using official Stripe PHP SDK
+            logCheckout("Using official Stripe SDK");
             $session = $stripe->checkout->sessions->create($session_params);
         } else {
             // Using fallback implementation
+            logCheckout("Using fallback Stripe implementation");
             $session = $stripe->createCheckoutSession($session_params);
         }
         
-        if (!$session || empty($session->url)) {
-            throw new Exception("Failed to create checkout session - no URL returned");
+        if (!$session) {
+            throw new Exception("Stripe session creation failed - no response");
         }
-
-        logCheckout("Checkout session created successfully", ['session_id' => $session->id]);
         
+        if (is_object($session) && !isset($session->url)) {
+            throw new Exception("Stripe session created but no URL returned");
+        }
+        
+        if (is_array($session) && !isset($session['url'])) {
+            throw new Exception("Stripe session created but no URL returned in array");
+        }
+        
+        // Handle different session response formats (object vs array)
+        $sessionId = is_object($session) ? $session->id : $session['id'];
+        $checkoutUrl = is_object($session) ? $session->url : $session['url'];
+        
+        logCheckout("Checkout session created successfully", ['session_id' => $sessionId]);
+        
+        // Send success response
         echo json_encode([
             'success' => true,
-            'session_id' => $session->id,
-            'checkout_url' => $session->url
+            'session_id' => $sessionId,
+            'checkout_url' => $checkoutUrl
         ]);
         
-        // Update inventory immediately after checkout is created
+        // Update inventory in background (don't wait for this to complete)
         try {
             // Get order items to update inventory
             $stmt = $conn->prepare("
@@ -244,40 +262,36 @@ try {
         }
 
     } catch (Exception $e) {
-        logCheckout("Error creating checkout session: " . $e->getMessage());
-        
-        // Return detailed error for debugging
-        http_response_code(500);
-        
-        // Check for specific error conditions
         $errorMessage = $e->getMessage();
-        $specificError = "";
-        
-        if (strpos($errorMessage, "cURL error") !== false) {
-            $specificError = "Network error: Unable to connect to Stripe. Please check your internet connection.";
-        } else if (strpos($errorMessage, "SSL certificate problem") !== false) {
-            $specificError = "SSL Error: Your server cannot verify Stripe's SSL certificate.";
-        } else if (strpos($errorMessage, "API key") !== false) {
-            $specificError = "API Key Error: The Stripe API key may be invalid or missing.";
-        } else if (strpos($errorMessage, "No such") !== false) {
-            $specificError = "Resource Error: A required Stripe resource was not found.";
-        } else if (strpos($errorMessage, "class 'Stripe") !== false) {
-            $specificError = "Stripe Library Error: The Stripe PHP library is not properly loaded.";
-        }
-        
-        echo json_encode([
-            'success' => false,
-            'error' => $specificError ?: "Error creating checkout session. Please try again.",
-            'detailed_error' => $errorMessage
-        ]);
+        logCheckout("Error in Stripe session creation: " . $errorMessage);
+        throw new Exception("Stripe error: " . $errorMessage);
     }
+
 } catch (Exception $e) {
-    logCheckout("Error in checkout process: " . $e->getMessage());
+    logCheckout("Error creating checkout session: " . $e->getMessage());
     
-    // Return error to client
+    // Return error response
     http_response_code(500);
+    
+    // Check for specific error conditions
+    $errorMessage = $e->getMessage();
+    $specificError = "";
+    
+    if (strpos($errorMessage, "cURL error") !== false) {
+        $specificError = "Network error: Unable to connect to Stripe. Please check your internet connection.";
+    } else if (strpos($errorMessage, "SSL certificate problem") !== false) {
+        $specificError = "SSL Error: Your server cannot verify Stripe's SSL certificate.";
+    } else if (strpos($errorMessage, "API key") !== false) {
+        $specificError = "API Key Error: The Stripe API key may be invalid or missing.";
+    } else if (strpos($errorMessage, "No such") !== false) {
+        $specificError = "Resource Error: A required Stripe resource was not found.";
+    } else if (strpos($errorMessage, "class 'Stripe") !== false) {
+        $specificError = "Stripe Library Error: The Stripe PHP library is not properly loaded.";
+    }
+    
     echo json_encode([
         'success' => false,
-        'error' => $e->getMessage()
+        'error' => $specificError ?: "Error creating checkout session. Please try again.",
+        'detailed_error' => $errorMessage
     ]);
 }

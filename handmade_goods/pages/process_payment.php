@@ -124,23 +124,28 @@ $total_price = $order["total_price"];
                     })
                 })
                 .then(function(response) {
+                    if (!response.ok) {
+                        return response.json().then(function(errorData) {
+                            throw new Error(errorData.error || 'Server error: ' + response.status);
+                        });
+                    }
                     return response.json();
                 })
                 .then(function(session) {
-                    if (session.success && session.url) {
+                    if (session.success && session.checkout_url) {
                         // Redirect to Stripe Checkout
-                        window.location.href = session.url;
+                        window.location.href = session.checkout_url;
                     } else {
                         throw new Error(session.error || 'Unknown error occurred');
                     }
                 })
                 .catch(function(error) {
-                    // Show error and re-enable button
-                    errorElement.textContent = 'Payment error: ' + error.message;
-                    errorElement.classList.remove('d-none');
-                    loadingElement.classList.add('d-none');
+                    console.error('Error details:', error);
+                    // Re-enable button and show error
                     checkoutButton.disabled = false;
-                    console.error('Error:', error);
+                    loadingElement.classList.add('d-none');
+                    errorElement.classList.remove('d-none');
+                    errorElement.textContent = error.message || 'An error occurred. Please try again.';
                 });
             });
         });
