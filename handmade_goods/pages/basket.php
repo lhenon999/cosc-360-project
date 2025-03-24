@@ -175,7 +175,5 @@ $total = $subtotal + $shipping + $tax;
         </div>
     </div>
 </div>
-
 </body>
-
 </html>

@@ -243,7 +243,7 @@ if ($session_user_id !== null) {
                                     <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
                                 </div>
                             </div>
-                            <button type="submit" class="cta hover-raise w-100"><span class="material-symbols-outlined">check</span>Submit Review</button>
+                            <button type="submit" class="white-button"><span class="material-symbols-outlined">check</span>Submit Review</button>
                         </form>
                     <?php else: ?>
                         <p>You can only leave a review if you've purchased this product.</p>
