@@ -14,7 +14,7 @@
     <a class="listing-item" href="../pages/product.php?id=<?= $id . $from . $and ?>">
 
         <div class="product-image-container">
-            <img src="/cosc-360-project/handmade_goods/assets/images/product_images/handmade_wooden_bowl.webp" alt="<?= htmlspecialchars($name) ?>" class="product-image">
+            <img src="<?= $image ?>" alt="<?= htmlspecialchars($name) ?>" class="product-image">
             <?php if (isset($stock)): ?>
                 <div class="stock-badge <?= $stock_class ?>">
                     <?php if ($stock <= 0): ?>

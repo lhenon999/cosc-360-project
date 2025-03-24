@@ -228,7 +228,7 @@ $rating_stmt->close();
                     $id = htmlspecialchars($product["id"]);
                     $name = htmlspecialchars($product["name"]);
                     $price = number_format($product["price"], 2);
-                    $image = htmlspecialchars($product["img"]);
+                    $image = '/~rsodhi03' . htmlspecialchars($product["img"]);
                     $stock = intval($product["stock"]);
                     $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
                     include "../assets/html/product_card.php";
