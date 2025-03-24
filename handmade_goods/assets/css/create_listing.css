@@ -1,0 +1,107 @@
+section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+    gap: 2em;
+    width: 100%;
+    padding: 0 2em;
+}
+
+.preview-container {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.listing-form-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.listing-form-container form {
+    width: 70%;
+}
+
+.listing-form-container label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #666;
+    padding-top: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.listing-item-container {
+    width: 544px; 
+    height: 612px; 
+    border-radius: 14px;
+    background-color: #fafaf6;
+    overflow: hidden;
+    border: 4px solid #DDD;
+    transition: transform ease-in-out 0.2s, box-shadow ease-in-out 0.2s;
+}
+
+
+.bg-dark .listing-item-container {
+    background-color: #1e1e1e !important;
+    border: none !important;
+}
+
+.listing-item-container:hover {
+    box-shadow: 1px 3px 6px rgba(0, 0, 0, 0.1);
+    transform: scale(1.01);
+}
+
+.listing-item {
+    height: 70%;
+}
+
+.product-image {
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+}
+
+.product-image-container {
+    position: relative;
+    width: 100%;
+    height: 70%;
+    display: flex;
+}
+
+.product-info {
+    height: 30%;
+    display: flex;
+    padding: 1em;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+}
+
+.bg-dark .product-info{
+    color: #ffffff;
+}
+
+.product-info h2,
+.product-info h1 {
+    padding: 0;
+    margin: 0;
+}
+
+.product-info h1 {
+    font-family: "Newsreader", serif;
+    font-weight: 500;
+    font-size: 36px;
+}
+
+.product-info h2,
+.product-info h2 span {
+    color: #436b1f;
+}

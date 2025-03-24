@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../config.php';
+require __DIR__ . '/../config.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $short_code = trim($_POST['token']);
     $email = trim($_POST['email']);
 
-    $stmt = $conn->prepare("SELECT token, short_code, expires FROM password_resets WHERE email = ?");
+    $stmt = $conn->prepare("SELECT token, short_code, expires FROM PASSWORD_RESETS WHERE email = ?");
     if (!$stmt) {
         die("Prepare failed: " . $conn->error);
     }
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
     <main class="container text-center">
         <h1>Reset Your Password</h1>
         <div class="login-container">

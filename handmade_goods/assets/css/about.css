@@ -1,45 +1,27 @@
 .feature-box {
     background-color: #f8f9fa;
     border-radius: 10px;
-    transition: transform 0.3s ease;
+    border: 2px #DDD solid;
+    height: 100%;
 }
 
 .bg-dark .feature-box {
     background-color: #1e1e1e;
     border-radius: 10px;
-    transition: transform 0.3s ease;
-}
-
-.feature-box:hover {
-    transform: translateY(-5px);
+    border: 2px #DDD solid;
+    height: 100%;
 }
 
 .feature-icon {
     font-size: 48px;
-    color: var(--primary-color);
-}
 
-h1 {
-    color: var(--primary-color);
-    font-family: 'Newsreader', serif;
-    font-weight: 600;
-}
-
-h2, h3 {
-    font-family: 'Newsreader', serif;
-    color: var(--primary-color);
 }
 
 p {
-    color: var(--text-color);
-    line-height: 1.6;
+    line-height: 1.8;
 }
 
-.feature-box p {
-    color: var(--text-muted);
-}
-
-img.img-fluid {
+img {
     max-height: 400px;
     object-fit: cover;
     width: 100%;

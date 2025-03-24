@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
@@ -19,7 +19,7 @@ $order_id = intval($_GET["order_id"]);
 $stmt = $conn->prepare("
     SELECT o.id, o.total_price, o.status, o.created_at, 
            a.street_address, a.city, a.state, a.postal_code, a.country
-    FROM orders o
+    FROM ORDERS o
     LEFT JOIN addresses a ON o.address_id = a.id
     WHERE o.id = ? AND o.user_id = ?
 ");
@@ -37,15 +37,15 @@ if (!$order) {
 if ($user_type === 'admin') {
     $stmt = $conn->prepare("
         SELECT oi.item_name, i.id, i.stock, oi.quantity, oi.price_at_purchase
-        FROM order_items oi
-        LEFT JOIN items i ON oi.item_id = i.id
+        FROM ORDER_ITEMS oi
+        LEFT JOIN ITEMS i ON oi.item_id = i.id
         WHERE oi.order_id = ?
         ORDER BY oi.item_name
     ");
 } else {
     $stmt = $conn->prepare("
         SELECT oi.item_name, oi.quantity, oi.price_at_purchase
-        FROM order_items oi
+        FROM ORDER_ITEMS oi
         WHERE oi.order_id = ?
         ORDER BY oi.item_name
     ");
@@ -74,13 +74,14 @@ $stmt->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/order_details.css">
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
     <div class="order-details-container">
-        <h2>Order Details</h2>
+        <h2 class="text-center">Order Details</h2>
 
         <div class="order-info">
             <p><strong>Order ID: </strong> <span>#<?= $order["id"] ?></span></p>
@@ -144,6 +145,7 @@ $stmt->close();
     </div>
 
     </div>
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
 </html>

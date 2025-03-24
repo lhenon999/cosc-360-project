@@ -1,168 +1,39 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
-}
-
-.container {
-    max-width: 1800px !important;
-    width: 100%;
-    margin: 0 auto;
-    padding: 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+main {
     display: flex;
-    flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 20px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease-in-out;
-    border-radius: 16px;
-}
-
-.container:hover{
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.1);
-    transform: translateY(-3px);
-}
-
-.bg-dark .container{
-    background: #1e1e1e !important;
-}
-
-.sidebar {
-    width: 250px;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
-    height: auto;
-    min-height: auto;
-    overflow-y: auto;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-.bg-dark .sidebar {
-    background-color: #1e1e1e !important;
-    color: #ffffff !important;
-}
-
-.bg-dark .sidebar h3,
-.bg-dark .sidebar ul li a {
-    color: #ffffff !important;
-}
-
-.sidebar h3 {
-    font-size: 18px;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin-bottom: 10px;
-}
-
-.sidebar ul li a {
-    text-decoration: none;
-    color: #e63946;
-    font-size: 14px;
-}
-
-.sidebar ul li a:hover {
-    text-decoration: underline;
+    gap: 28px;
+    margin: auto;
+    width: 90% !important;
 }
 
 h1 {
-    padding-top: 40px;
-    font-size: 2.5rem;
-    font-weight: bold;
-}
-
-.scrollable-container {
-    flex-grow: 0;
-    height: auto;
-    min-height: 0;
-    overflow-y: auto; 
-    padding: 20px;
-    background: white;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 1800px;
-    margin: auto;
-    padding-top: 20px;
-}
-
-
-.container-fluid {
-    width: 100% !important;
-    max-width: 1800px !important;
-    margin: auto;
+    margin-top: 2em;
 }
 
 .listing-grid {
+    width: 100%;
     display: grid;
     gap: 20px;
     justify-items: start;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
-@media (max-width: 1300px) {
-    .listing-grid {
-        grid-template-columns: repeat(3, minmax(280px, 1fr));
-    }
-}
-
-@media (max-width: 1150px) {
-    .listing-grid {
-        grid-template-columns: repeat(2, minmax(280px, 1fr));
-    }
-}
-
-@media (max-width: 1000px) {
-    .listing-grid {
-        grid-template-columns: repeat(1, minmax(280px, 1fr));
-    }
-}
-
-.spacer {
-    height: 200px;
-    flex-shrink: 0;
-}
-
-.filter-container {
-    width: 100%;
+.sidebar {
+    width: 268px;
     padding: 24px;
     background-color: white;
-    border-radius: 16px;
+    border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-    color: #fafafa;
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.bg-dark .filter-container{
+.bg-dark .sidebar{
     background-color: #1e1e1e;
     color: #fafafa;
 }
 
-.filter-container:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    transform: translateY(-4px);
-}
-
-.filter-container h3 {
-    font-size: 22px;
+.sidebar h3 {
+    font-size: 24px;
     font-weight: 600;
     color: #333;
     margin-bottom: 20px;
@@ -177,15 +48,19 @@ h1 {
     letter-spacing: 1px;
     text-transform: uppercase;
     padding-bottom: 20px;
+    padding-top: 8px;
+    text-align: center;
 }
 
 .filter-section label {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
     align-items: center;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: black;
+    padding: 0.5em 0;
+    border-radius: 8px;
 }
 
 .bg-dark .filter-section label{
@@ -193,7 +68,43 @@ h1 {
 }
 
 .filter-section label:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(200, 200, 200, 0.4);
+}
+
+.price-label {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    justify-content: sapce-between;
+    align-items: center;
+    width: 100%;
+}
+
+.price-label:hover {
+    background-color: white !important;
+}
+
+.filter-section input[type="number"] {
+    width: 70%;
+    padding: 6px;
+    margin: 0;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #fffcfc;
+    background-color: #eceaea;
+    color: black;
+    text-align: center;
+}
+
+.bg-dark .filter-section input[type="number"] {
+    background-color: #2a2a2a;
+    color: white; 
+}
+
+.filter-section input[type="number"]::placeholder {
+    color: #AAA;
+    font-size: 17px;
+    opacity: 0.8;
 }
 
 .filter-section input[type="radio"],
@@ -206,6 +117,7 @@ h1 {
     background: transparent;
     display: inline-block;
     position: relative;
+    margin: 0 0.5em;
 }
 
 .filter-section input[type="radio"]:checked::before {
@@ -225,46 +137,24 @@ h1 {
     font-weight: bold;
 }
 
-.filter-section input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: 1px solid #fffcfc;
-    background: #eceaea;
-    color: #282727;
-    transition: border-color 0.3s ease;
-    text-align: center;
-    margin-bottom: 10px; 
-}
-
-.bg-dark .filter-section input[type="number"] {
-    background: #2a2a2a;
-    color: #fff; 
-}
-
-.filter-section input[type="number"]::placeholder {
-    color: #aaa;
-    font-size: 14px;
-    opacity: 0.7;
-}
-
-button[type="submit"] {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    background-color: #333333;
-    color: white;
-    border: none;
+.clear-filters {
+    background-color: white;
+    border: 2px solid #426B1F;
+    color: black;
     border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    padding: 0.7em 1em;
+    width: 100%;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 16px;
+    margin-top: 1.5em;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-button[type="submit"]:hover {
-    background-color: #722F37;
-    transform: translateY(-2px);
+.clear-filters:hover {
+    background-color: #426B1F;
+    color: white;
 }
 
 .filter-section + .filter-section {
@@ -307,7 +197,7 @@ button[type="submit"]:hover {
 }
 
 @media (max-width: 480px) {
-    .filter-container {
+    .sidebar {
         width: 100%;
         padding: 16px;
     }

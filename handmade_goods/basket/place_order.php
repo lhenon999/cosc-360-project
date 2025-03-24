@@ -11,8 +11,7 @@ if (!is_dir($logDir)) {
     mkdir($logDir, 0777, true);
 }
 
-
-$stmt = $conn->prepare("SELECT is_frozen FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT is_frozen FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $_SESSION['user_id']);
 $stmt->execute();
 $stmt->bind_result($is_frozen);
@@ -154,15 +153,15 @@ try {
     
     logOrderProcess("Created order", ['order_id' => $orderId, 'address_id' => $address_id]);
     
-    // 2. Get items from cart and add to order_items
+    // 2. Get items from user's cart and add to order_items
     $totalPrice = 0;
     
     // Get all items from user's cart
     $stmt = $conn->prepare("
-        SELECT ci.item_id, i.name, i.price, ci.quantity
-        FROM cart_items ci
-        JOIN cart c ON ci.cart_id = c.id
-        JOIN items i ON ci.item_id = i.id
+        SELECT ci.item_id, i.name, i.price, ci.quantity, i.stock 
+        FROM CART_ITEMS ci
+        JOIN CART c ON ci.cart_id = c.id
+        JOIN ITEMS i ON ci.item_id = i.id
         WHERE c.user_id = ?
     ");
     $stmt->bind_param("i", $user_id);
@@ -199,8 +198,8 @@ try {
     // Store the current cart items in the session for recovery if needed
     $stmt = $conn->prepare("
         SELECT ci.item_id, ci.quantity
-        FROM cart_items ci
-        JOIN cart c ON ci.cart_id = c.id
+        FROM CART_ITEMS ci
+        JOIN CART c ON ci.cart_id = c.id
         WHERE c.user_id = ?
     ");
     $stmt->bind_param("i", $user_id);

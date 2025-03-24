@@ -1,7 +1,8 @@
 <?php
 session_start();
+include __DIR__ . '/../config.php';
+
 $is_logged_in = isset($_SESSION["user_id"]);
-include '../config.php';
 
 // Get filter parameters with proper sanitization
 $category_filter = isset($_GET['category']) && $_GET['category'] !== '' ? trim($_GET['category']) : null;
@@ -10,13 +11,14 @@ $price_to = isset($_GET['price-to']) && $_GET['price-to'] !== '' ? floatval($_GE
 $search = isset($_GET['search']) && $_GET['search'] !== '' ? trim($_GET['search']) : null;
 $rating_filter = isset($_GET['rating']) && $_GET['rating'] !== '' ? intval($_GET['rating']) : null;
 
-//auto suggestions for users
+//auto suggestions
 if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     header('Content-Type: application/json');
     $search_param = "%" . $search . "%";
-    $results = ["products" => [], "users" => []];
+    $results = ["products" => [], "users" => [], "categories" => []];
 
-    $query = "SELECT id, name, img, user_id FROM items WHERE name LIKE ? LIMIT 5";
+    // for products
+    $query = "SELECT id, name, img, user_id FROM ITEMS WHERE name LIKE ? LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $search_param);
     $stmt->execute();
@@ -24,12 +26,22 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $results["products"] = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
-    $query = "SELECT id, name, profile_picture FROM users WHERE (name LIKE ? OR email LIKE ?) AND user_type != 'admin' LIMIT 5";
+    // for users
+    $query = "SELECT id, name, profile_picture FROM USERS WHERE (name LIKE ? OR email LIKE ?) AND user_type != 'admin' LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $search_param, $search_param);
     $stmt->execute();
     $result = $stmt->get_result();
     $results["users"] = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+
+    // for categories
+    $query = "SELECT DISTINCT category FROM ITEMS WHERE category LIKE ? LIMIT 5";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $search_param);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $results["categories"] = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
     echo json_encode($results);
@@ -38,8 +50,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
 
 // Build the base query
 $query = "SELECT DISTINCT i.id, i.name, i.img, i.user_id, i.price, i.stock, IFNULL(AVG(r.rating), 0) as avg_rating 
-          FROM items i 
-          LEFT JOIN reviews r ON i.id = r.item_id";
+        FROM ITEMS i 
+        LEFT JOIN REVIEWS r ON i.id = r.item_id";
 
 // Start WHERE clause
 $where_conditions = [];
@@ -104,7 +116,7 @@ $stmt->close();
 
 // Get all categories for the filter sidebar
 $categories = [];
-$cat_stmt = $conn->prepare("SELECT DISTINCT category FROM items WHERE category IS NOT NULL ORDER BY category");
+$cat_stmt = $conn->prepare("SELECT DISTINCT category FROM ITEMS WHERE category IS NOT NULL ORDER BY category");
 $cat_stmt->execute();
 $cat_result = $cat_stmt->get_result();
 while ($row = $cat_result->fetch_assoc()) {
@@ -114,7 +126,7 @@ $cat_stmt->close();
 
 // Get available ratings
 $ratings = [];
-$rating_stmt = $conn->prepare("SELECT DISTINCT rating FROM reviews ORDER BY rating");
+$rating_stmt = $conn->prepare("SELECT DISTINCT rating FROM REVIEWS ORDER BY rating");
 $rating_stmt->execute();
 $rating_result = $rating_stmt->get_result();
 while ($row = $rating_result->fetch_assoc()) {
@@ -147,90 +159,112 @@ $rating_stmt->close();
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
-    <h1 class="text-center">Explore our products!</h1>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
+
+    <h1 class="text-center">Explore Our Products!</h1>
     <p class="text-center">Browse our collection and discover what suits you</p>
 
-    <div class="container">
+    <main class="mt-5">
         <div class="sidebar">
-            <div class="filter-container">
-                <form action="products.php" method="GET" id="filter-form" class="filter-form">
-                    <?php if ($search): ?>
-                        <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
-                    <?php endif; ?>
-
-                    <div class="filter-section">
-                        <h4>Categories</h4>
-                        <div class="category-options">
-                            <label class="category-label">
-                                <input type="radio" name="category" value="" <?= (!$category_filter) ? 'checked' : '' ?>>
-                                All
-                            </label><br>
-                            <?php foreach ($categories as $cat): ?>
-                                <label class="category-label">
-                                    <input type="radio" name="category" value="<?= htmlspecialchars($cat) ?>"
-                                        <?= ($category_filter === $cat) ? 'checked' : '' ?>>
-                                    <?= htmlspecialchars($cat) ?>
-                                </label><br>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-
-                    <div class="filter-section">
-                        <h4>Price Range</h4>
-                        <input type="number" name="price-from" placeholder="Min Price">
-                        <input type="number" name="price-to" placeholder="Max Price">
-
-                    </div>
-
-                    <div class="filter-section">
-                        <h4>Average Rating</h4>
-                        <label><input type="radio" name="rating" value="5" <?= ($rating_filter === 5) ? 'checked' : '' ?>>
-                            ★ ★ ★ ★ ★</label><br>
-                        <label><input type="radio" name="rating" value="4" <?= ($rating_filter === 4) ? 'checked' : '' ?>>
-                            ★ ★ ★ ★</label><br>
-                        <label><input type="radio" name="rating" value="3" <?= ($rating_filter === 3) ? 'checked' : '' ?>>
-                            ★ ★ ★</label><br>
-                        <label><input type="radio" name="rating" value="2" <?= ($rating_filter === 2) ? 'checked' : '' ?>>
-                            ★ ★</label><br>
-                        <label><input type="radio" name="rating" value="1" <?= ($rating_filter === 1) ? 'checked' : '' ?>>
-                            ★</label><br>
-                    </div>
-
-
-                    <a href="products.php" class="btn btn-secondary w-100">Clear Filters</a>
-                </form>
-            </div>
-        </div>
-        <div class="scrollable-container">
-            <!-- <div class="container">  -->
-            <div class="listing-grid">
-                <?php if (!empty($products)): ?>
-                    <?php foreach ($products as $product): ?>
-                        <?php
-                        $id = htmlspecialchars($product["id"]);
-                        $name = htmlspecialchars($product["name"]);
-                        $price = number_format($product["price"], 2);
-                        $image = htmlspecialchars($product["img"]);
-                        $stock = intval($product["stock"]);
-                        $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
-                        include "../assets/html/product_card.php";
-                        ?>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <div class="no-results text-center">
-                        <p>No products found matching your criteria</p>
-                        <a href="products.php" class="cta hover-raise">Clear Filters</a>
-                    </div>
+            <form action="products.php" method="GET" id="filter-form" class="filter-form">
+                <?php if ($search): ?>
+                    <input type="hidden" name="search" value="<?= htmlspecialchars($search) ?>">
                 <?php endif; ?>
-            </div>
-            <div class="spacer"></div>
-            <!-- </div> -->
+
+                <div class="filter-section">
+                    <h4>Categories</h4>
+                    <div class="category-options">
+                        <label class="category-label">
+                            <input type="radio" name="category" value="" <?= (!$category_filter) ? 'checked' : '' ?>>
+                            All
+                        </label>
+                        <?php foreach ($categories as $cat): ?>
+                            <label class="category-label">
+                                <input type="radio" name="category" value="<?= htmlspecialchars($cat) ?>"
+                                    <?= ($category_filter === $cat) ? 'checked' : '' ?>>
+                                <?= htmlspecialchars($cat) ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h4>Price Range</h4>
+                    <label class="price-label">
+                        <span>Min $</span>
+                        <input type="number" name="price-from" id="price-from" placeholder="Min Price" min="0" value="<?= htmlspecialchars($price_from ?? '') ?>">
+                    </label>
+
+                    <label class="price-label">
+                    <span>Max $</span>
+                        <input type="number" name="price-to" id="price-to" placeholder="Max Price" min="0" value="<?= htmlspecialchars($price_to ?? '') ?>">
+                    </label>
+
+                </div>
+
+                <div class="filter-section">
+                    <h4>Average Rating</h4>
+                    <label><input type="radio" name="rating" value="5" <?= ($rating_filter === 5) ? 'checked' : '' ?>>
+                        ★ ★ ★ ★ ★</label>
+                    <label><input type="radio" name="rating" value="4" <?= ($rating_filter === 4) ? 'checked' : '' ?>>
+                        ★ ★ ★ ★</label>
+                    <label><input type="radio" name="rating" value="3" <?= ($rating_filter === 3) ? 'checked' : '' ?>>
+                        ★ ★ ★</label>
+                    <label><input type="radio" name="rating" value="2" <?= ($rating_filter === 2) ? 'checked' : '' ?>>
+                        ★ ★</label>
+                    <label><input type="radio" name="rating" value="1" <?= ($rating_filter === 1) ? 'checked' : '' ?>>
+                        ★</label>
+                </div>
+
+
+                <a href="products.php" class="clear-filters">Clear Filters</a>
+            </form>
         </div>
-    </div>
-    <?php include '../assets/html/footer.php'; ?>
+
+        <div class="listing-grid">
+            <?php if (!empty($products)): ?>
+                <?php foreach ($products as $product): ?>
+                    <?php
+                    $id = htmlspecialchars($product["id"]);
+                    $name = htmlspecialchars($product["name"]);
+                    $price = number_format($product["price"], 2);
+                    $image = htmlspecialchars($product["img"]);
+                    $stock = intval($product["stock"]);
+                    $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
+                    include "../assets/html/product_card.php";
+                    ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="no-results text-center w-100 d-flex flex-column justify-content-center align-items-center h-100">
+                    <p>No products found matching your criteria. Try adjusting search or filter parameters!</p>
+                    <a href="products.php" class="cta hover-raise mt-5 clear-filters">Clear Filters</a>
+                </div>
+            <?php endif; ?>
+        </div>
+    </main>
+
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 
     <script>
+        // validation for price filters
+        const priceFrom = document.getElementById('price-from');
+        const priceTo = document.getElementById('price-to');
+
+        priceFrom.addEventListener('input', function () {
+            const minValue = this.value.trim() !== '' ? Number(this.value) : 0;
+            priceTo.min = minValue;
+
+            if (priceTo.value && Number(priceTo.value) < minValue) {
+                priceTo.value = minValue;
+            }
+        });
+        priceTo.addEventListener('input', function () {
+            const currentMin = priceTo.min ? Number(priceTo.min) : 0;
+            if (this.value && Number(this.value) < currentMin) {
+                this.value = currentMin;
+            }
+        });
+
         // Add client-side validation and handling
         document.getElementById('filter-form').addEventListener('submit', function (e) {
             // Clear empty values before submission
@@ -257,10 +291,8 @@ $rating_stmt->close();
             input.addEventListener('input', function () {
                 clearTimeout(timeout);
                 timeout = setTimeout(() => {
-                    if (this.value.trim() !== '') {
-                        document.getElementById('filter-form').submit();
-                    }
-                }, 1000); // Wait 1 second after user stops typing
+                    document.getElementById('filter-form').submit();
+                }, 1000);
             });
         });
     </script>

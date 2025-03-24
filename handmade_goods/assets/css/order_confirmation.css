@@ -1,5 +1,6 @@
 .order-summary {
     border: #DDD 2px solid;
+    background-color: white;
     border-radius: 16px;
     padding: 2.5em;
 }
@@ -30,8 +31,16 @@
 
 .order-item {
     border: #DDD 2px solid;
+    background-color: white;
     border-radius: 16px;
     padding: 1em;
+}
+
+.order-item h5 {
+    font-family: "Newsreader", serif;
+    font-weight: bold;
+    color: #3f661e;
+    font-size: 24px;
 }
 
 .cart-img {

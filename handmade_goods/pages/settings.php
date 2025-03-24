@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../config.php';
+require __DIR__ . '/../config.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT name, email, user_type FROM users WHERE id = ?");
+$stmt = $conn->prepare("SELECT name, email, user_type FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -54,11 +54,12 @@ $isAdmin = ($user['user_type'] === 'admin');
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/navbar.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="../assets/css/settings.css">
 </head>
 
 <body>
-    <?php include '../assets/html/navbar.php'; ?>
+    <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <div class="settings-container">
         <div class="settings-header">
@@ -122,6 +123,7 @@ $isAdmin = ($user['user_type'] === 'admin');
         <div>
                 <a href="profile.php" class="btn btn-outline-secondary w-100" </a>Back</a>
         </div>
+    </div>
         <script src="../assets/js/bg-dark.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
@@ -138,7 +140,10 @@ $isAdmin = ($user['user_type'] === 'admin');
                     }
                 });
             });
+    
         </script>
+
+<?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
 </html>
