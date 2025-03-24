@@ -18,5 +18,3 @@ VALUES (8, 'David Miller', 'david.miller@mail.com', '$2y$10$E2RDLohM9fAlZRfHFkQB
 
 INSERT INTO users (id, name, email, password, user_type) 
 VALUES (9, 'Olivia Martinez', 'olivia.martinez@mail.com', '$2y$10$UMVoMuujbJG.rHhQxeD9b.fugKgMy7COtMc6lmIhiJ5yD9cPXw2IC', 'normal');
-
--- password is firstname@123 --

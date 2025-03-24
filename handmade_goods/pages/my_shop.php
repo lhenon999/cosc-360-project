@@ -87,4 +87,6 @@ $stmt->close();
 
 </body>
 
+<?php include "../assets/html/footer.php"; ?>
+
 </html>

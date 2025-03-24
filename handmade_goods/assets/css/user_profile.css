@@ -73,14 +73,12 @@
     height: 265px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 10px;
     flex-shrink: 0;
 }
 
 .profile-details {
-    padding: 15px;
+    padding: 10px;
     border-radius: 10px;
-    margin-bottom: 20px;
 }
 
 .profile-name {
@@ -219,14 +217,20 @@
     margin: 0 !important;
 }
 
-.back-arrow {
-    font-size: 68px;
-    text-decoration: none;
+.manage-btn {
+    background: transparent;
     color: #2d5a27;
-    font-weight: 600;
-    transition: color 0.3s ease-in-out;
+    font-weight: 500;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
-.back-arrow:hover {
-    color: #1e3f1a;
+.manage-btn:hover {
+    background-color: #E67E22;
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    color: white;
 }
