@@ -503,6 +503,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                             'X-Requested-With': 'XMLHttpRequest'
                                                         },
                                                         data: JSON.stringify({ order_id: response.order_id }),
+                                                        dataType: 'json',
                                                         success: function (checkoutResponse) {
                                                             if (checkoutResponse.success && checkoutResponse.checkout_url) {
                                                                 window.location.href = checkoutResponse.checkout_url;
@@ -516,10 +517,19 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                             let errorMessage = "Error creating checkout session. Please try again.";
                                                             
                                                             try {
-                                                                // Try to parse the error response as JSON
-                                                                const errorData = JSON.parse(xhr.responseText);
-                                                                if (errorData && errorData.error) {
-                                                                    errorMessage = "Error: " + errorData.error;
+                                                                // Only try to parse if the response looks like JSON
+                                                                // Check if response starts with {
+                                                                const responseText = xhr.responseText.trim();
+                                                                if (responseText.startsWith('{')) {
+                                                                    const errorData = JSON.parse(responseText);
+                                                                    if (errorData && errorData.error) {
+                                                                        errorMessage = "Error: " + errorData.error;
+                                                                    }
+                                                                } else if (responseText.includes("permission denied")) {
+                                                                    errorMessage = "Server error: The server doesn't have permission to write log files. Please contact the administrator.";
+                                                                } else {
+                                                                    // Response contains HTML - likely a PHP error
+                                                                    errorMessage = "Server error: There was a problem processing your request. Please try again.";
                                                                 }
                                                             } catch (e) {
                                                                 console.error("Error parsing error response:", e);

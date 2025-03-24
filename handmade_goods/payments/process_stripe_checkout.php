@@ -1,29 +1,77 @@
 <?php
+// Prevent PHP errors from being shown directly in output
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+
 session_start();
 require_once '../config.php';
 require_once '../config/stripe.php';
 
-// Create logs directory if it doesn't exist
-$logDir = dirname(dirname(__FILE__)) . '/logs';
-if (!is_dir($logDir)) {
-    mkdir($logDir, 0777, true);
-}
+// Set proper content type for JSON response
+header('Content-Type: application/json');
 
-// Define log file
-$logFile = $logDir . '/stripe_checkout.log';
-
-// Log function
+// Safe logging function that won't break if directory permissions are incorrect
 function logCheckout($message, $data = null) {
-    global $logFile;
+    static $loggingError = false;
+    
+    // If we've already encountered a logging error, don't try again
+    if ($loggingError) {
+        return false;
+    }
+    
+    $logDir = dirname(dirname(__FILE__)) . '/logs';
+    $logFile = $logDir . '/stripe_checkout.log';
+    
     $log = date('Y-m-d H:i:s') . " - " . $message;
     if ($data !== null) {
         $log .= " - " . (is_array($data) || is_object($data) ? json_encode($data) : $data);
     }
-    file_put_contents($logFile, $log . "\n", FILE_APPEND);
+    
+    // Don't let logging errors interrupt the checkout process
+    try {
+        // Create logs directory if it doesn't exist
+        if (!is_dir($logDir)) {
+            if (!@mkdir($logDir, 0777, true)) {
+                $loggingError = true;
+                return false;
+            }
+        }
+        
+        // Check if directory is writable
+        if (!is_writable($logDir)) {
+            $loggingError = true;
+            return false;
+        }
+        
+        // Try to write the log
+        if (!@file_put_contents($logFile, $log . "\n", FILE_APPEND)) {
+            $loggingError = true;
+            return false;
+        }
+        
+        return true;
+    } catch (Exception $e) {
+        $loggingError = true;
+        return false;
+    }
 }
 
-// Set proper content type for JSON response
-header('Content-Type: application/json');
+// Safe file writing function
+function safeFileWrite($filePath, $content, $mode = FILE_APPEND) {
+    try {
+        $dirPath = dirname($filePath);
+        
+        // Check if directory exists and is writable
+        if (!is_dir($dirPath) || !is_writable($dirPath)) {
+            return false;
+        }
+        
+        // Try to write the file
+        return @file_put_contents($filePath, $content, $mode) !== false;
+    } catch (Exception $e) {
+        return false;
+    }
+}
 
 try {
     // Start logging
@@ -207,9 +255,6 @@ try {
             
             // Create logs directory for inventory updates if it doesn't exist
             $inventoryLogDir = dirname(dirname(__FILE__)) . '/logs';
-            if (!is_dir($inventoryLogDir)) {
-                mkdir($inventoryLogDir, 0777, true);
-            }
             $inventoryLogFile = $inventoryLogDir . '/inventory_updates.log';
             
             // Update inventory for each item
@@ -242,12 +287,9 @@ try {
                 $newStock = $product['stock'];
                 $stmt->close();
                 
-                // Log inventory change
-                file_put_contents(
-                    $inventoryLogFile, 
-                    date('Y-m-d H:i:s') . " - Order #$orderId - Item {$item['item_id']} ({$item['name']}): Stock changed from $currentStock to $newStock\n", 
-                    FILE_APPEND
-                );
+                // Log inventory change (safely)
+                $logEntry = date('Y-m-d H:i:s') . " - Order #$orderId - Item {$item['item_id']} ({$item['name']}): Stock changed from $currentStock to $newStock\n";
+                safeFileWrite($inventoryLogFile, $logEntry);
                 
                 logCheckout("Updated inventory for item {$item['name']}", [
                     'item_id' => $item['item_id'],

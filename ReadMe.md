@@ -80,7 +80,17 @@ Place the project folder `handmade_goods` inside:
 Place the project folder in:
 - `/Applications/MAMP/htdocs/cosc-360-project`
 
-### 2. Start the Web Server
+### 2. Run the Setup Script:
+
+**IMPORTANT:** After cloning the repository, you should run the setup script to ensure all required directories have the correct permissions:
+
+1. Start your web server
+2. Navigate to `http://localhost/cosc-360-project/handmade_goods/setup_directories.php`
+3. Follow any instructions provided by the setup script to fix permission issues
+
+This script will automatically create and set permissions for essential directories like `logs` and `temp` that are needed for the application to function correctly.
+
+### 3. Start the Web Server
 
 #### For XAMPP:
 Start the **Apache** server and **MySQL** server using XAMPP Control Panel
@@ -90,7 +100,7 @@ Start the MAMP application and click "Start Servers"
 
 The Stripe webhook forwarding will start automatically when you access any page.
 
-### 3. Set File Permissions (macOS/Linux only)
+### 4. Set File Permissions (macOS/Linux only)
 
 ```bash
 chmod -R 755 /path/to/cosc-360-project/handmade_goods
@@ -98,7 +108,7 @@ chmod -R 777 /path/to/cosc-360-project/handmade_goods/logs
 chmod -R 777 /path/to/cosc-360-project/handmade_goods/bin
 ```
 
-### 4. Import Database
+### 5. Import Database
 
 #### For XAMPP:
 Open phpMyAdmin: `http://localhost/phpmyadmin`
@@ -111,7 +121,7 @@ Import the following SQL files in order:
 2. `populate_items.sql`
 3. `populate_users.sql`
 
-### 5. Test the Site
+### 6. Test the Site
 
 #### For XAMPP:
 Open: `http://localhost/cosc-360-project/handmade_goods/pages/home.php`
