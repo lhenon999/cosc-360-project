@@ -34,7 +34,7 @@
                     </p>
                 </div>
                 <div class="col-md-6">
-                    <img src="~/public_html/cosc-360-project/handmade_goods/assets/images/about-craft.jpg" alt="Handcrafted wooden utensils" class="rounded shadow">
+                    <img src="/~rsodhi03/cosc-360-project/handmade_goods/assets/images/about-craft.jpg" alt="Handcrafted wooden utensils" class="rounded shadow">
                 </div>
             </div>
 
