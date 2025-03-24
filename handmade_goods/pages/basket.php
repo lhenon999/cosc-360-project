@@ -144,7 +144,10 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
+    <?php 
+    // Replace direct Stripe JS inclusion with our ensure_stripe_js function
+    echo ensure_stripe_js(); 
+    ?>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/css/globals.css">
@@ -437,8 +440,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                             </form>
 
                             <script>
-                                const stripe = Stripe('<?= $stripe_publishable_key ?>');
-                                
+                                // Use the global stripe instance that's properly initialized with fallback
                                 $(document).ready(function () {
                                     $("#placeOrderForm").submit(function (e) {
                                         e.preventDefault();

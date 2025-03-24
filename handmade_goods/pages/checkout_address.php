@@ -52,6 +52,12 @@ $pageTitle = "Shipping Address";
     <link rel="stylesheet" href="../assets/css/globals.css">
     <link rel="stylesheet" href="../assets/css/basket.css">
     <link rel="stylesheet" href="../assets/css/form.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <?php echo ensure_stripe_js(); ?>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         .address-container {
             display: flex;

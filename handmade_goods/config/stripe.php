@@ -52,70 +52,66 @@ if (!defined('STRIPE_INCLUDED')) {
                 return $response;
             }
             
-            private function request($endpoint, $method = 'POST', $data = []) {
-                $ch = curl_init();
+            private function request($endpoint, $method = 'GET', $params = []) {
+                $ch = curl_init($this->base . $endpoint);
                 
-                curl_setopt($ch, CURLOPT_URL, $this->base . $endpoint);
-                curl_setopt($ch, CURLOPT_USERPWD, $this->sk . ":");
+                $headers = [
+                    'Authorization: Bearer ' . $this->sk,
+                    'Content-Type: application/x-www-form-urlencoded',
+                ];
+                
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
                 
-                if ($method === 'POST') {
-                    curl_setopt($ch, CURLOPT_POST, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->flattenParams($data)));
+                if ($method === 'POST' && !empty($params)) {
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
                 }
                 
                 $response = curl_exec($ch);
-                $error = curl_error($ch);
-                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                $err = curl_error($ch);
+                
                 curl_close($ch);
                 
-                if ($error) {
-                    throw new \Exception('cURL Error: ' . $error);
+                if ($err) {
+                    throw new \Exception('cURL Error: ' . $err);
                 }
                 
-                $decoded = json_decode($response, true);
-                if ($httpCode >= 400) {
-                    throw new \Exception($decoded['error']['message'] ?? 'Stripe API Error: ' . $response);
-                }
-                
-                return $decoded;
-            }
-            
-            private function flattenParams($params, $prefix = '') {
-                $result = [];
-                
-                foreach ($params as $key => $value) {
-                    $newKey = $prefix ? "{$prefix}[{$key}]" : $key;
-                    
-                    if (is_array($value)) {
-                        if ($this->isAssociativeArray($value)) {
-                            $result = array_merge($result, $this->flattenParams($value, $newKey));
-                        } else {
-                            foreach ($value as $i => $item) {
-                                if (is_array($item)) {
-                                    $result = array_merge($result, $this->flattenParams($item, "{$newKey}[{$i}]"));
-                                } else {
-                                    $result["{$newKey}[{$i}]"] = $item;
-                                }
-                            }
-                        }
-                    } else {
-                        $result[$newKey] = $value;
-                    }
-                }
-                
-                return $result;
-            }
-            
-            private function isAssociativeArray($array) {
-                if (!is_array($array) || empty($array)) {
-                    return false;
-                }
-                return array_keys($array) !== range(0, count($array) - 1);
+                return json_decode($response, true);
             }
         }
         
         $stripe = new StripeAPI($stripe_secret_key);
+    }
+
+    // Function to ensure Stripe JS is properly loaded
+    function ensure_stripe_js() {
+        global $stripe_publishable_key;
+        
+        $stripe_js_tag = '<script src="https://js.stripe.com/v3/"></script>';
+        $stripe_init_tag = "<script>
+            // Initialize Stripe with fallback error handling
+            try {
+                const stripe = Stripe('$stripe_publishable_key');
+                window.stripeInstance = stripe;
+            } catch (e) {
+                console.error('Error initializing Stripe:', e);
+                // Try to reload the Stripe library if initialization failed
+                let script = document.createElement('script');
+                script.src = 'https://js.stripe.com/v3/';
+                script.onload = function() {
+                    try {
+                        const stripe = Stripe('$stripe_publishable_key');
+                        window.stripeInstance = stripe;
+                        console.log('Stripe reloaded successfully');
+                    } catch (e) {
+                        console.error('Failed to initialize Stripe after reload:', e);
+                    }
+                };
+                document.head.appendChild(script);
+            }
+        </script>";
+        
+        return $stripe_js_tag . "\n" . $stripe_init_tag;
     }
 }

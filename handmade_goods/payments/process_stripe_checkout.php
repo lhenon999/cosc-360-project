@@ -248,14 +248,28 @@ try {
         
         // Return detailed error for debugging
         http_response_code(500);
+        
+        // Check for specific error conditions
+        $errorMessage = $e->getMessage();
+        $specificError = "";
+        
+        if (strpos($errorMessage, "cURL error") !== false) {
+            $specificError = "Network error: Unable to connect to Stripe. Please check your internet connection.";
+        } else if (strpos($errorMessage, "SSL certificate problem") !== false) {
+            $specificError = "SSL Error: Your server cannot verify Stripe's SSL certificate.";
+        } else if (strpos($errorMessage, "API key") !== false) {
+            $specificError = "API Key Error: The Stripe API key may be invalid or missing.";
+        } else if (strpos($errorMessage, "No such") !== false) {
+            $specificError = "Resource Error: A required Stripe resource was not found.";
+        } else if (strpos($errorMessage, "class 'Stripe") !== false) {
+            $specificError = "Stripe Library Error: The Stripe PHP library is not properly loaded.";
+        }
+        
         echo json_encode([
             'success' => false,
-            'error' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-            'trace' => $e->getTraceAsString()
+            'error' => $specificError ?: "Error creating checkout session. Please try again.",
+            'detailed_error' => $errorMessage
         ]);
-        exit;
     }
 } catch (Exception $e) {
     logCheckout("Error in checkout process: " . $e->getMessage());
