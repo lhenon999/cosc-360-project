@@ -1,7 +1,23 @@
 <?php
+// Enable all error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../config/stripe.php';
+
+// Add a debug message
+echo "Debug: Script started<br>";
+
+// Test if Stripe config exists
+if (file_exists(__DIR__ . '/../config/stripe.php')) {
+    echo "Debug: Stripe config file exists<br>";
+    require_once __DIR__ . '/../config/stripe.php';
+    echo "Debug: Stripe config loaded<br>";
+} else {
+    echo "Debug: Stripe config file NOT found at " . __DIR__ . '/../config/stripe.php' . "<br>";
+    die("Stripe configuration file is missing");
+}
 
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../auth/login.php");

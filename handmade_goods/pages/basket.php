@@ -283,7 +283,9 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                             <div class="cart-details ms-3">
                                 <h5><?= htmlspecialchars($item['name']) ?></h5>
                                 <p class="text-muted">$<?= number_format($item['price'], 2) ?></p>
-                                <?php if ($item['stock'] < 5): ?>
+                                <?php if ($item['stock'] <= 0): ?>
+                                    <p class="out-of-stock-warning">Out of stock!</p>
+                                <?php elseif ($item['stock'] < 5): ?>
                                     <p class="stock-warning">Only <?= $item['stock'] ?> left in stock!</p>
                                 <?php endif; ?>
                                 <div class="d-flex align-items-center">
@@ -292,6 +294,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         <input type="number" name="quantity" value="<?= $item['quantity'] ?>" 
                                                min="1" max="<?= $item['stock'] ?>"
                                                class="form-control quantity-input me-2"
+                                               <?= ($item['stock'] <= 0) ? 'disabled' : '' ?>
                                                onchange="this.form.submit()">
                                     </form>
                                     <a href="../basket/remove_from_basket.php?id=<?= $id ?>"
@@ -308,7 +311,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                         <?php if (count($addresses) > 0): ?>
                             <form id="address-selection-form">
                                 <?php foreach ($addresses as $index => $address): ?>
-                                    <label class="address-option">
+                                    <label class="address-option <?php echo $index === 0 ? 'selected' : ''; ?>">
                                         <input type="radio" name="address_option" value="existing_<?php echo $address['id']; ?>" <?php echo $index === 0 ? 'checked' : ''; ?>>
                                         <div>
                                             <strong><?php echo htmlspecialchars($address['street_address']); ?></strong><br>
@@ -323,7 +326,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                     </label>
                                 <?php endforeach; ?>
                                 
-                                <label class="address-option">
+                                <label class="address-option <?php echo count($addresses) === 0 ? 'selected' : ''; ?>">
                                     <input type="radio" name="address_option" value="new" <?php echo count($addresses) === 0 ? 'checked' : ''; ?>>
                                     <div>
                                         <strong>Use a new shipping address</strong>
@@ -332,9 +335,17 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                             </form>
                         <?php else: ?>
                             <p>Please enter your shipping address to continue.</p>
+                            <form id="address-selection-form">
+                                <label class="address-option selected">
+                                    <input type="radio" name="address_option" value="new" checked>
+                                    <div>
+                                        <strong>Use a new shipping address</strong>
+                                    </div>
+                                </label>
+                            </form>
                         <?php endif; ?>
                         
-                        <div class="address-form <?php echo count($addresses) > 0 ? 'hidden' : ''; ?>" id="new-address-form">
+                        <div class="address-form <?php echo (count($addresses) > 0) ? 'hidden' : ''; ?>" id="new-address-form">
                             <h4>New Shipping Address</h4>
                             <form id="address-form">
                                 <div class="form-row">
@@ -437,6 +448,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
 
                                         // Check if address is selected
                                         const selectedOption = $('input[name="address_option"]:checked').val();
+                                        
                                         if (!selectedOption) {
                                             alert('Please select a shipping address');
                                             button.prop('disabled', false);
@@ -444,23 +456,37 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                             return;
                                         }
 
-                                        // If "new" address is selected but not saved yet
-                                        if (selectedOption === 'new') {
-                                            alert('Please save your shipping address');
+                                        // If "new" address is selected but the form is visible
+                                        if (selectedOption === 'new' && !$('#new-address-form').hasClass('hidden')) {
+                                            // Check if there are any saved addresses
+                                            if ($('.address-option').length <= 1) {
+                                                alert('Please add a shipping address to continue');
+                                            } else {
+                                                alert('Please save your shipping address or select an existing one');
+                                            }
                                             button.prop('disabled', false);
                                             button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
                                             return;
                                         }
 
-                                        // Extract address ID from the selected option
-                                        const addressId = selectedOption.split('_')[1];
+                                        // Extract address ID from the selected option if it exists
+                                        let addressId = null;
+                                        if (selectedOption.startsWith('existing_')) {
+                                            addressId = selectedOption.split('_')[1];
+                                        }
+
+                                        console.log("Selected address option:", selectedOption);
+                                        console.log("Extracted address ID:", addressId);
 
                                         // First create the order
                                         $.ajax({
                                             url: "../basket/place_order.php",
                                             type: "POST",
                                             dataType: "json",
-                                            data: { address_id: addressId },
+                                            data: { 
+                                                address_id: addressId,
+                                                address_option: selectedOption 
+                                            },
                                             headers: {
                                                 'X-Requested-With': 'XMLHttpRequest'
                                             },
@@ -476,8 +502,8 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                         },
                                                         data: JSON.stringify({ order_id: response.order_id }),
                                                         success: function (checkoutResponse) {
-                                                            if (checkoutResponse.success && checkoutResponse.url) {
-                                                                window.location.href = checkoutResponse.url;
+                                                            if (checkoutResponse.success && checkoutResponse.checkout_url) {
+                                                                window.location.href = checkoutResponse.checkout_url;
                                                             } else {
                                                                 alert("Checkout error: " + (checkoutResponse.error || "Unknown error"));
                                                                 button.prop('disabled', false);
@@ -485,12 +511,25 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                             }
                                                         },
                                                         error: function (xhr, status, error) {
+                                                            let errorMessage = "Error creating checkout session. Please try again.";
+                                                            
+                                                            try {
+                                                                // Try to parse the error response as JSON
+                                                                const errorData = JSON.parse(xhr.responseText);
+                                                                if (errorData && errorData.error) {
+                                                                    errorMessage = "Error: " + errorData.error;
+                                                                }
+                                                            } catch (e) {
+                                                                console.error("Error parsing error response:", e);
+                                                            }
+                                                            
                                                             console.error("Checkout error details:", {
                                                                 status: xhr.status,
                                                                 statusText: xhr.statusText,
                                                                 responseText: xhr.responseText
                                                             });
-                                                            alert("Error creating checkout session. Please try again.");
+                                                            
+                                                            alert(errorMessage);
                                                             button.prop('disabled', false);
                                                             button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
                                                         }
@@ -551,6 +590,14 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                             </script>
                             <script>
                                 $(document).ready(function () {
+                                    // Initialize form visibility based on selected option on page load
+                                    const selectedOption = $('input[name="address_option"]:checked').val();
+                                    if (selectedOption === 'new') {
+                                        $('#new-address-form').removeClass('hidden');
+                                    } else {
+                                        $('#new-address-form').addClass('hidden');
+                                    }
+                                    
                                     // Toggle address form visibility based on selection
                                     $('input[name="address_option"]').change(function() {
                                         if (this.value === 'new') {
@@ -636,8 +683,8 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                         $(this).closest('.address-option').addClass('selected');
                                                     });
                                                     
-                                                    // Re-initialize delete buttons for newly created addresses
-                                                    initDeleteButtons();
+                                                    // Display success message
+                                                    alert('Address saved successfully!');
                                                     
                                                 } else {
                                                     alert('Error saving address: ' + (response.error || 'Unknown error'));
@@ -688,32 +735,23 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
         let addressToDelete = null;
         let addressOptionElement = null;
 
-        // Function to initialize delete buttons
-        function initDeleteButtons() {
-            // Unbind existing handlers to avoid duplicates
-            $('.delete-address-btn').off('click');
-            
-            // Handle delete button click
-            $('.delete-address-btn').click(function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                addressToDelete = $(this).data('address-id');
-                addressOptionElement = $(this).closest('.address-option');
-                
-                // Show confirmation modal
-                $('#deleteConfirmationModal').fadeIn(200);
-            });
-        }
-
-        // Initialize delete buttons on page load
-        initDeleteButtons();
-        
         // Handle cancel button in modal
         $('#cancelDeleteBtn').click(function() {
             $('#deleteConfirmationModal').fadeOut(200);
             addressToDelete = null;
             addressOptionElement = null;
+        });
+        
+        // Use event delegation for dynamically added delete buttons
+        $(document).on('click', '.delete-address-btn', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            addressToDelete = $(this).data('address-id');
+            addressOptionElement = $(this).closest('.address-option');
+            
+            // Show confirmation modal
+            $('#deleteConfirmationModal').fadeIn(200);
         });
         
         // Handle confirm delete button in modal
@@ -737,6 +775,8 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                 }),
                 success: function(response) {
                     $('#deleteConfirmationModal').fadeOut(200);
+                    button.prop('disabled', false);
+                    button.text('Delete');
                     
                     if (response.success) {
                         // Check if the deleted address was selected
@@ -762,11 +802,10 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                         });
                     } else {
                         alert('Error deleting address: ' + (response.error || 'Unknown error'));
-                        button.prop('disabled', false);
-                        button.text('Delete');
                     }
                 },
-                error: function() {
+                error: function(xhr, status, error) {
+                    console.error("Error details:", xhr.responseText);
                     $('#deleteConfirmationModal').fadeOut(200);
                     alert('Server error while deleting address. Please try again.');
                     button.prop('disabled', false);

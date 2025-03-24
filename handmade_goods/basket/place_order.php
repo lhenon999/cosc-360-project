@@ -56,10 +56,17 @@ if ($isAjax) {
     }
 }
 
+// Check if address_id is "new" format (existing_123)
+if (isset($_POST['address_option']) && strpos($_POST['address_option'], 'existing_') === 0) {
+    $address_id = intval(str_replace('existing_', '', $_POST['address_option']));
+    logOrderProcess("Got address_id from address_option", ['address_id' => $address_id]);
+}
+
 logOrderProcess("Starting order process", [
     'user_id' => $_SESSION['user_id'] ?? 'not logged in', 
     'is_ajax' => $isAjax,
-    'address_id' => $address_id
+    'address_id' => $address_id,
+    'address_option' => $_POST['address_option'] ?? 'not set'
 ]);
 
 // Redirect if not logged in

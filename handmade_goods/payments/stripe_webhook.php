@@ -369,17 +369,37 @@ try {
 
                 // Update inventory for each item
                 foreach ($items as $item) {
+                    // Get current stock before update
+                    $stmt = $conn->prepare("SELECT stock, name FROM items WHERE id = ?");
+                    $stmt->bind_param("i", $item['item_id']);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $product = $result->fetch_assoc();
+                    $currentStock = $product['stock'];
+                    $productName = $product['name'];
+                    $stmt->close();
+                    
+                    file_put_contents($logFile, "Updating inventory for item ID {$item['item_id']} ({$productName}): Current stock: {$currentStock}, Quantity purchased: {$item['quantity']}\n", FILE_APPEND);
+                    
+                    // Update the stock
                     $stmt = $conn->prepare("
                         UPDATE items 
-                        SET stock = stock - ? 
-                        WHERE id = ? AND stock >= ?
+                        SET stock = GREATEST(0, stock - ?) 
+                        WHERE id = ?
                     ");
-                    $stmt->bind_param("iii", $item['quantity'], $item['item_id'], $item['quantity']);
+                    $stmt->bind_param("ii", $item['quantity'], $item['item_id']);
                     $stmt->execute();
                     
-                    if ($stmt->affected_rows === 0) {
-                        throw new Exception("Insufficient stock for item {$item['item_id']}");
-                    }
+                    // Get new stock after update
+                    $stmt = $conn->prepare("SELECT stock FROM items WHERE id = ?");
+                    $stmt->bind_param("i", $item['item_id']);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    $product = $result->fetch_assoc();
+                    $newStock = $product['stock'];
+                    
+                    file_put_contents($logFile, "Successfully updated inventory for item {$item['item_id']} ({$productName}). Previous stock: {$currentStock}, New stock: {$newStock}\n", FILE_APPEND);
+                    
                     $stmt->close();
                 }
 

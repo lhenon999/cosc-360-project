@@ -47,8 +47,10 @@ try {
 
     // Verify order belongs to user and has an address
     $stmt = $conn->prepare("
-        SELECT o.id, o.total_price, o.status, o.address_id
+        SELECT o.id, o.total_price, o.status, o.address_id,
+               a.street_address, a.city, a.state, a.postal_code, a.country
         FROM orders o
+        LEFT JOIN addresses a ON o.address_id = a.id
         WHERE o.id = ? AND o.user_id = ?
     ");
     $stmt->bind_param("ii", $orderId, $_SESSION["user_id"]);
@@ -64,6 +66,9 @@ try {
     if (!$order['address_id']) {
         throw new Exception("No shipping address associated with this order");
     }
+    
+    // Log order details for debugging
+    logCheckout("Order details", $order);
 
     // Get order items
     $stmt = $conn->prepare("
@@ -164,16 +169,98 @@ try {
         
         echo json_encode([
             'success' => true,
-            'url' => $session->url
+            'session_id' => $session->id,
+            'checkout_url' => $session->url
         ]);
+        
+        // Update inventory immediately after checkout is created
+        try {
+            // Get order items to update inventory
+            $stmt = $conn->prepare("
+                SELECT oi.item_id, oi.quantity, i.name, i.stock 
+                FROM order_items oi
+                JOIN items i ON oi.item_id = i.id
+                WHERE oi.order_id = ?
+            ");
+            $stmt->bind_param("i", $orderId);
+            $stmt->execute();
+            $orderItems = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $stmt->close();
+            
+            // Create logs directory for inventory updates if it doesn't exist
+            $inventoryLogDir = dirname(dirname(__FILE__)) . '/logs';
+            if (!is_dir($inventoryLogDir)) {
+                mkdir($inventoryLogDir, 0777, true);
+            }
+            $inventoryLogFile = $inventoryLogDir . '/inventory_updates.log';
+            
+            // Update inventory for each item
+            foreach ($orderItems as $item) {
+                // Get current stock
+                $stmt = $conn->prepare("SELECT stock FROM items WHERE id = ?");
+                $stmt->bind_param("i", $item['item_id']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $product = $result->fetch_assoc();
+                $currentStock = $product['stock'];
+                $stmt->close();
+                
+                // Update the stock
+                $stmt = $conn->prepare("
+                    UPDATE items 
+                    SET stock = GREATEST(0, stock - ?) 
+                    WHERE id = ?
+                ");
+                $stmt->bind_param("ii", $item['quantity'], $item['item_id']);
+                $stmt->execute();
+                $stmt->close();
+                
+                // Get new stock after update
+                $stmt = $conn->prepare("SELECT stock FROM items WHERE id = ?");
+                $stmt->bind_param("i", $item['item_id']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $product = $result->fetch_assoc();
+                $newStock = $product['stock'];
+                $stmt->close();
+                
+                // Log inventory change
+                file_put_contents(
+                    $inventoryLogFile, 
+                    date('Y-m-d H:i:s') . " - Order #$orderId - Item {$item['item_id']} ({$item['name']}): Stock changed from $currentStock to $newStock\n", 
+                    FILE_APPEND
+                );
+                
+                logCheckout("Updated inventory for item {$item['name']}", [
+                    'item_id' => $item['item_id'],
+                    'old_stock' => $currentStock,
+                    'new_stock' => $newStock,
+                    'quantity' => $item['quantity']
+                ]);
+            }
+        } catch (Exception $e) {
+            // Just log the error, don't stop the checkout process
+            logCheckout("Error updating inventory: " . $e->getMessage());
+        }
 
     } catch (Exception $e) {
-        logCheckout("Stripe API Error", ['error' => $e->getMessage()]);
-        throw new Exception("Failed to create checkout session: " . $e->getMessage());
+        logCheckout("Error creating checkout session: " . $e->getMessage());
+        
+        // Return detailed error for debugging
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        exit;
     }
-
 } catch (Exception $e) {
-    logCheckout("Error", ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+    logCheckout("Error in checkout process: " . $e->getMessage());
+    
+    // Return error to client
     http_response_code(500);
     echo json_encode([
         'success' => false,

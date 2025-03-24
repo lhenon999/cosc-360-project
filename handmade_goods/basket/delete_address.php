@@ -38,6 +38,9 @@ try {
     }
     $stmt->close();
     
+    // Begin transaction
+    $conn->begin_transaction();
+    
     // Check if this address is linked to any orders
     $stmt = $conn->prepare("SELECT id FROM orders WHERE address_id = ?");
     $stmt->bind_param("i", $address_id);
@@ -46,40 +49,24 @@ try {
     $is_used_in_orders = ($result->num_rows > 0);
     $stmt->close();
     
-    // Begin transaction
-    $conn->begin_transaction();
+    // If address is used in orders, update orders to remove the link first
+    if ($is_used_in_orders) {
+        $update_stmt = $conn->prepare("UPDATE orders SET address_id = NULL WHERE address_id = ?");
+        $update_stmt->bind_param("i", $address_id);
+        
+        if (!$update_stmt->execute()) {
+            throw new Exception("Failed to update orders: " . $update_stmt->error);
+        }
+        
+        $update_stmt->close();
+    }
     
-    // Always delete the address record
-    // If it's used in orders, it will remain in the database due to foreign key constraints,
-    // but we can always remove it from the user's visible addresses
+    // Now try deleting the address
     $stmt = $conn->prepare("DELETE FROM addresses WHERE id = ? AND user_id = ?");
     $stmt->bind_param("ii", $address_id, $user_id);
     
     if (!$stmt->execute()) {
-        // If deletion fails due to FK constraint, let's update order records to remove the link
-        if ($conn->errno === 1451) { // "Cannot delete or update a parent row" error
-            $stmt->close();
-            
-            // Update orders to remove the link to this address
-            $update_stmt = $conn->prepare("UPDATE orders SET address_id = NULL WHERE address_id = ?");
-            $update_stmt->bind_param("i", $address_id);
-            
-            if (!$update_stmt->execute()) {
-                throw new Exception("Failed to update orders: " . $update_stmt->error);
-            }
-            
-            $update_stmt->close();
-            
-            // Now try deleting the address again
-            $stmt = $conn->prepare("DELETE FROM addresses WHERE id = ? AND user_id = ?");
-            $stmt->bind_param("ii", $address_id, $user_id);
-            
-            if (!$stmt->execute()) {
-                throw new Exception("Failed to delete address after unlinking: " . $stmt->error);
-            }
-        } else {
-            throw new Exception("Failed to delete address: " . $stmt->error);
-        }
+        throw new Exception("Failed to delete address: " . $stmt->error);
     }
     
     if ($stmt->affected_rows === 0) {
