@@ -220,6 +220,7 @@ try {
             // Using official Stripe PHP SDK
             logCheckout("Using official Stripe SDK");
             $session = $stripe->checkout->sessions->create($session_params);
+            logCheckout("Session created with official SDK", ['session' => json_encode($session)]);
         } else {
             // Using fallback implementation
             logCheckout("Using fallback Stripe implementation");
@@ -228,25 +229,56 @@ try {
             }
             
             $session = $stripe->createCheckoutSession($session_params);
+            logCheckout("Session created with fallback implementation", ['session' => json_encode($session)]);
         }
         
         if (!$session) {
             throw new Exception("Stripe session creation failed - no response");
         }
         
-        if (is_object($session) && !isset($session->url)) {
-            throw new Exception("Stripe session created but no URL returned");
-        }
-        
-        if (is_array($session) && !isset($session['url'])) {
-            throw new Exception("Stripe session created but no URL returned in array");
+        // Debug the session object
+        if (is_object($session)) {
+            logCheckout("Session is an object", [
+                'properties' => get_object_vars($session),
+                'methods' => get_class_methods($session)
+            ]);
+        } else {
+            logCheckout("Session is an array", $session);
         }
         
         // Handle different session response formats (object vs array)
-        $sessionId = is_object($session) ? $session->id : $session['id'];
-        $checkoutUrl = is_object($session) ? $session->url : $session['url'];
+        $sessionId = null;
+        $checkoutUrl = null;
         
-        logCheckout("Checkout session created successfully", ['session_id' => $sessionId]);
+        if (is_object($session)) {
+            $sessionId = isset($session->id) ? $session->id : null;
+            // Check all possible URL properties
+            if (isset($session->url)) {
+                $checkoutUrl = $session->url;
+            } elseif (isset($session->checkout_url)) {
+                $checkoutUrl = $session->checkout_url;
+            } elseif (method_exists($session, 'getUrl')) {
+                $checkoutUrl = $session->getUrl();
+            } elseif (method_exists($session, 'getCheckoutUrl')) {
+                $checkoutUrl = $session->getCheckoutUrl();
+            }
+        } else if (is_array($session)) {
+            $sessionId = $session['id'] ?? null;
+            $checkoutUrl = $session['url'] ?? $session['checkout_url'] ?? null;
+        }
+        
+        if (!$sessionId) {
+            throw new Exception("Stripe session created but no ID returned");
+        }
+        
+        if (!$checkoutUrl) {
+            throw new Exception("Stripe session created but no URL returned. Session ID: " . $sessionId);
+        }
+        
+        logCheckout("Checkout session created successfully", [
+            'session_id' => $sessionId,
+            'checkout_url' => $checkoutUrl
+        ]);
         
         // Send success response
         echo json_encode([

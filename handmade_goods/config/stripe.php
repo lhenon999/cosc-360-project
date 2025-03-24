@@ -49,8 +49,20 @@ if (!defined('STRIPE_INCLUDED')) {
                     throw new \Exception($response['error']['message'] ?? 'Unknown Stripe error');
                 }
                 
+                // Ensure the response has a checkout_url property (for consistency with our PHP code)
+                if (isset($response['url']) && !isset($response['checkout_url'])) {
+                    $response['checkout_url'] = $response['url'];
+                }
+                
                 // Convert response to a standard object format for consistency with the Stripe SDK
-                return json_decode(json_encode($response));
+                $responseObj = json_decode(json_encode($response));
+                
+                // Add checkout_url property if missing (but url exists)
+                if (isset($responseObj->url) && !isset($responseObj->checkout_url)) {
+                    $responseObj->checkout_url = $responseObj->url;
+                }
+                
+                return $responseObj;
             }
             
             private function request($endpoint, $method = 'GET', $params = []) {

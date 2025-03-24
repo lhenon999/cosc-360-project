@@ -506,6 +506,8 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                 if (response.success) {
                                                     // Then redirect to Stripe Checkout
                                                     console.log("Creating Stripe checkout session for order ID:", response.order_id);
+                                                    const checkoutData = { order_id: response.order_id };
+                                                    console.log("Sending data to process_stripe_checkout.php:", JSON.stringify(checkoutData));
                                                     
                                                     $.ajax({
                                                         url: "../payments/process_stripe_checkout.php",
@@ -514,8 +516,9 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                         headers: {
                                                             'X-Requested-With': 'XMLHttpRequest'
                                                         },
-                                                        data: JSON.stringify({ order_id: response.order_id }),
+                                                        data: JSON.stringify(checkoutData),
                                                         dataType: 'json',
+                                                        timeout: 30000, // 30 second timeout
                                                         success: function (checkoutResponse) {
                                                             clearTimeout(buttonTimeout);
                                                             console.log("Checkout response:", checkoutResponse);
@@ -524,6 +527,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                                 console.log("Redirecting to:", checkoutResponse.checkout_url);
                                                                 window.location.href = checkoutResponse.checkout_url;
                                                             } else {
+                                                                console.error("Invalid checkout response:", checkoutResponse);
                                                                 alert("Checkout error: " + (checkoutResponse.error || "Unknown error"));
                                                                 button.prop('disabled', false);
                                                                 button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
@@ -560,6 +564,13 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                             });
                                                             
                                                             alert(errorMessage);
+                                                            button.prop('disabled', false);
+                                                            button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
+                                                        },
+                                                        fail: function(jqXHR, textStatus, errorThrown) {
+                                                            clearTimeout(buttonTimeout);
+                                                            console.error("AJAX request failed:", textStatus, errorThrown);
+                                                            alert("Network error: Could not connect to the payment processor. Please try again.");
                                                             button.prop('disabled', false);
                                                             button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
                                                         }
