@@ -448,6 +448,14 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         button.prop('disabled', true);
                                         button.html('<div class="spinner-border spinner-border-sm" role="status"></div> Processing...');
 
+                                        // Add timeout to prevent the button from being stuck
+                                        const buttonTimeout = setTimeout(function() {
+                                            console.log("Request timeout - resetting button");
+                                            button.prop('disabled', false);
+                                            button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
+                                            alert("The request is taking too long. Please try again or check your internet connection.");
+                                        }, 20000); // 20 seconds timeout
+                                        
                                         // Check if address is selected
                                         const selectedOption = $('input[name="address_option"]:checked').val();
                                         
@@ -493,8 +501,12 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                 'X-Requested-With': 'XMLHttpRequest'
                                             },
                                             success: function (response) {
+                                                console.log("Place order response:", response);
+                                                
                                                 if (response.success) {
                                                     // Then redirect to Stripe Checkout
+                                                    console.log("Creating Stripe checkout session for order ID:", response.order_id);
+                                                    
                                                     $.ajax({
                                                         url: "../payments/process_stripe_checkout.php",
                                                         type: "POST",
@@ -505,7 +517,11 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                         data: JSON.stringify({ order_id: response.order_id }),
                                                         dataType: 'json',
                                                         success: function (checkoutResponse) {
+                                                            clearTimeout(buttonTimeout);
+                                                            console.log("Checkout response:", checkoutResponse);
+                                                            
                                                             if (checkoutResponse.success && checkoutResponse.checkout_url) {
+                                                                console.log("Redirecting to:", checkoutResponse.checkout_url);
                                                                 window.location.href = checkoutResponse.checkout_url;
                                                             } else {
                                                                 alert("Checkout error: " + (checkoutResponse.error || "Unknown error"));
@@ -514,6 +530,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                             }
                                                         },
                                                         error: function (xhr, status, error) {
+                                                            clearTimeout(buttonTimeout);
                                                             let errorMessage = "Error creating checkout session. Please try again.";
                                                             
                                                             try {
@@ -554,6 +571,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                 }
                                             },
                                             error: function (xhr, status, error) {
+                                                clearTimeout(buttonTimeout);
                                                 console.error("Order error details:", {
                                                     status: xhr.status,
                                                     statusText: xhr.statusText,

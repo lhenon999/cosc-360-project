@@ -36,9 +36,21 @@ function logOrderProcess($message, $data = null) {
     global $logFile;
     $log = date('Y-m-d H:i:s') . " - " . $message;
     if ($data !== null) {
-        $log .= " - " . (is_array($data) ? json_encode($data) : $data);
+        $log .= " - " . (is_array($data) || is_object($data) ? json_encode($data) : $data);
     }
-    file_put_contents($logFile, $log . "\n", FILE_APPEND);
+    
+    // Make sure the logs directory exists
+    $logDir = dirname(dirname(__FILE__)) . '/logs';
+    if (!is_dir($logDir)) {
+        mkdir($logDir, 0777, true);
+    }
+    
+    // Write log safely
+    try {
+        file_put_contents($logFile, $log . "\n", FILE_APPEND);
+    } catch (Exception $e) {
+        // Can't log to file, but we don't want to break the checkout process
+    }
 }
 
 // Process JSON input if content type is application/json
@@ -114,8 +126,33 @@ if ($cart_count === 0) {
 // Validate the address_id if provided
 if ($address_id) {
     $stmt = $conn->prepare("SELECT id FROM addresses WHERE id = ? AND user_id = ?");
+    if (!$stmt) {
+        logOrderProcess("Database error preparing address validation", $conn->error);
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Database error']);
+            exit;
+        } else {
+            $_SESSION['error'] = "Database error.";
+            header('Location: ../pages/basket.php');
+            exit;
+        }
+    }
+    
     $stmt->bind_param("ii", $address_id, $user_id);
-    $stmt->execute();
+    if (!$stmt->execute()) {
+        logOrderProcess("Database error executing address validation", $stmt->error);
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Database error validating address']);
+            exit;
+        } else {
+            $_SESSION['error'] = "Database error validating address.";
+            header('Location: ../pages/basket.php');
+            exit;
+        }
+    }
+    
     $result = $stmt->get_result();
     
     if ($result->num_rows === 0) {

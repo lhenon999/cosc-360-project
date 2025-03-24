@@ -82,10 +82,15 @@ try {
     }
 
     // Get JSON input
-    $input = json_decode(file_get_contents('php://input'), true);
+    $json_input = file_get_contents('php://input');
+    logCheckout("Raw input received", $json_input);
+    
+    $input = json_decode($json_input, true);
     if (!$input) {
-        throw new Exception("Invalid input format: " . file_get_contents('php://input'));
+        throw new Exception("Invalid input format: " . $json_input);
     }
+    
+    logCheckout("Parsed input", $input);
     
     $orderId = $input['order_id'] ?? null;
     if (!$orderId) {
@@ -204,6 +209,13 @@ try {
     $errorMessage = '';
     
     try {
+        // Check if Stripe is configured
+        if (!isset($stripe)) {
+            throw new Exception("Stripe configuration is missing. The Stripe API object is not available.");
+        }
+        
+        logCheckout("Attempting to create session with Stripe API", ['class_exists' => class_exists('\Stripe\Stripe')]);
+        
         if (class_exists('\Stripe\Stripe')) {
             // Using official Stripe PHP SDK
             logCheckout("Using official Stripe SDK");
@@ -211,6 +223,10 @@ try {
         } else {
             // Using fallback implementation
             logCheckout("Using fallback Stripe implementation");
+            if (!method_exists($stripe, 'createCheckoutSession')) {
+                throw new Exception("Neither Stripe SDK nor fallback implementation is properly loaded.");
+            }
+            
             $session = $stripe->createCheckoutSession($session_params);
         }
         
