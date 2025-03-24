@@ -1,4 +1,5 @@
 <?php 
+try {
     $slides = [
         ["Trending Now", "SELECT i.id, i.name, i.description, i.img FROM ORDER_ITEMS AS oi JOIN ORDERS AS o ON o.id = oi.order_id JOIN ITEMS AS i ON i.id = oi.item_id WHERE o.created_at >= DATE_SUB(NOW(), INTERVAL 3 DAY) GROUP BY i.id ORDER BY sum(oi.quantity) DESC LIMIT 1;"],
         ["Hot in Apparel", "SELECT i.id, i.name, i.description, i.img FROM ORDER_ITEMS AS oi JOIN ITEMS AS i ON i.id = oi.item_id WHERE i.category = 'Clothing' GROUP BY i.id ORDER BY SUM(oi.quantity) DESC LIMIT 1;"],
@@ -12,21 +13,47 @@
         $title = $slideInfo[0];
         $query = $slideInfo[1];
     
-        $stmt = $conn->prepare($query);
-        $stmt->execute();
-        $result = $stmt->get_result();
-    
-        while ($row = $result->fetch_assoc()) {
-            $sliderData[] = [
-                'title' => $title,
-                'id'    => $row['id'],
-                'name'  => $row['name'],
-                'desc'  => $row['description'],
-                'img'   => $row['img']
-            ];
+        try {
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            while ($row = $result->fetch_assoc()) {
+                $sliderData[] = [
+                    'title' => $title,
+                    'id'    => $row['id'],
+                    'name'  => $row['name'],
+                    'desc'  => $row['description'],
+                    'img'   => $row['img']
+                ];
+            }
+            $stmt->close();
+        } catch (Exception $e) {
+            echo "<!-- Error in slide query '" . htmlspecialchars($title) . "': " . htmlspecialchars($e->getMessage()) . " -->";
         }
-        $stmt->close();
     }
+
+    // If no slides were found, add a default one
+    if (empty($sliderData)) {
+        $sliderData[] = [
+            'title' => 'Welcome to Handmade Goods',
+            'id'    => 1,
+            'name'  => 'Explore Our Collection',
+            'desc'  => 'Discover unique handcrafted items made with care and passion.',
+            'img'   => '../assets/images/default.webp'
+        ];
+    }
+} catch (Exception $e) {
+    echo "<!-- Error in slider: " . htmlspecialchars($e->getMessage()) . " -->";
+    // Provide fallback data
+    $sliderData = [[
+        'title' => 'Welcome to Handmade Goods',
+        'id'    => 1,
+        'name'  => 'Explore Our Collection',
+        'desc'  => 'Discover unique handcrafted items made with care and passion.',
+        'img'   => '../assets/images/default.webp'
+    ]];
+}
 ?>
 
 <div class="slider">
