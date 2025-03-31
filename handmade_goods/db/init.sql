@@ -56,6 +56,8 @@ CREATE TABLE IF NOT EXISTS ORDERS( id INT auto_increment PRIMARY KEY,
                                    address_id INT,
                                    total_price DECIMAL ( 10, 2 ) NOT NULL,
                                    status ENUM('Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled') DEFAULT 'Pending',
+                                   payment_id VARCHAR(255) DEFAULT NULL,
+                                   payment_method VARCHAR(50) DEFAULT NULL,
                                    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
                                    FOREIGN KEY ( user_id ) REFERENCES USERS(id) ON DELETE CASCADE,
                                    FOREIGN KEY ( address_id ) REFERENCES ADDRESSES(id) ON DELETE SET NULL );

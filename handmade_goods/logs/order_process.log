@@ -312,3 +312,11 @@
 2025-03-24 07:33:29 - Total order price calculated - {"total_price":19.99}
 2025-03-24 07:33:29 - Transaction committed successfully
 2025-03-24 07:33:29 - Order process complete - {"order_id":15,"is_ajax":true}
+2025-03-31 23:33:09 - Got address_id from address_option - {"address_id":5}
+2025-03-31 23:33:09 - Starting order process - {"user_id":2,"is_ajax":true,"address_id":5,"address_option":"existing_5"}
+2025-03-31 23:33:09 - Address validated - {"address_id":5}
+2025-03-31 23:33:09 - Beginning transaction
+2025-03-31 23:33:09 - Created order - {"order_id":1,"address_id":5}
+2025-03-31 23:33:09 - Total order price calculated - {"total_price":149.95}
+2025-03-31 23:33:09 - Transaction committed successfully
+2025-03-31 23:33:09 - Order process complete - {"order_id":1,"is_ajax":true}
