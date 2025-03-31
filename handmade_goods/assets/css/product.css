@@ -230,3 +230,15 @@ input[type="number"].quantity-input:invalid::-webkit-inner-spin-button {
     border: 2px solid #DDD;
     border-radius: 12px;
 }
+
+main section.main nav.breadcrumb-nav {
+    background: none !important;
+    padding: 20px 0 !important;
+    margin: 0 !important;
+  }
+
+  main section.main nav.breadcrumb-nav .breadcrumb-item a:hover {
+    color: #426B1F;
+  }
+  
+  
