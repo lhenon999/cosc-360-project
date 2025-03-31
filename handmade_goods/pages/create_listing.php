@@ -36,35 +36,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($category)) {
         $errors[] = "Please select a category.";
     }
-    if (!isset($_FILES["image"]) || $_FILES["image"]["error"] != UPLOAD_ERR_OK) {
-        $errors[] = "Product image is required.";
-    }
 
     if (empty($errors)) {
         $maxSize = 2 * 1024 * 1024;
         $target_dir = "../assets/images/uploads/product_images/";
-        $image_name = basename($_FILES["image"]["name"]);
-        $target_file = $target_dir . time() . "_" . $image_name;
-        $image_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $target_file = "../assets/images/placeholder.webp"; // Default placeholder image
+        
+        // Only process image if one was uploaded
+        if (isset($_FILES["image"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK && $_FILES["image"]["size"] > 0) {
+            $image_name = basename($_FILES["image"]["name"]);
+            $target_file = $target_dir . time() . "_" . $image_name;
+            $image_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        if (!isset($_FILES["image"]) || $_FILES["image"]["error"] != UPLOAD_ERR_OK) {
-            $errors[] = "Product image is required. Error Code: " . $_FILES["image"]["error"];
-        }
-        if (getimagesize($_FILES["image"]["tmp_name"]) === false) {
-            $errors[] = "Uploaded file is not a valid image.";
-        }
-        if ($_FILES["image"]["size"] > $maxSize) {
-            $errors[] = "File exceeds maximum allowed size of 2MB.";
-        }
-        if ($_FILES["image"]["size"] === 0) {
-            $errors[] = "File is empty or not properly uploaded.";
-        }
-        if (!in_array($image_type, ["jpg", "jpeg", "webp", "png"])) {
-            $errors[] = "Only JPG, JPEG, WEBP, and PNG files are allowed.";
-        }
-        if (empty($errors)) {
-            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                $errors[] = "Failed to upload image.";
+            if (getimagesize($_FILES["image"]["tmp_name"]) === false) {
+                $errors[] = "Uploaded file is not a valid image.";
+            }
+            if ($_FILES["image"]["size"] > $maxSize) {
+                $errors[] = "File exceeds maximum allowed size of 2MB.";
+            }
+            if (!in_array($image_type, ["jpg", "jpeg", "webp", "png"])) {
+                $errors[] = "Only JPG, JPEG, WEBP, and PNG files are allowed.";
+            }
+            if (empty($errors)) {
+                if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                    $errors[] = "Failed to upload image.";
+                }
             }
         }
     }
@@ -178,8 +174,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
 
                     <div class="mb-3">
-                        <label for="image" class="form-label">Product Image</label>
-                        <input type="file" name="image" id="image" class="form-control" accept="image/*" required onchange="previewImage()">
+                        <label for="image" class="form-label">Product Image (Optional)</label>
+                        <input type="file" name="image" id="image" class="form-control" accept="image/*" onchange="previewImage()">
+                        <small class="form-text text-muted">If no image is provided, a placeholder will be used.</small>
                     </div>
 
                     <div class="d-flex justify-content-center gap-3 mb-3">
@@ -220,6 +217,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         previewDiv.style.display = "none";
                     };
                     reader.readAsDataURL(file);
+                } else {
+                    // Reset to placeholder if no file is selected
+                    const previewImage = document.getElementById("previewImage");
+                    const previewDiv = document.getElementById("previewDiv");
+                    previewImage.style.display = "none";
+                    previewDiv.style.display = "block";
                 }
             }
 

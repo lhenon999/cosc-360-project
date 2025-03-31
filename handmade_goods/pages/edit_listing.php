@@ -166,10 +166,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="d-flex justify-content-center gap-3 mb-3">
                     <a class="cta-2 hover-raise" href="my_shop.php">Cancel</a>
                     <button type="submit" class="cta hover-raise">Save Changes</button>
+                    <button type="button" class="btn btn-danger hover-raise" onclick="showDeleteConfirmation()">Delete Listing</button>
                 </div>
             </form>
         </div>
     </section>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center;">
+        <div class="modal-content" style="background-color: white; padding: 20px; border-radius: 5px; width: 80%; max-width: 500px; margin: auto;">
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete this listing? This action cannot be undone.</p>
+            <form method="POST" action="user_delete_listing.php">
+                <input type="hidden" name="item_id" value="<?= $product_id ?>">
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="cta-2" onclick="closeDeleteModal()">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 
@@ -193,6 +209,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     previewImage.style.display = "block";
                 };
                 reader.readAsDataURL(file);
+            }
+        }
+
+        function showDeleteConfirmation() {
+            document.getElementById("deleteModal").style.display = "flex";
+        }
+
+        function closeDeleteModal() {
+            document.getElementById("deleteModal").style.display = "none";
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById("deleteModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
             }
         }
 
