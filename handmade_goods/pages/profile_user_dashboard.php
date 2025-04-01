@@ -1,4 +1,26 @@
 <?php
+// Get reviews
+$myReviewsStmt = $conn->prepare("
+    SELECT 
+        r.id AS review_id,
+        r.rating,
+        r.comment,
+        r.created_at,
+        i.id AS item_id,
+        i.name AS item_name,
+        i.user_id AS seller_id,
+        seller.name AS seller_name
+    FROM REVIEWS r
+    JOIN ITEMS i ON r.item_id = i.id
+    JOIN USERS seller ON i.user_id = seller.id
+    WHERE r.user_id = ?
+    ORDER BY r.created_at DESC
+");
+$myReviewsStmt->bind_param("i", $user_id);
+$myReviewsStmt->execute();
+$myReviewsResult = $myReviewsStmt->get_result();
+$myReviewsStmt->close();
+
 // Fetch total earnings
 $stmt = $conn->prepare("
     SELECT SUM(price * quantity) AS total_earnings 
@@ -126,42 +148,46 @@ $stmt->close();
 
             <div class="reviews-summary">
                 <h3>Reviews</h3>
-
-                <?php if (!empty($all_users)): ?>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>User Type</th>
-                                <th>Total Orders</th>
-                                <th>Total Listings</th>
-                                <th>Joined</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($all_users as $user): ?>
+                    <?php if ($myReviewsResult->num_rows > 0): ?>
+                        <table class="orders-table">
+                            <thead>
                                 <tr>
-                                    <td><?= htmlspecialchars($user["name"]) ?></td>
-                                    <td><?= htmlspecialchars($user["email"]) ?></td>
-                                    <td><span
-                                            class="user-type <?= htmlspecialchars($user["user_type"]) ?>"><?= ucfirst(htmlspecialchars($user["user_type"])) ?></span>
-                                    </td>
-                                    <td><?= htmlspecialchars($user["total_orders"]) ?></td>
-                                    <td><?= htmlspecialchars($user["total_listings"]) ?></td>
-                                    <td><?= date('M j, Y', strtotime($user["created_at"])) ?></td>
-                                    <td>
-                                        <a href="user_profile.php?id=<?= htmlspecialchars($user["id"]) ?>" class="view-btn">View
-                                            Profile</a>
-                                    </td>
+                                    <th>Item</th>
+                                    <th>Seller</th>
+                                    <th>Rating</th>
+                                    <th>Comment</th>
+                                    <th>Date</th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <p>No users found.</p>
-                <?php endif; ?>
+                            </thead>
+                            <tbody>
+                            <?php while ($row = $myReviewsResult->fetch_assoc()): ?>
+                                <?php
+                                    // Protect special chars, format date, etc.
+                                    $itemId       = (int)$row['item_id'];
+                                    $itemName     = htmlspecialchars($row['item_name']);
+                                    $sellerName   = htmlspecialchars($row['seller_name']);
+                                    $rating       = (int)$row['rating'];
+                                    $comment      = htmlspecialchars($row['comment']);
+                                    $date         = date('M j, Y', strtotime($row['created_at']));
+                                ?>
+                                <tr>
+                                    <td>
+                                        <!-- Link to product page by item ID -->
+                                        <a href="product.php?id=<?= $itemId ?>">
+                                            <?= $itemName ?>
+                                        </a>
+                                    </td>
+                                    <td><?= $sellerName ?></td>
+                                    <td><?= $rating ?></td>
+                                    <td><?= $comment ?></td>
+                                    <td><?= $date ?></td>
+                                </tr>
+                            <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p>You haven't left any reviews yet.</p>
+                    <?php endif; ?>
             </div>
         </div>
     </div>
