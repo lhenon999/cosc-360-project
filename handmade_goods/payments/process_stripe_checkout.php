@@ -287,6 +287,22 @@ try {
             'checkout_url' => $checkoutUrl
         ]);
         
+        // Update the order with the initial session ID as a temporary payment_id
+        try {
+            $stmt = $conn->prepare("UPDATE orders SET payment_id = ? WHERE id = ?");
+            $stmt->bind_param("si", $sessionId, $orderId);
+            $stmt->execute();
+            $stmt->close();
+            
+            logCheckout("Updated order with initial session ID as payment_id", [
+                'order_id' => $orderId,
+                'session_id' => $sessionId
+            ]);
+        } catch (Exception $e) {
+            // Just log the error, don't stop checkout
+            logCheckout("Error updating order with session ID: " . $e->getMessage());
+        }
+        
         // Update inventory in background (don't wait for this to complete)
         try {
             // Get order items to update inventory

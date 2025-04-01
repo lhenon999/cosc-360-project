@@ -137,9 +137,11 @@ $stmt->close();
         <div class="action-buttons">
             <a href="../pages/profile.php" class="btn btn-outline-secondary" id="back-btn">Back</a>
             <form method="POST" action="delete_order.php" class="delete-form"
-                onsubmit="return confirm('Are you sure you want to cancel this order? <?= $user_type === 'admin' ? 'The stock will be returned to inventory.' : 'This cannot be undone.' ?>');">
+                onsubmit="return confirm('Are you sure you want to <?= $order["status"] === 'Cancelled' ? 'remove' : 'cancel' ?> this order? <?= $user_type === 'admin' ? 'The stock will be returned to inventory.' : 'This cannot be undone.' ?>');">
                 <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
-                <button type="submit" class="btn btn-outline-secondary" id="cancel-btn">Cancel Order</button>
+                <button type="submit" class="btn btn-outline-secondary" id="cancel-btn">
+                    <?= $order["status"] === 'Cancelled' ? 'Remove Order' : 'Cancel Order' ?>
+                </button>
             </form>
         </div>
     </div>

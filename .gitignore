@@ -4,4 +4,12 @@ handmade_goods/webhooks/webhook_status.json
 # Keep the webhooks directory
 !handmade_goods/webhooks/
 
+# Ignore vendor directories
+/vendor/
+handmade_goods/vendor/
+
+# Composer files
+composer.lock
+
+# Images
 *.png

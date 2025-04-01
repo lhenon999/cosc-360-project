@@ -145,12 +145,10 @@ foreach ($order_items as $item) {
             <p><strong>Status:</strong> <span><?= $status ?></span></p>
 
             <?php if ($order["street_address"]): ?>
-                <div class="shipping-address mt-4">
-                    <h4>Shipping Address:</h4>
-                    <p><?= htmlspecialchars($order["street_address"]) ?></p>
-                    <p><?= htmlspecialchars($order["city"]) ?>, <?= htmlspecialchars($order["state"]) ?> <?= htmlspecialchars($order["postal_code"]) ?></p>
-                    <p><?= htmlspecialchars($order["country"]) ?></p>
-                </div>
+                <p class="mt-4"><strong>Shipping Address:</strong></p>
+                <p class="ms-4"><?= htmlspecialchars($order["street_address"]) ?></p>
+                <p class="ms-4"><?= htmlspecialchars($order["city"]) ?>, <?= htmlspecialchars($order["state"]) ?> <?= htmlspecialchars($order["postal_code"]) ?></p>
+                <p class="ms-4"><?= htmlspecialchars($order["country"]) ?></p>
             <?php endif; ?>
 
             <h4 class="mt-4"><strong>Total Amount:</strong> <span class="total-price">$<?= number_format($total_price, 2) ?></span></h4>

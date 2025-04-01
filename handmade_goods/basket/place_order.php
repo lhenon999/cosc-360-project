@@ -182,10 +182,10 @@ try {
     
     // 1. Create order with address_id if provided
     if ($address_id) {
-        $stmt = $conn->prepare("INSERT INTO orders (user_id, address_id, status, created_at, total_price) VALUES (?, ?, 'Pending', NOW(), 0)");
+        $stmt = $conn->prepare("INSERT INTO orders (user_id, address_id, status, created_at, total_price, payment_method) VALUES (?, ?, 'Pending', NOW(), 0, 'card')");
         $stmt->bind_param("ii", $_SESSION['user_id'], $address_id);
     } else {
-        $stmt = $conn->prepare("INSERT INTO orders (user_id, status, created_at, total_price) VALUES (?, 'Pending', NOW(), 0)");
+        $stmt = $conn->prepare("INSERT INTO orders (user_id, status, created_at, total_price, payment_method) VALUES (?, 'Pending', NOW(), 0, 'card')");
         $stmt->bind_param("i", $_SESSION['user_id']);
     }
     

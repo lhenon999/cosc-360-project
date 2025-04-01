@@ -320,3 +320,51 @@
 2025-03-31 23:33:09 - Total order price calculated - {"total_price":149.95}
 2025-03-31 23:33:09 - Transaction committed successfully
 2025-03-31 23:33:09 - Order process complete - {"order_id":1,"is_ajax":true}
+2025-04-01 05:19:43 - Got address_id from address_option - {"address_id":10}
+2025-04-01 05:19:43 - Starting order process - {"user_id":2,"is_ajax":true,"address_id":10,"address_option":"existing_10"}
+2025-04-01 05:19:43 - Address validated - {"address_id":10}
+2025-04-01 05:19:43 - Beginning transaction
+2025-04-01 05:19:43 - Created order - {"order_id":5,"address_id":10}
+2025-04-01 05:19:43 - Total order price calculated - {"total_price":129.95}
+2025-04-01 05:19:43 - Transaction committed successfully
+2025-04-01 05:19:43 - Order process complete - {"order_id":5,"is_ajax":true}
+2025-04-01 05:19:59 - Got address_id from address_option - {"address_id":10}
+2025-04-01 05:19:59 - Starting order process - {"user_id":2,"is_ajax":true,"address_id":10,"address_option":"existing_10"}
+2025-04-01 05:19:59 - Address validated - {"address_id":10}
+2025-04-01 05:19:59 - Beginning transaction
+2025-04-01 05:19:59 - Created order - {"order_id":6,"address_id":10}
+2025-04-01 05:19:59 - Total order price calculated - {"total_price":89.97}
+2025-04-01 05:19:59 - Transaction committed successfully
+2025-04-01 05:19:59 - Order process complete - {"order_id":6,"is_ajax":true}
+2025-04-01 05:36:06 - Got address_id from address_option - {"address_id":10}
+2025-04-01 05:36:06 - Starting order process - {"user_id":2,"is_ajax":true,"address_id":10,"address_option":"existing_10"}
+2025-04-01 05:36:06 - Address validated - {"address_id":10}
+2025-04-01 05:36:06 - Beginning transaction
+2025-04-01 05:36:06 - Created order - {"order_id":7,"address_id":10}
+2025-04-01 05:36:06 - Total order price calculated - {"total_price":539.8199999999999}
+2025-04-01 05:36:07 - Transaction committed successfully
+2025-04-01 05:36:07 - Order process complete - {"order_id":7,"is_ajax":true}
+2025-04-01 05:38:28 - Got address_id from address_option - {"address_id":10}
+2025-04-01 05:38:28 - Starting order process - {"user_id":2,"is_ajax":true,"address_id":10,"address_option":"existing_10"}
+2025-04-01 05:38:28 - Address validated - {"address_id":10}
+2025-04-01 05:38:28 - Beginning transaction
+2025-04-01 05:38:28 - Created order - {"order_id":8,"address_id":10}
+2025-04-01 05:38:28 - Total order price calculated - {"total_price":29.99}
+2025-04-01 05:38:28 - Transaction committed successfully
+2025-04-01 05:38:28 - Order process complete - {"order_id":8,"is_ajax":true}
+2025-04-01 05:43:04 - Got address_id from address_option - {"address_id":10}
+2025-04-01 05:43:04 - Starting order process - {"user_id":2,"is_ajax":true,"address_id":10,"address_option":"existing_10"}
+2025-04-01 05:43:04 - Address validated - {"address_id":10}
+2025-04-01 05:43:04 - Beginning transaction
+2025-04-01 05:43:04 - Created order - {"order_id":9,"address_id":10}
+2025-04-01 05:43:04 - Total order price calculated - {"total_price":29.99}
+2025-04-01 05:43:04 - Transaction committed successfully
+2025-04-01 05:43:04 - Order process complete - {"order_id":9,"is_ajax":true}
+2025-04-01 05:46:47 - Got address_id from address_option - {"address_id":10}
+2025-04-01 05:46:47 - Starting order process - {"user_id":2,"is_ajax":true,"address_id":10,"address_option":"existing_10"}
+2025-04-01 05:46:47 - Address validated - {"address_id":10}
+2025-04-01 05:46:47 - Beginning transaction
+2025-04-01 05:46:47 - Created order - {"order_id":10,"address_id":10}
+2025-04-01 05:46:47 - Total order price calculated - {"total_price":29.99}
+2025-04-01 05:46:47 - Transaction committed successfully
+2025-04-01 05:46:47 - Order process complete - {"order_id":10,"is_ajax":true}
