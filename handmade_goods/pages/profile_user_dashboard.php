@@ -164,50 +164,52 @@ $stmt->close();
                 <?php endfor; ?>
             </div>
         </div>
-
-            <div class="reviews-summary">
-                <h3>Reviews</h3>
-                    <?php if ($myReviewsResult->num_rows > 0): ?>
-                        <table class="orders-table">
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Seller</th>
-                                    <th>Rating</th>
-                                    <th>Comment</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php while ($row = $myReviewsResult->fetch_assoc()): ?>
-                                <?php
-                                    // Protect special chars, format date, etc.
-                                    $itemId       = (int)$row['item_id'];
-                                    $itemName     = htmlspecialchars($row['item_name']);
-                                    $sellerName   = htmlspecialchars($row['seller_name']);
-                                    $rating       = (int)$row['rating'];
-                                    $comment      = htmlspecialchars($row['comment']);
-                                    $date         = date('M j, Y', strtotime($row['created_at']));
-                                ?>
-                                <tr>
-                                    <td>
-                                        <!-- Link to product page by item ID -->
-                                        <a href="product.php?id=<?= $itemId ?>">
-                                            <?= $itemName ?>
-                                        </a>
-                                    </td>
-                                    <td><?= $sellerName ?></td>
-                                    <td><?= $rating ?></td>
-                                    <td><?= $comment ?></td>
-                                    <td><?= $date ?></td>
-                                </tr>
-                            <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    <?php else: ?>
-                        <p>You haven't left any reviews yet.</p>
-                    <?php endif; ?>
-            </div>
+            
+            <div class="reviews-summary-outer">
+                <div class="reviews-summary">
+                    <h3>Reviews</h3>
+                        <?php if ($myReviewsResult->num_rows > 0): ?>
+                            <table class="orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Seller</th>
+                                        <th>Rating</th>
+                                        <th>Comment</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php while ($row = $myReviewsResult->fetch_assoc()): ?>
+                                    <?php
+                                        // Protect special chars, format date, etc.
+                                        $itemId       = (int)$row['item_id'];
+                                        $itemName     = htmlspecialchars($row['item_name']);
+                                        $sellerName   = htmlspecialchars($row['seller_name']);
+                                        $rating       = (int)$row['rating'];
+                                        $comment      = htmlspecialchars($row['comment']);
+                                        $date         = date('M j, Y', strtotime($row['created_at']));
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <!-- Link to product page by item ID -->
+                                            <a href="product.php?id=<?= $itemId ?>">
+                                                <?= $itemName ?>
+                                            </a>
+                                        </td>
+                                        <td><?= $sellerName ?></td>
+                                        <td><?= $rating ?></td>
+                                        <td><?= $comment ?></td>
+                                        <td><?= $date ?></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <p>You haven't left any reviews yet.</p>
+                        <?php endif; ?>
+                </div>
+                </div>
         </div>
     </div>
     <div id="sales" class="tab-pane">
