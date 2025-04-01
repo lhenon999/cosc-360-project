@@ -937,7 +937,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
         </div>
     </div>
 </div>
-
+<?php include "../assets/html/footer.php"; ?>
 </body>
 
 <!-- Confirmation Modal -->
