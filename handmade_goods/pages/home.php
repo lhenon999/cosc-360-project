@@ -6,13 +6,6 @@ ini_set('display_errors', 1);
 session_start();
 include __DIR__ . '/../config.php';
 
-// Test database connection
-echo "Testing database connection: ";
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} else {
-    echo "Connected successfully!<br>";
-}
 ?>
 
 <!DOCTYPE html>
