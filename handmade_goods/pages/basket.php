@@ -67,6 +67,11 @@ if (isset($_SESSION['pending_order_cart']) && isset($_SESSION['pending_order_id'
     // Clear the pending order data
     unset($_SESSION['pending_order_cart']);
     unset($_SESSION['pending_order_id']);
+    
+    // Clear any success message when restoring a cart from a canceled checkout
+    if (isset($_SESSION['success']) && $_SESSION['success'] == "Order placed successfully!") {
+        unset($_SESSION['success']);
+    }
 }
 
 // Get existing user addresses
@@ -156,91 +161,8 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
     <link rel="stylesheet" href="../assets/css/basket.css">
     <link rel="stylesheet" href="../assets/css/product_card.css">
     <link rel="stylesheet" href="../assets/css/form.css">
+    <link rel="stylesheet" href="../assets/css/address-form.css">
     <style>
-        .address-container {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-        }
-        
-        .address-option {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: flex-start;
-            position: relative;
-        }
-        
-        .address-option input {
-            margin-right: 15px;
-            margin-top: 5px;
-        }
-        
-        .address-option.selected {
-            border-color: #4CAF50;
-            background-color: #f0f9f0;
-        }
-        
-        .address-actions {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-        }
-        
-        .delete-address-btn {
-            background: none;
-            border: none;
-            color: #dc3545;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 50%;
-            transition: all 0.2s;
-        }
-        
-        .delete-address-btn:hover {
-            background-color: rgba(220, 53, 69, 0.1);
-        }
-        
-        .delete-address-btn .material-symbols-outlined {
-            font-size: 18px;
-        }
-        
-        .address-form {
-            margin-top: 20px;
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .form-row > div {
-            flex: 1;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        /* Form validation styles */
-        .is-invalid {
-            border-color: #dc3545 !important;
-            background-color: #fff8f8;
-        }
-        
-        .invalid-feedback {
-            color: #dc3545;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-        
         /* Confirmation modal styles */
         .modal-backdrop {
             position: fixed;

@@ -274,7 +274,9 @@ try {
     
     // Clear basket
     $_SESSION['basket'] = [];
-    $_SESSION['success'] = "Order placed successfully!";
+    
+    // Don't set success message here, it will be set after payment is confirmed in order_confirmation.php
+    // $_SESSION['success'] = "Order placed successfully!";
     
     logOrderProcess("Order process complete", ['order_id' => $orderId, 'is_ajax' => $isAjax]);
     

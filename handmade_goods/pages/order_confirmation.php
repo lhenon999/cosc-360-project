@@ -55,6 +55,16 @@ $total_price = $order["total_price"];
 $status = $order["status"];
 $order_date = date("F j, Y, g:i a", strtotime($order["created_at"]));
 
+// Only set the success message if the order is not cancelled
+if ($status != 'Cancelled') {
+    $_SESSION['success'] = "Order placed successfully!";
+} else {
+    // Make sure there's no success message for cancelled orders
+    if (isset($_SESSION['success'])) {
+        unset($_SESSION['success']);
+    }
+}
+
 // Fetch order items
 $stmt = $conn->prepare("
     SELECT oi.item_id, oi.item_name, i.img, oi.quantity, oi.price_at_purchase
