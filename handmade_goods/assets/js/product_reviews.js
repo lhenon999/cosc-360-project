@@ -16,7 +16,7 @@ $(document).ready(function() {
                     var review = response.review;
                     var newReviewHtml = '<div class="review mt-2 d-flex flex-column">';
                     newReviewHtml += '<a href="user_profile.php?id=' + review.user_id + '" class="review-user">';
-                    newReviewHtml += '<img src="default-profile.png" alt="Profile" class="review-user-img">';
+                    newReviewHtml += '<img src="default_profile.png" alt="Profile" class="review-user-img">';
                     newReviewHtml += '<strong>User ' + review.user_id + '</strong>'; 
                     newReviewHtml += '</a>';
                     newReviewHtml += '<div class="review-rating">';
