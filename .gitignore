@@ -1,2 +1,7 @@
+# Ignore webhook_status.json but keep the directory
+handmade_goods/webhooks/webhook_status.json
+
+# Keep the webhooks directory
+!handmade_goods/webhooks/
 
 *.png
