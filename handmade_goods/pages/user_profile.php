@@ -188,7 +188,7 @@
                                     <?php
                                         for ($i = 1; $i <= 5; $i++):
                                             $starClass = ($i <= $revRating) ? 'star-filled' : '';
-                                            echo "<span class='star $starClass'>★</span>";
+                                            echo "<span class='star $starClass'>" . ($starClass == 'star-filled' ? "★" : "☆") . "</span>";
                                         endfor;
                                     ?>
                                 </div>
