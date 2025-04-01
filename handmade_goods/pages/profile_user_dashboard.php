@@ -21,6 +21,35 @@ $myReviewsStmt->execute();
 $myReviewsResult = $myReviewsStmt->get_result();
 $myReviewsStmt->close();
 
+// get ratings summary
+    $ratingDistStmt = $conn->prepare("
+    SELECT rating, COUNT(*) AS rating_count
+    FROM REVIEWS
+    WHERE user_id = ?
+    GROUP BY rating
+");
+$ratingDistStmt->bind_param("i", $user_id);
+$ratingDistStmt->execute();
+$ratingDistResult = $ratingDistStmt->get_result();
+$ratingDistStmt->close();
+
+$ratingCounts = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
+$totalReviews = 0;
+$sumRatings   = 0;
+
+while ($row = $ratingDistResult->fetch_assoc()) {
+    $r = (int)$row['rating'];
+    $count = (int)$row['rating_count'];
+    $ratingCounts[$r] = $count;
+    $totalReviews    += $count;
+    $sumRatings      += ($r * $count);
+}
+
+$averageRating = 0;
+if ($totalReviews > 0) {
+    $averageRating = round($sumRatings / $totalReviews, 1);
+}
+
 // Fetch total earnings
 $stmt = $conn->prepare("
     SELECT SUM(price * quantity) AS total_earnings 
@@ -104,47 +133,37 @@ $stmt->close();
     </div>
     <div id="reviews" class="tab-pane">
         <div class="reviews-containers">
-            <div class="rating-summary">
-                <h3>Review Summary</h3>
-                <div class="rating-overall">
-                    <span class="rating-score">4.1</span>
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-count">167 reviews</span>
-                </div>
+        <div class="rating-summary">
+            <h3>Review Summary</h3>
 
-                <div class="rating-bars">
-                    <div class="rating-row">
-                        <span>5</span>
-                        <div class="bar">
-                            <div class="filled" style="width: 80%;"></div>
-                        </div>
-                    </div>
-                    <div class="rating-row">
-                        <span>4</span>
-                        <div class="bar">
-                            <div class="filled" style="width: 40%;"></div>
-                        </div>
-                    </div>
-                    <div class="rating-row">
-                        <span>3</span>
-                        <div class="bar">
-                            <div class="filled" style="width: 20%;"></div>
-                        </div>
-                    </div>
-                    <div class="rating-row">
-                        <span>2</span>
-                        <div class="bar">
-                            <div class="filled" style="width: 10%;"></div>
-                        </div>
-                    </div>
-                    <div class="rating-row">
-                        <span>1</span>
-                        <div class="bar">
-                            <div class="filled" style="width: 30%;"></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="rating-overall">
+                <span class="rating-score"><?= $averageRating ?></span>
+                <?php
+                    $filledStars = floor($averageRating);
+                    $emptyStars = 5 - $filledStars;
+                    $starOutput = str_repeat('★', $filledStars) . str_repeat('☆', $emptyStars);
+                ?>
+                <span class="stars"><?= $starOutput ?></span>
+
+                <span class="rating-count"><?= $totalReviews ?> reviews</span>
             </div>
+
+            <div class="rating-bars">
+                <?php 
+                for ($r = 5; $r >= 1; $r--):
+                    $percent = ($totalReviews > 0) 
+                        ? round(($ratingCounts[$r] / $totalReviews) * 100) 
+                        : 0;
+                ?>
+                    <div class="rating-row">
+                        <span><?= $r ?></span>
+                        <div class="bar">
+                            <div class="filled" style="width: <?= $percent ?>%;"></div>
+                        </div>
+                    </div>
+                <?php endfor; ?>
+            </div>
+        </div>
 
             <div class="reviews-summary">
                 <h3>Reviews</h3>
