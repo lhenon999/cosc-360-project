@@ -189,7 +189,7 @@ if ($session_user_id !== null) {
 
                 <?php if ($session_user_id !== null): ?>
                     <?php if ($hasPurchased): ?>
-                        <?php if ($userHasReviewed): ?>
+                        <?php if (!$userHasReviewed): ?>
                             <h3 class="mt-5">Add a Review</h3>
                             <form action="add_review.php" method="POST" class="add-review-form">
                                 <input type="hidden" name="product_id" value="<?= $product_id ?>">
@@ -206,9 +206,9 @@ if ($session_user_id !== null) {
                                 </div>
                                 <button type="submit" class="cta hover-raise w-100"><span class="material-symbols-outlined">check</span>Submit Review</button>
                             </form>
-                            <?php else: ?>
-                                <p>You can only review the product once.</p>
-                            <?php endif ?>
+                        <?php else: ?>
+                            <p>You can only review the product once.</p>
+                        <?php endif ?>
                     <?php else: ?>
                         <p>You can only leave a review if you've purchased this product.</p>
                     <?php endif ?>
