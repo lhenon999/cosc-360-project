@@ -208,6 +208,10 @@ main {
     border-radius: 4px;
 }
 
+.star-filled {
+    color: #345418;
+}
+
 .contact-label{
     margin: 0 !important;
 }
