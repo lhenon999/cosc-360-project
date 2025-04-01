@@ -57,33 +57,10 @@ $stmt->close();
     <h1 class="text-center">My Shop</h1>
     <p class="text-center">Browse and edit your listings</p>
     <br>
-    <div class="d-flex justify-content-center gap-3 mb-5">
+    <div class="d-flex justify-content-center mb-5">
         <a class="cta hover-raise" href="create_listing.php">
             <span class="material-symbols-outlined">add</span> Create a new listing
         </a>
-        
-        <?php if (!empty($products)): ?>
-        <button class="cta-2 hover-raise" onclick="showRegenerateModal()">
-            <span class="material-symbols-outlined">refresh</span> Fix Product Images
-        </button>
-        <?php endif; ?>
-    </div>
-
-    <!-- Regenerate Images Modal -->
-    <div id="regenerateModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center;">
-        <div class="modal-content" style="background-color: white; padding: 20px; border-radius: 5px; width: 80%; max-width: 500px; margin: auto;">
-            <h3>Fix Product Images</h3>
-            <p>This will update how your product images are displayed. To fix current images, please re-upload them by editing each product.</p>
-            <p>For best results:</p>
-            <ol>
-                <li>Click "Edit" on each product</li>
-                <li>Re-upload the product image</li>
-                <li>Save your changes</li>
-            </ol>
-            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                <button type="button" class="cta-2" onclick="closeRegenerateModal()">Close</button>
-            </div>
-        </div>
     </div>
 
     <div class="container">
@@ -111,23 +88,5 @@ $stmt->close();
     </div>
 
     <?php include __DIR__ . "/../assets/html/footer.php"; ?>
-
-    <script>
-        function showRegenerateModal() {
-            document.getElementById("regenerateModal").style.display = "flex";
-        }
-
-        function closeRegenerateModal() {
-            document.getElementById("regenerateModal").style.display = "none";
-        }
-
-        // Close modal when clicking outside of it
-        window.onclick = function(event) {
-            const modal = document.getElementById("regenerateModal");
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
 </body>
 </html>
