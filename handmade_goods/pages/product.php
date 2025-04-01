@@ -194,6 +194,7 @@ if ($session_user_id !== null) {
                             <form action="add_review.php" method="POST" class="add-review-form">
                                 <input type="hidden" name="product_id" value="<?= $product_id ?>">
                                 <textarea placeholder="Tell other buyers about your experience with the product..." name="comment" id="comment" rows="3" required></textarea>
+                                <div id="commentError"></div>
                                 <div class="d-flex flex-row align-items-center justify-content-start">
                                     <span class="rating-label">Rating: </span>
                                     <div class="rating-group">
@@ -203,6 +204,7 @@ if ($session_user_id !== null) {
                                         <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
                                         <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
                                     </div>
+                                    <div id="ratingError"></div>
                                 </div>
                                 <button type="submit" class="cta hover-raise w-100"><span class="material-symbols-outlined">check</span>Submit Review</button>
                             </form>
