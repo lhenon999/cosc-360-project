@@ -207,63 +207,66 @@ if ($session_user_id !== null) {
 
         <section class="reviews">
             <h1 class="mb-4">Customer Reviews</h1>
+            <div id="reviews-container">
 
-            <?php if (empty($reviews)): ?>
-                <p class="mb-5">No reviews yet. Be the first to review this product!</p>
-            <?php else: ?>
-                <?php foreach ($reviews as $review): ?>
-                    <div class="review mt-2 d-flex flex-column">
-                        <a href="user_profile.php?id=<?= $review['user_id'] ?>" class="review-user">
-                            <img src="<?= htmlspecialchars($review['profile_picture']) ?>" alt="Profile"
-                                class="review-user-img">
-                            <strong><?= htmlspecialchars($review['name']) ?></strong>
-                        </a>
-                        <div class="review-rating">
-                            <?php for ($i = 1; $i <= 5; $i++): ?>
-                                <span class="star <?= $i <= $review['rating'] ? 'filled' : '' ?>">★</span>
-                            <?php endfor; ?>
-                        </div>
-                        <p class="review-comment"><?= htmlspecialchars($review['comment']) ?></p>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-
-            <?php if ($session_user_id !== null): ?>
-                <?php if ($hasPurchased): ?>
-                    <?php if ($userHasReviewed): ?>
-                        <h3 class="mt-5">Add a Review</h3>
-                        <form action="add_review.php" method="POST" class="add-review-form">
-                            <input type="hidden" name="product_id" value="<?= $product_id ?>">
-                            <textarea placeholder="Tell other buyers about your experience with the product..." name="comment"
-                                id="comment" rows="3" required></textarea>
-                            <div class="d-flex flex-row align-items-center justify-content-start">
-                                <span class="rating-label">Rating: </span>
-                                <div class="rating-group">
-                                    <input type="radio" id="star5" name="rating" value="5">
-                                    <label for="star5">★</label>
-                                    <input type="radio" id="star4" name="rating" value="4">
-                                    <label for="star4">★</label>
-                                    <input type="radio" id="star3" name="rating" value="3">
-                                    <label for="star3">★</label>
-                                    <input type="radio" id="star2" name="rating" value="2">
-                                    <label for="star2">★</label>
-                                    <input type="radio" id="star1" name="rating" value="1">
-                                    <label for="star1">★</label>
-                                </div>
+                <?php if (empty($reviews)): ?>
+                    <p class="mb-5">No reviews yet. Be the first to review this product!</p>
+                <?php else: ?>
+                    <?php foreach ($reviews as $review): ?>
+                        <div class="review mt-2 d-flex flex-column">
+                            <a href="user_profile.php?id=<?= $review['user_id'] ?>" class="review-user">
+                                <img src="<?= htmlspecialchars($review['profile_picture']) ?>" alt="Profile"
+                                    class="review-user-img">
+                                <strong><?= htmlspecialchars($review['name']) ?></strong>
+                            </a>
+                            <div class="review-rating">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <span class="star <?= $i <= $review['rating'] ? 'filled' : '' ?>">★</span>
+                                <?php endfor; ?>
                             </div>
-                            <button type="submit" class="cta hover-raise w-100">
-                                <span class="material-symbols-outlined">check</span>Submit Review
-                            </button>
-                        </form>
+                            <p class="review-comment"><?= htmlspecialchars($review['comment']) ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+                <?php if ($session_user_id !== null): ?>
+                    <?php if ($hasPurchased): ?>
+                        <?php if (!$userHasReviewed): // Change this line ?>
+                            <h3 class="mt-5">Add a Review</h3>
+                            <form id="add-review-form" action="add_review.php" method="POST" class="add-review-form">
+                                <input type="hidden" name="product_id" value="<?= $product_id ?>">
+                                <textarea placeholder="Tell other buyers about your experience..." name="comment" id="comment"
+                                    rows="3" required></textarea>
+                                <div class="d-flex flex-row align-items-center justify-content-start">
+                                    <span class="rating-label">Rating: </span>
+                                    <div class="rating-group">
+                                        <input type="radio" id="star5" name="rating" value="5">
+                                        <label for="star5">★</label>
+                                        <input type="radio" id="star4" name="rating" value="4">
+                                        <label for="star4">★</label>
+                                        <input type="radio" id="star3" name="rating" value="3">
+                                        <label for="star3">★</label>
+                                        <input type="radio" id="star2" name="rating" value="2">
+                                        <label for="star2">★</label>
+                                        <input type="radio" id="star1" name="rating" value="1">
+                                        <label for="star1">★</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="cta hover-raise w-100">
+                                    <span class="material-symbols-outlined">check</span>Submit Review
+                                </button>
+                            </form>
+                        <?php else: ?>
+                            <p>You can only review the product once.</p>
+                        <?php endif; ?>
                     <?php else: ?>
-                        <p>You can only review the product once.</p>
+                        <p>You can only leave a review if you've purchased this product.</p>
                     <?php endif; ?>
                 <?php else: ?>
-                    <p>You can only leave a review if you've purchased this product.</p>
+                    <p>You must be logged in to leave a review.</p>
                 <?php endif; ?>
-            <?php else: ?>
-                <p>You must be logged in to leave a review.</p>
-            <?php endif; ?>
+
+            </div>
         </section>
 
         <?php include __DIR__ . '/../assets/html/footer.php'; ?>

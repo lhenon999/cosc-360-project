@@ -1,43 +1,40 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector(".add-review-form");
-    const commentField = document.getElementById("comment");
-    const ratingFields = document.querySelectorAll('input[name="rating"]');
-    const commentError = document.getElementById("commentError");
-    const ratingError = document.getElementById("ratingError");
+$(document).ready(function() {
+    $("#add-review-form").submit(function(e) {
+        e.preventDefault();
 
-    commentError.classList.add("error-message", "text-danger");
-    ratingError.classList.add("error-message", "text-danger");
+        var formData = $(this).serialize();
 
-    form.addEventListener("submit", function (event) {
-        let isValid = true;
-        commentError.textContent = "";
-        ratingError.textContent = "";
+        $.ajax({
+            url: 'add_review.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if(response.success) {
+                    $("#add-review-form")[0].reset();
 
-        if (commentField.value.trim().length < 10) {
-            commentError.textContent = "Comment must be at least 10 characters long.";
-            isValid = false;
-        }
+                    var review = response.review;
+                    var newReviewHtml = '<div class="review mt-2 d-flex flex-column">';
+                    newReviewHtml += '<a href="user_profile.php?id=' + review.user_id + '" class="review-user">';
+                    newReviewHtml += '<img src="default-profile.png" alt="Profile" class="review-user-img">';
+                    newReviewHtml += '<strong>User ' + review.user_id + '</strong>'; 
+                    newReviewHtml += '</a>';
+                    newReviewHtml += '<div class="review-rating">';
+                    for(var i = 1; i <= 5; i++) {
+                        newReviewHtml += '<span class="star ' + (i <= review.rating ? 'filled' : '') + '">★</span>';
+                    }
+                    newReviewHtml += '</div>';
+                    newReviewHtml += '<p class="review-comment">' + review.comment + '</p>';
+                    newReviewHtml += '</div>';
 
-        const selectedRating = document.querySelector('input[name="rating"]:checked');
-        if (!selectedRating) {
-            ratingError.textContent = "Please select a rating.";
-            isValid = false;
-        }
-
-        if (!isValid) {
-            event.preventDefault();
-        }
-    });
-
-    commentField.addEventListener("input", function () {
-        if (commentField.value.trim().length >= 10) {
-            commentError.textContent = "";
-        }
-    });
-
-    ratingFields.forEach((radio) => {
-        radio.addEventListener("change", function () {
-            ratingError.textContent = "";
+                    $("#reviews-container").prepend(newReviewHtml);
+                } else {
+                    alert("Error: " + response.error);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX error: " + status + " " + error);
+            }
         });
     });
 });
