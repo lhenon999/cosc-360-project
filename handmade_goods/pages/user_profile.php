@@ -153,7 +153,8 @@
                         <?php endfor; ?>
                     </div>
                 </div>
-
+                
+                <div class="reviews-summary-outer">
                 <div class="reviews-summary">
                     <h3>Recent Reviews on their Listings</h3>
 
@@ -198,6 +199,7 @@
                     <?php else: ?>
                         <p>No reviews yet for this user’s products.</p>
                     <?php endif; ?>
+                </div>
                 </div>
                 </section>
 

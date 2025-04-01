@@ -129,20 +129,25 @@ main {
     text-align: center;
     flex: 1;
     width: 350px;
-    height: 350px;
+    height: 400px;
     max-width: 350px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease-in-out;
 }
 
 .reviews-summary {
+    overflow-y: scroll;
+    height: 360px;
+}
+
+.reviews-summary-outer {
     background: #fff;
     color: #1e1e1e;
     border-radius: 16px;
     width: 100%;
     text-align: center;
-    flex: 1; 
-    height: 350px;
+    flex: 1;
+    height: 400px;
     min-width: 500px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease-in-out;
