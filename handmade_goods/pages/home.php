@@ -33,6 +33,7 @@ if ($conn->connect_error) {
         <link rel="stylesheet" href="../assets/css/home.css">
         <link rel="stylesheet" href="../assets/css/landing_slider.css">
         <link rel="stylesheet" href="../assets/css/product_card.css">
+        <link rel="stylesheet" href="../assets/css/fix_slider.css">
     </head>
 
     <body>
@@ -109,6 +110,7 @@ if ($conn->connect_error) {
         </div>
         <?php include "../assets/html/footer.php"; ?>
 
+        <script src="../assets/js/fix_slider.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const form = document.getElementById("contactForm");
