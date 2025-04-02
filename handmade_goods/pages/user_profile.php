@@ -121,8 +121,12 @@ $reviewsStmt->close();
             <div class="profile-info">
                 <h1><?= htmlspecialchars($user['name']) ?></h1>
                 <div class="profile-details">
-                    <h3 class="contact-label">Contact</h3>
-                    <p><?= htmlspecialchars($user['email']) ?></p>
+                    <!-- <h3 class="contact-label">Contact</h3> -->
+                    <p>
+                        <a href="mailto:<?= htmlspecialchars($user['email']) ?>">
+                            <?= htmlspecialchars($user['email']) ?>
+                        </a>
+                    </p>
                 </div>
                 <?php if ($from_admin): ?>
                     <a href="profile.php" class="btn btn-outline-secondary w-100">Back</a>
