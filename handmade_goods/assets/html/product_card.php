@@ -10,11 +10,19 @@
     if (isset($isFromProfile) && $isFromProfile) {
         $and = '&and=user_profile';
     } 
+    
+    // Default placeholder image if the image path is empty or invalid
+    if (empty($image)) {
+        $image = '../assets/images/placeholder.webp';
+    }
     ?>
     <a class="listing-item" href="../pages/product.php?id=<?= $id . $from . $and ?>">
 
         <div class="product-image-container">
-            <img src="<?= $image ?>" alt="<?= htmlspecialchars($name) ?>" class="product-image" loading="lazy">
+            <div class="product-image-wrapper">
+                <img src="<?= $image ?>" alt="<?= htmlspecialchars($name) ?>" class="product-image" loading="lazy" 
+                     onerror="this.src='../assets/images/placeholder.webp';">
+            </div>
             <?php if (isset($stock)): ?>
                 <div class="stock-badge <?= $stock_class ?>">
                     <?php if ($stock <= 0): ?>
