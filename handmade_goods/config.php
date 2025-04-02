@@ -16,7 +16,7 @@ if ($conn->connect_error) {
 }
 
 // Run auto-installer for webhooks directory
-include_once __DIR__ . '/config/autoinstall.php';
+include_once __DIR__ . '/stripe/autoinstall.php';
 
 // Include Stripe webhook autostart if the file exists
 $webhookAutostart = __DIR__ . '/webhooks/autostart.php';

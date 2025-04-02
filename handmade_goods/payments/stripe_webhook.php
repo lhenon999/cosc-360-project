@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require_once '../config.php';
-require_once '../config/stripe.php';
+require_once '../stripe/stripe.php';
 
 // Create logs directory if it doesn't exist
 $logDir = dirname(__DIR__) . '/logs';

@@ -10,12 +10,12 @@ require_once __DIR__ . '/../config.php';
 echo "Debug: Script started<br>";
 
 // Test if Stripe config exists
-if (file_exists(__DIR__ . '/../config/stripe.php')) {
+if (file_exists(__DIR__ . '/../stripe/stripe.php')) {
     echo "Debug: Stripe config file exists<br>";
-    require_once __DIR__ . '/../config/stripe.php';
+    require_once __DIR__ . '/../stripe/stripe.php';
     echo "Debug: Stripe config loaded<br>";
 } else {
-    echo "Debug: Stripe config file NOT found at " . __DIR__ . '/../config/stripe.php' . "<br>";
+    echo "Debug: Stripe config file NOT found at " . __DIR__ . '/../stripe/stripe.php' . "<br>";
     die("Stripe configuration file is missing");
 }
 

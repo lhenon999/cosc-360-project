@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../config.php';
-require_once '../config/stripe.php';
+require_once '../stripe/stripe.php';
 
 // echo "Debug: User ID = $user_id <br>";
 
