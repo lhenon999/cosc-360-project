@@ -215,7 +215,7 @@ $reviewsStmt->close();
                                     </div>
                                     <p class="review-comment"><?= $revComment ?></p>
                                     <div class="review-product">
-                                        <a href="product.php?id=<?= $itemId ?>"><?= $itemName ?></a>
+                                        <a href="product.php?id=<?= $itemId ?>&and=user_profile"><?= $itemName ?></a>
                                         <em>(<?= $revDate ?>)</em>
                                     </div>
                                 </div>
