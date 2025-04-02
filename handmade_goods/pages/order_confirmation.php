@@ -11,23 +11,41 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
+// Clear any pending order data since the payment was successful
+if (isset($_SESSION['pending_order_cart']) && isset($_SESSION['pending_order_id'])) {
+    unset($_SESSION['pending_order_cart']);
+    unset($_SESSION['pending_order_id']);
+}
+
 $user_id = $_SESSION["user_id"];
 
+// Get order ID from URL if available, otherwise get latest order
+$order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : null;
+
+// Get order with address details
 $stmt = $conn->prepare("
-    SELECT id, total_price, status, created_at
-    FROM ORDERS
-    WHERE user_id = ?
-    ORDER BY created_at DESC
+    SELECT o.id, o.total_price, o.status, o.created_at,
+           a.street_address, a.city, a.state, a.postal_code, a.country
+    FROM ORDERS o
+    LEFT JOIN addresses a ON o.address_id = a.id
+    WHERE o.user_id = ? AND " . ($order_id ? "o.id = ?" : "1=1") . "
+    ORDER BY o.created_at DESC
     LIMIT 1
 ");
-$stmt->bind_param("i", $user_id);
+
+if ($order_id) {
+    $stmt->bind_param("ii", $user_id, $order_id);
+} else {
+    $stmt->bind_param("i", $user_id);
+}
+
 $stmt->execute();
 $result = $stmt->get_result();
 $order = $result->fetch_assoc();
 $stmt->close();
 
 if (!$order) {
-    $_SESSION["error"] = "No recent orders found.";
+    $_SESSION["error"] = "No order found.";
     header("Location: basket.php");
     exit();
 }
@@ -37,6 +55,17 @@ $total_price = $order["total_price"];
 $status = $order["status"];
 $order_date = date("F j, Y, g:i a", strtotime($order["created_at"]));
 
+// Only set the success message if the order is not cancelled
+if ($status != 'Cancelled') {
+    $_SESSION['success'] = "Order placed successfully!";
+} else {
+    // Make sure there's no success message for cancelled orders
+    if (isset($_SESSION['success'])) {
+        unset($_SESSION['success']);
+    }
+}
+
+// Fetch order items
 $stmt = $conn->prepare("
     SELECT oi.item_id, oi.item_name, i.img, oi.quantity, oi.price_at_purchase
     FROM ORDER_ITEMS oi
@@ -50,6 +79,7 @@ $result = $stmt->get_result();
 $order_items = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
+// Record sales data
 foreach ($order_items as $item) {
     $seller_stmt = $conn->prepare("SELECT user_id FROM ITEMS WHERE id = ?");
     $seller_stmt->bind_param("i", $item['item_id']);
@@ -58,13 +88,24 @@ foreach ($order_items as $item) {
     $seller_stmt->fetch();
     $seller_stmt->close();
 
-    $insert_sale = $conn->prepare("
-        INSERT INTO SALES (order_id, seller_id, buyer_id, item_id, quantity, price)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ");
-    $insert_sale->bind_param("iiiiid", $order_id, $seller_id, $user_id, $item['item_id'], $item['quantity'], $item['price_at_purchase']);
-    $insert_sale->execute();
-    $insert_sale->close();
+    // Only insert if we have a valid seller and the order is not already recorded
+    if ($seller_id) {
+        $check_stmt = $conn->prepare("SELECT id FROM SALES WHERE order_id = ? AND item_id = ? LIMIT 1");
+        $check_stmt->bind_param("ii", $order_id, $item['item_id']);
+        $check_stmt->execute();
+        $exists = $check_stmt->get_result()->num_rows > 0;
+        $check_stmt->close();
+
+        if (!$exists) {
+            $insert_sale = $conn->prepare("
+                INSERT INTO SALES (order_id, seller_id, buyer_id, item_id, quantity, price)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ");
+            $insert_sale->bind_param("iiiiid", $order_id, $seller_id, $user_id, $item['item_id'], $item['quantity'], $item['price_at_purchase']);
+            $insert_sale->execute();
+            $insert_sale->close();
+        }
+    }
 }
 
 ?>
@@ -102,16 +143,15 @@ foreach ($order_items as $item) {
             <h4>Order ID: #<?= $order_id ?></h4>
             <p class="mt-4"><strong>Date:</strong> <?= $order_date ?></p>
             <p><strong>Status:</strong> <span><?= $status ?></span></p>
-            <h4 class="mt-4"><strong>Total Amount:</strong> <span
-                    class="total-price">$<?= number_format($total_price, 2) ?></span></h4>
-            <div class="ending-div mt-5">
-                <form action="process_payment.php" method="POST">
-                    <input type="hidden" name="order_id" value="<?= $order_id ?>">
-                    <button type="submit" class="cta hover-raise">
-                        <span class="material-symbols-outlined">payment</span> Process Payment
-                    </button>
-                </form>
-            </div>
+
+            <?php if ($order["street_address"]): ?>
+                <p class="mt-4"><strong>Shipping Address:</strong></p>
+                <p class="ms-4"><?= htmlspecialchars($order["street_address"]) ?></p>
+                <p class="ms-4"><?= htmlspecialchars($order["city"]) ?>, <?= htmlspecialchars($order["state"]) ?> <?= htmlspecialchars($order["postal_code"]) ?></p>
+                <p class="ms-4"><?= htmlspecialchars($order["country"]) ?></p>
+            <?php endif; ?>
+
+            <h4 class="mt-4"><strong>Total Amount:</strong> <span class="total-price">$<?= number_format($total_price, 2) ?></span></h4>
         </div>
 
         <h3 class="mt-5">Items Ordered</h3>
@@ -129,7 +169,6 @@ foreach ($order_items as $item) {
                             <p><strong>Total:</strong> $<?= number_format($item['price_at_purchase'] * $item['quantity'], 2) ?></p>
                         </div>
                     </a>
-
                 </div>
             <?php endforeach; ?>
         </div>

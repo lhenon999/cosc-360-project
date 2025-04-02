@@ -1,0 +1,129 @@
+{
+  "id": "evt_test_webhook_123456789",
+  "object": "event",
+  "api_version": "2023-10-16",
+  "created": 1716403200,
+  "type": "checkout.session.completed",
+  "data": {
+    "object": {
+      "id": "cs_test_abcdefghijklmnopqrstuvwxyz",
+      "object": "checkout.session",
+      "after_expiration": null,
+      "allow_promotion_codes": null,
+      "amount_subtotal": 3495,
+      "amount_total": 4562,
+      "automatic_tax": {
+        "enabled": false,
+        "status": null
+      },
+      "billing_address_collection": "required",
+      "cancel_url": "http://localhost/cosc-360-project/handmade_goods/pages/basket.php",
+      "client_reference_id": null,
+      "consent": null,
+      "consent_collection": null,
+      "currency": "usd",
+      "customer": "cus_test_123456789",
+      "customer_creation": "always",
+      "customer_details": {
+        "address": {
+          "city": "San Francisco",
+          "country": "US",
+          "line1": "123 Market St",
+          "line2": "Suite 456",
+          "postal_code": "94107",
+          "state": "CA"
+        },
+        "email": "test@example.com",
+        "name": "Test Customer",
+        "phone": "+14155551234",
+        "tax_exempt": "none",
+        "tax_ids": []
+      },
+      "customer_email": "test@example.com",
+      "expires_at": 1716489600,
+      "livemode": false,
+      "locale": null,
+      "metadata": {
+        "order_id": "1"
+      },
+      "mode": "payment",
+      "payment_intent": "pi_test_123456789abcdefghijklmn",
+      "payment_link": null,
+      "payment_method_collection": "always",
+      "payment_method_options": {},
+      "payment_method_types": ["card"],
+      "payment_status": "paid",
+      "phone_number_collection": {
+        "enabled": false
+      },
+      "recovered_from": null,
+      "setup_intent": null,
+      "shipping": {
+        "address": {
+          "city": "San Francisco",
+          "country": "US",
+          "line1": "123 Shipping St",
+          "line2": "Apt 789",
+          "postal_code": "94103",
+          "state": "CA"
+        },
+        "name": "Test Customer",
+        "carrier": null,
+        "phone": "+14155551234",
+        "tracking_number": null
+      },
+      "shipping_address_collection": {
+        "allowed_countries": ["US", "CA", "GB", "DE", "FR", "IT", "ES", "AU", "NZ", "JP", "SG", "MX"]
+      },
+      "shipping_cost": {
+        "amount_subtotal": 799,
+        "amount_tax": 0,
+        "amount_total": 799,
+        "shipping_rate": "shr_test_123456789"
+      },
+      "shipping_details": {
+        "address": {
+          "city": "San Francisco",
+          "country": "US",
+          "line1": "123 Shipping St",
+          "line2": "Apt 789",
+          "postal_code": "94103",
+          "state": "CA"
+        },
+        "name": "Test Customer"
+      },
+      "shipping_options": [
+        {
+          "shipping_amount": 799,
+          "shipping_rate": "shr_test_123456789"
+        }
+      ],
+      "status": "complete",
+      "submit_type": "pay",
+      "subscription": null,
+      "success_url": "http://localhost/cosc-360-project/handmade_goods/pages/order_confirmation.php?order_id=1",
+      "total_details": {
+        "amount_discount": 0,
+        "amount_shipping": 799,
+        "amount_tax": 268,
+        "breakdown": {
+          "discounts": [],
+          "shipping": {
+            "amount": 799,
+            "shipping_rate": "shr_test_123456789"
+          },
+          "taxes": [
+            {
+              "amount": 268,
+              "rate": {
+                "display_name": "Sales Tax (7.5%)",
+                "percentage": 7.5
+              }
+            }
+          ]
+        }
+      },
+      "url": null
+    }
+  }
+}
