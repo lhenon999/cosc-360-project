@@ -111,10 +111,6 @@ $reviewsStmt->close();
     <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <main class="mt-5">
-        <?php if ($from_product): ?>
-            <a href="<?= htmlspecialchars($from_product) ?>" class="cta-2 hover-raise back-btn">Go Back</a>
-        <?php endif; ?>
-
         <section class="profile-header">
             <img src="<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" class="profile-pic">
             <div class="profile-info">

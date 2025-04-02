@@ -373,11 +373,8 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                         <h5 class="summary-total">Total: <span class="float-end">$<?= number_format($total, 2) ?></span>
                         </h5>
                         <?php if (!empty($cart_items)): ?>
-                            <form id="placeOrderForm" class="mb-3">
-                                <button type="submit" class="cta hover-raise w-100">
-                                    <span class="material-symbols-outlined">shopping_cart_checkout</span>
-                                    Place Order
-                                </button>
+                            <form id="placeOrderForm">
+                                <button type="submit" class="cta w-100 mt-3">Place Order</button>
                             </form>
 
                             <script>
@@ -937,7 +934,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
         </div>
     </div>
 </div>
-<?php include "../assets/html/footer.php"; ?>
+<?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
 <!-- Confirmation Modal -->
