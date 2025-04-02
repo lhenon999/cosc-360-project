@@ -251,3 +251,12 @@ main section.main nav.breadcrumb-nav {
     padding: 0 8px;
     color: #888;
 }
+
+.white-button{
+    background: #426B1F;
+    color: white !important;
+}
+
+.white-button .material-symbols-outlined {
+    color: inherit;
+}
