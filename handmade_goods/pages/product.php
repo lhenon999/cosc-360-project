@@ -35,6 +35,8 @@ $image = !empty($product['img']) ? htmlspecialchars($product['img']) : "../asset
 $user_id = intval($product['user_id']);
 $session_user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
 $category_name = isset($product['category']) ? htmlspecialchars($product['category']) : null;
+$created_at = date("F j, Y", strtotime($product['created_at']));
+
 
 $stmt = $conn->prepare("SELECT name, profile_picture FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $user_id);
@@ -154,6 +156,7 @@ if ($session_user_id !== null) {
 
 
                 <h1><?= $name ?></h1>
+                <p class="created-at">Listed on: <?= $created_at ?></p>
                 <h5 id="price-label">$<?= $price ?></h5>
 
                 <p class="mt-4"><?= $description ?></p>
@@ -170,7 +173,7 @@ if ($session_user_id !== null) {
                 <?php endif; ?>
 
                 <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
-                    <a href="edit_listing.php?id=<?= $product_id ?>" class="cta hover-raise atc">
+                    <a href="edit_listing.php?id=<?= $product_id ?>" class="white-button atc">
                         <span class="material-symbols-outlined">edit</span> Edit Listing
                     </a>
                 <?php else: ?>
@@ -184,14 +187,14 @@ if ($session_user_id !== null) {
                             class="user-options">
                             <input type="hidden" name="product_id" value="<?= $product_id ?>">
                             <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
-                                <a href="profile.php?item=<?= urlencode($name) ?>" class="cta hover-raise atc">
+                                <a href="profile.php?item=<?= urlencode($name) ?>" class="white-button atc">
                                     <span class="material-symbols-outlined">manage_accounts</span> Manage Listing
                                 </a>
                             <?php else: ?>
                                 <div class="quantity-add w-100">
                                     <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
                                         class="form-control quantity-input">
-                                    <button type="submit" class="cta hover-raise atc">
+                                    <button type="submit" class="white-button atc">
                                         <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
                                     </button>
                                 </div>
@@ -199,14 +202,13 @@ if ($session_user_id !== null) {
                         </form>
                     <?php else: ?>
                         <p class="out-of-stock">Out of Stock</p>
-                        <button class="cta hover-raise atc" disabled>
+                        <button class="white-button atc" disabled>
                             <span class="material-symbols-outlined">add_shopping_cart</span> Out of Stock
                         </button>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
         </section>
-
         <section class="reviews">
             <h1 class="mb-4">Customer Reviews</h1>
             <?php if (empty($reviews)): ?>
@@ -252,7 +254,7 @@ if ($session_user_id !== null) {
                                     <label for="star1">★</label>
                                 </div>
                             </div>
-                            <button type="submit" class="cta hover-raise w-100">
+                            <button type="submit" class="white-button w-40">
                                 <span class="material-symbols-outlined">check</span>Submit Review
                             </button>
                         </form>
@@ -266,10 +268,9 @@ if ($session_user_id !== null) {
                 <p>You must be logged in to leave a review.</p>
             <?php endif; ?>
         </section>
-
-        <?php include __DIR__ . '/../assets/html/footer.php'; ?>
     </main>
     <script src="../assets/js/product_reviews.js"></script>
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
 </html>
