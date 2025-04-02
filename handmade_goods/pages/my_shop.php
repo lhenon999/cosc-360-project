@@ -7,13 +7,6 @@ if (!$is_logged_in) {
     exit();
 }
 
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-// include __DIR__ . '/../config.php';
-
-// var_dump($_SESSION);
-
-
 include __DIR__ . '/../config.php';
 
 $user_email = $_SESSION["user_id"];
@@ -25,6 +18,20 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 while ($row = $result->fetch_assoc()) {
+    // Fix image paths
+    if (!empty($row['img'])) {
+        // Keep paths that already have '../' prefix or start with '/'
+        if (substr($row['img'], 0, 3) !== '../' && substr($row['img'], 0, 1) !== '/') {
+            // Handle case where only the filename is stored
+            if (!strpos($row['img'], '/')) {
+                $row['img'] = '../assets/images/uploads/product_images/' . $row['img'];
+            }
+        }
+    } else {
+        // No image path, use placeholder
+        $row['img'] = '../assets/images/placeholder.webp';
+    }
+    
     $products[] = $row;
 }
 
@@ -48,7 +55,7 @@ $stmt->close();
     <link rel="stylesheet" href="../assets/css/products.css?v=1">
     <link rel="stylesheet" href="../assets/css/navbar.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
-    <link rel="stylesheet" href="../assets/css/product_card.css">
+    <link rel="stylesheet" href="../assets/css/product_card.css?v=4">
 </head>
 
 <body>
@@ -57,11 +64,11 @@ $stmt->close();
     <h1 class="text-center">My Shop</h1>
     <p class="text-center">Browse and edit your listings</p>
     <br>
-        <div class="d-flex justify-content-center mb-5">
-            <a class="cta hover-raise" href="create_listing.php">
-                <span class="material-symbols-outlined">add</span> Create a new listing
-            </a>
-        </div>
+    <div class="d-flex justify-content-center mb-5">
+        <a class="cta hover-raise" href="create_listing.php">
+            <span class="material-symbols-outlined">add</span> Create a new listing
+        </a>
+    </div>
 
     <div class="container">
         <div class="scrollable-container">
@@ -87,8 +94,6 @@ $stmt->close();
         </div>
     </div>
 
+    <?php include __DIR__ . "/../assets/html/footer.php"; ?>
 </body>
-
-<?php include __DIR__ . "/../assets/html/footer.php"; ?>
-
 </html>

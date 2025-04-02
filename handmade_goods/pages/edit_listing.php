@@ -27,6 +27,107 @@ if (!$product) {
     exit();
 }
 
+/**
+ * Resizes and crops an image to fit the product card dimensions
+ * @param string $source_path Path to the source image
+ * @param string $target_path Path to save the processed image
+ * @param int $width Target width
+ * @param int $height Target height
+ * @return bool True if successful, false otherwise
+ */
+function processImage($source_path, $target_path, $width = 320, $height = 224) {
+    // Check if GD extension is available
+    if (!extension_loaded('gd')) {
+        return false;
+    }
+    
+    // Get image type
+    $image_info = getimagesize($source_path);
+    if ($image_info === false) {
+        return false;
+    }
+    
+    $mime = $image_info['mime'];
+    
+    // Create image resource based on type
+    switch ($mime) {
+        case 'image/jpeg':
+            $source_image = imagecreatefromjpeg($source_path);
+            break;
+        case 'image/png':
+            $source_image = imagecreatefrompng($source_path);
+            break;
+        case 'image/webp':
+            $source_image = imagecreatefromwebp($source_path);
+            break;
+        default:
+            return false;
+    }
+    
+    if (!$source_image) {
+        return false;
+    }
+    
+    // Get original dimensions
+    $src_width = imagesx($source_image);
+    $src_height = imagesy($source_image);
+    
+    // Create new image with transparent background (will appear as white in browsers)
+    $new_image = imagecreatetruecolor($width, $height);
+    $transparent = imagecolorallocate($new_image, 245, 245, 245); // Light gray background
+    imagefill($new_image, 0, 0, $transparent);
+    
+    // Handle transparency for PNG images
+    if ($mime == 'image/png') {
+        imagealphablending($new_image, false);
+        imagesavealpha($new_image, true);
+        $transparent = imagecolorallocatealpha($new_image, 245, 245, 245, 0);
+        imagefilledrectangle($new_image, 0, 0, $width, $height, $transparent);
+    }
+    
+    // Calculate scaling factors
+    $scale_w = $width / $src_width;
+    $scale_h = $height / $src_height;
+    
+    // Use the smaller scaling factor to ensure the entire image fits
+    $scale = min($scale_w, $scale_h);
+    
+    // Calculate new dimensions
+    $new_w = ceil($src_width * $scale);
+    $new_h = ceil($src_height * $scale);
+    
+    // Center the image
+    $x = ($width - $new_w) / 2;
+    $y = ($height - $new_h) / 2;
+    
+    // Resize and copy the image onto the new canvas
+    imagecopyresampled(
+        $new_image, $source_image,
+        $x, $y, 0, 0,
+        $new_w, $new_h, $src_width, $src_height
+    );
+    
+    // Save the image
+    $result = false;
+    switch ($mime) {
+        case 'image/jpeg':
+            $result = imagejpeg($new_image, $target_path, 90); // 90% quality
+            break;
+        case 'image/png':
+            $result = imagepng($new_image, $target_path, 9); // Maximum compression
+            break;
+        case 'image/webp':
+            $result = imagewebp($new_image, $target_path, 90); // 90% quality
+            break;
+    }
+    
+    // Free up memory
+    imagedestroy($source_image);
+    imagedestroy($new_image);
+    
+    return $result;
+}
+
 $errors = [];
 $image_path = $product["img"];
 $categories = ["Kitchenware", "Accessories", "Apparel", "Home Decor", "Personal Care", "Stationery", "Toys", "Art", "Seasonal", "Gift Sets", "Wallets and Purses", "Storage"];
@@ -46,17 +147,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($_FILES["image"]["name"])) {
         $maxSize = 2 * 1024 * 1024;
-        $target_dir = "../assets/images/uploads/product_images/";
+        
+        // Create paths using directory constants
+        $base_dir = dirname(dirname(__FILE__));
+        $upload_dir = $base_dir . "/assets/images/uploads/product_images/";
+        $web_path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $base_dir) . "/assets/images/uploads/product_images/";
+        
+        // Create upload directory if it doesn't exist
+        if (!file_exists($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+        
         $image_name = basename($_FILES["image"]["name"]);
-        $target_file = $target_dir . time() . "_" . $image_name;
-        $image_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $file_name = time() . "_" . $image_name;
+        $temp_file = $upload_dir . "temp_" . $file_name;
+        $target_file = $web_path . $file_name;
+        $full_target_path = $base_dir . "/assets/images/uploads/product_images/" . $file_name;
+        $image_type = strtolower(pathinfo($full_target_path, PATHINFO_EXTENSION));
 
         if (getimagesize($_FILES["image"]["tmp_name"]) === false) $errors[] = "Uploaded file is not a valid image.";
         if ($_FILES["image"]["size"] > $maxSize) $errors[] = "File exceeds maximum allowed size of 2MB.";
         if (!in_array($image_type, ["jpg", "jpeg", "webp", "png"])) $errors[] = "Only JPG, JPEG, WEBP, and PNG files are allowed.";
 
         if (empty($errors)) {
-            if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            // First move the uploaded file to a temporary location
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], $temp_file)) {
+                // Try to process the image (resize and crop)
+                $processed = processImage($temp_file, $full_target_path);
+                
+                // If processing failed, just use the original file
+                if (!$processed) {
+                    if (!rename($temp_file, $full_target_path)) {
+                        $errors[] = "Failed to save image.";
+                    }
+                } else {
+                    // Remove the temporary file
+                    @unlink($temp_file);
+                }
                 $image_path = $target_file;
             } else {
                 $errors[] = "Failed to upload image.";
@@ -166,10 +293,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="d-flex justify-content-center gap-3 mb-3">
                     <a class="cta-2 hover-raise" href="my_shop.php">Cancel</a>
                     <button type="submit" class="cta hover-raise">Save Changes</button>
+                    <button type="button" class="btn btn-danger hover-raise" onclick="showDeleteConfirmation()">Delete Listing</button>
                 </div>
             </form>
         </div>
     </section>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center;">
+        <div class="modal-content" style="background-color: white; padding: 20px; border-radius: 5px; width: 80%; max-width: 500px; margin: auto;">
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete this listing? This action cannot be undone.</p>
+            <form method="POST" action="user_delete_listing.php">
+                <input type="hidden" name="item_id" value="<?= $product_id ?>">
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="cta-2" onclick="closeDeleteModal()">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 
@@ -193,6 +336,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     previewImage.style.display = "block";
                 };
                 reader.readAsDataURL(file);
+            }
+        }
+
+        function showDeleteConfirmation() {
+            document.getElementById("deleteModal").style.display = "flex";
+        }
+
+        function closeDeleteModal() {
+            document.getElementById("deleteModal").style.display = "none";
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById("deleteModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
             }
         }
 
