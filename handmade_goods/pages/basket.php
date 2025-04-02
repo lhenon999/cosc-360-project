@@ -175,7 +175,7 @@ $total = $subtotal + $shipping + $tax;
         </div>
     </div>
 </div>
-
+<?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
 </html>

@@ -265,9 +265,10 @@ if ($session_user_id !== null) {
             <?php endif; ?>
         </section>
 
-        <?php include __DIR__ . '/../assets/html/footer.php'; ?>
+        
     </main>
     <script src="../assets/js/product_reviews.js"></script>
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
 </html>
