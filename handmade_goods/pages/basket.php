@@ -136,7 +136,7 @@ $total = $subtotal + $shipping + $tax;
                         </h5>
                         <?php if (!empty($cart_items)): ?>
                             <form id="placeOrderForm">
-                                <button type="submit" class="btn btn-success w-100 mt-3">Place Order</button>
+                                <button type="submit" class="cta w-100 mt-3">Place Order</button>
                             </form>
 
                             <script>
