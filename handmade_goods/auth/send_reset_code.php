@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     error_log("Current PHP time: " . date("Y-m-d H:i:s"));
 
 
-    $api_key = "api-DFEA151D81194B3EB9B6CF30891D53A5";
+    $api_key = "api-F2E52F5FC44F4B3888E8AE091F4A4282";
     $email_data = [
         "api_key" => $api_key,
         "sender" => "handmadegoods@mail2world.com",
