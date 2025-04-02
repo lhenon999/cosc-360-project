@@ -84,7 +84,8 @@ tr:nth-of-type(2n) {
     width: 100%;
     height: 400px;
     min-width: 300px !important;
-    border: #DDD 2px solid;
+    /* border: #DDD 2px solid; */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .reviews-summary-outer, .sales-summary {
@@ -95,7 +96,8 @@ tr:nth-of-type(2n) {
     flex: 1; 
     min-width: 850px;
     padding: 20px;
-    border: #DDD 2px solid;
+    /* border: #DDD 2px solid; */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .sales-summary {
@@ -178,7 +180,8 @@ tr:nth-of-type(2n) {
     object-fit: cover;
     vertical-align: middle;
     margin-right: 10px;
-    border: 2px solid #ddd;
+    /* border: 2px solid #ddd; */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .tab-slider {
