@@ -169,6 +169,17 @@ $reviewsStmt->close();
                             $reviewerName = htmlspecialchars($rev['reviewer_name']);
                             $reviewerPic = htmlspecialchars($rev['reviewer_pic']);
 
+                            $nameParts = explode(" ", $reviewerName);
+                            if (count($nameParts) > 1) {
+                                $firstName = $nameParts[0];
+                                $lastName = end($nameParts);
+                                $initial = strtoupper(substr($lastName, 0, 1));
+                                $reviewerNameFormatted = $firstName . ' ' . $initial;
+                            } else {
+                                $reviewerNameFormatted = $reviewerName;
+                            }
+
+
                             $itemId = (int) $rev['item_id'];
                             $itemName = htmlspecialchars($rev['item_name']);
                             ?>
@@ -178,7 +189,7 @@ $reviewsStmt->close();
                                         <a href="user_profile.php?id=<?= $reviewerId ?>">
                                             <img src="<?= $reviewerPic ?>" alt="Reviewer Profile"
                                                 style="width: 40px; height: 40px; border-radius:50%; object-fit:cover; margin-right:8px;">
-                                            <strong><?= $reviewerName ?></strong>
+                                            <strong><?= $reviewerNameFormatted ?></strong>
                                         </a>
                                     </div>
                                     <p class="review-comment"><?= $revComment ?></p>
