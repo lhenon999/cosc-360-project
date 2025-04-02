@@ -3,7 +3,7 @@
     background: #f9f9f9;
     border-radius: 14px;
     align-items: center;
-    border: 2px solid #DDD;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
 }
 
 .cart-img {
@@ -44,7 +44,7 @@
 .summary-box {
     background: #fff;
     border-radius: 14px;
-    border: 2px solid #DDD;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .summary-item {

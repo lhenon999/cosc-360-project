@@ -7,7 +7,7 @@
 }
 
 .address-option {
-    border: 1px solid #ddd;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
     padding: 15px;
     margin-bottom: 10px;
     border-radius: 5px;
@@ -59,11 +59,11 @@
 
 .address-form {
     margin: 20 0px;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     padding: 20px;
     border-radius: 5px;
     background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.05);
 }
 
 .form-row {
@@ -103,6 +103,11 @@
 
 .mt-3 {
     margin-top: 1rem;
+    align-items: center;
+}
+
+.white-button{
+    display: inline-block;
 }
 
 .btn {
