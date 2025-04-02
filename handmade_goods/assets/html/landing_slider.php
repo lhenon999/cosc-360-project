@@ -63,7 +63,7 @@ try {
                 <h5><?php echo htmlspecialchars($slide['title']); ?></h5>
                 <h1><?php echo htmlspecialchars($slide['name']); ?></h1>
                 <p><?php echo htmlspecialchars($slide['desc']); ?></p>
-                <a class="view-button" href="../pages/product.php?id=<?= $slide['id'] ?><?= isset($isFromProfile) && $isFromProfile ? '&from=user_profile' : '' ?>">View Now</a>
+                <a class="view-button" href="../pages/product.php?id=<?= $slide['id'] ?><?= isset($isFromProfile) && $isFromProfile ? '&from=user_profile' : '' ?>&source=home">View Now</a>
             </div>
 
             <div class="right">
