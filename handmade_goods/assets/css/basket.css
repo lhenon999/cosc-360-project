@@ -1,6 +1,6 @@
 .cart-item {
     display: flex;
-    background: #f9f9f9;
+    background: white;
     border-radius: 14px;
     align-items: center;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);

@@ -20,7 +20,7 @@
 
 .address-option:hover {
     border-color: #999;
-    background-color: #f8f9fa;
+    background-color: white;
 }
 
 .address-option input {
@@ -64,6 +64,7 @@
     border-radius: 16px;
     background-color: #f9f9f9;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.05);
+    background-color: white;
 }
 
 .form-row {
@@ -109,6 +110,8 @@
 .white-button{
     display: inline-block;
     margin: 15px;
+    background: #364c2f;
+    color: white;
 }
 
 .btn {
