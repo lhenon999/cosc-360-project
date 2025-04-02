@@ -67,8 +67,22 @@ try {
             </div>
 
             <div class="right">
-                <img src="<?php echo htmlspecialchars($slide['img']); ?>"
-                    alt="<?php echo htmlspecialchars($slide['name']); ?>">
+                <?php 
+                // Process image path - ensure it's using a consistent format
+                $imgPath = htmlspecialchars($slide['img']);
+                if (empty($imgPath)) {
+                    $imgPath = '../assets/images/placeholder.webp';
+                }
+                
+                // Add data attributes for special slide types to help with CSS targeting
+                $dataAttrs = '';
+                if ($slide['title'] == 'New Arrivals' || $slide['title'] == 'Selling Out Soon') {
+                    $dataAttrs = 'data-special-slide="' . strtolower(str_replace(' ', '-', $slide['title'])) . '"';
+                }
+                ?>
+                <img src="<?php echo $imgPath; ?>" 
+                     alt="<?php echo htmlspecialchars($slide['name']); ?>"
+                     <?php echo $dataAttrs; ?>>
             </div>
         </div>
     <?php endforeach; ?>

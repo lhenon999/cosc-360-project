@@ -12,9 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const imgElement = slide.querySelector('.right img');
             
             if (titleElement && imgElement) {
-                // Apply specific fix for New Arrivals
-                if (titleElement.textContent.trim() === 'New Arrivals') {
-                    console.log('Fixing New Arrivals image');
+                // Apply specific fix for special slides
+                if (titleElement.textContent.trim() === 'New Arrivals' || 
+                    titleElement.textContent.trim() === 'Selling Out Soon') {
+                    
+                    console.log('Fixing special slide image: ' + titleElement.textContent.trim());
                     
                     // Fix the right container
                     const rightContainer = slide.querySelector('.right');
@@ -22,18 +24,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         rightContainer.style.display = 'flex';
                         rightContainer.style.justifyContent = 'center';
                         rightContainer.style.alignItems = 'center';
-                        rightContainer.style.backgroundColor = 'transparent';
+                        rightContainer.style.overflow = 'hidden';
                     }
                     
-                    // Fix the image
-                    imgElement.style.maxWidth = '85%';
-                    imgElement.style.maxHeight = '85%';
-                    imgElement.style.width = 'auto';
-                    imgElement.style.height = 'auto';
-                    imgElement.style.objectFit = 'contain';
-                    imgElement.style.margin = 'auto';
+                    // Fix the image - use consistent styling for both New Arrivals and Selling Out Soon
+                    imgElement.style.width = '100%';
+                    imgElement.style.height = '100%';
+                    imgElement.style.objectFit = 'cover';
+                    imgElement.style.objectPosition = 'center';
                 }
             }
         });
     }, 500); // Short delay to ensure all elements are rendered
-}); 
+});
