@@ -8,9 +8,13 @@
     } elseif (isset($from_profile_listings) && $from_profile_listings) {
         $from = '&from=profile_listing_users';
     }
-    if (isset($isFromProfile) && $isFromProfile) {
+
+    if (isset($from_profile) && $from_profile === "my_shop") {
+        $and = '&and=my_shop';
+    } elseif (isset($isFromProfile) && $isFromProfile) {
         $and = '&and=user_profile';
-    } 
+    }
+    
     if (isset($source) && $source === 'home') {
         $source = '&source=home';
     }

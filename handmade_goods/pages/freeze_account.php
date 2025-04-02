@@ -8,7 +8,6 @@
     }
 
     if (!isset($_POST['user_id']) || !is_numeric($_POST['user_id'])) {
-        $_SESSION['error'] = "Invalid user ID.";
         header("Location: ../profile.php");
         exit();
     }

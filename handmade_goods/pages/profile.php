@@ -90,7 +90,9 @@ if ($user_type === 'admin') {
                                 style="display: none;">
                             <label for="profileInput">
                                 <img src="<?= htmlspecialchars($profile_picture) ?>" alt="Profile Picture"
-                                    id="profilePic">
+                                    id="profilePic" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Click to change your profile picture">
+
                             </label>
                         </form>
                     </div>
@@ -139,6 +141,15 @@ if ($user_type === 'admin') {
     <script src="../assets/js/admin_manage_listing.js"></script>
 
     <?php include __DIR__ . '/../assets/html/footer.php'; ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
 </body>
 
 </html>
