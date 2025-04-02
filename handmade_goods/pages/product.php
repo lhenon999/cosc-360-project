@@ -207,7 +207,6 @@ if ($session_user_id !== null) {
 
         <section class="reviews">
             <h1 class="mb-4">Customer Reviews</h1>
-
             <?php if (empty($reviews)): ?>
                 <p class="mb-5">No reviews yet. Be the first to review this product!</p>
             <?php else: ?>
