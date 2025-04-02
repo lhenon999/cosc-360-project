@@ -57,13 +57,19 @@ main {
 }
 
 .profile-header {
+    /* background: url('../images/profile-background.webp'); */
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 50px;
     width: 100%;
-    margin-bottom: 2em;
+    background: #fff;
+    color: #1e1e1e;
+    /* color: white; */
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    padding: 20px;
 }
 
 .profile-pic {
@@ -74,12 +80,6 @@ main {
     object-fit: cover;
 }
 
-.profile-info {
-    text-align: start;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
 
 .profile-info h1,
 .profile-info a {
