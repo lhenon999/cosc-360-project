@@ -235,14 +235,19 @@ main section.main nav.breadcrumb-nav {
     background: none !important;
     padding: 20px 0 !important;
     margin: 0 !important;
-  }
+    transition: color 0.3s ease-in-out;
+}
 
-  main section.main nav.breadcrumb-nav .breadcrumb-item a:hover {
+.breadcrumb-item a:hover {
     color: #426B1F;
-  }
+}
 
-  .white-button {
-    margin-bottom: 1.2rem;
-  }
-  
-  
+.breadcrumb-item a {
+    transition: color 0.15s ease-in-out;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    padding: 0 8px;
+    color: #888;
+}

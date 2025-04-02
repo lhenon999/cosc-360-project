@@ -14,8 +14,9 @@ $from_listings = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
 $from_listing_users = isset($_GET['from']) && $_GET['from'] === 'profile_listing_users';
 $from_users = isset($_GET['from']) && $_GET['from'] === 'profile_users';
 $from_home = isset($_GET['source']) && $_GET['source'] === 'home';
+$from_my_shop = isset($_GET['and']) && $_GET['and'] === 'my_shop';
 
-$stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock, created_at FROM ITEMS WHERE id = ?");
+$stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock FROM ITEMS WHERE id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -119,6 +120,10 @@ if ($session_user_id !== null) {
                             <li class="breadcrumb-item">
                                 <a href="products.php">Products</a>
                             </li>
+                        <?php elseif ($from_my_shop): ?>
+                            <li class="breadcrumb-item">
+                                <a href="my_shop.php">My Shop</a>
+                            </li>
                         <?php elseif ($from_profile): ?>
                             <li class="breadcrumb-item">
                                 <a href="user_profile.php?id=<?= $user_id ?>">Profile</a>
@@ -204,7 +209,6 @@ if ($session_user_id !== null) {
                 <?php endif; ?>
             </div>
         </section>
-
         <section class="reviews">
             <h1 class="mb-4">Customer Reviews</h1>
             <?php if (empty($reviews)): ?>
@@ -264,8 +268,6 @@ if ($session_user_id !== null) {
                 <p>You must be logged in to leave a review.</p>
             <?php endif; ?>
         </section>
-
-        
     </main>
     <script src="../assets/js/product_reviews.js"></script>
     <?php include __DIR__ . '/../assets/html/footer.php'; ?>
