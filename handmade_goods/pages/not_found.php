@@ -28,7 +28,7 @@ http_response_code(404);
         <div class="container text-center d-flex flex-column justify-content-center align-items-center mt-5">
             <h1 class="mt-5">Uh Oh!</h1>
             <p class="text-muted mb-5">The page you requested could not be found.</p>
-            <a href="./home.php" class="hover-raise cta mt-5">Go to Home</a>
+            <a href="./home.php" class="hover-raise cta mt-5">Go Home</a>
         </div>
     </body>
 
