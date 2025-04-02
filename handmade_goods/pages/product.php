@@ -15,7 +15,7 @@ $from_listing_users = isset($_GET['from']) && $_GET['from'] === 'profile_listing
 $from_users = isset($_GET['from']) && $_GET['from'] === 'profile_users';
 $from_home = isset($_GET['source']) && $_GET['source'] === 'home';
 
-$stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock FROM ITEMS WHERE id = ?");
+$stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock, created_at FROM ITEMS WHERE id = ?");
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -34,6 +34,8 @@ $image = !empty($product['img']) ? htmlspecialchars($product['img']) : "../asset
 $user_id = intval($product['user_id']);
 $session_user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : null;
 $category_name = isset($product['category']) ? htmlspecialchars($product['category']) : null;
+$created_at = date("F j, Y", strtotime($product['created_at']));
+
 
 $stmt = $conn->prepare("SELECT name, profile_picture FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $user_id);
@@ -149,6 +151,7 @@ if ($session_user_id !== null) {
 
 
                 <h1><?= $name ?></h1>
+                <p class="created-at">Listed on: <?= $created_at ?></p>
                 <h5 id="price-label">$<?= $price ?></h5>
 
                 <p class="mt-4"><?= $description ?></p>
