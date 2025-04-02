@@ -72,7 +72,7 @@ a {
 a.cta,
 button.cta {
     border-radius: 0.4em;
-    background-color: #426B1F;
+    background-color: #345418;
     padding: 0.75em 1.25em;
     color: white;
     border: none;
@@ -241,7 +241,13 @@ button.cta-2:hover span {
     transition: all 0.2s ease-in-out;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border: none;
-    color:#345418
+    color:#345418;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.75em 1.25em;
 }
 
 .white-button:hover {
