@@ -66,13 +66,14 @@ include __DIR__ . '/../config.php';
                     $image = htmlspecialchars($product["img"]);
                     $stock = intval($product["stock"]);
                     $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
+                    $source = 'home';
                     include "../assets/html/product_card.php";
                 endwhile;
                 $stmt->close();
                 ?>
             </div>
             <div class="view-more-container text-center mt-4">
-                <a href="products.php" class="white-button">View More</a>
+                <a href="products.php?" class="white-button">View More</a>
             </div>
         </div>
         </div>
