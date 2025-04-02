@@ -168,11 +168,8 @@ if ($session_user_id !== null) {
                 <?php endif; ?>
 
                 <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
-                    <a href="edit_listing.php?id=<?= $product_id ?>" class="cta hover-raise atc">
+                    <a href="edit_listing.php?id=<?= $product_id ?>" class="white-button atc">
                         <span class="material-symbols-outlined">edit</span> Edit Listing
-                    </a>
-                    <a href="my_shop.php" class="cta-2 mt-3 w-100 hover-raise">
-                        Back to My Shop
                     </a>
                 <?php else: ?>
                     <?php if ($product['stock'] > 0): ?>
@@ -185,14 +182,14 @@ if ($session_user_id !== null) {
                             class="user-options">
                             <input type="hidden" name="product_id" value="<?= $product_id ?>">
                             <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
-                                <a href="profile.php?item=<?= urlencode($name) ?>" class="cta hover-raise atc">
+                                <a href="profile.php?item=<?= urlencode($name) ?>" class="white-button atc">
                                     <span class="material-symbols-outlined">manage_accounts</span> Manage Listing
                                 </a>
                             <?php else: ?>
                                 <div class="quantity-add w-100">
                                     <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
                                         class="form-control quantity-input">
-                                    <button type="submit" class="cta hover-raise atc">
+                                    <button type="submit" class="white-button atc">
                                         <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
                                     </button>
                                 </div>
@@ -200,7 +197,7 @@ if ($session_user_id !== null) {
                         </form>
                     <?php else: ?>
                         <p class="out-of-stock">Out of Stock</p>
-                        <button class="cta hover-raise atc" disabled>
+                        <button class="white-button atc" disabled>
                             <span class="material-symbols-outlined">add_shopping_cart</span> Out of Stock
                         </button>
                     <?php endif; ?>
@@ -253,7 +250,7 @@ if ($session_user_id !== null) {
                                     <label for="star1">★</label>
                                 </div>
                             </div>
-                            <button type="submit" class="cta hover-raise w-100">
+                            <button type="submit" class="white-button w-40">
                                 <span class="material-symbols-outlined">check</span>Submit Review
                             </button>
                         </form>

@@ -240,5 +240,9 @@ main section.main nav.breadcrumb-nav {
   main section.main nav.breadcrumb-nav .breadcrumb-item a:hover {
     color: #426B1F;
   }
+
+  .white-button {
+    margin-bottom: 1.2rem;
+  }
   
   
