@@ -14,6 +14,7 @@ $from_listings = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
 $from_listing_users = isset($_GET['from']) && $_GET['from'] === 'profile_listing_users';
 $from_users = isset($_GET['from']) && $_GET['from'] === 'profile_users';
 $from_home = isset($_GET['source']) && $_GET['source'] === 'home';
+$from_my_shop = isset($_GET['and']) && $_GET['and'] === 'my_shop';
 
 $stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock FROM ITEMS WHERE id = ?");
 $stmt->bind_param("i", $product_id);
@@ -117,6 +118,10 @@ if ($session_user_id !== null) {
                             <li class="breadcrumb-item">
                                 <a href="products.php">Products</a>
                             </li>
+                        <?php elseif ($from_my_shop): ?>
+                            <li class="breadcrumb-item">
+                                <a href="my_shop.php">My Shop</a>
+                            </li>
                         <?php elseif ($from_profile): ?>
                             <li class="breadcrumb-item">
                                 <a href="user_profile.php?id=<?= $user_id ?>">Profile</a>
@@ -167,9 +172,6 @@ if ($session_user_id !== null) {
                 <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
                     <a href="edit_listing.php?id=<?= $product_id ?>" class="cta hover-raise atc">
                         <span class="material-symbols-outlined">edit</span> Edit Listing
-                    </a>
-                    <a href="my_shop.php" class="cta-2 mt-3 w-100 hover-raise">
-                        Back to My Shop
                     </a>
                 <?php else: ?>
                     <?php if ($product['stock'] > 0): ?>
