@@ -24,25 +24,17 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Using Bootstrap for styling -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/css/navbar.css">
-</head>
+
 <body>
     <div class="container mt-5">
         <?php if (empty($basket_items)): ?>
             <p>Your basket is empty.</p>
         <?php else: ?>
-            <?php 
+            <?php
             $total = 0;
             foreach ($basket_items as $item):
                 $total += $item['price'] * $item['quantity'];
-            ?>
+                ?>
                 <div class="basket-item">
                     <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
                     <div class="basket-details">
@@ -58,4 +50,5 @@ $stmt->close();
         <?php endif; ?>
     </div>
 </body>
+
 </html>

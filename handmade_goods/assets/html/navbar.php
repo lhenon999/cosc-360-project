@@ -85,7 +85,6 @@ if (isset($_SESSION["user_id"])) {
             </div>
         </span>
 
-
     </div>
     <script>
         $("#toggle-nav").click(function () {
