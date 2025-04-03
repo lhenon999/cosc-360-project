@@ -271,6 +271,33 @@ if ($session_user_id !== null) {
     </main>
     <script src="../assets/js/product_reviews.js"></script>
     <?php include __DIR__ . '/../assets/html/footer.php'; ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const comment = document.getElementById('comment');
+            const ratingInputs = document.querySelectorAll('input[name="rating"]');
+            const submitButton = document.querySelector('.add-review-form button[type="submit"]');
+
+            submitButton.disabled = true;
+
+            function checkFormValidity() {
+                const commentFilled = comment.value.trim() !== '';
+                let ratingSelected = false;
+                ratingInputs.forEach(input => {
+                    if (input.checked) {
+                        ratingSelected = true;
+                    }
+                });
+                submitButton.disabled = !(commentFilled && ratingSelected);
+            }
+
+            comment.addEventListener('input', checkFormValidity);
+
+            ratingInputs.forEach(input => {
+                input.addEventListener('change', checkFormValidity);
+            });
+        });
+    </script>
+
 </body>
 
 </html>
