@@ -72,12 +72,13 @@ if (isset($_SESSION["user_id"])) {
             </div>
         </span>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <a id="bakset-btn" class="white-button" href="../pages/basket.php">
-                <i class="fas fa-shopping-cart cart-icon"></i>
-                <?php if (isset($_SESSION["user_id"])): ?>
-                    <span class="badge"><?= $totalItems ?></span>
-                <?php endif; ?>
-        </a>
+        <a id="basket-btn" class="white-button <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>" href="../pages/basket.php">
+    <i class="fas fa-shopping-cart cart-icon"></i>
+    <?php if (isset($_SESSION["user_id"]) && $totalItems > 0): ?>
+        <span class="badge"><?= $totalItems ?></span>
+    <?php endif; ?>
+</a>
+
 
 
 
@@ -98,4 +99,4 @@ if (isset($_SESSION["user_id"])) {
     </script>
     <script>window.loggedInUserId = <?php echo json_encode($_SESSION['user_id']); ?>;</script>
     <script src="../assets/js/search_suggestions.js"></script>
-</nav>s
+</nav>

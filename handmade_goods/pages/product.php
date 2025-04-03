@@ -194,7 +194,7 @@ if ($session_user_id !== null) {
                                 <div class="quantity-add w-100">
                                     <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
                                         class="form-control quantity-input">
-                                    <button type="submit" class="white-button atc">
+                                    <button type="submit" class="white-button atc <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>">
                                         <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
                                     </button>
                                 </div>
