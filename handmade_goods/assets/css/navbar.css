@@ -68,7 +68,7 @@
         padding: 8px 0;
         text-align: center;
     }
-    
+     
 }
 
 #toggle-nav {
@@ -114,7 +114,7 @@ nav {
 }
 
 .navlinks li:hover {
-    color: #666;
+    color: #345418;
 }
 
 .material-symbols-outlined {
@@ -386,4 +386,26 @@ nav .navright form .search-button::-moz-focus-inner {
     background: #2c2c2c;
 }
 
+.badge {
+    background-color: white;
+    color: #364c2f;
+    border-radius: 50%;
+    padding: 4px 8px;
+    font-size: 1rem;
+    margin-left: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+#bakset-btn{
+    background: #364c2f;
+    display: flex;
+    color: white;
+    min-width: 80px;
+    max-height: 50px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.cart-icon {
+    font-size: 1.2rem;
+}
 

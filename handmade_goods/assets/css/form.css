@@ -73,7 +73,7 @@ main {
     align-items: center;
 }
 
-.auth-hide {
+#bakset-btn {
     display: none !important;
 }
 
