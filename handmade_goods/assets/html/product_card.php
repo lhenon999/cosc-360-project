@@ -1,17 +1,25 @@
 <div class="listing-item-container">
     <?php
     $from = '';
-    $and = ''; 
+    $and = '';
+
     if (isset($from_profile_users) && $from_profile_users) {
         $from = '&from=profile_users';
     } elseif (isset($from_profile_listings) && $from_profile_listings) {
         $from = '&from=profile_listing_users';
     }
-    if (isset($isFromProfile) && $isFromProfile) {
+
+    if (isset($from_profile) && $from_profile === "my_shop") {
+        $and = '&and=my_shop';
+    } elseif (isset($isFromProfile) && $isFromProfile) {
         $and = '&and=user_profile';
-    } 
+    }
+    
+    if (isset($source) && $source === 'home') {
+        $source = '&source=home';
+    }
     ?>
-    <a class="listing-item" href="../pages/product.php?id=<?= $id . $from . $and ?>">
+    <a class="listing-item" href="../pages/product.php?id=<?= $id ?><?= $source ?><?= $and ?>">
 
         <div class="product-image-container">
             <img src="<?= $image ?>" alt="<?= htmlspecialchars($name) ?>" class="product-image">

@@ -1,4 +1,55 @@
 <?php
+// Get reviews
+$myReviewsStmt = $conn->prepare("
+    SELECT 
+        r.id AS review_id,
+        r.rating,
+        r.comment,
+        r.created_at,
+        i.id AS item_id,
+        i.name AS item_name,
+        i.user_id AS seller_id,
+        seller.name AS seller_name
+    FROM REVIEWS r
+    JOIN ITEMS i ON r.item_id = i.id
+    JOIN USERS seller ON i.user_id = seller.id
+    WHERE r.user_id = ?
+    ORDER BY r.created_at DESC
+");
+$myReviewsStmt->bind_param("i", $user_id);
+$myReviewsStmt->execute();
+$myReviewsResult = $myReviewsStmt->get_result();
+$myReviewsStmt->close();
+
+// get ratings summary
+    $ratingDistStmt = $conn->prepare("
+    SELECT rating, COUNT(*) AS rating_count
+    FROM REVIEWS
+    WHERE user_id = ?
+    GROUP BY rating
+");
+$ratingDistStmt->bind_param("i", $user_id);
+$ratingDistStmt->execute();
+$ratingDistResult = $ratingDistStmt->get_result();
+$ratingDistStmt->close();
+
+$ratingCounts = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
+$totalReviews = 0;
+$sumRatings   = 0;
+
+while ($row = $ratingDistResult->fetch_assoc()) {
+    $r = (int)$row['rating'];
+    $count = (int)$row['rating_count'];
+    $ratingCounts[$r] = $count;
+    $totalReviews    += $count;
+    $sumRatings      += ($r * $count);
+}
+
+$averageRating = 0;
+if ($totalReviews > 0) {
+    $averageRating = round($sumRatings / $totalReviews, 1);
+}
+
 // Fetch total earnings
 $stmt = $conn->prepare("
     SELECT SUM(price * quantity) AS total_earnings 
@@ -82,87 +133,83 @@ $stmt->close();
     </div>
     <div id="reviews" class="tab-pane">
         <div class="reviews-containers">
-            <div class="rating-summary">
-                <h3>Review Summary</h3>
-                <div class="rating-overall">
-                    <span class="rating-score">4.1</span>
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-count">167 reviews</span>
-                </div>
+        <div class="rating-summary">
+            <h3>Review Summary</h3>
 
-                <div class="rating-bars">
-                    <div class="rating-row">
-                        <span>5</span>
-                        <div class="bar">
-                            <div class="filled" style="width: 80%;"></div>
-                        </div>
-                    </div>
-                    <div class="rating-row">
-                        <span>4</span>
-                        <div class="bar">
-                            <div class="filled" style="width: 40%;"></div>
-                        </div>
-                    </div>
-                    <div class="rating-row">
-                        <span>3</span>
-                        <div class="bar">
-                            <div class="filled" style="width: 20%;"></div>
-                        </div>
-                    </div>
-                    <div class="rating-row">
-                        <span>2</span>
-                        <div class="bar">
-                            <div class="filled" style="width: 10%;"></div>
-                        </div>
-                    </div>
-                    <div class="rating-row">
-                        <span>1</span>
-                        <div class="bar">
-                            <div class="filled" style="width: 30%;"></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="rating-overall">
+                <span class="rating-score"><?= $averageRating ?></span>
+                <?php
+                    $filledStars = floor($averageRating);
+                    $emptyStars = 5 - $filledStars;
+                    $starOutput = str_repeat('★', $filledStars) . str_repeat('☆', $emptyStars);
+                ?>
+                <span class="stars"><?= $starOutput ?></span>
+
+                <span class="rating-count"><?= $totalReviews ?> reviews</span>
             </div>
 
-            <div class="reviews-summary">
-                <h3>Reviews</h3>
-
-                <?php if (!empty($all_users)): ?>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>User Type</th>
-                                <th>Total Orders</th>
-                                <th>Total Listings</th>
-                                <th>Joined</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($all_users as $user): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($user["name"]) ?></td>
-                                    <td><?= htmlspecialchars($user["email"]) ?></td>
-                                    <td><span
-                                            class="user-type <?= htmlspecialchars($user["user_type"]) ?>"><?= ucfirst(htmlspecialchars($user["user_type"])) ?></span>
-                                    </td>
-                                    <td><?= htmlspecialchars($user["total_orders"]) ?></td>
-                                    <td><?= htmlspecialchars($user["total_listings"]) ?></td>
-                                    <td><?= date('M j, Y', strtotime($user["created_at"])) ?></td>
-                                    <td>
-                                        <a href="user_profile.php?id=<?= htmlspecialchars($user["id"]) ?>" class="view-btn">View
-                                            Profile</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <p>No users found.</p>
-                <?php endif; ?>
+            <div class="rating-bars">
+                <?php 
+                for ($r = 5; $r >= 1; $r--):
+                    $percent = ($totalReviews > 0) 
+                        ? round(($ratingCounts[$r] / $totalReviews) * 100) 
+                        : 0;
+                ?>
+                    <div class="rating-row">
+                        <span><?= $r ?></span>
+                        <div class="bar">
+                            <div class="filled" style="width: <?= $percent ?>%;"></div>
+                        </div>
+                    </div>
+                <?php endfor; ?>
             </div>
+        </div>
+            
+            <div class="reviews-summary-outer">
+                <div class="reviews-summary">
+                    <h3>Reviews</h3>
+                        <?php if ($myReviewsResult->num_rows > 0): ?>
+                            <table class="orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Seller</th>
+                                        <th>Rating</th>
+                                        <th>Comment</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php while ($row = $myReviewsResult->fetch_assoc()): ?>
+                                    <?php
+                                        // Protect special chars, format date, etc.
+                                        $itemId       = (int)$row['item_id'];
+                                        $itemName     = htmlspecialchars($row['item_name']);
+                                        $sellerName   = htmlspecialchars($row['seller_name']);
+                                        $rating       = (int)$row['rating'];
+                                        $comment      = htmlspecialchars($row['comment']);
+                                        $date         = date('M j, Y', strtotime($row['created_at']));
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <!-- Link to product page by item ID -->
+                                            <a href="product.php?id=<?= $itemId ?>">
+                                                <?= $itemName ?>
+                                            </a>
+                                        </td>
+                                        <td><?= $sellerName ?></td>
+                                        <td><?= $rating ?></td>
+                                        <td><?= $comment ?></td>
+                                        <td><?= $date ?></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <p>You haven't left any reviews yet.</p>
+                        <?php endif; ?>
+                </div>
+                </div>
         </div>
     </div>
     <div id="sales" class="tab-pane">
