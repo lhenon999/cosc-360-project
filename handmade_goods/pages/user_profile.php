@@ -11,6 +11,8 @@ $from_admin = isset($_GET['from']) && $_GET['from'] === 'admin';
 $from_profile_listings = isset($_GET['from']) && $_GET['from'] === 'profile_listings';
 $from_profile_listings_user = isset($_GET['from']) && $_GET['from'] === 'profile_listing_users';
 $from_profile_users = isset($_GET['from']) && $_GET['from'] === 'profile_users';
+$ref = isset($_GET['ref']) ? $_GET['ref'] : null;
+
 
 $user_id = intval($_GET['id']);
 
@@ -121,8 +123,12 @@ $reviewsStmt->close();
             <div class="profile-info">
                 <h1><?= htmlspecialchars($user['name']) ?></h1>
                 <div class="profile-details">
-                    <h3 class="contact-label">Contact</h3>
-                    <p><?= htmlspecialchars($user['email']) ?></p>
+                    <!-- <h3 class="contact-label">Contact</h3> -->
+                    <p>
+                        <a href="mailto:<?= htmlspecialchars($user['email']) ?>">
+                            <?= htmlspecialchars($user['email']) ?>
+                        </a>
+                    </p>
                 </div>
                 <?php if ($from_admin): ?>
                     <a href="profile.php" class="btn btn-outline-secondary w-100">Back</a>
@@ -133,7 +139,10 @@ $reviewsStmt->close();
                     <a href="profile.php#listings" class="btn btn-outline-secondary w-100">Back</a>
                 <?php elseif ($from_profile_users): ?>
                     <a href="profile.php#users" class="btn btn-outline-secondary w-100">Back</a>
+                <?php elseif ($ref): ?>
+                    <a href="<?= htmlspecialchars($ref) ?>" class="btn btn-outline-secondary w-100">Back</a>
                 <?php endif; ?>
+
 
             </div>
             <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
@@ -207,7 +216,8 @@ $reviewsStmt->close();
                             <div class="single-review" style="margin-bottom: 1em;">
                                 <div class="review-meta">
                                     <div class="review-author">
-                                        <a href="user_profile.php?id=<?= $reviewerId ?>">
+                                        <a
+                                            href="user_profile.php?id=<?= $reviewerId ?>&ref=<?= urlencode($_SERVER['REQUEST_URI']) ?>">
                                             <img src="<?= $reviewerPic ?>" alt="Reviewer Profile"
                                                 style="width: 40px; height: 40px; border-radius:50%; object-fit:cover; margin-right:8px;">
                                             <strong><?= $reviewerNameFormatted ?></strong>
@@ -215,7 +225,7 @@ $reviewsStmt->close();
                                     </div>
                                     <p class="review-comment"><?= $revComment ?></p>
                                     <div class="review-product">
-                                        <a href="product.php?id=<?= $itemId ?>"><?= $itemName ?></a>
+                                        <a href="product.php?id=<?= $itemId ?>&and=user_profile"><?= $itemName ?></a>
                                         <em>(<?= $revDate ?>)</em>
                                     </div>
                                 </div>
