@@ -150,5 +150,9 @@
     transition: none;
 }
 
+#basket-btn .badge {
+    right: 25px;
+}
+
 
 
