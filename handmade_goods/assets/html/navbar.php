@@ -72,20 +72,23 @@ if (isset($_SESSION["user_id"])) {
             </div>
         </span>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <span class="dropdown overview">
-            <a id="basket-btn" class="white-button <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>"
-                href="../pages/basket.php">
-                <i class="fas fa-shopping-cart cart-icon"></i>
-                <?php if (isset($_SESSION["user_id"]) && $totalItems > 0): ?>
-                    <span class="badge"><?= $totalItems ?></span>
-                <?php endif; ?>
-            </a>
-            <div class="overview-content">
-                <?php if (isset($_SESSION["user_id"])): ?>
-                    <?php include "basket_overview.php"; ?>
-                <?php endif; ?>
-            </div>
-        </span>
+        <?php if (!isset($_SESSION["user_type"]) || $_SESSION["user_type"] !== "admin"): ?>
+            <span class="dropdown overview">
+                <a id="basket-btn" class="white-button <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>"
+                    href="../pages/basket.php">
+                    <i class="fas fa-shopping-cart cart-icon"></i>
+                    <?php if (isset($_SESSION["user_id"]) && $totalItems > 0): ?>
+                        <span class="badge"><?= $totalItems ?></span>
+                    <?php endif; ?>
+                </a>
+                <div class="overview-content">
+                    <?php if (isset($_SESSION["user_id"])): ?>
+                        <?php include "basket_overview.php"; ?>
+                    <?php endif; ?>
+                </div>
+            </span>
+        <?php endif; ?>
+
     </div>
     <script>
         $("#toggle-nav").click(function () {
