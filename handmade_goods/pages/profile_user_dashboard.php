@@ -163,11 +163,10 @@ $stmt->close();
                         </div>
                     <?php endfor; ?>
                 </div>
-                <a class="m-btn g" href="my_activity.php">
+                <a class="m-btn g">
                     <span class="material-symbols-outlined">favorite</span>My Activity
                 </a>
             </div>
-
             <div class="reviews-summary-outer">
                 <div class="reviews-summary">
                     <h3>Reviews</h3>
@@ -215,6 +214,7 @@ $stmt->close();
             </div>
         </div>
     </div>
+    <div id="activity" class="tab-pane" style="display: none;"></div>
     <div id="sales" class="tab-pane">
         <div class="sales-container">
             <?php if ($totalEarnings > 0): ?>

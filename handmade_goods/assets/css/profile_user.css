@@ -168,7 +168,7 @@ tr:nth-of-type(2n) {
 
 .filled {
     height: 100%;
-    background: #345418;
+    background: #426B1F;
     border-radius: 4px;
 }
 
@@ -260,3 +260,15 @@ tr:nth-of-type(2n) {
     margin: 20px;
     width: 80%;
 }
+
+.activity-container {
+    display: flex;              
+    flex-direction: column;
+    align-items: center;        
+    background-color: white;
+    width: 100%;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
