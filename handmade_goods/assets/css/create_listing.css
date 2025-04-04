@@ -28,6 +28,10 @@ section {
     box-shadow: 1px 6px 14px rgba(0, 0, 0, 0.1);
 }
 
+.bg-dark .listing-form-container{
+    background-color: #1e1e1e;
+}
+
 .listing-form-container form {
     width: 70%;
 }

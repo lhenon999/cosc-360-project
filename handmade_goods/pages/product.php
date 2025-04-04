@@ -173,7 +173,7 @@ if ($session_user_id !== null) {
                 <?php endif; ?>
 
                 <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
-                    <a href="edit_listing.php?id=<?= $product_id ?>" class="m-btn atc">
+                    <a href="edit_listing.php?id=<?= $product_id ?>" class="m-btn g atc">
                         <span class="material-symbols-outlined">edit</span> Edit Listing
                     </a>
                 <?php else: ?>
@@ -187,14 +187,14 @@ if ($session_user_id !== null) {
                             class="user-options">
                             <input type="hidden" name="product_id" value="<?= $product_id ?>">
                             <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
-                                <a href="profile.php?item=<?= urlencode($name) ?>" class="m-btn atc">
+                                <a href="profile.php?item=<?= urlencode($name) ?>" class="m-btn g atc">
                                     <span class="material-symbols-outlined">manage_accounts</span> Manage Listing
                                 </a>
                             <?php else: ?>
                                 <div class="quantity-add w-100">
                                     <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
                                         class="form-control quantity-input">
-                                    <button type="submit" class="m-btn atc <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>">
+                                    <button type="submit" class="m-btn g atc <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>">
                                         <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
                                     </button>
                                 </div>

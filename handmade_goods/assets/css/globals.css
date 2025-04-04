@@ -286,4 +286,8 @@ button.cta-2:hover span {
         background: #426B1F;
         color: white;
 }
+
+.bg-dark .m-btn:disabled{
+    background-color: #888;
+}
   
