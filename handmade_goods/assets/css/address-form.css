@@ -7,6 +7,7 @@
 }
 
 .address-option {
+    background-color: white;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     padding: 15px;
     margin-bottom: 10px;
@@ -110,7 +111,7 @@
 .white-button{
     display: inline-block;
     margin: 15px;
-    background: #364c2f;
+    background: #426B1F;
     color: white;
 }
 

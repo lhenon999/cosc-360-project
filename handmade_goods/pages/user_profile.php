@@ -270,8 +270,6 @@ $reviewsStmt->close();
                     </div>
                 </div>
             </section>
-        <?php else: ?>
-            <p class="text-center">User has no current listings</p>
         <?php endif; ?>
     </main>
 

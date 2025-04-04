@@ -194,7 +194,7 @@ if ($session_user_id !== null) {
                                 <div class="quantity-add w-100">
                                     <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
                                         class="form-control quantity-input">
-                                    <button type="submit" class="white-button atc">
+                                    <button type="submit" class="white-button atc <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>">
                                         <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
                                     </button>
                                 </div>
@@ -271,6 +271,33 @@ if ($session_user_id !== null) {
     </main>
     <script src="../assets/js/product_reviews.js"></script>
     <?php include __DIR__ . '/../assets/html/footer.php'; ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const comment = document.getElementById('comment');
+            const ratingInputs = document.querySelectorAll('input[name="rating"]');
+            const submitButton = document.querySelector('.add-review-form button[type="submit"]');
+
+            submitButton.disabled = true;
+
+            function checkFormValidity() {
+                const commentFilled = comment.value.trim() !== '';
+                let ratingSelected = false;
+                ratingInputs.forEach(input => {
+                    if (input.checked) {
+                        ratingSelected = true;
+                    }
+                });
+                submitButton.disabled = !(commentFilled && ratingSelected);
+            }
+
+            comment.addEventListener('input', checkFormValidity);
+
+            ratingInputs.forEach(input => {
+                input.addEventListener('change', checkFormValidity);
+            });
+        });
+    </script>
+
 </body>
 
 </html>
