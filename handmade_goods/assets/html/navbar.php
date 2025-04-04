@@ -88,6 +88,14 @@ if (isset($_SESSION["user_id"])) {
                 </div>
             </span>
         <?php endif; ?>
+        <?php if (isset($_SESSION["user_type"]) && $_SESSION["user_type"] === "admin"): ?>
+            <style>
+                .dropdown .dropdown-content {
+                    right: 1px;
+                }
+            </style>
+        <?php endif; ?>
+
 
     </div>
     <script>
