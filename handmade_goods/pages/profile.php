@@ -102,14 +102,14 @@ if ($user_type === 'admin') {
                     <h2><?php echo htmlspecialchars($name); ?></h2>
                     <p><?php echo htmlspecialchars($email); ?></p>
                     <div class="profile-buttons">
-                        <a class="round-btn" href="../pages/settings.php"><span
+                        <a class="r-btn" href="../pages/settings.php"><span
                                 class="material-symbols-outlined">settings</span>Settings</a>
                         <?php if ($user_type !== 'admin'): ?>
-                            <a class="round-btn" href="../pages/my_shop.php"><span
+                            <a class="r-btn" href="../pages/my_shop.php"><span
                                     class="material-symbols-outlined">storefront</span>My Shop</a>
                         <?php endif; ?>
 
-                        <a class="round-btn" href="../auth/logout.php"><span
+                        <a class="r-btn" href="../auth/logout.php"><span
                                 class="material-symbols-outlined">logout</span>Logout</a>
                     </div>
                 </div>
