@@ -80,6 +80,8 @@
     max-height: 40px;
     gap: 2rem;
     margin-bottom: 3rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+
 }
 
 .tabs-nav label {
