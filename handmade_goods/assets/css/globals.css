@@ -239,15 +239,25 @@ button.cta-2:hover span {
     border-radius: 10px;
     background: white;
     transition: all 0.2s ease-in-out;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
     border: none;
-    color:#345418;
+    color:#426B1F;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     width: fit-content;
     padding: 0.75em 1.25em;
+    gap: 5px;
+}
+
+.white-button.g {
+    background: #426B1F;
+    color: white;
+}
+
+.white-button.g .material-symbols-outlined {
+    color: white;
 }
 
 .white-button:hover {
@@ -262,9 +272,18 @@ button.cta-2:hover span {
   opacity: 0.7;           
 }
 
+.white-button:disabled .material-symbols-outlined {
+    color: white;
+}
+
 .bg-dark .white-button {
     background: #333;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     color: #f0f0f0;
   }
+
+.bg-dark .white-button.g {
+        background: #426B1F;
+        color: white;
+}
   

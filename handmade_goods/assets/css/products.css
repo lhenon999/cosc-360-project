@@ -99,6 +99,7 @@ h1 {
 .bg-dark .filter-section input[type="number"] {
     background-color: #2a2a2a;
     color: white; 
+    border: none;
 }
 
 .filter-section input[type="number"]::placeholder {
@@ -155,6 +156,14 @@ h1 {
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+.bg-dark .clear-filters{
+    background-color: #426B1F;
+}
+
+.bg-dark .clear-filters:disabled{
+    background-color: #333;
+}
   
 
 .clear-filters:hover {
@@ -211,3 +220,7 @@ h1 {
 .stock-status {
     display: none;
 }
+
+.bg-dark .scrollable-container{
+    background-color: transparent !important;
+  }
