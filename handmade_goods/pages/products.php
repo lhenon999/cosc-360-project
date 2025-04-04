@@ -218,7 +218,7 @@ $rating_stmt->close();
                         ★</label>
                 </div>
 
-                <button type="button" class="white-button clear-filters" onclick="window.location.href='products.php'">Clear Filters</button>
+                <button type="button" class="m-btn clear-filters" onclick="window.location.href='products.php'">Clear Filters</button>
             </form>
         </div>
 

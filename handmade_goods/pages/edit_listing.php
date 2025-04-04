@@ -188,10 +188,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="d-flex justify-content-center gap-3 mb-3">
-                    <a class="white-button" href="my_shop.php">
+                    <a class="m-btn" href="my_shop.php">
                         <span class="material-symbols-outlined">close</span> Cancel
                     </a>
-                    <button type="submit" id="submitButton" class="white-button g" disabled>
+                    <button type="submit" id="submitButton" class="m-btn g" disabled>
                         <span class="material-symbols-outlined">add</span> Submit Product
                     </button>
                 </div>

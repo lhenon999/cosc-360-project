@@ -258,17 +258,17 @@ main section.main nav.breadcrumb-nav {
     color: #888;
 }
 
-.white-button{
+.m-btn{
     background: #426B1F;
     color: white !important;
 }
 
-.white-button.not-logged-in{
+.m-btn.not-logged-in{
     background-color: #ddd;
     color: #888;           
 }
 
-.white-button .material-symbols-outlined {
+.m-btn .material-symbols-outlined {
     color: inherit;
 }
 
