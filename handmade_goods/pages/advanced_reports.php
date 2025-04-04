@@ -72,7 +72,7 @@ if (!empty($userIdFilter)) {
 $listingQuery = "SELECT id, user_id, 'listing' AS activity_type, '' AS ip_address, '' AS user_agent, created_at, name AS details
                  FROM ITEMS $listingWhere";
 
-$combinedQuery = "($activityQuery) UNION ALL ($reviewsQuery) UNION ALL ($listingQuery) ORDER BY created_at DESC";
+$combinedQuery = "($activityQuery) UNION ALL ($reviewsQuery) UNION ALL ($listingQuery) ORDER BY created_at DESC LIMIT 100";
 $resultCombined = $conn->query($combinedQuery);
 ?>
 <!DOCTYPE html>
