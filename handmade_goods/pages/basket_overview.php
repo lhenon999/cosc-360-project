@@ -39,8 +39,12 @@ $stmt->close();
                     <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
                     <div class="basket-details">
                         <h5><?= htmlspecialchars($item['name']) ?></h5>
-                        <p>Price: $<?= number_format($item['price'], 2) ?></p>
-                        <p>Quantity: <?= $item['quantity'] ?></p>
+                        <p>
+                            Price: $<?= number_format($item['price'], 2) ?>
+                            &nbsp;|&nbsp;
+                            Quantity: <?= $item['quantity'] ?>
+                        </p>
+
                     </div>
                 </div>
             <?php endforeach; ?>
