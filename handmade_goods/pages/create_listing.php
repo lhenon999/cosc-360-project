@@ -72,11 +72,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($errors)) {
         $stmt = $conn->prepare(
             "INSERT INTO ITEMS (name, description, price, stock, category, img, user_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?)"
+             VALUES (?, ?, ?, ?, ?, ?, ?)"
         );
         $stmt->bind_param("ssdissi", $name, $description, $price, $stock, $category, $target_file, $user_id);
 
         if ($stmt->execute()) {
+            $activity_details = "New Listing: " . $name;
+            $ip_address = $_SERVER['REMOTE_ADDR'] ?? '';
+            $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+            $activity_stmt = $conn->prepare("INSERT INTO ACCOUNT_ACTIVITY (user_id, event_type, ip_address, user_agent, details) VALUES (?, 'listing', ?, ?, ?)");
+            $activity_stmt->bind_param("isss", $user_id, $ip_address, $user_agent, $activity_details);
+            $activity_stmt->execute();
+            $activity_stmt->close();
+
             header("Location: my_shop.php");
             exit();
         } else {

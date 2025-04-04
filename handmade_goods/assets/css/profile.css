@@ -115,6 +115,8 @@
 }
 
 .profile-info a.r-btn {
+    display: flex !important;
+    gap: 5px !important;
     background: rgba(255, 255, 255, 0.5);
     color: #222;
     border-radius: 10px;
@@ -128,6 +130,19 @@
     transition: all 0.3s ease-in-out;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
+
+.profile-info a.r-btn.active {
+    background: #426B1F;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    color: white;
+}
+
+.profile-info a.r-btn.active .material-symbols-outlined {
+    color: white !important;
+    transition: none;
+}
+
 
 .profile-buttons .material-symbols-outlined {
     color: black;
