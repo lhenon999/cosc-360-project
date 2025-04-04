@@ -1,7 +1,6 @@
 .feature-box {
     background-color: #f8f9fa;
     border-radius: 10px;
-    /* border: 2px #DDD solid; */
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     height: 100%;
 }
@@ -26,4 +25,5 @@ img {
     max-height: 400px;
     object-fit: cover;
     width: 100%;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 } 
