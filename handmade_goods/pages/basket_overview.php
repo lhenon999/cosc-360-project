@@ -44,9 +44,7 @@ $stmt->close();
                     </div>
                 </div>
             <?php endforeach; ?>
-            <div class="basket-summary">
-                <h4 class="total-label">Total: $<?= number_format($total, 2) ?></h4>
-            </div>
+            <h4 class="total-label">Total: $<?= number_format($total, 2) ?></h4>
         <?php endif; ?>
     </div>
 </body>
