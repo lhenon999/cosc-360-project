@@ -329,3 +329,52 @@ main {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     color: white;
 }
+
+/* Dark Mode Overrides */
+.bg-dark .listings-container {
+    background: #2b2b2b;
+    color: #e0e0e0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .bg-dark .profile-header {
+    background: #2a2a2a;
+    color: #e0e0e0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .bg-dark .product-card {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: #e0e0e0;
+  }
+  
+  .bg-dark .reviews-summary-outer {
+    background: #1e1e1e;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .bg-dark .single-review {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: #ccc;
+  }
+  
+  .bg-dark .profile-info,
+  .bg-dark .reviews-containers,
+  .bg-dark .listing-grid,
+  .bg-dark .scrollable-container,
+  .bg-dark .user-products,
+  .bg-dark .product-grid,
+  .bg-dark .rating-summary,
+  .bg-dark .reviews-summary {
+  }
+  
+  
+  .bg-dark .manage-btn {
+    color: #fff;
+    border: 1px solid #fff;
+  }
+
+  
