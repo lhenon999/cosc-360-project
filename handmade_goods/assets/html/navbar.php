@@ -84,7 +84,6 @@ if (isset($_SESSION["user_id"])) {
                 <?php include "basket_overview.php"; ?>
             </div>
         </span>
-
     </div>
     <script>
         $("#toggle-nav").click(function () {

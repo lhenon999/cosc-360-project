@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: ../auth/login.php");
     exit();
 }
-$user_id = $_SESSION['user_id'];
+$basket_user_id = $_SESSION["user_id"];
 
 $basket_items = [];
 $stmt = $conn->prepare("
@@ -16,7 +16,7 @@ $stmt = $conn->prepare("
     JOIN cart c ON ci.cart_id = c.id
     WHERE c.user_id = ?
 ");
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("i", $basket_user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 while ($row = $result->fetch_assoc()) {
