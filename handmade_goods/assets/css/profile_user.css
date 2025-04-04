@@ -75,11 +75,16 @@ tr:nth-of-type(2n) {
 }
 
 .rating-summary, .earnings-summary {
+    display: flex;
+    flex-direction: column;    
+    justify-content: center;    
+    align-items: center;
     background: white;
     color: #1e1e1e;
     padding: 20px;
     border-radius: 16px;
     text-align: center;
+    align-items: center;
     flex: 1; 
     width: 100%;
     height: 400px;
@@ -128,12 +133,12 @@ tr:nth-of-type(2n) {
 .rating-score {
     font-size: 32px;
     font-weight: bold;
-    color: #345418;
+    color: #426B1F;
 }
 
 .stars {
     font-size: 22px;
-    color: #345418;
+    color: #426B1F;
 }
 
 .rating-count {
@@ -249,4 +254,9 @@ tr:nth-of-type(2n) {
 }
 .reviews-table a:hover {
     text-decoration: underline;
+}
+
+.m-btn{
+    margin: 20px;
+    width: 80%;
 }
