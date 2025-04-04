@@ -81,7 +81,9 @@ if (isset($_SESSION["user_id"])) {
                 <?php endif; ?>
             </a>
             <div class="overview-content">
-                <?php include "basket_overview.php"; ?>
+                <?php if (isset($_SESSION["user_id"])): ?>
+                    <?php include "basket_overview.php"; ?>
+                <?php endif; ?>
             </div>
         </span>
     </div>
