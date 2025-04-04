@@ -477,3 +477,7 @@ nav .navright form .search-button::-moz-focus-inner {
 .basket-details p {
     margin: 0;
 }
+
+.total-label{
+    text-align: right;
+}
