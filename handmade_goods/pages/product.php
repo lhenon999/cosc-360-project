@@ -173,7 +173,7 @@ if ($session_user_id !== null) {
                 <?php endif; ?>
 
                 <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
-                    <a href="edit_listing.php?id=<?= $product_id ?>" class="white-button atc">
+                    <a href="edit_listing.php?id=<?= $product_id ?>" class="m-btn g atc">
                         <span class="material-symbols-outlined">edit</span> Edit Listing
                     </a>
                 <?php else: ?>
@@ -187,14 +187,14 @@ if ($session_user_id !== null) {
                             class="user-options">
                             <input type="hidden" name="product_id" value="<?= $product_id ?>">
                             <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
-                                <a href="profile.php?item=<?= urlencode($name) ?>" class="white-button atc">
+                                <a href="profile.php?item=<?= urlencode($name) ?>" class="m-btn g atc">
                                     <span class="material-symbols-outlined">manage_accounts</span> Manage Listing
                                 </a>
                             <?php else: ?>
                                 <div class="quantity-add w-100">
                                     <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
                                         class="form-control quantity-input">
-                                    <button type="submit" class="white-button atc">
+                                    <button type="submit" class="m-btn g atc <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>">
                                         <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
                                     </button>
                                 </div>
@@ -202,7 +202,7 @@ if ($session_user_id !== null) {
                         </form>
                     <?php else: ?>
                         <p class="out-of-stock">Out of Stock</p>
-                        <button class="white-button atc" disabled>
+                        <button class="m-btn atc" disabled>
                             <span class="material-symbols-outlined">add_shopping_cart</span> Out of Stock
                         </button>
                     <?php endif; ?>
@@ -254,7 +254,7 @@ if ($session_user_id !== null) {
                                     <label for="star1">★</label>
                                 </div>
                             </div>
-                            <button type="submit" class="white-button w-40">
+                            <button type="submit" class="m-btn w-40">
                                 <span class="material-symbols-outlined">check</span>Submit Review
                             </button>
                         </form>
@@ -271,6 +271,33 @@ if ($session_user_id !== null) {
     </main>
     <script src="../assets/js/product_reviews.js"></script>
     <?php include __DIR__ . '/../assets/html/footer.php'; ?>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const comment = document.getElementById('comment');
+            const ratingInputs = document.querySelectorAll('input[name="rating"]');
+            const submitButton = document.querySelector('.add-review-form button[type="submit"]');
+
+            submitButton.disabled = true;
+
+            function checkFormValidity() {
+                const commentFilled = comment.value.trim() !== '';
+                let ratingSelected = false;
+                ratingInputs.forEach(input => {
+                    if (input.checked) {
+                        ratingSelected = true;
+                    }
+                });
+                submitButton.disabled = !(commentFilled && ratingSelected);
+            }
+
+            comment.addEventListener('input', checkFormValidity);
+
+            ratingInputs.forEach(input => {
+                input.addEventListener('change', checkFormValidity);
+            });
+        });
+    </script>
+
 </body>
 
 </html>

@@ -19,7 +19,7 @@ main {
 
 .listings-container {
     background: #fff;
-    color: #1e1e1e;
+    color: #2a2a2a;
     padding: 20px;
     border-radius: 16px;
     text-align: center;
@@ -240,7 +240,7 @@ main {
   
 
 .bg-dark .reviews-summary, .bg-dark .rating-summary{
-    background: #1e1e1e;
+    background: #2a2a2a;
     color: #fff;
 }
 
@@ -329,3 +329,44 @@ main {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     color: white;
 }
+
+/* Dark Mode Overrides */
+.bg-dark .listings-container {
+    background: #2b2b2b;
+    color: #e0e0e0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .bg-dark .profile-header {
+    background: #2a2a2a;
+    color: #e0e0e0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .bg-dark .product-card {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: #e0e0e0;
+  }
+  
+  .bg-dark .reviews-summary-outer {
+    background: #2b2b2b;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .bg-dark .single-review {
+    background-color: #1e1e1e;
+    border: none;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .bg-dark .manage-btn {
+    color: #fff;
+    border: 1px solid #fff;
+  }
+
+  .bg-dark .scrollable-container{
+    background-color: transparent !important;
+  }
+  

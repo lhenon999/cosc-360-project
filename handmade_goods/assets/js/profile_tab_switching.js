@@ -1,76 +1,65 @@
 document.addEventListener("DOMContentLoaded", function () {
-
     const tabLinks = document.querySelectorAll(".tabs-nav a");
     const tabContents = document.querySelectorAll(".tab-pane");
 
-    if (tabLinks.length === 0 || tabContents.length === 0) {
-        return;
-    }
-
-    function switchTab(event) {
-        event.preventDefault();
-    
-        const targetId = event.target.getAttribute("href").substring(1);
+    function switchTab(targetId) {
         const targetTab = document.getElementById(targetId);
-        const activeTab = document.querySelector(".tab-pane.active");
-    
-        if (!targetTab || activeTab === targetTab) return;
-    
-        tabLinks.forEach(link => link.classList.remove("active"));
-        event.target.classList.add("active");
-    
-        document.querySelectorAll(".tab-pane").forEach(tab => {
+        if (!targetTab) return;
+
+        tabContents.forEach(tab => {
             tab.style.transition = "none";
             tab.style.opacity = "0";
             tab.style.transform = "translateX(50px)";
             tab.style.visibility = "hidden";
+            tab.style.display = "none";
             tab.classList.remove("active");
         });
-    
-        targetTab.classList.add("active");
+
+        targetTab.style.display = "block";
         targetTab.style.visibility = "visible";
         targetTab.style.opacity = "0";
         targetTab.style.transform = "translateX(50px)";
-    
-        targetTab.offsetHeight;
-    
+        targetTab.offsetHeight; // force reflow
         targetTab.style.transition = "opacity 0.6s ease-in-out, transform 0.6s ease-out";
         targetTab.style.opacity = "1";
         targetTab.style.transform = "translateX(0)";
-    
+        targetTab.classList.add("active");
+
         history.pushState(null, null, `#${targetId}`);
-    }    
-    
 
-    tabLinks.forEach(link => {
-        link.addEventListener("click", switchTab);
-    });
-
-    function setActiveTabFromURL() {
         tabLinks.forEach(link => link.classList.remove("active"));
-        tabContents.forEach(content => {
-            content.style.display = "none";
-            content.classList.remove("active");
-        });
-
-        if (window.location.hash) {
-            const activeTab = document.querySelector(`a[href="${window.location.hash}"]`);
-            if (activeTab) {
-                activeTab.classList.add("active");
-                const targetTab = document.getElementById(activeTab.getAttribute("href").substring(1));
-                targetTab.style.display = "block";
-                targetTab.classList.add("active");
-            }
-        } else {
-            tabLinks[0].classList.add("active");
-            tabContents[0].style.display = "block";
-            tabContents[0].classList.add("active");
+        const navLink = document.querySelector(`.tabs-nav a[href="#${targetId}"]`);
+        if (navLink) {
+            navLink.classList.add("active");
         }
     }
 
-    setActiveTabFromURL();
-});
+    tabLinks.forEach(link => {
+        link.addEventListener("click", function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute("href").substring(1);
+            switchTab(targetId);
+        });
+    });
 
+    function setActiveTabFromURL() {
+        if (window.location.hash) {
+            const targetId = window.location.hash.substring(1);
+            switchTab(targetId);
+        } else {
+            switchTab(tabContents[0].id);
+        }
+    }
+    setActiveTabFromURL();
+
+    window.switchToActivity = function() {
+        switchTab("activity");
+    };
+
+    window.switchToReviews = function() {
+        switchTab("reviews");
+    };
+});
 
 //slider behaviours
 document.addEventListener("DOMContentLoaded", function () {
@@ -114,6 +103,20 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+$(document).ready(function () {
+    $('.m-btn.g').on('click', function (e) {
+        e.preventDefault();
+        $('#activity').load('my_activity.php', function (response, status, xhr) {
+            if (status === "error") {
+                $('#activity').html('<p>Error loading activity content.</p>');
+            }
+            window.switchToActivity();
+        });
+    });
 
-
-
+    $('#activity .m-btn').on('click', function (e) {
+        e.preventDefault();
+        console.log("Back button clicked.");
+        window.switchToReviews();
+    });
+});

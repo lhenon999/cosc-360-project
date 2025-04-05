@@ -68,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"], $_POST["
         $stmt->execute();
         $stmt->close();
     } else {
-        $_SESSION["error"] = "You must be logged in to add items to the cart.";
         header("Location: ../auth/login.php");
         exit();
     }

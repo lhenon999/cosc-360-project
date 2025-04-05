@@ -47,6 +47,11 @@ if ($user_type === 'admin') {
     }
     $stmt->close();
 }
+
+$isAdvanced = isset($_GET['page']) && $_GET['page'] === 'advanced';
+$toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
+
+
 ?>
 
 <!DOCTYPE html>
@@ -88,12 +93,14 @@ if ($user_type === 'admin') {
                             enctype="multipart/form-data">
                             <input type="file" name="profile_picture" id="profileInput" accept="image/*"
                                 style="display: none;">
-                            <label for="profileInput">
-                                <img src="<?= htmlspecialchars($profile_picture) ?>" alt="Profile Picture"
-                                    id="profilePic" data-bs-toggle="tooltip" data-bs-placement="top"
-                                    title="Click to change your profile picture">
+                            <?php if ($user_type !== 'admin'): ?>
+                                <label for="profileInput">
+                                    <img src="<?= htmlspecialchars($profile_picture) ?>" alt="Profile Picture"
+                                        id="profilePic" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        title="Click to change your profile picture">
 
-                            </label>
+                                </label>
+                            <?php endif ?>
                         </form>
                     </div>
 
@@ -102,23 +109,42 @@ if ($user_type === 'admin') {
                     <h2><?php echo htmlspecialchars($name); ?></h2>
                     <p><?php echo htmlspecialchars($email); ?></p>
                     <div class="profile-buttons">
-                        <a class="round-btn" href="../pages/settings.php"><span
-                                class="material-symbols-outlined">settings</span>Settings</a>
-                        <?php if ($user_type !== 'admin'): ?>
-                            <a class="round-btn" href="../pages/my_shop.php"><span
-                                    class="material-symbols-outlined">storefront</span>My Shop</a>
+                        <?php if ($user_type == 'admin'): ?>
+                            <a class="r-btn <?php echo $isAdvanced ? 'active' : ''; ?>"
+                                href="../pages/<?php echo $toggleLink; ?>">
+                                <span class="material-symbols-outlined">assessment</span>Advanced Report
+                            </a>
                         <?php endif; ?>
+                        <a class="r-btn" href="../pages/settings.php">
+                            <span class="material-symbols-outlined">settings</span>Settings
+                        </a>
 
-                        <a class="round-btn" href="../auth/logout.php"><span
-                                class="material-symbols-outlined">logout</span>Logout</a>
+                        <?php if ($user_type !== 'admin'): ?>
+                            <a class="r-btn" href="../pages/my_shop.php">
+                                <span class="material-symbols-outlined">storefront</span>My Shop
+                            </a>
+                        <?php endif; ?>
+                        <a class="r-btn" href="../auth/logout.php">
+                            <span class="material-symbols-outlined">logout</span>Logout
+                        </a>
                     </div>
+
                 </div>
             </div>
             <?php if ($user_type === 'admin'): ?>
-                <?php include __DIR__ . '/profile_admin_dashboard.php'; ?>
+                <?php
+                if ($isAdvanced) {
+                    include __DIR__ . '/advanced_reports.php';
+                } else {
+                    include __DIR__ . '/profile_admin_dashboard.php';
+                }
+                ?>
             <?php else: ?>
                 <?php include __DIR__ . '/profile_user_dashboard.php'; ?>
             <?php endif; ?>
+
+
+
 
         </div>
     </div>
