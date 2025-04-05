@@ -138,7 +138,6 @@ $resultCombined = $conn->query($combinedQuery);
                         <th>User ID</th>
                         <th>Activity Type</th>
                         <th>Created At</th>
-                        <th>IP Address</th>
                         <th>User Agent</th>
                     </tr>
                 </thead>
@@ -150,7 +149,6 @@ $resultCombined = $conn->query($combinedQuery);
                             echo "<td>" . htmlspecialchars($row['user_id']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['activity_type']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['ip_address']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['user_agent']) . "</td>";
                             echo "</tr>";
                         }
