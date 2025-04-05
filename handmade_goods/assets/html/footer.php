@@ -22,7 +22,7 @@
                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</a></li>
                 <!-- <li><a href="nf">Shipping & Returns</a></li> -->
                 <!-- <li><a href="nf">FAQs</a></li> -->
-                <li><a href="nf">Terms & Conditions</a></li>
+                <!-- <li><a href="nf">Terms & Conditions</a></li> -->
             </ul>
         </div>
     </div>
