@@ -112,7 +112,7 @@ $resultCombined = $conn->query($combinedQuery);
         </div>
 
         <div class="account-activity-table">
-            <h3>Account Activity & Reviews & Listings</h3>
+            <h3>Account Activity</h3>
             <form id="filterForm" action="/cosc-360-project/handmade_goods/pages/advanced_report.php">
                 <label for="filter">Activity Type:</label>
                 <select name="filter" id="filter">
