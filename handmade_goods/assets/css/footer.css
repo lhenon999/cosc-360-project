@@ -60,3 +60,38 @@
     font-size: 14px;
     color: #777;
 }
+
+.bg-dark .footer {
+    background-color: #1e1e1e;
+    border-top: 1px solid #333;
+    color: #f0f0f0;
+  }
+  
+  .bg-dark .footer-container {
+    border-bottom: 1px solid #444;
+  }
+  
+  .bg-dark .footer-section h3 {
+    color: #ffffff;
+  }
+  
+  .bg-dark .footer-section p {
+    color: #ccc;
+  }
+  
+  .bg-dark a {
+    color: #8a8989;
+  }
+
+  .bg-dark .footer-section ul li a {
+    color: #8a8989;
+  }
+  
+  .bg-dark .footer-section ul li a:hover {
+    color: #8dc63f;
+  }
+  
+  .bg-dark .footer-bottom {
+    color: #aaa;
+  }
+  

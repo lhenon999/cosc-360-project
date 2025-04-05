@@ -87,6 +87,17 @@ CREATE TABLE IF NOT EXISTS SALES( id INT auto_increment PRIMARY KEY,
                                 FOREIGN KEY ( seller_id ) REFERENCES USERS(id) ON DELETE CASCADE,
                                 FOREIGN KEY ( buyer_id ) REFERENCES USERS(id) ON DELETE CASCADE,
                                 FOREIGN KEY ( item_id ) REFERENCES ITEMS(id) ON DELETE CASCADE );
+CREATE TABLE IF NOT EXISTS ACCOUNT_ACTIVITY (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    event_type ENUM('registration', 'login', 'listing', 'review') NOT NULL,
+    ip_address VARCHAR(45) DEFAULT NULL,
+    user_agent VARCHAR(255) DEFAULT NULL,
+    details TEXT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES USERS(id) ON DELETE CASCADE
+);
+
 ALTER TABLE USERS convert TO character
 SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ALTER TABLE USERS
