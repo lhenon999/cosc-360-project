@@ -77,6 +77,7 @@ $resultCombined = $conn->query($combinedQuery);
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Account Activity</title>
     <link rel="stylesheet" href="../assets/css/advanced_report.css">
@@ -84,6 +85,7 @@ $resultCombined = $conn->query($combinedQuery);
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 </head>
+
 <body>
     <div class="account-activity">
         <div class="in-line-div">
@@ -114,14 +116,20 @@ $resultCombined = $conn->query($combinedQuery);
             <form id="filterForm" action="/cosc-360-project/handmade_goods/pages/advanced_report.php">
                 <label for="filter">Activity Type:</label>
                 <select name="filter" id="filter">
-                    <option value="all" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'all') echo 'selected'; ?>>All</option>
-                    <option value="login" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'login') echo 'selected'; ?>>Login</option>
-                    <option value="registration" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'registration') echo 'selected'; ?>>Registration</option>
-                    <option value="review" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'review') echo 'selected'; ?>>Review</option>
-                    <option value="listing" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'listing') echo 'selected'; ?>>Listing</option>
+                    <option value="all" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'all')
+                        echo 'selected'; ?>>All</option>
+                    <option value="login" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'login')
+                        echo 'selected'; ?>>Login</option>
+                    <option value="registration" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'registration')
+                        echo 'selected'; ?>>Registration</option>
+                    <option value="review" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'review')
+                        echo 'selected'; ?>>Review</option>
+                    <option value="listing" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'listing')
+                        echo 'selected'; ?>>Listing</option>
                 </select>
                 <label for="user_id">User ID:</label>
-                <input type="text" name="user_id" id="user_id" value="<?php echo isset($_GET['user_id']) ? htmlspecialchars($_GET['user_id']) : ''; ?>">
+                <input type="text" name="user_id" id="user_id"
+                    value="<?php echo isset($_GET['user_id']) ? htmlspecialchars($_GET['user_id']) : ''; ?>">
             </form>
 
             <table class="orders-table">
@@ -156,7 +164,7 @@ $resultCombined = $conn->query($combinedQuery);
     </div>
 
     <script>
-        document.getElementById("filterForm").addEventListener("submit", function(e) {
+        document.getElementById("filterForm").addEventListener("submit", function (e) {
             e.preventDefault();
         });
 
@@ -174,7 +182,7 @@ $resultCombined = $conn->query($combinedQuery);
         }
 
         document.getElementById("filter").addEventListener("change", updateFilters);
-        document.getElementById("user_id").addEventListener("keydown", function(e) {
+        document.getElementById("user_id").addEventListener("keydown", function (e) {
             if (e.key === "Enter") {
                 e.preventDefault();
                 updateFilters();
@@ -215,7 +223,7 @@ $resultCombined = $conn->query($combinedQuery);
                             align: 'top',
                             anchor: 'end',
                             font: { size: 12 },
-                            formatter: function(value) {
+                            formatter: function (value) {
                                 return value;
                             }
                         }
@@ -232,8 +240,8 @@ $resultCombined = $conn->query($combinedQuery);
                                 callback: function (value, index) {
                                     const label = this.chart.data.labels[index];
                                     if (label && label.length >= 10) {
-                                        const month = label.substring(5,7);
-                                        const day = label.substring(8,10);
+                                        const month = label.substring(5, 7);
+                                        const day = label.substring(8, 10);
                                         const abbrev = monthAbbrev[month] || month;
                                         return abbrev + '-' + day;
                                     }
@@ -247,7 +255,10 @@ $resultCombined = $conn->query($combinedQuery);
                             ticks: {
                                 beginAtZero: true,
                                 color: "#666",
-                                font: { size: 12 }
+                                font: { size: 12 },
+                                callback: function (value) {
+                                    return Number(value).toFixed(0);
+                                }
                             }
                         }
                     }
@@ -257,4 +268,5 @@ $resultCombined = $conn->query($combinedQuery);
         });
     </script>
 </body>
+
 </html>
