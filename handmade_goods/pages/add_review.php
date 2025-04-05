@@ -21,6 +21,18 @@
         $stmt->bind_param("iiis", $product_id, $user_id, $rating, $comment);
 
         if ($stmt->execute()) {
+            $activity_details = "New Review: Rating $rating, Comment: " . substr($comment, 0, 50);
+            $ip_address = $_SERVER['REMOTE_ADDR'] ?? '';
+            $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+            
+            $activity_stmt = $conn->prepare(
+                "INSERT INTO ACCOUNT_ACTIVITY (user_id, event_type, ip_address, user_agent, details)
+                 VALUES (?, 'review', ?, ?, ?)"
+            );
+            $activity_stmt->bind_param("isss", $user_id, $ip_address, $user_agent, $activity_details);
+            $activity_stmt->execute();
+            $activity_stmt->close();
+    
             header("Location: product.php?id=" . $product_id);
             exit();
         } else {
@@ -28,4 +40,3 @@
         }
         $stmt->close();
     }
-?>

@@ -80,6 +80,8 @@
     max-height: 40px;
     gap: 2rem;
     margin-bottom: 3rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+
 }
 
 .tabs-nav label {
@@ -112,10 +114,12 @@
     font-size: 16px;
 }
 
-.profile-info a.round-btn {
+.profile-info a.r-btn {
+    display: flex !important;
+    gap: 5px !important;
     background: rgba(255, 255, 255, 0.5);
     color: #222;
-    border-radius: 18px;
+    border-radius: 10px;
     padding: 10px 20px;
     font-size: 16px;
     font-weight: 500;
@@ -124,16 +128,28 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     transition: all 0.3s ease-in-out;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
+
+.profile-info a.r-btn.active {
+    background: #426B1F;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    color: white;
+}
+
+.profile-info a.r-btn.active .material-symbols-outlined {
+    color: white !important;
+    transition: none;
+}
+
 
 .profile-buttons .material-symbols-outlined {
     color: black;
     font-size: 22px;
 }
 
-.profile-info a.round-btn:hover {
+.profile-info a.r-btn:hover {
     background: #426B1F;
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
@@ -144,9 +160,13 @@
     background: #626262;
 }
 
-.profile-info a.round-btn:hover .material-symbols-outlined {
+.profile-info a.r-btn:hover .material-symbols-outlined {
     color: white !important;
     transition: none;
+}
+
+#basket-btn .badge {
+    right: 25px;
 }
 
 
