@@ -11,25 +11,8 @@ if (!is_dir($logDir)) {
     mkdir($logDir, 0777, true);
 }
 
-$stmt = $conn->prepare("SELECT is_frozen FROM USERS WHERE id = ?");
-$stmt->bind_param("i", $_SESSION['user_id']);
-$stmt->execute();
-$stmt->bind_result($is_frozen);
-$stmt->fetch();
-$stmt->close();
-
-if ($is_frozen) {
-    $_SESSION['error'] = "Your account has been frozen. You cannot place orders.";
-    header("Location: home.php");
-    exit();
-}
-
-
-$user_id = $_SESSION["user_id"];
-
 // Define log file
 $logFile = $logDir . '/order_process.log';
-
 
 // Log function
 function logOrderProcess($message, $data = null) {
@@ -50,6 +33,68 @@ function logOrderProcess($message, $data = null) {
         file_put_contents($logFile, $log . "\n", FILE_APPEND);
     } catch (Exception $e) {
         // Can't log to file, but we don't want to break the checkout process
+    }
+}
+
+// Redirect if not logged in
+if (!isset($_SESSION['user_id'])) {
+    logOrderProcess("User not logged in");
+    
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'User not logged in']);
+        exit;
+    } else {
+        header('Location: ../auth/login.php?redirect=basket');
+        exit;
+    }
+}
+
+// Set user_id variable early
+$user_id = $_SESSION["user_id"];
+
+// Check if user account is frozen
+$stmt = $conn->prepare("SELECT is_frozen FROM USERS WHERE id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$stmt->bind_result($is_frozen);
+$stmt->fetch();
+$stmt->close();
+
+// Modified behavior: Frozen accounts can purchase other users' products,
+// but we need to check if they have any of their own products in the cart
+if ($is_frozen) {
+    logOrderProcess("User account is frozen, checking cart items", ['user_id' => $user_id]);
+    
+    // Check if any items in the cart belong to the frozen user
+    $stmt = $conn->prepare("
+        SELECT COUNT(*) as own_items_count 
+        FROM CART_ITEMS ci 
+        JOIN CART c ON ci.cart_id = c.id 
+        JOIN ITEMS i ON ci.item_id = i.id 
+        WHERE c.user_id = ? AND i.user_id = ?
+    ");
+    $stmt->bind_param("ii", $user_id, $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $own_items_count = $result->fetch_assoc()['own_items_count'];
+    $stmt->close();
+    
+    // Only block the order if they're trying to purchase their own items
+    if ($own_items_count > 0) {
+        logOrderProcess("Frozen user attempting to purchase their own items", ['own_items_count' => $own_items_count]);
+        
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Your account has been frozen. You cannot purchase your own products at this time.']);
+            exit;
+        } else {
+            $_SESSION['error'] = "Your account has been frozen. You cannot purchase your own products at this time.";
+            header("Location: ../pages/basket.php");
+            exit();
+        }
+    } else {
+        logOrderProcess("Frozen user purchasing other users' items - allowed", ['user_id' => $user_id]);
     }
 }
 
@@ -75,28 +120,13 @@ if (isset($_POST['address_option']) && strpos($_POST['address_option'], 'existin
 }
 
 logOrderProcess("Starting order process", [
-    'user_id' => $_SESSION['user_id'] ?? 'not logged in', 
+    'user_id' => $user_id, 
     'is_ajax' => $isAjax,
     'address_id' => $address_id,
     'address_option' => $_POST['address_option'] ?? 'not set'
 ]);
 
-// Redirect if not logged in
-if (!isset($_SESSION['user_id'])) {
-    logOrderProcess("User not logged in");
-    
-    if ($isAjax) {
-        header('Content-Type: application/json');
-        echo json_encode(['success' => false, 'error' => 'User not logged in']);
-        exit;
-    } else {
-        header('Location: ../auth/login.php?redirect=basket');
-        exit;
-    }
-}
-
 // Check if basket is empty
-$user_id = $_SESSION['user_id'];
 $stmt = $conn->prepare("
     SELECT COUNT(*) as count 
     FROM cart_items ci 

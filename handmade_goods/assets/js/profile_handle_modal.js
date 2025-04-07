@@ -1,7 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Debug to ensure the script is loaded
+    console.log("Profile handle modal script loaded");
+    
     function openModal(modalId) {
         let modal = document.getElementById(modalId);
-        if (modal) modal.style.display = "flex";
+        if (modal) {
+            modal.style.display = "flex";
+            console.log("Opening modal:", modalId);
+        } else {
+            console.error("Modal not found:", modalId);
+        }
     }
 
     function closeModal(modalId) {
@@ -10,13 +18,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function showDeleteUserModal(userId) {
-        document.getElementById("deleteUserId").value = userId;
-        openModal("deleteUserModal");
+        console.log("Show delete user modal for ID:", userId);
+        const deleteUserId = document.getElementById("deleteUserId");
+        if (deleteUserId) {
+            deleteUserId.value = userId;
+            openModal("deleteUserModal");
+        } else {
+            console.error("deleteUserId input not found");
+        }
     }
 
     function showDeleteListingModal(itemId) {
+        console.log("Show delete listing modal for ID:", itemId);
         let deleteModal = document.getElementById("deleteListingModal");
-        let inputField = deleteModal.querySelector("input[name='item_id']");
+        let inputField = document.getElementById("deleteListingItemId");
         
         if (!deleteModal || !inputField) {
             console.error("Delete Listing Modal or input field not found!");
@@ -28,19 +43,57 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function showManageModal(userId, userName) {
-        document.getElementById("manageUserId").value = userId;
-        document.getElementById("deleteUserId").value = userId;
-        document.getElementById("accountName").innerText = userName;
+        console.log("Show manage modal for user:", userName, "ID:", userId);
+        
+        // Set user ID for freeze account form
+        const freezeUserIdInput = document.getElementById("freezeUserId");
+        if (freezeUserIdInput) {
+            freezeUserIdInput.value = userId;
+        } else {
+            console.error("freezeUserId input not found");
+        }
+        
+        // Set user ID for delete account form
+        const deleteUserIdInput = document.getElementById("deleteUserIdFromManage");
+        if (deleteUserIdInput) {
+            deleteUserIdInput.value = userId;
+        } else {
+            console.error("deleteUserIdFromManage input not found");
+        }
+        
+        // Set the account name in the modal
+        const accountNameSpan = document.getElementById("accountName");
+        if (accountNameSpan) {
+            accountNameSpan.innerText = userName;
+        } else {
+            console.error("accountName span not found");
+        }
+        
         openModal("manageModal");
     }
 
-    let deleteFromManageBtn = document.getElementById("deleteFromManage");
-    if (deleteFromManageBtn) {
-        deleteFromManageBtn.addEventListener("click", function () {
-            closeModal("manageModal");
-            openModal("deleteUserModal");
+    // Set up global functions first - this ensures they're available for inline onclick handlers
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+    window.showDeleteUserModal = showDeleteUserModal;
+    window.showDeleteListingModal = showDeleteListingModal;
+    window.showManageModal = showManageModal;
+    
+    // Add direct click events for all manage buttons
+    document.querySelectorAll(".manage-btn").forEach(button => {
+        button.addEventListener("click", function(e) {
+            console.log("Manage button clicked");
+            const userId = this.getAttribute("data-user-id");
+            const userName = this.getAttribute("data-user-name");
+            if (userId && userName) {
+                console.log("Calling showManageModal with", userId, userName);
+                showManageModal(userId, userName);
+            } else {
+                // Fallback to onclick handler if data attributes not found
+                console.log("No data attributes found, trying inline onclick handler");
+            }
         });
-    }
+    });
 
     document.querySelectorAll(".cancel-btn").forEach(button => {
         button.addEventListener("click", function () {
@@ -58,8 +111,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     };
-
-    window.showDeleteUserModal = showDeleteUserModal;
-    window.showDeleteListingModal = showDeleteListingModal;
-    window.showManageModal = showManageModal;
+    
+    console.log("Modal handlers attached and functions exposed to window");
 });

@@ -37,7 +37,6 @@ $session_user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : 
 $category_name = isset($product['category']) ? htmlspecialchars($product['category']) : null;
 $created_at = date("F j, Y", strtotime($product['created_at']));
 
-
 $stmt = $conn->prepare("SELECT name, profile_picture FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -47,6 +46,9 @@ $stmt->close();
 
 $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 'Seller';
 $sellerProfileUrl = "user_profile.php?id=" . $user_id . "&from_product=product.php?id=" . $product_id;
+
+// Check if the user account is frozen
+$is_frozen = isset($_SESSION["is_frozen"]) && $_SESSION["is_frozen"] == 1;
 
 $stmt = $conn->prepare("SELECT r.rating, r.comment, u.id AS user_id, u.name, u.profile_picture 
                         FROM REVIEWS r 
@@ -173,9 +175,18 @@ if ($session_user_id !== null) {
                 <?php endif; ?>
 
                 <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
-                    <a href="edit_listing.php?id=<?= $product_id ?>" class="white-button atc">
-                        <span class="material-symbols-outlined">edit</span> Edit Listing
-                    </a>
+                    <?php if ($is_frozen): ?>
+                        <div class="alert alert-warning">
+                            <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit your listings at this time.
+                        </div>
+                        <button class="white-button atc" disabled style="opacity: 0.6; cursor: not-allowed;">
+                            <span class="material-symbols-outlined">edit</span> Edit Listing
+                        </button>
+                    <?php else: ?>
+                        <a href="edit_listing.php?id=<?= $product_id ?>" class="white-button atc">
+                            <span class="material-symbols-outlined">edit</span> Edit Listing
+                        </a>
+                    <?php endif; ?>
                 <?php else: ?>
                     <?php if ($product['stock'] > 0): ?>
                         <p class="stock-info <?= $product['stock'] < 5 ? 'low-stock' : '' ?>">

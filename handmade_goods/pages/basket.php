@@ -210,6 +210,32 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
         <h1>Basket</h1>
         <h4><span class="text-muted"><?= count($cart_items) ?> items</span></h4>
 
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger">
+                <?= htmlspecialchars($_SESSION['error']) ?>
+            </div>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
+        
+        <?php 
+        // Check if user account is frozen
+        $is_frozen = false;
+        if ($isLoggedIn) {
+            $stmt = $conn->prepare("SELECT is_frozen FROM USERS WHERE id = ?");
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $stmt->bind_result($is_frozen);
+            $stmt->fetch();
+            $stmt->close();
+            
+            if ($is_frozen): ?>
+                <div class="alert alert-warning">
+                    <strong>Account Notice:</strong> Your account is currently frozen. You can still purchase products from other users, but you cannot sell your own products until your account is unfrozen by an administrator.
+                </div>
+            <?php endif;
+        }
+        ?>
+
         <div class="row mt-5">
             <div class="col-md-<?= empty($cart_items) ? '12' : '8' ?>">
                 <?php if (!empty($cart_items)): ?>

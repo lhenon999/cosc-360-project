@@ -7,14 +7,10 @@ if (!$is_logged_in) {
     exit();
 }
 
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-// include __DIR__ . '/../config.php';
-
-// var_dump($_SESSION);
-
-
 include __DIR__ . '/../config.php';
+
+// Check if the account is frozen
+$is_frozen = isset($_SESSION["is_frozen"]) && $_SESSION["is_frozen"] == 1;
 
 $user_email = $_SESSION["user_id"];
 $products = [];
@@ -57,11 +53,27 @@ $stmt->close();
     <h1 class="text-center">My Shop</h1>
     <p class="text-center">Browse and edit your listings</p>
     <br>
-        <div class="d-flex justify-content-center mb-5">
-            <a class="cta hover-raise" href="create_listing.php">
-                <span class="material-symbols-outlined">add</span> Create a new listing
-            </a>
+
+    <?php if ($is_frozen): ?>
+        <div class="alert alert-warning text-center container">
+            <strong>Account Notice:</strong> Your account is currently frozen. You cannot create new listings or edit existing ones. 
+            Your listings are not visible to other users until your account is unfrozen by an administrator.
         </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-danger text-center container">
+            <?= htmlspecialchars($_SESSION['error']) ?>
+        </div>
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+
+    <div class="d-flex justify-content-center mb-5">
+        <a class="cta hover-raise <?= $is_frozen ? 'disabled' : '' ?>" href="<?= $is_frozen ? '#' : 'create_listing.php' ?>" 
+           <?= $is_frozen ? 'style="opacity: 0.6; cursor: not-allowed;" onclick="return false;"' : '' ?>>
+            <span class="material-symbols-outlined">add</span> Create a new listing
+        </a>
+    </div>
 
     <div class="container">
         <div class="scrollable-container">

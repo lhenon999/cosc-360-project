@@ -51,8 +51,12 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <button type="button" class="manage-btn"
-                                            onclick="showManageModal(<?= $user['id'] ?>, '<?= htmlspecialchars($user['name']) ?>')">Moderate</button>
+                                        <button type="button" class="manage-btn" 
+                                            onclick="showManageModal(<?= $user['id'] ?>, '<?= htmlspecialchars($user['name']) ?>')"
+                                            data-user-id="<?= $user['id'] ?>" 
+                                            data-user-name="<?= htmlspecialchars($user['name']) ?>">
+                                            Moderate
+                                        </button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -112,9 +116,10 @@
                                     </td>
 
                                     <td>
-                                        <a href="user_profile.php?id=<?= $item["user_id"] ?>&from=admin"></a>
-                                        <button type="button" class="delete-btn"
-                                            onclick="showDeleteListingModal(<?= $item['id'] ?>)">Delete</button>
+                                        <form method="POST" action="delete_listing.php" style="display: inline;">
+                                            <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
+                                            <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this listing?')">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
@@ -134,24 +139,27 @@
     <div class="modal-content">
         <h3 class="modal-account-name">Manage Account: <span id="accountName"></span></h3>
         <br>
-        <p>Freezing an account blocks all listings and orders.</p>
-        <div>
-            <input type="hidden" name="user_id" id="manageUserId">
-            <input type="hidden" name="user_id" id="deleteUserId">
-        </div>
-
+        <p id="accountStatusMessage">Manage user account access and visibility.</p>
+        
         <div class="modal-buttons">
             <div class="modal-buttons">
-                <form id="freezeForm" method="POST" action="freeze_account.php">
-                    <input type="hidden" name="user_id" id="manageUserId">
+                <form id="freezeForm" method="POST" action="freeze_account.php" style="display: none;">
+                    <input type="hidden" name="user_id" id="freezeUserId">
                     <button type="submit" class="freeze-btn">Freeze Account</button>
                 </form>
 
+                <form id="unfreezeForm" method="POST" action="unfreeze_account.php" style="display: none;">
+                    <input type="hidden" name="user_id" id="unfreezeUserId">
+                    <button type="submit" class="unfreeze-btn" style="background-color: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Unfreeze Account</button>
+                </form>
 
-                <button type="button" class="confirm-btn" id="deleteFromManage">Delete Account</button>
+                <form id="deleteUserFormFromManage" method="POST" action="delete_user.php">
+                    <input type="hidden" name="user_id" id="deleteUserIdFromManage">
+                    <button type="submit" class="confirm-btn">Delete Account</button>
+                </form>
+                
                 <button type="button" class="cancel-btn" onclick="closeModal('manageModal')">Cancel</button>
             </div>
-
         </div>
     </div>
 </div>

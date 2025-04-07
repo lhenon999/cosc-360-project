@@ -51,12 +51,44 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
 // Build the base query
 $query = "SELECT DISTINCT i.id, i.name, i.img, i.user_id, i.price, i.stock, IFNULL(AVG(r.rating), 0) as avg_rating 
         FROM ITEMS i 
-        LEFT JOIN REVIEWS r ON i.id = r.item_id";
+        LEFT JOIN REVIEWS r ON i.id = r.item_id
+        LEFT JOIN USERS u ON i.user_id = u.id";
 
 // Start WHERE clause
 $where_conditions = [];
 $params = [];
 $types = "";
+
+// First check if the current user's account is frozen
+$is_user_frozen = false;
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+    $check_frozen_stmt = $conn->prepare("SELECT is_frozen FROM USERS WHERE id = ?");
+    $check_frozen_stmt->bind_param("i", $user_id);
+    $check_frozen_stmt->execute();
+    $check_frozen_stmt->bind_result($is_frozen);
+    $check_frozen_stmt->fetch();
+    $check_frozen_stmt->close();
+    $is_user_frozen = ($is_frozen == 1);
+}
+
+// Filter listings based on frozen status
+if (isset($_SESSION["user_id"])) {
+    if ($is_user_frozen) {
+        // If user is frozen, don't show their own listings in products page
+        $where_conditions[] = "(u.is_frozen = 0 OR (i.user_id = ? AND u.is_frozen = 0))";
+        $params[] = $_SESSION["user_id"];
+        $types .= "i";
+    } else {
+        // If user is not frozen, show their listings and other non-frozen users' listings
+        $where_conditions[] = "(u.is_frozen = 0 OR i.user_id = ?)";
+        $params[] = $_SESSION["user_id"];
+        $types .= "i";
+    }
+} else {
+    // If not logged in, never show frozen account listings
+    $where_conditions[] = "u.is_frozen = 0";
+}
 
 // Add category filter with exact matching
 if ($category_filter !== null && trim($category_filter) !== '') {
@@ -297,3 +329,4 @@ $rating_stmt->close();
         });
     </script>
 </body>
+</html>

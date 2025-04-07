@@ -128,21 +128,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     
         
-        $stmt = $conn->prepare("SELECT id, name, password, user_type, profile_picture FROM USERS WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, name, password, user_type, profile_picture, is_frozen FROM USERS WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows == 1) {
-            $stmt->bind_result($user_id, $name, $hashed_password, $user_type, $profile_picture);
+            $stmt->bind_result($user_id, $name, $hashed_password, $user_type, $profile_picture, $is_frozen);
             $stmt->fetch();
             
             if (password_verify($password, $hashed_password)) {
+                // Store the is_frozen status in the session instead of blocking login
                 $_SESSION["user_id"] = $user_id;
                 $_SESSION["email"] = $email;
                 $_SESSION["user_name"] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
                 $_SESSION["user_type"] = $user_type;
                 $_SESSION["profile_picture"] = $profile_picture;
+                $_SESSION["is_frozen"] = $is_frozen;
+                
                 header("Location: http://localhost/cosc-360-project/handmade_goods/pages/home.php");
                 exit();
             } else {
