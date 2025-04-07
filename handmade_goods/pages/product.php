@@ -233,7 +233,7 @@ if ($session_user_id !== null) {
 
             <?php if ($session_user_id !== null): ?>
                 <?php if ($hasPurchased): ?>
-                    <?php if ($userHasReviewed): ?>
+                    <?php if (!$userHasReviewed): ?>
                         <h3 class="mt-5">Add a Review</h3>
                         <form action="add_review.php" method="POST" class="add-review-form">
                             <input type="hidden" name="product_id" value="<?= $product_id ?>">
