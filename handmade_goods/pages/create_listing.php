@@ -110,6 +110,28 @@ function processImage($source_path, $target_path, $width = 320, $height = 224) {
     return $result;
 }
 
+// Create required directories with proper permissions
+$upload_dirs = [
+    dirname(dirname(__FILE__)) . "/assets/images/uploads/",
+    dirname(dirname(__FILE__)) . "/assets/images/uploads/product_images/",
+    dirname(dirname(__FILE__)) . "/logs/"
+];
+
+foreach ($upload_dirs as $dir) {
+    if (!file_exists($dir)) {
+        // Try to create with full permissions
+        if (!@mkdir($dir, 0777, true)) {
+            $errors[] = "Failed to create directory: $dir. Please create it manually and ensure it's writable by the web server.";
+        } else {
+            // Ensure the directory has write permissions
+            @chmod($dir, 0777);
+        }
+    } else if (!is_writable($dir)) {
+        // Directory exists but may not be writable
+        $errors[] = "Directory exists but is not writable: $dir. Please ensure it has proper permissions.";
+    }
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST["name"] ?? "");
     $description = trim($_POST["description"] ?? "");
@@ -144,13 +166,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Create paths using directory constants
         $base_dir = dirname(dirname(__FILE__));
         $upload_dir = $base_dir . "/assets/images/uploads/product_images/";
-        $web_path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $base_dir);
+        $web_path = "/cosc-360-project/handmade_goods"; // Fixed web path that works regardless of server configuration
         $target_file = $web_path . "/assets/images/placeholder.webp"; // Default placeholder image
-        
-        // Create upload directory if it doesn't exist
-        if (!file_exists($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
-        }
         
         // Only process image if one was uploaded
         if (isset($_FILES["image"]) && $_FILES["image"]["error"] == UPLOAD_ERR_OK && $_FILES["image"]["size"] > 0) {
@@ -187,7 +204,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         @unlink($temp_file);
                     }
                 } else {
-                    $errors[] = "Failed to upload image.";
+                    $errors[] = "Failed to upload image. Please check if the upload directory exists and is writable.";
                 }
             }
         }

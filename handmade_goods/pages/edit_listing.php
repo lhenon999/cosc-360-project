@@ -151,17 +151,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Create paths using directory constants
         $base_dir = dirname(dirname(__FILE__));
         $upload_dir = $base_dir . "/assets/images/uploads/product_images/";
-        $web_path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $base_dir) . "/assets/images/uploads/product_images/";
+        $web_path = "/cosc-360-project/handmade_goods"; // Fixed web path that works regardless of server configuration
         
-        // Create upload directory if it doesn't exist
-        if (!file_exists($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
-        }
-        
+        // Only process image if one was uploaded
         $image_name = basename($_FILES["image"]["name"]);
         $file_name = time() . "_" . $image_name;
         $temp_file = $upload_dir . "temp_" . $file_name;
-        $target_file = $web_path . $file_name;
+        $target_file = $web_path . "/assets/images/uploads/product_images/" . $file_name;
         $full_target_path = $base_dir . "/assets/images/uploads/product_images/" . $file_name;
         $image_type = strtolower(pathinfo($full_target_path, PATHINFO_EXTENSION));
 
@@ -186,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 $image_path = $target_file;
             } else {
-                $errors[] = "Failed to upload image.";
+                $errors[] = "Failed to upload image. Please check if the upload directory exists and is writable.";
             }
         }
     }
