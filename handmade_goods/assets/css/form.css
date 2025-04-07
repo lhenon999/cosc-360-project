@@ -73,9 +73,14 @@ main {
     align-items: center;
 }
 
-.auth-hide {
+#basket-btn {
     display: none !important;
 }
+
+.dropdown .dropdown-content {
+    right: 1px;
+}
+
 
 .remember-me {
     display: flex;

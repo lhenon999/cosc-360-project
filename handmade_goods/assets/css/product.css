@@ -265,6 +265,11 @@ main section.main nav.breadcrumb-nav {
     color: white !important;
 }
 
+.white-button.not-logged-in{
+    background-color: #ddd;
+    color: #888;           
+}
+
 .white-button .material-symbols-outlined {
     color: inherit;
 }

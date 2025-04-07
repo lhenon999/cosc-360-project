@@ -15,7 +15,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 $stmt->close();
-$conn->close();
 
 $email = isset($user['email']) ? $user['email'] : '';
 $isAdmin = ($user['user_type'] === 'admin');
@@ -144,6 +143,7 @@ $isAdmin = ($user['user_type'] === 'admin');
         </script>
 
 <?php include __DIR__ . '/../assets/html/footer.php'; ?>
+<?php $conn->close(); ?>
 </body>
 
 </html>
