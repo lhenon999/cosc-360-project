@@ -4,8 +4,8 @@ ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
 session_start();
-require_once '../config.php';
-require_once '../config/stripe.php';
+require_once __DIR__ . '/../config.php';
+require_once '../stripe/stripe.php';
 
 // Set proper content type for JSON response
 header('Content-Type: application/json');
@@ -286,6 +286,22 @@ try {
             'session_id' => $sessionId,
             'checkout_url' => $checkoutUrl
         ]);
+        
+        // Update the order with the initial session ID as a temporary payment_id
+        try {
+            $stmt = $conn->prepare("UPDATE orders SET payment_id = ? WHERE id = ?");
+            $stmt->bind_param("si", $sessionId, $orderId);
+            $stmt->execute();
+            $stmt->close();
+            
+            logCheckout("Updated order with initial session ID as payment_id", [
+                'order_id' => $orderId,
+                'session_id' => $sessionId
+            ]);
+        } catch (Exception $e) {
+            // Just log the error, don't stop checkout
+            logCheckout("Error updating order with session ID: " . $e->getMessage());
+        }
         
         // Update inventory in background (don't wait for this to complete)
         try {

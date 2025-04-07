@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../config.php';
-require_once '../config/stripe.php';
+require_once __DIR__ . '/../config.php';
+require_once '../stripe/stripe.php';
 
 // echo "Debug: User ID = $user_id <br>";
 
@@ -67,6 +67,11 @@ if (isset($_SESSION['pending_order_cart']) && isset($_SESSION['pending_order_id'
     // Clear the pending order data
     unset($_SESSION['pending_order_cart']);
     unset($_SESSION['pending_order_id']);
+    
+    // Clear any success message when restoring a cart from a canceled checkout
+    if (isset($_SESSION['success']) && $_SESSION['success'] == "Order placed successfully!") {
+        unset($_SESSION['success']);
+    }
 }
 
 // Get existing user addresses
@@ -156,79 +161,8 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
     <link rel="stylesheet" href="../assets/css/basket.css">
     <link rel="stylesheet" href="../assets/css/product_card.css">
     <link rel="stylesheet" href="../assets/css/form.css">
+    <link rel="stylesheet" href="../assets/css/address-form.css">
     <style>
-        .address-container {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-        }
-        
-        .address-option {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: flex-start;
-            position: relative;
-        }
-        
-        .address-option input {
-            margin-right: 15px;
-            margin-top: 5px;
-        }
-        
-        .address-option.selected {
-            border-color: #4CAF50;
-            background-color: #f0f9f0;
-        }
-        
-        .address-actions {
-            position: absolute;
-            right: 10px;
-            top: 10px;
-        }
-        
-        .delete-address-btn {
-            background: none;
-            border: none;
-            color: #dc3545;
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 50%;
-            transition: all 0.2s;
-        }
-        
-        .delete-address-btn:hover {
-            background-color: rgba(220, 53, 69, 0.1);
-        }
-        
-        .delete-address-btn .material-symbols-outlined {
-            font-size: 18px;
-        }
-        
-        .address-form {
-            margin-top: 20px;
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        
-        .form-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        
-        .form-row > div {
-            flex: 1;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
         /* Confirmation modal styles */
         .modal-backdrop {
             position: fixed;
@@ -355,6 +289,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                     <div>
                                         <label for="address-line1">Address Line 1 *</label>
                                         <input type="text" id="address-line1" name="line1" required placeholder="Street address, P.O. box">
+                                        <div class="invalid-feedback">Address Line 1 is required</div>
                                     </div>
                                 </div>
                                 
@@ -362,6 +297,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                     <div>
                                         <label for="address-line2">Address Line 2</label>
                                         <input type="text" id="address-line2" name="line2" placeholder="Apartment, suite, unit, building, floor, etc.">
+                                        <div class="invalid-feedback">Address Line 2 is invalid</div>
                                     </div>
                                 </div>
                                 
@@ -369,11 +305,13 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                     <div>
                                         <label for="address-city">City *</label>
                                         <input type="text" id="address-city" name="city" required>
+                                        <div class="invalid-feedback">City is required</div>
                                     </div>
                                     
                                     <div>
                                         <label for="address-state">State/Province *</label>
                                         <input type="text" id="address-state" name="state" required>
+                                        <div class="invalid-feedback">State/Province is required</div>
                                     </div>
                                 </div>
                                 
@@ -381,11 +319,13 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                     <div>
                                         <label for="address-postal">ZIP/Postal Code *</label>
                                         <input type="text" id="address-postal" name="postal_code" required>
+                                        <div class="invalid-feedback">ZIP/Postal Code is required</div>
                                     </div>
                                     
                                     <div>
                                         <label for="address-country">Country *</label>
                                         <select id="address-country" name="country" required>
+                                            <option value="">Select a country</option>
                                             <option value="US">United States</option>
                                             <option value="CA">Canada</option>
                                             <option value="GB">United Kingdom</option>
@@ -399,11 +339,12 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                             <option value="MX">Mexico</option>
                                             <option value="SG">Singapore</option>
                                         </select>
+                                        <div class="invalid-feedback">Country is required</div>
                                     </div>
                                 </div>
 
                                 <div class="mt-3">
-                                    <button type="button" id="save-address" class="btn btn-primary">Save Address</button>
+                                    <button type="button" id="save-address" class="white-button">Save Address</button>
                                 </div>
                             </form>
                         </div>
@@ -432,11 +373,8 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                         <h5 class="summary-total">Total: <span class="float-end">$<?= number_format($total, 2) ?></span>
                         </h5>
                         <?php if (!empty($cart_items)): ?>
-                            <form id="placeOrderForm" class="mb-3">
-                                <button type="submit" class="cta hover-raise w-100">
-                                    <span class="material-symbols-outlined">shopping_cart_checkout</span>
-                                    Place Order
-                                </button>
+                            <form id="placeOrderForm">
+                                <button type="submit" class="cta w-100 mt-3">Place Order</button>
                             </form>
 
                             <script>
@@ -653,12 +591,257 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         $(this).closest('.address-option').addClass('selected');
                                     });
                                     
-                                    // Save address form submission
-                                    $('#save-address').click(function() {
-                                        const form = document.getElementById('address-form');
+                                    // Function to validate address field
+                                    function validateAddressField(selector, minLength, pattern, errorMessages) {
+                                        const value = $(selector).val().trim();
+                                        const fieldName = $(selector).siblings('label').text().replace(' *', '');
                                         
-                                        if (!form.checkValidity()) {
-                                            form.reportValidity();
+                                        if ($(selector).prop('required') && !value) {
+                                            $(selector).addClass('is-invalid');
+                                            $('.invalid-feedback', $(selector).parent()).text(errorMessages.required || `${fieldName} is required`);
+                                            return false;
+                                        } else if (value && value.length < minLength) {
+                                            $(selector).addClass('is-invalid');
+                                            $('.invalid-feedback', $(selector).parent()).text(errorMessages.tooShort || `${fieldName} must be at least ${minLength} characters`);
+                                            return false;
+                                        } else if (value && !pattern.test(value)) {
+                                            $(selector).addClass('is-invalid');
+                                            $('.invalid-feedback', $(selector).parent()).text(errorMessages.invalidFormat || `${fieldName} contains invalid characters`);
+                                            return false;
+                                        }
+                                        
+                                        $(selector).removeClass('is-invalid');
+                                        return true;
+                                    }
+
+                                    // Add real-time validation for address fields
+                                    $('#address-line1').on('input change blur', function() {
+                                        validateAddressField('#address-line1', 3, /^[A-Za-z0-9\s\-\.,#\/]+$/, {
+                                            required: 'Address Line 1 is required',
+                                            tooShort: 'Address Line 1 must be at least 3 characters',
+                                            invalidFormat: 'Address Line 1 contains invalid characters (only letters, numbers, spaces, and -.,#/ are allowed)'
+                                        });
+                                    });
+
+                                    $('#address-line2').on('input change blur', function() {
+                                        if ($(this).val().trim()) {
+                                            validateAddressField('#address-line2', 3, /^[A-Za-z0-9\s\-\.,#\/]+$/, {
+                                                tooShort: 'Address Line 2 must be at least 3 characters',
+                                                invalidFormat: 'Address Line 2 contains invalid characters (only letters, numbers, spaces, and -.,#/ are allowed)'
+                                            });
+                                        } else {
+                                            $(this).removeClass('is-invalid');
+                                        }
+                                    });
+
+                                    $('#address-city').on('input change blur', function() {
+                                        validateAddressField('#address-city', 2, /^[A-Za-z\s\-']+$/, {
+                                            required: 'City is required',
+                                            tooShort: 'City must be at least 2 characters',
+                                            invalidFormat: 'City contains invalid characters (only letters, spaces, hyphens, and apostrophes are allowed)'
+                                        });
+                                    });
+
+                                    $('#address-state').on('input change blur', function() {
+                                        validateAddressField('#address-state', 2, /^[A-Za-z\s\-']+$/, {
+                                            required: 'State/Province is required',
+                                            tooShort: 'State/Province must be at least 2 characters',
+                                            invalidFormat: 'State/Province contains invalid characters (only letters, spaces, hyphens, and apostrophes are allowed)'
+                                        });
+                                    });
+                                    
+                                    // Special handling for postal code with country-specific validation
+                                    $('#address-postal').on('input change blur', function() {
+                                        validatePostalCode();
+                                    });
+
+                                    // Validate postal code when country changes
+                                    $('#address-country').on('change blur', function() {
+                                        const value = $(this).val();
+                                        if (!value) {
+                                            $(this).addClass('is-invalid');
+                                            $('.invalid-feedback', $(this).parent()).text('Country is required');
+                                        } else {
+                                            $(this).removeClass('is-invalid');
+                                            // Also validate postal code when country changes
+                                            validatePostalCode();
+                                        }
+                                    });
+
+                                    // Function to validate postal code format
+                                    function validatePostalCode() {
+                                        const postalCode = $('#address-postal').val().trim();
+                                        const country = $('#address-country').val();
+                                        
+                                        if (!postalCode) {
+                                            $('#address-postal').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-postal').parent()).text('ZIP/Postal Code is required');
+                                            return false;
+                                        }
+                                        
+                                        let postalCodeValid = true;
+                                        
+                                        if (country === 'US') {
+                                            // US ZIP: 5 digits or 5+4 format (12345 or 12345-6789)
+                                            if (!postalCode.match(/^\d{5}(-\d{4})?$/)) {
+                                                postalCodeValid = false;
+                                                $('.invalid-feedback', $('#address-postal').parent()).text('US ZIP code should be 5 digits or 12345-6789 format');
+                                            }
+                                        } else if (country === 'CA') {
+                                            // Canadian: Letter Number Letter Number Letter Number (A1B2C3 or A1B 2C3)
+                                            if (!postalCode.match(/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/)) {
+                                                postalCodeValid = false;
+                                                $('.invalid-feedback', $('#address-postal').parent()).text('Canadian postal code should be in A1B 2C3 format');
+                                            }
+                                        } else if (country === 'GB') {
+                                            // UK: Various formats
+                                            if (!postalCode.match(/^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$/i)) {
+                                                postalCodeValid = false;
+                                                $('.invalid-feedback', $('#address-postal').parent()).text('UK postal code format is invalid');
+                                            }
+                                        }
+                                        
+                                        if (!postalCodeValid) {
+                                            $('#address-postal').addClass('is-invalid');
+                                        } else {
+                                            $('#address-postal').removeClass('is-invalid');
+                                        }
+                                        
+                                        return postalCodeValid;
+                                    }
+                                    
+                                    // Reinitialize the save button handler
+                                    $('#save-address').off('click').on('click', function() {
+                                        const form = document.getElementById('address-form');
+                                        console.log('Save button clicked (after delete), form element:', form);
+                                        
+                                        if (!form) {
+                                            console.error('Form element not found!');
+                                            alert('Error: Form element not found. Please try again.');
+                                            return;
+                                        }
+                                        
+                                        // Add a check for any ongoing AJAX requests
+                                        if ($(this).data('processing')) {
+                                            console.log('Already processing a request, please wait...');
+                                            return;
+                                        }
+                                        
+                                        let isValid = true;
+                                        
+                                        // Basic form validation
+                                        const line1 = $('#address-line1').val().trim();
+                                        const line2 = $('#address-line2').val().trim(); 
+                                        const city = $('#address-city').val().trim();
+                                        const state = $('#address-state').val().trim();
+                                        const postalCode = $('#address-postal').val().trim();
+                                        const country = $('#address-country').val();
+                                        
+                                        console.log('Form values (after delete):', { line1, line2, city, state, postalCode, country });
+                                        
+                                        // Clear previous error styles
+                                        $('#address-line1, #address-line2, #address-city, #address-state, #address-postal, #address-country').removeClass('is-invalid');
+                                        
+                                        // Validate each field
+                                        if (!line1) {
+                                            $('#address-line1').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-line1').parent()).text('Address Line 1 is required');
+                                            isValid = false;
+                                        } else if (line1.length < 3) {
+                                            $('#address-line1').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-line1').parent()).text('Address Line 1 must be at least 3 characters');
+                                            isValid = false;
+                                        } else if (!/^[A-Za-z0-9\s\-\.,#\/]+$/.test(line1)) {
+                                            $('#address-line1').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-line1').parent()).text('Address Line 1 contains invalid characters');
+                                            isValid = false;
+                                        }
+
+                                        // Line 2 is optional, but validate if provided
+                                        if (line2 && line2.length > 0) {
+                                            if (line2.length < 3) {
+                                                $('#address-line2').addClass('is-invalid');
+                                                $('.invalid-feedback', $('#address-line2').parent()).text('Address Line 2 must be at least 3 characters');
+                                                isValid = false;
+                                            } else if (!/^[A-Za-z0-9\s\-\.,#\/]+$/.test(line2)) {
+                                                $('#address-line2').addClass('is-invalid');
+                                                $('.invalid-feedback', $('#address-line2').parent()).text('Address Line 2 contains invalid characters');
+                                                isValid = false;
+                                            }
+                                        }
+
+                                        if (!city) {
+                                            $('#address-city').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-city').parent()).text('City is required');
+                                            isValid = false;
+                                        } else if (city.length < 2) {
+                                            $('#address-city').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-city').parent()).text('City must be at least 2 characters');
+                                            isValid = false;
+                                        } else if (!/^[A-Za-z\s\-']+$/.test(city)) {
+                                            $('#address-city').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-city').parent()).text('City contains invalid characters');
+                                            isValid = false;
+                                        }
+
+                                        if (!state) {
+                                            $('#address-state').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-state').parent()).text('State/Province is required');
+                                            isValid = false;
+                                        } else if (state.length < 2) {
+                                            $('#address-state').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-state').parent()).text('State/Province must be at least 2 characters');
+                                            isValid = false;
+                                        } else if (!/^[A-Za-z\s\-']+$/.test(state)) {
+                                            $('#address-state').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-state').parent()).text('State/Province contains invalid characters');
+                                            isValid = false;
+                                        }
+                                        
+                                        // Postal code validation with country-specific formats
+                                        if (!postalCode) {
+                                            $('#address-postal').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-postal').parent()).text('ZIP/Postal Code is required');
+                                            isValid = false;
+                                        } else {
+                                            let postalCodeValid = true;
+                                            // Country-specific postal code validation
+                                            if (country === 'US') {
+                                                // US ZIP: 5 digits or 5+4 format (12345 or 12345-6789)
+                                                if (!postalCode.match(/^\d{5}(-\d{4})?$/)) {
+                                                    postalCodeValid = false;
+                                                    $('.invalid-feedback', $('#address-postal').parent()).text('US ZIP code should be 5 digits or 12345-6789 format');
+                                                }
+                                            } else if (country === 'CA') {
+                                                // Canadian: Letter Number Letter Number Letter Number (A1B2C3 or A1B 2C3)
+                                                if (!postalCode.match(/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/)) {
+                                                    postalCodeValid = false;
+                                                    $('.invalid-feedback', $('#address-postal').parent()).text('Canadian postal code should be in A1B 2C3 format');
+                                                }
+                                            } else if (country === 'GB') {
+                                                // UK: Various formats
+                                                if (!postalCode.match(/^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$/i)) {
+                                                    postalCodeValid = false;
+                                                    $('.invalid-feedback', $('#address-postal').parent()).text('UK postal code format is invalid');
+                                                }
+                                            }
+                                            
+                                            if (!postalCodeValid) {
+                                                $('#address-postal').addClass('is-invalid');
+                                                isValid = false;
+                                            }
+                                        }
+
+                                        if (!country) {
+                                            $('#address-country').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-country').parent()).text('Country is required');
+                                            isValid = false;
+                                        }
+                                        
+                                        console.log('Form validation result (after delete):', isValid);
+                                        
+                                        // If the form is invalid, stop here
+                                        if (!isValid) {
                                             return;
                                         }
                                         
@@ -666,19 +849,28 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         button.prop('disabled', true);
                                         button.html('Saving...');
                                         
+                                        // Mark as processing
+                                        $(this).data('processing', true);
+                                        
+                                        // Create formData from the form
                                         const formData = new FormData(form);
                                         const addressData = {};
                                         for (let [key, value] of formData.entries()) {
                                             addressData[key] = value;
                                         }
                                         
-                                        // Save address to database
+                                        console.log('Form data collected:', addressData);
+
+                                        // Send data to the server
                                         $.ajax({
                                             url: '../basket/save_address.php',
                                             type: 'POST',
                                             contentType: 'application/json',
                                             data: JSON.stringify(addressData),
                                             success: function(response) {
+                                                console.log('Save address response:', response);
+                                                $(button).data('processing', false);
+                                                
                                                 if (response.success) {
                                                     const address = response.address;
                                                     
@@ -713,18 +905,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                     $('.address-option').removeClass('selected');
                                                     $(`input[value="existing_${address.id}"]`).closest('.address-option').addClass('selected');
                                                     
-                                                    // Update the radio button event handlers
-                                                    $('input[name="address_option"]').off('change').on('change', function() {
-                                                        if (this.value === 'new') {
-                                                            $('#new-address-form').removeClass('hidden');
-                                                        } else {
-                                                            $('#new-address-form').addClass('hidden');
-                                                        }
-                                                        
-                                                        $('.address-option').removeClass('selected');
-                                                        $(this).closest('.address-option').addClass('selected');
-                                                    });
-                                                    
                                                     // Display success message
                                                     alert('Address saved successfully!');
                                                     
@@ -735,7 +915,10 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                 button.prop('disabled', false);
                                                 button.html('Save Address');
                                             },
-                                            error: function() {
+                                            error: function(xhr, status, error) {
+                                                console.error('Error saving address:', status, error);
+                                                console.error('Response:', xhr.responseText);
+                                                $(button).data('processing', false);
                                                 alert('Server error while saving address. Please try again.');
                                                 button.prop('disabled', false);
                                                 button.html('Save Address');
@@ -751,7 +934,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
         </div>
     </div>
 </div>
-
+<?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
 <!-- Confirmation Modal -->
@@ -835,6 +1018,226 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                 $('input[value="new"]').prop('checked', true);
                                 $('#new-address-form').removeClass('hidden');
                                 $('.address-option:last').addClass('selected');
+                                
+                                // Reset the form
+                                const form = document.getElementById('address-form');
+                                form.reset();
+                                
+                                // Reinitialize the save button handler
+                                $('#save-address').off('click').on('click', function() {
+                                    const form = document.getElementById('address-form');
+                                    console.log('Save button clicked (after delete), form element:', form);
+                                    
+                                    if (!form) {
+                                        console.error('Form element not found!');
+                                        alert('Error: Form element not found. Please try again.');
+                                        return;
+                                    }
+                                    
+                                    // Add a check for any ongoing AJAX requests
+                                    if ($(this).data('processing')) {
+                                        console.log('Already processing a request, please wait...');
+                                        return;
+                                    }
+                                    
+                                    let isValid = true;
+                                    
+                                    // Basic form validation
+                                    const line1 = $('#address-line1').val().trim();
+                                    const line2 = $('#address-line2').val().trim(); 
+                                    const city = $('#address-city').val().trim();
+                                    const state = $('#address-state').val().trim();
+                                    const postalCode = $('#address-postal').val().trim();
+                                    const country = $('#address-country').val();
+                                    
+                                    console.log('Form values (after delete):', { line1, line2, city, state, postalCode, country });
+                                    
+                                    // Clear previous error styles
+                                    $('#address-line1, #address-line2, #address-city, #address-state, #address-postal, #address-country').removeClass('is-invalid');
+                                    
+                                    // Validate each field
+                                    if (!line1) {
+                                        $('#address-line1').addClass('is-invalid');
+                                        $('.invalid-feedback', $('#address-line1').parent()).text('Address Line 1 is required');
+                                        isValid = false;
+                                    } else if (line1.length < 3) {
+                                        $('#address-line1').addClass('is-invalid');
+                                        $('.invalid-feedback', $('#address-line1').parent()).text('Address Line 1 must be at least 3 characters');
+                                        isValid = false;
+                                    } else if (!/^[A-Za-z0-9\s\-\.,#\/]+$/.test(line1)) {
+                                        $('#address-line1').addClass('is-invalid');
+                                        $('.invalid-feedback', $('#address-line1').parent()).text('Address Line 1 contains invalid characters');
+                                        isValid = false;
+                                    }
+
+                                    // Line 2 is optional, but validate if provided
+                                    if (line2 && line2.length > 0) {
+                                        if (line2.length < 3) {
+                                            $('#address-line2').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-line2').parent()).text('Address Line 2 must be at least 3 characters');
+                                            isValid = false;
+                                        } else if (!/^[A-Za-z0-9\s\-\.,#\/]+$/.test(line2)) {
+                                            $('#address-line2').addClass('is-invalid');
+                                            $('.invalid-feedback', $('#address-line2').parent()).text('Address Line 2 contains invalid characters');
+                                            isValid = false;
+                                        }
+                                    }
+
+                                    if (!city) {
+                                        $('#address-city').addClass('is-invalid');
+                                        $('.invalid-feedback', $('#address-city').parent()).text('City is required');
+                                        isValid = false;
+                                    } else if (city.length < 2) {
+                                        $('#address-city').addClass('is-invalid');
+                                        $('.invalid-feedback', $('#address-city').parent()).text('City must be at least 2 characters');
+                                        isValid = false;
+                                    } else if (!/^[A-Za-z\s\-']+$/.test(city)) {
+                                        $('#address-city').addClass('is-invalid');
+                                        $('.invalid-feedback', $('#address-city').parent()).text('City contains invalid characters');
+                                        isValid = false;
+                                    }
+
+                                    if (!state) {
+                                        $('#address-state').addClass('is-invalid');
+                                        $('.invalid-feedback', $('#address-state').parent()).text('State/Province is required');
+                                        isValid = false;
+                                    } else if (state.length < 2) {
+                                        $('#address-state').addClass('is-invalid');
+                                        $('.invalid-feedback', $('#address-state').parent()).text('State/Province must be at least 2 characters');
+                                        isValid = false;
+                                    } else if (!/^[A-Za-z\s\-']+$/.test(state)) {
+                                        $('#address-state').addClass('is-invalid');
+                                        $('.invalid-feedback', $('#address-state').parent()).text('State/Province contains invalid characters');
+                                        isValid = false;
+                                    }
+                                    
+                                    // Postal code validation with country-specific formats
+                                    if (!postalCode) {
+                                        $('#address-postal').addClass('is-invalid');
+                                        $('.invalid-feedback', $('#address-postal').parent()).text('ZIP/Postal Code is required');
+                                        isValid = false;
+                                    } else {
+                                        let postalCodeValid = true;
+                                        // Country-specific postal code validation
+                                        if (country === 'US') {
+                                            // US ZIP: 5 digits or 5+4 format (12345 or 12345-6789)
+                                            if (!postalCode.match(/^\d{5}(-\d{4})?$/)) {
+                                                postalCodeValid = false;
+                                                $('.invalid-feedback', $('#address-postal').parent()).text('US ZIP code should be 5 digits or 12345-6789 format');
+                                            }
+                                        } else if (country === 'CA') {
+                                            // Canadian: Letter Number Letter Number Letter Number (A1B2C3 or A1B 2C3)
+                                            if (!postalCode.match(/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/)) {
+                                                postalCodeValid = false;
+                                                $('.invalid-feedback', $('#address-postal').parent()).text('Canadian postal code should be in A1B 2C3 format');
+                                            }
+                                        } else if (country === 'GB') {
+                                            // UK: Various formats
+                                            if (!postalCode.match(/^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$/i)) {
+                                                postalCodeValid = false;
+                                                $('.invalid-feedback', $('#address-postal').parent()).text('UK postal code format is invalid');
+                                            }
+                                        }
+                                        
+                                        if (!postalCodeValid) {
+                                            $('#address-postal').addClass('is-invalid');
+                                            isValid = false;
+                                        }
+                                    }
+
+                                    if (!country) {
+                                        $('#address-country').addClass('is-invalid');
+                                        $('.invalid-feedback', $('#address-country').parent()).text('Country is required');
+                                        isValid = false;
+                                    }
+                                    
+                                    console.log('Form validation result (after delete):', isValid);
+                                    
+                                    // If the form is invalid, stop here
+                                    if (!isValid) {
+                                        return;
+                                    }
+                                    
+                                    const button = $(this);
+                                    button.prop('disabled', true);
+                                    button.html('Saving...');
+                                    
+                                    // Mark as processing
+                                    $(this).data('processing', true);
+                                    
+                                    // Create formData from the form
+                                    const formData = new FormData(form);
+                                    const addressData = {};
+                                    for (let [key, value] of formData.entries()) {
+                                        addressData[key] = value;
+                                    }
+                                    
+                                    console.log('Form data collected:', addressData);
+
+                                    // Send data to the server
+                                    $.ajax({
+                                        url: '../basket/save_address.php',
+                                        type: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(addressData),
+                                        success: function(response) {
+                                            console.log('Save address response:', response);
+                                            $(button).data('processing', false);
+                                            
+                                            if (response.success) {
+                                                const address = response.address;
+                                                
+                                                // Create new radio option with the new address
+                                                const newOption = `
+                                                    <label class="address-option selected">
+                                                        <input type="radio" name="address_option" value="existing_${address.id}" checked>
+                                                        <div>
+                                                            <strong>${address.street_address}</strong><br>
+                                                            ${address.city}, ${address.state} ${address.postal_code}<br>
+                                                            ${address.country}
+                                                        </div>
+                                                        <div class="address-actions">
+                                                            <button type="button" class="delete-address-btn" data-address-id="${address.id}">
+                                                                <span class="material-symbols-outlined">delete</span>
+                                                            </button>
+                                                        </div>
+                                                    </label>
+                                                `;
+                                                
+                                                // Insert at the beginning of the form (before the "Use a new address" option)
+                                                $('#address-selection-form label:last-child').before(newOption);
+                                                
+                                                // Explicitly check the new radio button
+                                                $(`input[value="existing_${address.id}"]`).prop('checked', true);
+                                                
+                                                // Hide the form and clear it
+                                                $('#new-address-form').addClass('hidden');
+                                                form.reset();
+                                                
+                                                // Remove the 'selected' class from all other options
+                                                $('.address-option').removeClass('selected');
+                                                $(`input[value="existing_${address.id}"]`).closest('.address-option').addClass('selected');
+                                                
+                                                // Display success message
+                                                alert('Address saved successfully!');
+                                                
+                                            } else {
+                                                alert('Error saving address: ' + (response.error || 'Unknown error'));
+                                            }
+                                            
+                                            button.prop('disabled', false);
+                                            button.html('Save Address');
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error('Error saving address:', status, error);
+                                            console.error('Response:', xhr.responseText);
+                                            $(button).data('processing', false);
+                                            alert('Server error while saving address. Please try again.');
+                                            button.prop('disabled', false);
+                                            button.html('Save Address');
+                                        }
+                                    });
+                                });
                             } else if (wasSelected) {
                                 // If the deleted address was selected, select the first one
                                 const firstRadio = $('input[name="address_option"]:first');

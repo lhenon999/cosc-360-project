@@ -1,8 +1,8 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-require_once '../config.php';
-require_once '../config/stripe.php';
+require_once __DIR__ . '/../config.php';
+require_once '../stripe/stripe.php';
 
 // Create logs directory if it doesn't exist
 $logDir = dirname(__DIR__) . '/logs';
@@ -421,7 +421,29 @@ try {
                         payment_method = ?
                     WHERE id = ?
                 ");
-                $paymentIntent = $session['payment_intent'] ?? '';
+                
+                // First try to get payment_intent from various possible locations in the session object
+                $paymentIntent = '';
+                if (!empty($session['payment_intent'])) {
+                    $paymentIntent = $session['payment_intent'];
+                } elseif (!empty($session['id'])) {
+                    // Use session ID as fallback
+                    $paymentIntent = $session['id'];
+                } elseif (!empty($session['object']) && $session['object'] === 'checkout.session' && !empty($session['payment_intent'])) {
+                    $paymentIntent = $session['payment_intent'];
+                }
+                
+                // Ensure we have a value for paymentIntent - at minimum use session ID if available
+                if (empty($paymentIntent) && !empty($session['id'])) {
+                    $paymentIntent = 'cs_' . $session['id'];
+                }
+                
+                // For debugging
+                file_put_contents($logFile, "Session data analysis:\n", FILE_APPEND);
+                file_put_contents($logFile, "- id: " . ($session['id'] ?? 'NULL') . "\n", FILE_APPEND);
+                file_put_contents($logFile, "- payment_intent: " . ($session['payment_intent'] ?? 'NULL') . "\n", FILE_APPEND);
+                file_put_contents($logFile, "- object: " . ($session['object'] ?? 'NULL') . "\n", FILE_APPEND);
+                
                 $paymentMethod = $session['payment_method_types'][0] ?? 'card';
                 
                 file_put_contents($logFile, "Updating order with payment details: PaymentIntent=" . $paymentIntent . ", Method=" . $paymentMethod . "\n", FILE_APPEND);

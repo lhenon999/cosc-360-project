@@ -1,4 +1,9 @@
 <?php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -9,6 +14,7 @@ $conn = new mysqli($servername, $username, $password, $database);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
 
 // Auto-create and set permissions on required directories
 function ensureDirectoriesExist() {
@@ -41,6 +47,10 @@ function ensureDirectoriesExist() {
 
 // Run directory check on every page load to ensure directories exist
 ensureDirectoriesExist();
+
+// Run auto-installer for webhooks directory
+include_once __DIR__ . '/stripe/autoinstall.php';
+
 
 // Include Stripe webhook autostart if the file exists
 $webhookAutostart = __DIR__ . '/webhooks/autostart.php';

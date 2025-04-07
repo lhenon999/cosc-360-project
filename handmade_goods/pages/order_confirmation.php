@@ -55,6 +55,16 @@ $total_price = $order["total_price"];
 $status = $order["status"];
 $order_date = date("F j, Y, g:i a", strtotime($order["created_at"]));
 
+// Only set the success message if the order is not cancelled
+if ($status != 'Cancelled') {
+    $_SESSION['success'] = "Order placed successfully!";
+} else {
+    // Make sure there's no success message for cancelled orders
+    if (isset($_SESSION['success'])) {
+        unset($_SESSION['success']);
+    }
+}
+
 // Fetch order items
 $stmt = $conn->prepare("
     SELECT oi.item_id, oi.item_name, i.img, oi.quantity, oi.price_at_purchase
@@ -135,12 +145,10 @@ foreach ($order_items as $item) {
             <p><strong>Status:</strong> <span><?= $status ?></span></p>
 
             <?php if ($order["street_address"]): ?>
-                <div class="shipping-address mt-4">
-                    <h4>Shipping Address:</h4>
-                    <p><?= htmlspecialchars($order["street_address"]) ?></p>
-                    <p><?= htmlspecialchars($order["city"]) ?>, <?= htmlspecialchars($order["state"]) ?> <?= htmlspecialchars($order["postal_code"]) ?></p>
-                    <p><?= htmlspecialchars($order["country"]) ?></p>
-                </div>
+                <p class="mt-4"><strong>Shipping Address:</strong></p>
+                <p class="ms-4"><?= htmlspecialchars($order["street_address"]) ?></p>
+                <p class="ms-4"><?= htmlspecialchars($order["city"]) ?>, <?= htmlspecialchars($order["state"]) ?> <?= htmlspecialchars($order["postal_code"]) ?></p>
+                <p class="ms-4"><?= htmlspecialchars($order["country"]) ?></p>
             <?php endif; ?>
 
             <h4 class="mt-4"><strong>Total Amount:</strong> <span class="total-price">$<?= number_format($total_price, 2) ?></span></h4>
