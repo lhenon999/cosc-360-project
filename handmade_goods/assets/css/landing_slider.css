@@ -137,5 +137,49 @@
   }
   
   
+  .bg-dark .slider {
+    background: linear-gradient(to right, #2b2b2b 50%, #1e1e1e 100%);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  }
+  
+  .bg-dark .left {
+    background-color: #2b2b2b;
+    color: #f0f0f0;
+  }
+  
+  .bg-dark .left h5 {
+    color: #ffffff;
+  }
+  
+  .bg-dark .left p {
+    color: #ccc;
+  }
+  
+  .bg-dark .view-button {
+    background: #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #f0f0f0;
+  }
+  
+  .bg-dark .view-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .bg-dark .right img {
+    filter: brightness(80%) contrast(105%);
+  }
+  
+  .bg-dark .right::before {
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+  
+  .bg-dark .right::after {
+    background: #1e1e1e;
+  }
+  
+  .bg-dark .left::after {
+    background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  }
   
   

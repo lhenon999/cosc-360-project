@@ -370,7 +370,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                 </div>
 
                                 <div class="mt-3">
-                                    <button type="button" id="save-address" class="white-button">Save Address</button>
+                                    <button type="button" id="save-address" class="m-btn">Save Address</button>
                                 </div>
                             </form>
                         </div>

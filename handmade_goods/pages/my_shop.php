@@ -69,7 +69,7 @@ $stmt->close();
     <?php endif; ?>
 
     <div class="d-flex justify-content-center mb-5">
-        <a class="cta hover-raise <?= $is_frozen ? 'disabled' : '' ?>" href="<?= $is_frozen ? '#' : 'create_listing.php' ?>" 
+        <a class="m-btn g <?= $is_frozen ? 'disabled' : '' ?>" href="<?= $is_frozen ? '#' : 'create_listing.php' ?>" 
            <?= $is_frozen ? 'style="opacity: 0.6; cursor: not-allowed;" onclick="return false;"' : '' ?>>
             <span class="material-symbols-outlined">add</span> Create a new listing
         </a>

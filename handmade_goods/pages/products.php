@@ -224,12 +224,14 @@ $rating_stmt->close();
                     <h4>Price Range</h4>
                     <label class="price-label">
                         <span>Min $</span>
-                        <input type="number" name="price-from" id="price-from" placeholder="Min Price" min="0" value="<?= htmlspecialchars($price_from ?? '') ?>">
+                        <input type="number" name="price-from" id="price-from" placeholder="Min Price" min="0"
+                            value="<?= htmlspecialchars($price_from ?? '') ?>">
                     </label>
 
                     <label class="price-label">
-                    <span>Max $</span>
-                        <input type="number" name="price-to" id="price-to" placeholder="Max Price" min="0" value="<?= htmlspecialchars($price_to ?? '') ?>">
+                        <span>Max $</span>
+                        <input type="number" name="price-to" id="price-to" placeholder="Max Price" min="0"
+                            value="<?= htmlspecialchars($price_to ?? '') ?>">
                     </label>
 
                 </div>
@@ -248,8 +250,7 @@ $rating_stmt->close();
                         ★</label>
                 </div>
 
-
-                <a href="products.php" class="clear-filters">Clear Filters</a>
+                <button type="button" class="m-btn clear-filters" onclick="window.location.href='products.php'">Clear Filters</button>
             </form>
         </div>
 
@@ -267,7 +268,8 @@ $rating_stmt->close();
                     ?>
                 <?php endforeach; ?>
             <?php else: ?>
-                <div class="no-results text-center w-100 d-flex flex-column justify-content-center align-items-center h-100">
+                <div
+                    class="no-results text-center w-100 d-flex flex-column justify-content-center align-items-center h-100">
                     <p>No products found matching your criteria. Try adjusting search or filter parameters!</p>
                     <a href="products.php" class="cta hover-raise mt-5 clear-filters">Clear Filters</a>
                 </div>
@@ -327,6 +329,22 @@ $rating_stmt->close();
                 }, 1000);
             });
         });
+
+        // Clear filters button logic
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasCategory = urlParams.get('category') && urlParams.get('category').trim() !== '';
+        const hasPriceFrom = urlParams.get('price-from') && urlParams.get('price-from').trim() !== '';
+        const hasPriceTo = urlParams.get('price-to') && urlParams.get('price-to').trim() !== '';
+        const hasSearch = urlParams.get('search') && urlParams.get('search').trim() !== '';
+        const hasRating = urlParams.get('rating') && urlParams.get('rating').trim() !== '';
+
+        const clearBtn = document.querySelector('.clear-filters');
+
+        if (!(hasCategory || hasPriceFrom || hasPriceTo || hasSearch || hasRating)) {
+            clearBtn.disabled = true;
+        } else {
+            clearBtn.disabled = false;
+        }
     </script>
 </body>
 </html>

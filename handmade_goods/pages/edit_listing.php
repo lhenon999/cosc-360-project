@@ -46,11 +46,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stock = trim($_POST["stock"]);
     $category = trim($_POST["category"]);
 
-    if (empty($name)) $errors[] = "Product name is required.";
-    if (empty($description)) $errors[] = "Description is required.";
-    if (empty($price) || !is_numeric($price) || $price <= 0) $errors[] = "Price must be a positive number.";
-    if (empty($stock) || !ctype_digit($stock) || $stock <= 0) $errors[] = "Stock must be a positive integer.";
-    if (empty($category) || !in_array($category, $categories)) $errors[] = "Please select a valid category.";
+    if (empty($name))
+        $errors[] = "Product name is required.";
+    if (empty($description))
+        $errors[] = "Description is required.";
+    if (empty($price) || !is_numeric($price) || $price <= 0)
+        $errors[] = "Price must be a positive number.";
+    if (empty($stock) || !ctype_digit($stock) || $stock <= 0)
+        $errors[] = "Stock must be a positive integer.";
+    if (empty($category) || !in_array($category, $categories))
+        $errors[] = "Please select a valid category.";
 
     if (!empty($_FILES["image"]["name"])) {
         $maxSize = 2 * 1024 * 1024;
@@ -59,9 +64,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $target_file = $target_dir . time() . "_" . $image_name;
         $image_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        if (getimagesize($_FILES["image"]["tmp_name"]) === false) $errors[] = "Uploaded file is not a valid image.";
-        if ($_FILES["image"]["size"] > $maxSize) $errors[] = "File exceeds maximum allowed size of 2MB.";
-        if (!in_array($image_type, ["jpg", "jpeg", "webp", "png"])) $errors[] = "Only JPG, JPEG, WEBP, and PNG files are allowed.";
+        if (getimagesize($_FILES["image"]["tmp_name"]) === false)
+            $errors[] = "Uploaded file is not a valid image.";
+        if ($_FILES["image"]["size"] > $maxSize)
+            $errors[] = "File exceeds maximum allowed size of 2MB.";
+        if (!in_array($image_type, ["jpg", "jpeg", "webp", "png"]))
+            $errors[] = "Only JPG, JPEG, WEBP, and PNG files are allowed.";
 
         if (empty($errors)) {
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
@@ -89,12 +97,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Handmade Goods - Edit Listing</title>
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
@@ -125,7 +135,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="preview-container">
             <div class="listing-item-container" id="productPreview">
                 <div class="product-image-container">
-                    <img src="<?= htmlspecialchars($image_path) ?>" id="previewImage" class="card-img-top" style="width: 100%; height: 100%;">
+                    <img src="<?= htmlspecialchars($image_path) ?>" id="previewImage" class="card-img-top"
+                        style="width: 100%; height: 100%;">
                 </div>
                 <div class="product-info">
                     <h1 id="previewTitle"><?= htmlspecialchars($product['name']) ?></h1>
@@ -135,52 +146,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="listing-form-container">
-            <form action="edit_listing.php?id=<?= $product_id ?>" id="listingForm" method="POST" enctype="multipart/form-data" class="mt-4">
+            <form action="edit_listing.php?id=<?= $product_id ?>" id="listingForm" method="POST"
+                enctype="multipart/form-data" class="mt-4">
                 <div class="mb-3">
                     <label for="name" class="form-label">Product Name</label>
-                    <input type="text" name="name" id="name" class="form-control" required value="<?= htmlspecialchars($product['name']) ?>" oninput="updatePreview()">
+                    <input type="text" name="name" id="name" class="form-control" required
+                        value="<?= htmlspecialchars($product['name']) ?>"
+                        oninput="updatePreview();  checkFormChanged();">
                 </div>
 
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <textarea name="description" id="description" class="form-control" required><?= htmlspecialchars($product['description']) ?></textarea>
+                    <textarea name="description" id="description" class="form-control" required
+                        oninput="checkFormChanged();"><?= htmlspecialchars($product['description']) ?></textarea>
                 </div>
 
                 <div class="mb-3">
                     <label for="price" class="form-label">Price ($)</label>
-                    <input type="number" name="price" id="price" class="form-control" step="0.01" required min="0.01" value="<?= htmlspecialchars($product['price']) ?>" oninput="updatePreview()">
+                    <input type="number" name="price" id="price" class="form-control" step="0.01" required min="0.01"
+                        value="<?= htmlspecialchars($product['price']) ?>"
+                        oninput="updatePreview();  checkFormChanged();">
                 </div>
 
                 <div class="mb-3">
                     <label for="stock" class="form-label">Stock</label>
-                    <input type="number" name="stock" id="stock" class="form-control" required min="1" value="<?= htmlspecialchars($product['stock']) ?>">
+                    <input type="number" name="stock" id="stock" class="form-control" required min="1"
+                        value="<?= htmlspecialchars($product['stock']) ?>" oninput="checkFormChanged();">
+
                 </div>
 
                 <div class="mb-3">
                     <label for="category" class="form-label">Category</label>
-                    <select name="category" id="category" class="form-control" required>
+                    <select name="category" id="category" class="form-control" required onchange="checkFormChanged();">
                         <option value="">Select a Category</option>
                         <?php foreach ($categories as $cat): ?>
-                            <option value="<?= htmlspecialchars($cat) ?>" <?= ($product['category'] === $cat) ? 'selected' : '' ?>><?= htmlspecialchars($cat) ?></option>
+                            <option value="<?= htmlspecialchars($cat) ?>" <?= ($product['category'] === $cat) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($cat) ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
+
                 </div>
 
                 <div class="mb-3">
                     <label for="image" class="form-label">Product Image</label>
-                    <input type="file" name="image" id="image" class="form-control" accept="image/*" onchange="previewImage()">
+                    <input type="file" name="image" id="image" class="form-control" accept="image/*"
+                        onchange="previewImage(); checkFormChanged();">
+
                 </div>
 
                 <div class="d-flex justify-content-center gap-3 mb-3">
-                    <a class="cta-2 hover-raise" href="my_shop.php">Cancel</a>
-                    <button type="submit" class="cta hover-raise">Save Changes</button>
+                    <a class="m-btn" href="my_shop.php">
+                        <span class="material-symbols-outlined">close</span> Cancel
+                    </a>
+                    <button type="submit" id="submitButton" class="m-btn g" disabled>
+                        <span class="material-symbols-outlined">add</span> Submit Product
+                    </button>
                 </div>
             </form>
         </div>
     </section>
-
     <?php include __DIR__ . '/../assets/html/footer.php'; ?>
-
     <script>
         function updatePreview() {
             let nameInput = document.getElementById("name").value.trim();
@@ -206,6 +232,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         document.getElementById("previewTitle").innerText = "<?= htmlspecialchars($product['name']) ?>";
         document.getElementById("previewPrice").innerText = "<?= htmlspecialchars($product['price']) ?>";
+    </script>
+    <script>
+        var initialName = "<?= htmlspecialchars($product['name']) ?>";
+        var initialDescription = "<?= htmlspecialchars($product['description']) ?>";
+        var initialPrice = "<?= htmlspecialchars($product['price']) ?>";
+        var initialStock = "<?= htmlspecialchars($product['stock']) ?>";
+        var initialCategory = "<?= htmlspecialchars($product['category']) ?>";
+        function checkFormChanged() {
+            const currentName = document.getElementById("name").value;
+            const currentDescription = document.getElementById("description").value;
+            const currentPrice = document.getElementById("price").value;
+            const currentStock = document.getElementById("stock").value;
+            const currentCategory = document.getElementById("category").value;
+            const imageInput = document.getElementById("image");
+
+            let hasChanged = (currentName !== initialName) ||
+                (currentDescription !== initialDescription) ||
+                (currentPrice !== initialPrice) ||
+                (currentStock !== initialStock) ||
+                (currentCategory !== initialCategory) ||
+                (imageInput.files.length > 0);
+
+            document.getElementById("submitButton").disabled = !hasChanged;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            checkFormChanged();
+        });
+
     </script>
 </body>
 </html>
