@@ -82,60 +82,29 @@
     width: 100%;
     object-fit: cover;
     filter: brightness(90%) contrast(95%);
+}
 
+/* Removing the fade effect on the left side of images */
+.right::before {
+    display: none; /* Hide the gradient overlay */
+}
+
+.right::after {
+    display: none; /* Hide the blur effect */
+}
+
+.left::after {
+    display: none; /* Hide the gradient from text area */
 }
 
 .right {
     position: relative;
   }
   
-  .right::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 40%; 
-    height: 100%;
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.8) 0%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    z-index: 1;
-  }
-  
-  .right::after {
-    content: "";
-    position: absolute;
-    left: -2rem;
-    top: 0;
-    width: 4rem;
-    height: 100%;
-    background: white;
-    filter: blur(20px);
-    z-index: 2;
-  }
-  
-  
-  
   .left {
     background-color: #f9f9f9;
     padding: 3rem;
   }
-  
-  .left::after {
-    content: "";
-    position: absolute;
-    right: -100px;
-    top: 0;
-    width: 300px;
-    height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
-    filter: blur(1000px);
-    pointer-events: none;
-    z-index: 3;
-  }
-  
   
   .bg-dark .slider {
     background: linear-gradient(to right, #2b2b2b 50%, #1e1e1e 100%);
@@ -181,5 +150,4 @@
   .bg-dark .left::after {
     background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
   }
-  
-  
+
