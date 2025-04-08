@@ -16,15 +16,15 @@
             <p><a href="about.php">Learn More</a></p>
         </div>
 
-        <!-- <div class="footer-section">
+        <div class="footer-section">
             <h3>Customer Support</h3>
             <ul>
                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</a></li>
-                <li><a href="nf">Shipping & Returns</a></li>
-                <li><a href="nf">FAQs</a></li>
-                <li><a href="nf">Terms & Conditions</a></li>
+                <!-- <li><a href="nf">Shipping & Returns</a></li> -->
+                <!-- <li><a href="nf">FAQs</a></li> -->
+                <!-- <li><a href="nf">Terms & Conditions</a></li> -->
             </ul>
-        </div> -->
+        </div>
     </div>
 
     <div class="footer-bottom">

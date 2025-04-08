@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../config.php';
-require_once '../config/stripe.php';
+require_once '../stripe/stripe.php';
 
 // Ensure only admins or developers can access this page
 if (!isset($_SESSION["user_id"]) || ($_SESSION["user_id"] != 1 && !isset($_SESSION["is_admin"]))) {

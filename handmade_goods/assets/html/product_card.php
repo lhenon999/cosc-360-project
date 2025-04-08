@@ -1,13 +1,18 @@
 <div class="listing-item-container">
     <?php
     $from = '';
-    $and = ''; 
+    $and = '';
+    $source = '';
+
     if (isset($from_profile_users) && $from_profile_users) {
         $from = '&from=profile_users';
     } elseif (isset($from_profile_listings) && $from_profile_listings) {
         $from = '&from=profile_listing_users';
     }
-    if (isset($isFromProfile) && $isFromProfile) {
+
+    if (isset($from_profile) && $from_profile === "my_shop") {
+        $and = '&and=my_shop';
+    } elseif (isset($isFromProfile) && $isFromProfile) {
         $and = '&and=user_profile';
     } 
     
@@ -15,8 +20,13 @@
     if (empty($image)) {
         $image = '../assets/images/placeholder.webp';
     }
+    
+    // Set source parameter for home page links
+    if (isset($source) && $source === 'home') {
+        $source = '&source=home';
+    }
     ?>
-    <a class="listing-item" href="../pages/product.php?id=<?= $id . $from . $and ?>">
+    <a class="listing-item" href="../pages/product.php?id=<?= $id ?><?= $source ?><?= $and ?>">
 
         <div class="product-image-container">
             <div class="product-image-wrapper">

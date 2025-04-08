@@ -1,0 +1,115 @@
+.account-activity{
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    width: 1200px;
+}
+
+.recent-activity {
+    width: 500px;
+    max-height: 300px;
+    vertical-align: top;
+    align-self: left;
+    background-color: white;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 20px;
+}
+.platform-summary{
+    display: flex;
+    gap: 40px;
+    width: 680px;
+    max-height: 300px;
+    vertical-align: top;
+    align-self: left;
+    background-color: white;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+}
+.paltform-summary-info{
+    margin-bottom: 25px;
+}
+.in-line-div{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.account-activity-table {
+    width: 1200px;
+    background-color: white;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    padding: 20px;
+}
+.login-trends{
+    width: 1200px;
+    height: 350px;
+    background-color: white;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+#filterForm {
+    background: #f7f7f7;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+}
+
+#filterForm label {
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#filterForm select,
+#filterForm input {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#filterForm select:focus,
+#filterForm input:focus {
+    border-color: #4a6741;
+}
+
+#filterForm select:hover,
+#filterForm input:hover {
+    border-color: #4a6741;
+}
+
+.chart-container {
+    position: relative;
+    width: 1100px;
+    height: 200px;
+    margin: 10px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+}

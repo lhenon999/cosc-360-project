@@ -1,18 +1,11 @@
 <?php 
 // Enable full error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+//error_reporting(E_ALL);
+//ini_set('display_errors', 1);
 
 session_start();
 include __DIR__ . '/../config.php';
 
-// Test database connection
-echo "Testing database connection: ";
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} else {
-    echo "Connected successfully!<br>";
-}
 ?>
 
 <!DOCTYPE html>
@@ -91,6 +84,7 @@ if ($conn->connect_error) {
                             $image = htmlspecialchars($product["img"]);
                             $stock = intval($product["stock"]);
                             $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
+                            $source = 'home';
                             include "../assets/html/product_card.php";
                         endwhile;
                     } else {
@@ -104,7 +98,7 @@ if ($conn->connect_error) {
                 ?>
             </div>
             <div class="view-more-container text-center mt-4">
-                <a href="products.php" class="white-button">View More</a>
+                <a href="products.php?" class="m-btn">View More</a>
             </div>
         </div>
         </div>

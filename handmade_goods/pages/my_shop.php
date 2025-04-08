@@ -65,7 +65,7 @@ $stmt->close();
     <p class="text-center">Browse and edit your listings</p>
     <br>
     <div class="d-flex justify-content-center mb-5">
-        <a class="cta hover-raise" href="create_listing.php">
+        <a class="m-btn g hover-raise" href="create_listing.php">
             <span class="material-symbols-outlined">add</span> Create a new listing
         </a>
     </div>

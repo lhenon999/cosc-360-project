@@ -1,10 +1,36 @@
 <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($conn)) {
+    include_once __DIR__ . '/../../config.php';
+}
+
+$totalItems = 0;
+if (isset($_SESSION["user_id"])) {
+    // Retrieve the user's cart and total quantity from the database
+    $stmt = $conn->prepare("SELECT id FROM CART WHERE user_id = ?");
+    $stmt->bind_param("i", $_SESSION["user_id"]);
+    $stmt->execute();
+    $cart = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    if ($cart) {
+        $cart_id = $cart['id'];
+        $stmt = $conn->prepare("SELECT SUM(quantity) AS total FROM CART_ITEMS WHERE cart_id = ?");
+        $stmt->bind_param("i", $cart_id);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $totalItems = $result["total"] ? $result["total"] : 0;
+        $stmt->close();
     }
-    if (!isset($conn)) {
-        include_once __DIR__ . '/../../config.php';
-    }
+}
+
 ?>
 <nav>
     <div class="navleft">
@@ -50,8 +76,32 @@
                 <?php endif; ?>
             </div>
         </span>
-        <a class="cta hover-raise auth-hide" href="../pages/basket.php"><span
-                class="material-symbols-outlined">shopping_basket</span>Basket</a>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <?php if (!isset($_SESSION["user_type"]) || $_SESSION["user_type"] !== "admin"): ?>
+            <span class="dropdown overview">
+                <a id="basket-btn" class="m-btn <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>"
+                    href="../pages/basket.php">
+                    <i class="fas fa-shopping-cart cart-icon"></i>
+                    <?php if (isset($_SESSION["user_id"]) && $totalItems > 0): ?>
+                        <span class="badge"><?= $totalItems ?></span>
+                    <?php endif; ?>
+                </a>
+                <div class="overview-content">
+                    <?php if (isset($_SESSION["user_id"])): ?>
+                        <?php include "basket_overview.php"; ?>
+                    <?php endif; ?>
+                </div>
+            </span>
+        <?php endif; ?>
+        <?php if (isset($_SESSION["user_type"]) && $_SESSION["user_type"] === "admin"): ?>
+            <style>
+                .dropdown .dropdown-content {
+                    right: 1px;
+                }
+            </style>
+        <?php endif; ?>
+
+
     </div>
     <script>
         $("#toggle-nav").click(function () {

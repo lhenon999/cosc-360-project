@@ -11,16 +11,13 @@ if (!defined('STRIPE_INCLUDED')) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 
-    // First try to load from Composer's vendor directory
+    // Load from root project's vendor directory
     $vendorPath = dirname(dirname(__DIR__)) . '/vendor/autoload.php';
     if (file_exists($vendorPath)) {
         require_once $vendorPath;
-    }
-
-    // Then try the direct project vendor directory
-    $projectVendorPath = dirname(__DIR__) . '/vendor/stripe/stripe-php/init.php';
-    if (file_exists($projectVendorPath)) {
-        require_once $projectVendorPath;
+    } else {
+        // Log error if vendor autoload is not found
+        error_log("Error: Stripe vendor autoload.php not found at: " . $vendorPath);
     }
 
     // Check if Stripe is available
