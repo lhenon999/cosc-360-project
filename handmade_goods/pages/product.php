@@ -37,12 +37,14 @@ $session_user_id = isset($_SESSION['user_id']) ? intval($_SESSION['user_id']) : 
 $category_name = isset($product['category']) ? htmlspecialchars($product['category']) : null;
 $created_at = date("F j, Y", strtotime($product['created_at']));
 
-$stmt = $conn->prepare("SELECT name, profile_picture FROM USERS WHERE id = ?");
+$stmt = $conn->prepare("SELECT name, profile_picture, is_frozen FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $seller = $result->fetch_assoc();
 $stmt->close();
+
+$product_frozen = isset($seller['is_frozen']) && $seller['is_frozen'] == 1;
 
 $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 'Seller';
 $sellerProfileUrl = "user_profile.php?id=" . $user_id . "&from_product=product.php?id=" . $product_id;
@@ -110,10 +112,14 @@ if ($session_user_id !== null) {
 <body>
     <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
-    <main>
+    <main class="<?= $product_frozen ? 'frozen-product' : '' ?>">
         <section class="main mt-5">
             <div class="left">
                 <img src="<?= $image ?>" alt="<?= $name ?>">
+                <?php if ($product_frozen): ?>
+                    <p class="frozen-label">This product is frozen due to account restrictions.</p>
+                <?php endif; ?>
+
             </div>
             <div class="right">
                 <nav aria-label="breadcrumb" class="breadcrumb-nav">
@@ -177,7 +183,8 @@ if ($session_user_id !== null) {
                 <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
                     <?php if ($is_frozen): ?>
                         <div class="alert alert-warning">
-                            <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit your listings at this time.
+                            <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit your listings at
+                            this time.
                         </div>
                         <button class="m-btn g atc" disabled style="opacity: 0.6; cursor: not-allowed;">
                             <span class="material-symbols-outlined">edit</span> Edit Listing
@@ -205,7 +212,8 @@ if ($session_user_id !== null) {
                                 <div class="quantity-add w-100">
                                     <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
                                         class="form-control quantity-input">
-                                    <button type="submit" class="m-btn g atc <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>">
+                                    <button type="submit"
+                                        class="m-btn g atc <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>">
                                         <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
                                     </button>
                                 </div>
@@ -308,6 +316,22 @@ if ($session_user_id !== null) {
             });
         });
     </script>
+    <?php if ($product_frozen): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.m-btn').forEach(function (btn) {
+                    if (btn.tagName.toLowerCase() === 'button') {
+                        btn.disabled = true;
+                    } else {
+                        btn.removeAttribute('href');
+                        btn.style.pointerEvents = 'none';
+                    }
+                    btn.style.opacity = "0.6";
+                    btn.style.cursor = "not-allowed";
+                });
+            });
+        </script>
+    <?php endif; ?>
 
 </body>
 

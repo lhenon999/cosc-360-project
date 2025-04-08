@@ -18,12 +18,11 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $results = ["products" => [], "users" => [], "categories" => []];
 
     // for products
-    // for products with frozen seller filtering
     $query = "SELECT i.id, i.name, i.img, i.user_id 
-FROM ITEMS i 
-JOIN USERS u ON i.user_id = u.id 
-WHERE i.name LIKE ? AND u.is_frozen = 0 
-LIMIT 5";
+        FROM ITEMS i 
+        JOIN USERS u ON i.user_id = u.id 
+        WHERE i.name LIKE ? AND u.is_frozen = 0 
+        LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $search_param);
     $stmt->execute();
