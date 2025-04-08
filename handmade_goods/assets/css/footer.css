@@ -2,7 +2,7 @@
     background-color: #f8f8f8; 
     padding: 50px 20px;
     text-align: center;
-    margin-top: 80px;
+    margin-top: 60px;
     border-top: 1px solid #e0e0e0;
 }
 
@@ -95,3 +95,8 @@
     color: #aaa;
   }
   
+@media (max-width: 660px) {
+  .footer-container {
+    gap: 80px;
+  }
+}
