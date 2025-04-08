@@ -31,7 +31,7 @@ if (isset($_SESSION["user_id"])) {
 <nav>
     <div class="navleft">
         <a href="../pages/home.php">
-            <h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3>
+            <h3 class="cta hover-raise title"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3>
         </a>
         <button class="material-symbols-outlined" id="toggle-nav">menu</button>
     </div>

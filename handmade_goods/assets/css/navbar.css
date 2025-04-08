@@ -510,3 +510,7 @@ nav .navright form .search-button::-moz-focus-inner {
 .bg-dark .overview-content{
     background-color: #1e1e1e;
 }
+
+.title span {
+    margin-bottom: 5px;
+}
