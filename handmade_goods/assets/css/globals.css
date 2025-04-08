@@ -141,9 +141,10 @@ body {
 }
 
 .bg-dark .form-control {
-    background-color: #2c2c2c !important;
     color: #ffffff !important;
     border: none;
+    background-color: #1a1a1a !important;
+
 }
 
 .bg-dark .tabs-nav a {
@@ -233,30 +234,62 @@ button.cta-2:hover span {
     color: white;
 }
 
-.white-button {
+.m-btn {
     padding: 0.9em 1.8em;
     border-radius: 10px;
     background: white;
     transition: all 0.2s ease-in-out;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
     border: none;
-    color:#345418;
+    color:#426B1F;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     width: fit-content;
     padding: 0.75em 1.25em;
+    gap: 5px;
+    cursor: pointer;
 }
 
-.white-button:hover {
+.m-btn.g {
+    background: #426B1F;
+    color: white;
+}
+
+.m-btn.g .material-symbols-outlined {
+    color: white;
+}
+
+.m-btn:hover {
     transform: scale(1.05);
 }
 
-.white-button:disabled {
+.m-btn:disabled {
   background-color: #ddd;
   color: #888;           
   border: none;
   cursor: not-allowed;  
   opacity: 0.7;           
 }
+
+.m-btn:disabled .material-symbols-outlined {
+    color: white;
+}
+
+.bg-dark .m-btn {
+    background: #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #f0f0f0;
+  }
+
+.bg-dark .m-btn.g {
+        background: #426B1F;
+        color: white;
+}
+
+.bg-dark .m-btn:disabled{
+    background-color: #888;
+}
+  
+

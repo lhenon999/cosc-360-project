@@ -437,7 +437,7 @@ nav .navright form .search-button::-moz-focus-inner {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease-in-out;
-    transition-delay: 1s;
+    transition-delay: 0.4s;
     align-items: center;
     z-index: 9999;
 }
@@ -481,3 +481,32 @@ nav .navright form .search-button::-moz-focus-inner {
 .total-label{
     text-align: right;
 }
+
+.bg-dark .basket-item {
+    background-color: #2b2b2b;
+    color: #e0e0e0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .bg-dark .basket-item img {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .bg-dark .basket-details h5 {
+    color: #fff;
+    text-align: left;
+  }
+  
+  .bg-dark .basket-details p {
+    color: #ccc;
+  }
+  
+  .bg-dark .total-label {
+    color: #fff;
+    text-align: right;
+  }
+
+  .bg-dark .overview-content{
+    background-color: #1e1e1e;
+  }
+  
