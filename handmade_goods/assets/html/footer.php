@@ -2,28 +2,19 @@
     <div class="footer-container">
         
         <div class="footer-section">
-            <h3>Handmade Goods</h3>
+            <a href="/"><h3>Handmade Goods</h3></a>
             <p>Discover unique local products crafted with care. Supporting artisans worldwide.</p>
+            <p><a href="#" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</a></p>
         </div>
 
         <div class="footer-section">
-            <h3>About Us</h3>
-                <p>+1 (234)-567-890</p>
-            <p>
-                3333 University way, Kelowna, BC, Canada <br>
-                <strong>Email:</strong> <a href="mailto:info@handmadegoods.com">info@handmadegoods.com</a>
-            </p>
-            <p><a href="about.php">Learn More</a></p>
-        </div>
-
-        <div class="footer-section">
-            <h3>Customer Support</h3>
-            <ul>
-                <li><a href="#" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</a></li>
-                <!-- <li><a href="nf">Shipping & Returns</a></li> -->
-                <!-- <li><a href="nf">FAQs</a></li> -->
-                <!-- <li><a href="nf">Terms & Conditions</a></li> -->
-            </ul>
+        <a href="/about"><h3>About Us</h3></a>
+        <a href="tel:+12345678900"><p>+1 (234)-567-8900</p></a>
+        <p>
+            <strong>Email:</strong> <a href="mailto:info@handmadegoods.com">info@handmadegoods.com</a>
+        </p>
+        <p>3333 University way, Kelowna, BC, Canada</p>
+            
         </div>
     </div>
 
