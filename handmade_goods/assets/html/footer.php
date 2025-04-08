@@ -13,7 +13,7 @@
         <p>
             <strong>Email:</strong> <a href="mailto:info@handmadegoods.com">info@handmadegoods.com</a>
         </p>
-        <p>3333 University way, Kelowna, BC, Canada</p>
+        <p>3333 University Way, Kelowna, BC, Canada</p>
             
         </div>
     </div>

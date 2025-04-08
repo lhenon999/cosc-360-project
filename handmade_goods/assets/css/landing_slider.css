@@ -4,7 +4,7 @@
     border-radius: 1em;
     overflow: hidden;
     position: relative;
-    cursor: default;
+    cursor: pointer;
     margin-top: 50px;
     margin-bottom: 50px;
     background: white;
@@ -181,5 +181,3 @@
   .bg-dark .left::after {
     background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
   }
-  
-  
