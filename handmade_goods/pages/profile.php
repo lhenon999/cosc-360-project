@@ -63,8 +63,6 @@ if ($user_type === 'admin') {
 
 $isAdvanced = isset($_GET['page']) && $_GET['page'] === 'advanced';
 $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
-
-
 ?>
 
 <!DOCTYPE html>

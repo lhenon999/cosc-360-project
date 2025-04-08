@@ -115,6 +115,18 @@
     transition: all 0.2s ease-in-out;
 }
 
+.users-table tr.frozen,
+.inventory-table tr.frozen {
+    background-color: #fde7e7 !important;
+    color: #444 !important;            
+}
+
+.fas.fa-lock {
+    color: #555;
+    margin-left: 4px;
+    font-size: 0.9em;
+}
+
 .inventory-table tr:nth-child(even), .users-table tr:nth-child(even) {
     background-color: rgba(245, 245, 245, 0.6);
 }
@@ -334,4 +346,3 @@
 /* .tabs-nav label:nth-child(2):hover ~ .tab-slider-admin{
     transform: translateX(100%);
 } */
-
