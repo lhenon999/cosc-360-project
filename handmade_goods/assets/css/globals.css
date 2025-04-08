@@ -33,7 +33,7 @@ body {
     color: #333;
 }
 
-h1, h3 {
+h1, h3, h3 span {
     font-weight: 600;
     font-family: "Newsreader", serif;
 }
@@ -48,7 +48,8 @@ h1 {
     font-weight: bold;
 }
 
-h3 {
+h3,
+h3 span {
     font-size: 1.75rem;
     font-weight: bold;
     margin-top: 40px;
@@ -266,11 +267,11 @@ button.cta-2:hover span {
 }
 
 .m-btn:disabled {
-  background-color: #ddd;
-  color: #888;           
-  border: none;
-  cursor: not-allowed;  
-  opacity: 0.7;           
+    background-color: #ddd;
+    color: #888;           
+    border: none;
+    cursor: not-allowed;  
+    opacity: 0.7;           
 }
 
 .m-btn:disabled .material-symbols-outlined {
@@ -281,7 +282,7 @@ button.cta-2:hover span {
     background: #333;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     color: #f0f0f0;
-  }
+}
 
 .bg-dark .m-btn.g {
         background: #426B1F;
@@ -291,5 +292,3 @@ button.cta-2:hover span {
 .bg-dark .m-btn:disabled{
     background-color: #888;
 }
-  
-
