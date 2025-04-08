@@ -115,9 +115,10 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
                                 <span class="material-symbols-outlined">assessment</span>Advanced Report
                             </a>
                         <?php endif; ?>
+                        <a class="r-btn" href="../pages/settings.php">
+                            <span class="material-symbols-outlined">settings</span>Settings
+                        </a>
 
-
-                        <a class="r-btn"><span class="material-symbols-outlined">settings</span>Settings</a>
                         <?php if ($user_type !== 'admin'): ?>
                             <a class="r-btn" href="../pages/my_shop.php">
                                 <span class="material-symbols-outlined">storefront</span>My Shop

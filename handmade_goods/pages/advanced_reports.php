@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config.php';
 
-$userCountQuery = "SELECT COUNT(*) AS total_users FROM USERS";
+$userCountQuery = "SELECT COUNT(*) AS total_users FROM USERS WHERE user_type = 'normal'";
 $resultUserCount = $conn->query($userCountQuery);
 $totalUsers = $resultUserCount ? $resultUserCount->fetch_assoc()['total_users'] : 0;
 
@@ -16,7 +16,8 @@ $listingCount = $resultListings ? $resultListings->fetch_assoc()['listing_count'
 $trendQuery = "SELECT DATE(created_at) AS date, COUNT(*) AS count 
                FROM ACCOUNT_ACTIVITY 
                WHERE event_type = 'login' 
-               AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                 AND user_id IN (SELECT id FROM USERS WHERE user_type = 'normal')
+                 AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
                GROUP BY DATE(created_at)
                ORDER BY DATE(created_at) ASC";
 $resultTrend = $conn->query($trendQuery);
@@ -46,23 +47,27 @@ if ($filter === 'login' || $filter === 'registration') {
 if (!empty($userIdFilter)) {
     $activityWhere .= " AND user_id = " . intval($userIdFilter);
 }
+$activityWhere .= " AND user_id IN (SELECT id FROM USERS WHERE user_type = 'normal')";
+
 $activityQuery = "SELECT id, user_id, event_type AS activity_type, ip_address, user_agent, created_at, '' AS details
                   FROM ACCOUNT_ACTIVITY $activityWhere";
 
 $reviewsWhere = "WHERE 1=1";
 if ($filter === 'review' || $filter === 'all') {
-    // include reviews
 } else {
     $reviewsWhere .= " AND 1=0";
 }
 if (!empty($userIdFilter)) {
     $reviewsWhere .= " AND user_id = " . intval($userIdFilter);
 }
+$reviewsWhere .= " AND user_id IN (SELECT id FROM USERS WHERE user_type = 'normal')";
+
 $reviewsQuery = "SELECT id, user_id, 'review' AS activity_type, '' AS ip_address, '' AS user_agent, created_at, comment AS details
                  FROM REVIEWS $reviewsWhere";
 
 $listingWhere = "WHERE 1=1";
 if ($filter === 'listing' || $filter === 'all') {
+    // include listings
 } else {
     $listingWhere .= " AND 1=0";
 }
@@ -77,6 +82,7 @@ $resultCombined = $conn->query($combinedQuery);
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Account Activity</title>
     <link rel="stylesheet" href="../assets/css/advanced_report.css">
@@ -84,6 +90,7 @@ $resultCombined = $conn->query($combinedQuery);
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 </head>
+
 <body>
     <div class="account-activity">
         <div class="in-line-div">
@@ -110,18 +117,24 @@ $resultCombined = $conn->query($combinedQuery);
         </div>
 
         <div class="account-activity-table">
-            <h3>Account Activity & Reviews & Listings</h3>
+            <h3>Account Activity</h3>
             <form id="filterForm" action="/cosc-360-project/handmade_goods/pages/advanced_report.php">
                 <label for="filter">Activity Type:</label>
                 <select name="filter" id="filter">
-                    <option value="all" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'all') echo 'selected'; ?>>All</option>
-                    <option value="login" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'login') echo 'selected'; ?>>Login</option>
-                    <option value="registration" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'registration') echo 'selected'; ?>>Registration</option>
-                    <option value="review" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'review') echo 'selected'; ?>>Review</option>
-                    <option value="listing" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'listing') echo 'selected'; ?>>Listing</option>
+                    <option value="all" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'all')
+                        echo 'selected'; ?>>All</option>
+                    <option value="login" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'login')
+                        echo 'selected'; ?>>Login</option>
+                    <option value="registration" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'registration')
+                        echo 'selected'; ?>>Registration</option>
+                    <option value="review" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'review')
+                        echo 'selected'; ?>>Review</option>
+                    <option value="listing" <?php if (isset($_GET['filter']) && $_GET['filter'] === 'listing')
+                        echo 'selected'; ?>>Listing</option>
                 </select>
                 <label for="user_id">User ID:</label>
-                <input type="text" name="user_id" id="user_id" value="<?php echo isset($_GET['user_id']) ? htmlspecialchars($_GET['user_id']) : ''; ?>">
+                <input type="text" name="user_id" id="user_id"
+                    value="<?php echo isset($_GET['user_id']) ? htmlspecialchars($_GET['user_id']) : ''; ?>">
             </form>
 
             <table class="orders-table">
@@ -130,7 +143,6 @@ $resultCombined = $conn->query($combinedQuery);
                         <th>User ID</th>
                         <th>Activity Type</th>
                         <th>Created At</th>
-                        <th>IP Address</th>
                         <th>User Agent</th>
                     </tr>
                 </thead>
@@ -142,7 +154,6 @@ $resultCombined = $conn->query($combinedQuery);
                             echo "<td>" . htmlspecialchars($row['user_id']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['activity_type']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['ip_address']) . "</td>";
                             echo "<td>" . htmlspecialchars($row['user_agent']) . "</td>";
                             echo "</tr>";
                         }
@@ -156,7 +167,7 @@ $resultCombined = $conn->query($combinedQuery);
     </div>
 
     <script>
-        document.getElementById("filterForm").addEventListener("submit", function(e) {
+        document.getElementById("filterForm").addEventListener("submit", function (e) {
             e.preventDefault();
         });
 
@@ -174,7 +185,7 @@ $resultCombined = $conn->query($combinedQuery);
         }
 
         document.getElementById("filter").addEventListener("change", updateFilters);
-        document.getElementById("user_id").addEventListener("keydown", function(e) {
+        document.getElementById("user_id").addEventListener("keydown", function (e) {
             if (e.key === "Enter") {
                 e.preventDefault();
                 updateFilters();
@@ -215,7 +226,7 @@ $resultCombined = $conn->query($combinedQuery);
                             align: 'top',
                             anchor: 'end',
                             font: { size: 12 },
-                            formatter: function(value) {
+                            formatter: function (value) {
                                 return value;
                             }
                         }
@@ -232,8 +243,8 @@ $resultCombined = $conn->query($combinedQuery);
                                 callback: function (value, index) {
                                     const label = this.chart.data.labels[index];
                                     if (label && label.length >= 10) {
-                                        const month = label.substring(5,7);
-                                        const day = label.substring(8,10);
+                                        const month = label.substring(5, 7);
+                                        const day = label.substring(8, 10);
                                         const abbrev = monthAbbrev[month] || month;
                                         return abbrev + '-' + day;
                                     }
@@ -247,7 +258,10 @@ $resultCombined = $conn->query($combinedQuery);
                             ticks: {
                                 beginAtZero: true,
                                 color: "#666",
-                                font: { size: 12 }
+                                font: { size: 12 },
+                                callback: function (value) {
+                                    return Number(value).toFixed(0);
+                                }
                             }
                         }
                     }
@@ -257,4 +271,5 @@ $resultCombined = $conn->query($combinedQuery);
         });
     </script>
 </body>
+
 </html>
