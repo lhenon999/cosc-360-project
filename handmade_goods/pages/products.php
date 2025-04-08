@@ -18,13 +18,19 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $results = ["products" => [], "users" => [], "categories" => []];
 
     // for products
-    $query = "SELECT id, name, img, user_id FROM ITEMS WHERE name LIKE ? LIMIT 5";
+    // for products with frozen seller filtering
+    $query = "SELECT i.id, i.name, i.img, i.user_id 
+FROM ITEMS i 
+JOIN USERS u ON i.user_id = u.id 
+WHERE i.name LIKE ? AND u.is_frozen = 0 
+LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $search_param);
     $stmt->execute();
     $result = $stmt->get_result();
     $results["products"] = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
+
 
     // for users
     $query = "SELECT id, name, profile_picture FROM USERS WHERE (name LIKE ? OR email LIKE ?) AND user_type != 'admin' LIMIT 5";
@@ -250,7 +256,8 @@ $rating_stmt->close();
                         ★</label>
                 </div>
 
-                <button type="button" class="m-btn clear-filters" onclick="window.location.href='products.php'">Clear Filters</button>
+                <button type="button" class="m-btn clear-filters" onclick="window.location.href='products.php'">Clear
+                    Filters</button>
             </form>
         </div>
 
@@ -347,4 +354,5 @@ $rating_stmt->close();
         }
     </script>
 </body>
+
 </html>
