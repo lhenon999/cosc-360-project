@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config.php';
 
-$userCountQuery = "SELECT COUNT(*) AS total_users FROM USERS";
+$userCountQuery = "SELECT COUNT(*) AS total_users FROM USERS WHERE user_type = 'normal'";
 $resultUserCount = $conn->query($userCountQuery);
 $totalUsers = $resultUserCount ? $resultUserCount->fetch_assoc()['total_users'] : 0;
 
@@ -16,7 +16,8 @@ $listingCount = $resultListings ? $resultListings->fetch_assoc()['listing_count'
 $trendQuery = "SELECT DATE(created_at) AS date, COUNT(*) AS count 
                FROM ACCOUNT_ACTIVITY 
                WHERE event_type = 'login' 
-               AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                 AND user_id IN (SELECT id FROM USERS WHERE user_type = 'normal')
+                 AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
                GROUP BY DATE(created_at)
                ORDER BY DATE(created_at) ASC";
 $resultTrend = $conn->query($trendQuery);
@@ -46,23 +47,27 @@ if ($filter === 'login' || $filter === 'registration') {
 if (!empty($userIdFilter)) {
     $activityWhere .= " AND user_id = " . intval($userIdFilter);
 }
+$activityWhere .= " AND user_id IN (SELECT id FROM USERS WHERE user_type = 'normal')";
+
 $activityQuery = "SELECT id, user_id, event_type AS activity_type, ip_address, user_agent, created_at, '' AS details
                   FROM ACCOUNT_ACTIVITY $activityWhere";
 
 $reviewsWhere = "WHERE 1=1";
 if ($filter === 'review' || $filter === 'all') {
-    // include reviews
 } else {
     $reviewsWhere .= " AND 1=0";
 }
 if (!empty($userIdFilter)) {
     $reviewsWhere .= " AND user_id = " . intval($userIdFilter);
 }
+$reviewsWhere .= " AND user_id IN (SELECT id FROM USERS WHERE user_type = 'normal')";
+
 $reviewsQuery = "SELECT id, user_id, 'review' AS activity_type, '' AS ip_address, '' AS user_agent, created_at, comment AS details
                  FROM REVIEWS $reviewsWhere";
 
 $listingWhere = "WHERE 1=1";
 if ($filter === 'listing' || $filter === 'all') {
+    // include listings
 } else {
     $listingWhere .= " AND 1=0";
 }
