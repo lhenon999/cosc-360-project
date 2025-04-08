@@ -1,5 +1,4 @@
 .profile-container {
-    max-width: 1800px;
     margin: auto;
     padding: 20px;
     text-align: center;
@@ -9,6 +8,7 @@
 
 .profile-header {
     display: flex;
+    flex-direction: row;
     align-items: center;
     gap: 2rem;
     margin-bottom: 3rem;
@@ -90,23 +90,22 @@
     padding: 10px 15px;
     cursor: pointer;
     position: relative;
-    z-index: 2;
+    z-index: 1;
     width: 100%;
 }
 
 .tab-pane {
-    opacity: 0;
-    visibility: hidden;
-    position: absolute;
+    display: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
     width: 100%;
 }
 
 .tab-pane.active {
-    display: block !important;
+    display: block;
     opacity: 1;
     visibility: visible;
-    position: relative;
 }
+
 .tabs-nav a {
     display: block;
     padding: 15px 20px;
@@ -125,8 +124,8 @@
     font-weight: 500;
     text-decoration: none;
     display: inline-block;
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     transition: all 0.3s ease-in-out;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
@@ -169,5 +168,53 @@
     right: 25px;
 }
 
+.header-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+@media (max-width: 680px) {
+    .profile-header {
+        flex-direction: column;
+        
+    }
 
+    .profile-info {
+        align-items: center;
+        text-align: center;
+        margin-bottom: 1em;
+    }
+
+    .tab-link,
+    .header-btn,
+    .header-btn span,
+    .orders-table {
+        font-size: 0.8em !important;
+    }
+
+    .reviews-containers, .sales-container {
+        flex-direction: column;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .reviews-summary-outer {
+        flex: none !important;
+        min-width: auto !important;
+        height: auto !important;
+        max-height: none !important;
+        width: 100%;
+    }
+    .reviews-summary,
+    #activity-table {
+        overflow-y: visible !important;
+        overflow-x: scroll;
+        width: 100%;
+        font-size: 0.8em;
+        height: auto !important;
+        max-height: none !important;
+    }
+}

@@ -529,4 +529,8 @@ nav .desktop-only {
     nav .desktop-only {
         display: none;
     }
+
+    nav {
+        z-index: 100;
+    }
 }

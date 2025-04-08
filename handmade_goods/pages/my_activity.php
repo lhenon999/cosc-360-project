@@ -22,7 +22,7 @@ $myReviewsStmt = $conn->prepare("
     INNER JOIN ITEMS i ON r.item_id = i.id
     INNER JOIN USERS s ON i.user_id = s.id
     WHERE r.user_id = ?
-      AND i.status = 'active'
+    AND i.status = 'active'
     ORDER BY r.created_at DESC
 ");
 $myReviewsStmt->bind_param("i", $user_id);
@@ -34,7 +34,7 @@ $myReviewsStmt->close();
 <div class="activity-container">
     <h3>My Activity</h3>
     <?php if ($myReviewsResult->num_rows > 0): ?>
-        <table class="orders-table">
+        <table class="orders-table" id="activity-table">
             <thead>
                 <tr>
                     <th>Item</th>
@@ -71,5 +71,6 @@ $myReviewsStmt->close();
     <?php else: ?>
         <p>You haven't left any reviews yet.</p>
     <?php endif; ?>
-    <button class="m-btn" onclick="switchToReviews()">Back</button>
 </div>
+
+<button class="m-btn" onclick="switchToReviews()">Back</button>

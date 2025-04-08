@@ -56,7 +56,6 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110,21 +109,21 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
                     <p><?php echo htmlspecialchars($email); ?></p>
                     <div class="profile-buttons">
                         <?php if ($user_type == 'admin'): ?>
-                            <a class="r-btn <?php echo $isAdvanced ? 'active' : ''; ?>"
+                            <a class="r-btn header-btn <?php echo $isAdvanced ? 'active' : ''; ?>"
                                 href="../pages/<?php echo $toggleLink; ?>">
                                 <span class="material-symbols-outlined">assessment</span>Advanced Report
                             </a>
                         <?php endif; ?>
-                        <a class="r-btn" href="../pages/settings.php">
+                        <a class="r-btn header-btn" href="../pages/settings.php">
                             <span class="material-symbols-outlined">settings</span>Settings
                         </a>
 
                         <?php if ($user_type !== 'admin'): ?>
-                            <a class="r-btn" href="../pages/my_shop.php">
+                            <a class="r-btn header-btn" href="../pages/my_shop.php">
                                 <span class="material-symbols-outlined">storefront</span>My Shop
                             </a>
                         <?php endif; ?>
-                        <a class="r-btn" href="../auth/logout.php">
+                        <a class="r-btn header-btn" href="../auth/logout.php">
                             <span class="material-symbols-outlined">logout</span>Logout
                         </a>
                     </div>
@@ -142,10 +141,6 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
             <?php else: ?>
                 <?php include __DIR__ . '/profile_user_dashboard.php'; ?>
             <?php endif; ?>
-
-
-
-
         </div>
     </div>
     <script>

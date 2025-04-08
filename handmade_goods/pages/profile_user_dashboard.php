@@ -68,7 +68,7 @@ $stmt->close();
 
 
 <div class="profile-tabs mt-5">
-    <nav class="tabs-nav">
+    <section class="tabs-nav">
         <label>
             <a href="#orders" class="tab-link">My Orders</a>
         </label>
@@ -79,7 +79,7 @@ $stmt->close();
             <a href="#sales" class="tab-link">My Sales</a>
         </label>
         <div class="tab-slider"></div>
-    </nav>
+</section>
 </div>
 
 <div class="tab-content">
@@ -100,16 +100,15 @@ $stmt->close();
             <table class="orders-table">
                 <thead>
                     <tr>
-                        <th>Order ID</th>
+                        <th>ID</th>
                         <th>Total Price</th>
                         <th>Status</th>
                         <th>Order Date</th>
-                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while ($order = $result->fetch_assoc()): ?>
-                        <tr>
+                        <tr onclick="window.location.href='order_details.php?order_id=<?= $order['id'] ?>';" style="cursor: pointer;">
                             <td>#<?= $order["id"] ?></td>
                             <td>$<?= number_format($order["total_price"], 2) ?></td>
                             <td>
@@ -118,9 +117,6 @@ $stmt->close();
                                 </span>
                             </td>
                             <td><?= date('M j, Y', strtotime($order["created_at"])) ?></td>
-                            <td>
-                                <a href="order_details.php?order_id=<?= $order["id"] ?>" class="view-btn">View</a>
-                            </td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
@@ -134,7 +130,7 @@ $stmt->close();
     <div id="reviews" class="tab-pane">
         <div class="reviews-containers">
             <div class="rating-summary">
-                <h3>Review Summary</h3>
+                <h3>Rating Summary</h3>
 
                 <div class="rating-overall">
                     <span class="rating-score"><?= $averageRating ?></span>
@@ -168,8 +164,8 @@ $stmt->close();
                 </a>
             </div>
             <div class="reviews-summary-outer">
+                <h3>Reviews</h3>
                 <div class="reviews-summary">
-                    <h3>Reviews</h3>
                     <?php if ($myReviewsResult->num_rows > 0): ?>
                         <table class="orders-table">
                             <thead>
@@ -184,7 +180,6 @@ $stmt->close();
                             <tbody>
                                 <?php while ($row = $myReviewsResult->fetch_assoc()): ?>
                                     <?php
-                                    // Protect special chars, format date, etc.
                                     $itemId = (int) $row['item_id'];
                                     $itemName = htmlspecialchars($row['item_name']);
                                     $sellerName = htmlspecialchars($row['seller_name']);
@@ -194,7 +189,6 @@ $stmt->close();
                                     ?>
                                     <tr>
                                         <td>
-                                            <!-- Link to product page by item ID -->
                                             <a href="product.php?id=<?= $itemId ?>">
                                                 <?= $itemName ?>
                                             </a>
