@@ -114,7 +114,7 @@ if ($session_user_id !== null) {
                 <img src="<?= $image ?>" alt="<?= $name ?>">
             </div>
             <div class="right">
-                <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div aria-label="breadcrumb" class="breadcrumb-nav">
                     <ol class="breadcrumb">
                         <?php if ($from_products): ?>
                             <li class="breadcrumb-item">
@@ -152,7 +152,7 @@ if ($session_user_id !== null) {
 
                         <li class="breadcrumb-item active" aria-current="page"><?= $name ?></li>
                     </ol>
-                </nav>
+                        </div>
 
 
                 <h1><?= $name ?></h1>
@@ -194,7 +194,7 @@ if ($session_user_id !== null) {
                                 <div class="quantity-add w-100">
                                     <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
                                         class="form-control quantity-input">
-                                    <button type="submit" class="m-btn g atc <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>">
+                                    <button type="submit" class="m-btn hover-raise g atc <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>">
                                         <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
                                     </button>
                                 </div>
