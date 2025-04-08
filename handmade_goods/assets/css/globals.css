@@ -249,6 +249,7 @@ button.cta-2:hover span {
     width: fit-content;
     padding: 0.75em 1.25em;
     gap: 5px;
+    cursor: pointer;
 }
 
 .m-btn.g {
