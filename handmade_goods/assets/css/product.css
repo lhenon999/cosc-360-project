@@ -5,14 +5,15 @@
     flex-direction: row;
     gap: 40px;
     margin-bottom: 4em;
+    flex-wrap: wrap;
 }
 
 .left {
-    width: 50%;
+    /* width: 50%; */
 }
 
 .right {
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -27,7 +28,13 @@
 .left img {
     height: 620px;
     border-radius: 16px;
+    max-width: 720px;
 }
+
+.left, .right {
+    flex: 1;
+}
+
 
 #category-btn {
     background: none;
