@@ -28,12 +28,13 @@ if (isset($_SESSION['error'])) {
 
 // Get user information
 $user_id = intval($_SESSION["user_id"]);
-$stmt = $conn->prepare("SELECT name, email, profile_picture FROM USERS WHERE id = ?");
+$stmt = $conn->prepare("SELECT name, email, profile_picture, is_frozen FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
-$stmt->bind_result($name, $email, $profile_picture);
+$stmt->bind_result($name, $email, $profile_picture, $is_frozen);
 $stmt->fetch();
 $stmt->close();
+
 
 $all_users = [];
 if ($user_type === 'admin') {
@@ -95,6 +96,13 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
 
     <div class="container">
         <h1 class="text-center mt-5"><?php echo ($user_type === 'admin') ? 'Admin Dashboard' : 'My Profile'; ?></h1>
+        <?php if ($is_frozen == 1): ?>
+            <div class="alert alert-warning">
+                <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit or create new listings at this
+                time.
+            </div>
+        <?php endif; ?>
+
 
         <div class="profile-container">
             <div class="profile-header">
@@ -166,7 +174,7 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
     </script>
     <!-- Load jQuery first to ensure it's available -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    
+
     <!-- Make modal functions globally available -->
     <script>
         // Global modal functions
@@ -187,7 +195,7 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
 
         function showManageModal(userId, userName) {
             console.log("Show manage modal for user:", userName, "ID:", userId);
-            
+
             // Set user ID for freeze/unfreeze account forms
             const freezeUserIdInput = document.getElementById("freezeUserId");
             const unfreezeUserIdInput = document.getElementById("unfreezeUserId");
@@ -197,7 +205,7 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
             if (unfreezeUserIdInput) {
                 unfreezeUserIdInput.value = userId;
             }
-            
+
             // Set user ID for delete account form
             const deleteUserIdInput = document.getElementById("deleteUserIdFromManage");
             if (deleteUserIdInput) {
@@ -205,7 +213,7 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
             } else {
                 console.error("deleteUserIdFromManage input not found");
             }
-            
+
             // Set the account name in the modal
             const accountNameSpan = document.getElementById("accountName");
             if (accountNameSpan) {
@@ -213,10 +221,10 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
             } else {
                 console.error("accountName span not found");
             }
-            
+
             // Check if user is frozen and show appropriate button
             let isFrozen = false;
-            
+
             // Find the user in the all_users array by userId
             <?php if (!empty($all_users)): ?>
                 <?php foreach ($all_users as $user): ?>
@@ -225,12 +233,12 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
                     }
                 <?php endforeach; ?>
             <?php endif; ?>
-            
+
             // Show/hide appropriate buttons and update message
             const freezeForm = document.getElementById("freezeForm");
             const unfreezeForm = document.getElementById("unfreezeForm");
             const statusMessage = document.getElementById("accountStatusMessage");
-            
+
             if (isFrozen) {
                 freezeForm.style.display = "none";
                 unfreezeForm.style.display = "block";
@@ -240,7 +248,7 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
                 unfreezeForm.style.display = "none";
                 statusMessage.textContent = "Freezing an account blocks all listings and orders.";
             }
-            
+
             openModal("manageModal");
         }
 
@@ -260,7 +268,7 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
             }
         }
     </script>
-    
+
     <!-- Load other scripts -->
     <script src="../assets/js/profile_tab_switching.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -283,10 +291,10 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
             tooltipTriggerList.forEach(function (tooltipTriggerEl) {
                 new bootstrap.Tooltip(tooltipTriggerEl);
             });
-            
+
             // Add direct event handlers to modal buttons after DOM is fully loaded
             document.querySelectorAll(".manage-btn").forEach(button => {
-                button.addEventListener("click", function() {
+                button.addEventListener("click", function () {
                     const userId = this.getAttribute("data-user-id");
                     const userName = this.getAttribute("data-user-name");
                     console.log("Direct click handler - user:", userId, userName);
@@ -295,10 +303,10 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
                     }
                 });
             });
-            
+
             // Add event handlers for delete listing buttons
             document.querySelectorAll(".delete-btn").forEach(button => {
-                button.addEventListener("click", function() {
+                button.addEventListener("click", function () {
                     const itemId = this.getAttribute("data-item-id");
                     console.log("Delete button clicked for item:", itemId);
                     if (itemId) {
@@ -306,17 +314,17 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
                     }
                 });
             });
-            
+
             // Handle modal cancellation
             document.querySelectorAll(".cancel-btn").forEach(button => {
-                button.addEventListener("click", function() {
+                button.addEventListener("click", function () {
                     const modal = this.closest(".modal");
                     if (modal) modal.style.display = "none";
                 });
             });
-            
+
             // Close modal when clicking outside
-            window.addEventListener("click", function(event) {
+            window.addEventListener("click", function (event) {
                 document.querySelectorAll(".modal").forEach(modal => {
                     if (event.target === modal) {
                         modal.style.display = "none";
