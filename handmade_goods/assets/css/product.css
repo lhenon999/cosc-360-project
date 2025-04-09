@@ -10,7 +10,7 @@
 
 .right {
     height: 650px;
-    min-width: 900px;
+    min-width: 950px;
     display: flex;
     flex-direction: column;
     align-items: start;
