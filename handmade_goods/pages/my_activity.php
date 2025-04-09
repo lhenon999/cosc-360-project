@@ -1,7 +1,5 @@
 <?php
 include '../config.php';
-// ini_set('display_errors', 1);
-// error_reporting(E_ALL);
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -34,43 +32,44 @@ $myReviewsStmt->close();
 <div class="activity-container">
     <h3>My Activity</h3>
     <?php if ($myReviewsResult->num_rows > 0): ?>
-        <table class="orders-table" id="activity-table">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Seller</th>
-                    <th>Rating</th>
-                    <th>Comment</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $myReviewsResult->fetch_assoc()): ?>
-                    <?php
-                    $itemId = (int)$row['item_id'];
-                    $itemName = htmlspecialchars($row['item_name']);
-                    $sellerName = htmlspecialchars($row['seller_name']);
-                    $rating = (int)$row['rating'];
-                    $comment = htmlspecialchars($row['comment']);
-                    $date = date('M j, Y', strtotime($row['created_at']));
-                    ?>
+        <div class="activity-scroll">
+            <table class="orders-table">
+                <thead>
                     <tr>
-                        <td>
-                            <a href="product.php?id=<?= $itemId ?>">
-                                <?= $itemName ?>
-                            </a>
-                        </td>
-                        <td><?= $sellerName ?></td>
-                        <td><?= $rating ?></td>
-                        <td><?= $comment ?></td>
-                        <td><?= $date ?></td>
+                        <th>Item</th>
+                        <th>Seller</th>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>Date</th>
                     </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php while ($row = $myReviewsResult->fetch_assoc()): ?>
+                        <?php
+                        $itemId = (int)$row['item_id'];
+                        $itemName = htmlspecialchars($row['item_name']);
+                        $sellerName = htmlspecialchars($row['seller_name']);
+                        $rating = (int)$row['rating'];
+                        $comment = htmlspecialchars($row['comment']);
+                        $date = date('M j, Y', strtotime($row['created_at']));
+                        ?>
+                        <tr>
+                            <td>
+                                <a href="product.php?id=<?= $itemId ?>">
+                                    <?= $itemName ?>
+                                </a>
+                            </td>
+                            <td><?= $sellerName ?></td>
+                            <td><?= $rating ?></td>
+                            <td><?= $comment ?></td>
+                            <td><?= $date ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     <?php else: ?>
         <p>You haven't left any reviews yet.</p>
     <?php endif; ?>
 </div>
 
-<button class="m-btn" onclick="switchToReviews()">Back</button>

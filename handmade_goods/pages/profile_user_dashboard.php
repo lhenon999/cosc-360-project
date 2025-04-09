@@ -69,17 +69,11 @@ $stmt->close();
 
 <div class="profile-tabs mt-5">
     <section class="tabs-nav">
-        <label>
-            <a href="#orders" class="tab-link">My Orders</a>
-        </label>
-        <label>
-            <a href="#reviews" class="tab-link">My Reviews</a>
-        </label>
-        <label>
-            <a href="#sales" class="tab-link">My Sales</a>
-        </label>
+        <a href="#orders" class="tab-link">My Orders</a>
+        <a href="#reviews" class="tab-link">My Reviews</a>
+        <a href="#sales" class="tab-link">My Sales</a>
         <div class="tab-slider"></div>
-</section>
+    </section>
 </div>
 
 <div class="tab-content">
@@ -215,7 +209,7 @@ $stmt->close();
                 <div class="earnings-summary">
                     <div class="chart-container" style="width: 300px; height: 300px;">
                         <h3>Total Earnings</h3>
-                        <canvas id="earningsChart"></canvas>
+                        <canvas id="earningsChart" class="my-3"></canvas>
                         <p>Total Earnings: $<span id="totalEarnings"><?= number_format($totalEarnings, 2) ?></span></p>
                     </div>
                 </div>
@@ -226,58 +220,55 @@ $stmt->close();
 
                 <?php
                 $stmt = $conn->prepare("
-        SELECT s.id, s.order_id, s.buyer_id, s.item_id, s.quantity, s.price, s.sale_date,
-            u.name AS buyer_name, u.profile_picture,
-            i.name AS item_name
-        FROM SALES s
-        JOIN USERS u ON s.buyer_id = u.id
-        JOIN ITEMS i ON s.item_id = i.id
-        WHERE s.seller_id = ?
-        ORDER BY s.sale_date DESC
-    ");
+                    SELECT s.id, s.order_id, s.buyer_id, s.item_id, s.quantity, s.price, s.sale_date,
+                        u.name AS buyer_name,
+                        i.name AS item_name
+                    FROM SALES s
+                    JOIN USERS u ON s.buyer_id = u.id
+                    JOIN ITEMS i ON s.item_id = i.id
+                    WHERE s.seller_id = ?
+                    ORDER BY s.sale_date DESC
+                ");
                 $stmt->bind_param("i", $user_id);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0): ?>
-                    <table class="orders-table">
-                        <thead>
-                            <tr>
-                                <th>Sale ID</th>
-                                <th>Buyer</th>
-                                <th>Item</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th>Sale Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php while ($sale = $result->fetch_assoc()): ?>
+                    <div class="activity-scroll">
+                        <table class="orders-table">
+                            <thead>
                                 <tr>
-                                    <td>#<?= $sale["id"] ?></td>
-                                    <td>
-                                        <img src="<?= htmlspecialchars($sale["profile_picture"]) ?>" alt="Profile Picture">
-                                        <?= htmlspecialchars($sale["buyer_name"]) ?>
-                                    </td>
-                                    <td><?= htmlspecialchars($sale["item_name"]) ?></td>
-                                    <td><?= htmlspecialchars($sale["quantity"]) ?></td>
-                                    <td>$<?= number_format($sale["price"], 2) ?></td>
-                                    <td><?= date('M j, Y', strtotime($sale["sale_date"])) ?></td>
+                                    <th>Sale ID</th>
+                                    <th>Buyer</th>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Sale Date</th>
                                 </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php while ($sale = $result->fetch_assoc()): ?>
+                                    <tr>
+                                        <td>#<?= $sale["id"] ?></td>
+                                        <td>
+                                            <?= htmlspecialchars($sale["buyer_name"]) ?>
+                                        </td>
+                                        <td><?= htmlspecialchars($sale["item_name"]) ?></td>
+                                        <td><?= htmlspecialchars($sale["quantity"]) ?></td>
+                                        <td>$<?= number_format($sale["price"], 2) ?></td>
+                                        <td><?= date('M j, Y', strtotime($sale["sale_date"])) ?></td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php else: ?>
                     <p>You have no sales history yet.</p>
                 <?php endif;
                 $stmt->close();
                 ?>
             </div>
-
-
         </div>
     </div>
-
-
 </div>
 </div>

@@ -81,7 +81,7 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
 <body>
     <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
-    <div class="container">
+    <div>
         <h1 class="text-center mt-5"><?php echo ($user_type === 'admin') ? 'Admin Dashboard' : 'My Profile'; ?></h1>
 
         <div class="profile-container">
