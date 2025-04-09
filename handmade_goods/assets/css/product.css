@@ -281,7 +281,6 @@ main section.main nav.breadcrumb-nav {
 
 .frozen-product {
     filter: grayscale(60%) contrast(80%);
-    /* background-color: #f8f8f8; */
 }
 
 .frozen-label {

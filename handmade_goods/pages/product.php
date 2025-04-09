@@ -112,181 +112,183 @@ if ($session_user_id !== null) {
 <body>
     <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
-    <main class="<?= $product_frozen ? 'frozen-product' : '' ?>">
-        <section class="main mt-5">
-            <div class="left">
-                <img src="<?= $image ?>" alt="<?= $name ?>">
-                <?php if ($product_frozen): ?>
-                    <p class="frozen-label">This product is frozen due to account restrictions.</p>
-                <?php endif; ?>
-
-            </div>
-            <div class="right">
-                <nav aria-label="breadcrumb" class="breadcrumb-nav">
-                    <ol class="breadcrumb">
-                        <?php if ($from_products): ?>
-                            <li class="breadcrumb-item">
-                                <a href="products.php">Products</a>
-                            </li>
-                        <?php elseif ($from_my_shop): ?>
-                            <li class="breadcrumb-item">
-                                <a href="my_shop.php">My Shop</a>
-                            </li>
-                        <?php elseif ($from_profile): ?>
-                            <li class="breadcrumb-item">
-                                <a href="user_profile.php?id=<?= $user_id ?>">Profile</a>
-                            </li>
-                        <?php elseif ($from_listings || $from_listing_users || $from_users): ?>
-                            <li class="breadcrumb-item">
-                                <a href="profile.php#listings">Dashboard</a>
-                            </li>
-                        <?php elseif ($from_home): ?>
-                            <li class="breadcrumb-item">
-                                <a href="home.php?id=<?= $user_id ?>">Home</a>
-                            </li>
-                        <?php else: ?>
-                            <li class="breadcrumb-item">
-                                <a href="products.php">Products</a>
-                            </li>
-                        <?php endif; ?>
-
-                        <?php if (!empty($category_name)): ?>
-                            <li class="breadcrumb-item">
-                                <a href="products.php?category=<?= rawurlencode($category_name) ?>">
-                                    <?= $category_name ?>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-
-                        <li class="breadcrumb-item active" aria-current="page"><?= $name ?></li>
-                    </ol>
-                </nav>
-
-
-                <h1><?= $name ?></h1>
-                <p class="created-at">Listed on: <?= $created_at ?></p>
-                <h5 id="price-label">$<?= $price ?></h5>
-
-                <p class="mt-4"><?= $description ?></p>
-
-                <?php if (!$from_profile): ?>
-                    <a href="user_profile.php?id=<?= $user_id ?>&from_product=product.php?id=<?= $product_id ?>"
-                        class="seller-info hover-raise">
-                        <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
-                            class="rounded-circle" width="50" height="50">
-                        <p class="ms-3 mb-0">
-                            Sold by <strong><?= htmlspecialchars($seller['name']) ?></strong>
-                        </p>
-                    </a>
-                <?php endif; ?>
-
-                <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
-                    <?php if ($is_frozen): ?>
-                        <div class="alert alert-warning">
-                            <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit your listings at
-                            this time.
-                        </div>
-                        <button class="m-btn g atc" disabled style="opacity: 0.6; cursor: not-allowed;">
-                            <span class="material-symbols-outlined">edit</span> Edit Listing
-                        </button>
-                    <?php else: ?>
-                        <a href="edit_listing.php?id=<?= $product_id ?>" class="m-btn g atc">
-                            <span class="material-symbols-outlined">edit</span> Edit Listing
-                        </a>
+    <main>
+        <div class="<?= $product_frozen ? 'frozen-product' : '' ?>">
+            <section class="main mt-5">
+                <div class="left">
+                    <img src="<?= $image ?>" alt="<?= $name ?>">
+                    <?php if ($product_frozen): ?>
+                        <p class="frozen-label">This product is frozen due to account restrictions.</p>
                     <?php endif; ?>
-                <?php else: ?>
-                    <?php if ($product['stock'] > 0): ?>
-                        <p class="stock-info <?= $product['stock'] < 5 ? 'low-stock' : '' ?>">
-                            <?= $product['stock'] < 5
-                                ? 'Only ' . $product['stock'] . ' left in stock!'
-                                : 'In Stock' ?>
-                        </p>
-                        <form action="/cosc-360-project/handmade_goods/basket/add_to_basket.php" method="POST"
-                            class="user-options">
-                            <input type="hidden" name="product_id" value="<?= $product_id ?>">
-                            <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
-                                <a href="profile.php?item=<?= urlencode($name) ?>" class="m-btn g atc">
-                                    <span class="material-symbols-outlined">manage_accounts</span> Manage Listing
-                                </a>
+
+                </div>
+                <div class="right">
+                    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                        <ol class="breadcrumb">
+                            <?php if ($from_products): ?>
+                                <li class="breadcrumb-item">
+                                    <a href="products.php">Products</a>
+                                </li>
+                            <?php elseif ($from_my_shop): ?>
+                                <li class="breadcrumb-item">
+                                    <a href="my_shop.php">My Shop</a>
+                                </li>
+                            <?php elseif ($from_profile): ?>
+                                <li class="breadcrumb-item">
+                                    <a href="user_profile.php?id=<?= $user_id ?>">Profile</a>
+                                </li>
+                            <?php elseif ($from_listings || $from_listing_users || $from_users): ?>
+                                <li class="breadcrumb-item">
+                                    <a href="profile.php#listings">Dashboard</a>
+                                </li>
+                            <?php elseif ($from_home): ?>
+                                <li class="breadcrumb-item">
+                                    <a href="home.php?id=<?= $user_id ?>">Home</a>
+                                </li>
                             <?php else: ?>
-                                <div class="quantity-add w-100">
-                                    <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
-                                        class="form-control quantity-input">
-                                    <button type="submit"
-                                        class="m-btn g atc <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>">
-                                        <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
-                                    </button>
-                                </div>
+                                <li class="breadcrumb-item">
+                                    <a href="products.php">Products</a>
+                                </li>
                             <?php endif; ?>
-                        </form>
-                    <?php else: ?>
-                        <p class="out-of-stock">Out of Stock</p>
-                        <button class="m-btn atc" disabled>
-                            <span class="material-symbols-outlined">add_shopping_cart</span> Out of Stock
-                        </button>
-                    <?php endif; ?>
-                <?php endif; ?>
-            </div>
-        </section>
-        <section class="reviews">
-            <h1 class="mb-4">Customer Reviews</h1>
-            <?php if (empty($reviews)): ?>
-                <p class="mb-5">No reviews yet. Be the first to review this product!</p>
-            <?php else: ?>
-                <?php foreach ($reviews as $review): ?>
-                    <div class="review mt-2 d-flex flex-column">
-                        <a href="user_profile.php?id=<?= $review['user_id'] ?>" class="review-user">
-                            <img src="<?= htmlspecialchars($review['profile_picture']) ?>" alt="Profile"
-                                class="review-user-img">
-                            <strong><?= htmlspecialchars($review['name']) ?></strong>
-                        </a>
-                        <div class="review-rating">
-                            <?php for ($i = 1; $i <= 5; $i++): ?>
-                                <span class="star <?= $i <= $review['rating'] ? 'filled' : '' ?>">★</span>
-                            <?php endfor; ?>
-                        </div>
-                        <p class="review-comment"><?= htmlspecialchars($review['comment']) ?></p>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
 
-            <?php if ($session_user_id !== null): ?>
-                <?php if ($hasPurchased): ?>
-                    <?php if ($userHasReviewed): ?>
-                        <h3 class="mt-5">Add a Review</h3>
-                        <form action="add_review.php" method="POST" class="add-review-form">
-                            <input type="hidden" name="product_id" value="<?= $product_id ?>">
-                            <textarea placeholder="Tell other buyers about your experience with the product..." name="comment"
-                                id="comment" rows="3" required></textarea>
-                            <div class="d-flex flex-row align-items-center justify-content-start">
-                                <span class="rating-label">Rating: </span>
-                                <div class="rating-group">
-                                    <input type="radio" id="star5" name="rating" value="5">
-                                    <label for="star5">★</label>
-                                    <input type="radio" id="star4" name="rating" value="4">
-                                    <label for="star4">★</label>
-                                    <input type="radio" id="star3" name="rating" value="3">
-                                    <label for="star3">★</label>
-                                    <input type="radio" id="star2" name="rating" value="2">
-                                    <label for="star2">★</label>
-                                    <input type="radio" id="star1" name="rating" value="1">
-                                    <label for="star1">★</label>
-                                </div>
+                            <?php if (!empty($category_name)): ?>
+                                <li class="breadcrumb-item">
+                                    <a href="products.php?category=<?= rawurlencode($category_name) ?>">
+                                        <?= $category_name ?>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+
+                            <li class="breadcrumb-item active" aria-current="page"><?= $name ?></li>
+                        </ol>
+                    </nav>
+
+
+                    <h1><?= $name ?></h1>
+                    <p class="created-at">Listed on: <?= $created_at ?></p>
+                    <h5 id="price-label">$<?= $price ?></h5>
+
+                    <p class="mt-4"><?= $description ?></p>
+
+                    <?php if (!$from_profile): ?>
+                        <a href="user_profile.php?id=<?= $user_id ?>&from_product=product.php?id=<?= $product_id ?>"
+                            class="seller-info hover-raise">
+                            <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
+                                class="rounded-circle" width="50" height="50">
+                            <p class="ms-3 mb-0">
+                                Sold by <strong><?= htmlspecialchars($seller['name']) ?></strong>
+                            </p>
+                        </a>
+                    <?php endif; ?>
+
+                    <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
+                        <?php if ($is_frozen): ?>
+                            <div class="alert alert-warning">
+                                <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit your listings at
+                                this time.
                             </div>
-                            <button type="submit" class="m-btn w-40">
-                                <span class="material-symbols-outlined">check</span>Submit Review
+                            <button class="m-btn g atc" disabled style="opacity: 0.6; cursor: not-allowed;">
+                                <span class="material-symbols-outlined">edit</span> Edit Listing
                             </button>
-                        </form>
+                        <?php else: ?>
+                            <a href="edit_listing.php?id=<?= $product_id ?>" class="m-btn g atc">
+                                <span class="material-symbols-outlined">edit</span> Edit Listing
+                            </a>
+                        <?php endif; ?>
                     <?php else: ?>
-                        <p>You can only review the product once.</p>
+                        <?php if ($product['stock'] > 0): ?>
+                            <p class="stock-info <?= $product['stock'] < 5 ? 'low-stock' : '' ?>">
+                                <?= $product['stock'] < 5
+                                    ? 'Only ' . $product['stock'] . ' left in stock!'
+                                    : 'In Stock' ?>
+                            </p>
+                            <form action="/cosc-360-project/handmade_goods/basket/add_to_basket.php" method="POST"
+                                class="user-options">
+                                <input type="hidden" name="product_id" value="<?= $product_id ?>">
+                                <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
+                                    <a href="profile.php?item=<?= urlencode($name) ?>" class="m-btn g atc">
+                                        <span class="material-symbols-outlined">manage_accounts</span> Manage Listing
+                                    </a>
+                                <?php else: ?>
+                                    <div class="quantity-add w-100">
+                                        <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock'] ?>"
+                                            class="form-control quantity-input">
+                                        <button type="submit"
+                                            class="m-btn g atc <?php echo !isset($_SESSION["user_id"]) ? 'not-logged-in' : ''; ?>">
+                                            <span class="material-symbols-outlined">add_shopping_cart</span> Add to Basket
+                                        </button>
+                                    </div>
+                                <?php endif; ?>
+                            </form>
+                        <?php else: ?>
+                            <p class="out-of-stock">Out of Stock</p>
+                            <button class="m-btn atc" disabled>
+                                <span class="material-symbols-outlined">add_shopping_cart</span> Out of Stock
+                            </button>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+            </section>
+            <section class="reviews">
+                <h1 class="mb-4">Customer Reviews</h1>
+                <?php if (empty($reviews)): ?>
+                    <p class="mb-5">No reviews yet. Be the first to review this product!</p>
+                <?php else: ?>
+                    <?php foreach ($reviews as $review): ?>
+                        <div class="review mt-2 d-flex flex-column">
+                            <a href="user_profile.php?id=<?= $review['user_id'] ?>" class="review-user">
+                                <img src="<?= htmlspecialchars($review['profile_picture']) ?>" alt="Profile"
+                                    class="review-user-img">
+                                <strong><?= htmlspecialchars($review['name']) ?></strong>
+                            </a>
+                            <div class="review-rating">
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <span class="star <?= $i <= $review['rating'] ? 'filled' : '' ?>">★</span>
+                                <?php endfor; ?>
+                            </div>
+                            <p class="review-comment"><?= htmlspecialchars($review['comment']) ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+                <?php if ($session_user_id !== null): ?>
+                    <?php if ($hasPurchased): ?>
+                        <?php if ($userHasReviewed): ?>
+                            <h3 class="mt-5">Add a Review</h3>
+                            <form action="add_review.php" method="POST" class="add-review-form">
+                                <input type="hidden" name="product_id" value="<?= $product_id ?>">
+                                <textarea placeholder="Tell other buyers about your experience with the product..." name="comment"
+                                    id="comment" rows="3" required></textarea>
+                                <div class="d-flex flex-row align-items-center justify-content-start">
+                                    <span class="rating-label">Rating: </span>
+                                    <div class="rating-group">
+                                        <input type="radio" id="star5" name="rating" value="5">
+                                        <label for="star5">★</label>
+                                        <input type="radio" id="star4" name="rating" value="4">
+                                        <label for="star4">★</label>
+                                        <input type="radio" id="star3" name="rating" value="3">
+                                        <label for="star3">★</label>
+                                        <input type="radio" id="star2" name="rating" value="2">
+                                        <label for="star2">★</label>
+                                        <input type="radio" id="star1" name="rating" value="1">
+                                        <label for="star1">★</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="m-btn w-40">
+                                    <span class="material-symbols-outlined">check</span>Submit Review
+                                </button>
+                            </form>
+                        <?php else: ?>
+                            <p>You can only review the product once.</p>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <p>You can only leave a review if you've purchased this product.</p>
                     <?php endif; ?>
                 <?php else: ?>
-                    <p>You can only leave a review if you've purchased this product.</p>
+                    <p>You must be logged in to leave a review.</p>
                 <?php endif; ?>
-            <?php else: ?>
-                <p>You must be logged in to leave a review.</p>
-            <?php endif; ?>
-        </section>
+            </section>
+        </div>
     </main>
     <script src="../assets/js/product_reviews.js"></script>
     <?php include __DIR__ . '/../assets/html/footer.php'; ?>
