@@ -123,7 +123,6 @@ $reviewsStmt->close();
             <div class="profile-info">
                 <h1><?= htmlspecialchars($user['name']) ?></h1>
                 <div class="profile-details">
-                    <!-- <h3 class="contact-label">Contact</h3> -->
                     <p>
                         <a href="mailto:<?= htmlspecialchars($user['email']) ?>">
                             <?= htmlspecialchars($user['email']) ?>
