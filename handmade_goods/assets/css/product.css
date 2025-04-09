@@ -286,6 +286,12 @@ main section.main nav.breadcrumb-nav {
     opacity: 0.7;
 }
 
+.m-btn {
+    white-space: nowrap;
+    width: 100%;
+    margin: auto;
+}
+
 @media (max-width: 1120px) {
     .main {
         flex-direction: column;

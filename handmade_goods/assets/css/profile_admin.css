@@ -331,7 +331,15 @@
     z-index: 1;
 }
 
-/* .tabs-nav label:nth-child(2):hover ~ .tab-slider-admin{
-    transform: translateX(100%);
-} */
+.table-div {
+    padding: 12px;
+    width: 100%;
+    border-radius: 12px;
+    background-color: white;
+}
 
+@media(max-width:1000px) {
+    .table-div {
+        overflow-x: scroll;
+    }
+}

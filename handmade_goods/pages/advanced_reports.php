@@ -14,12 +14,12 @@ $resultListings = $conn->query($queryListings);
 $listingCount = $resultListings ? $resultListings->fetch_assoc()['listing_count'] : 0;
 
 $trendQuery = "SELECT DATE(created_at) AS date, COUNT(*) AS count 
-               FROM ACCOUNT_ACTIVITY 
-               WHERE event_type = 'login' 
-                 AND user_id IN (SELECT id FROM USERS WHERE user_type = 'normal')
-                 AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
-               GROUP BY DATE(created_at)
-               ORDER BY DATE(created_at) ASC";
+                FROM ACCOUNT_ACTIVITY 
+                WHERE event_type = 'login' 
+                AND user_id IN (SELECT id FROM USERS WHERE user_type = 'normal')
+                AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                GROUP BY DATE(created_at)
+                ORDER BY DATE(created_at) ASC";
 $resultTrend = $conn->query($trendQuery);
 
 $dates = [];
@@ -50,7 +50,7 @@ if (!empty($userIdFilter)) {
 $activityWhere .= " AND user_id IN (SELECT id FROM USERS WHERE user_type = 'normal')";
 
 $activityQuery = "SELECT id, user_id, event_type AS activity_type, ip_address, user_agent, created_at, '' AS details
-                  FROM ACCOUNT_ACTIVITY $activityWhere";
+                FROM ACCOUNT_ACTIVITY $activityWhere";
 
 $reviewsWhere = "WHERE 1=1";
 if ($filter === 'review' || $filter === 'all') {
@@ -63,7 +63,7 @@ if (!empty($userIdFilter)) {
 $reviewsWhere .= " AND user_id IN (SELECT id FROM USERS WHERE user_type = 'normal')";
 
 $reviewsQuery = "SELECT id, user_id, 'review' AS activity_type, '' AS ip_address, '' AS user_agent, created_at, comment AS details
-                 FROM REVIEWS $reviewsWhere";
+                FROM REVIEWS $reviewsWhere";
 
 $listingWhere = "WHERE 1=1";
 if ($filter === 'listing' || $filter === 'all') {
@@ -75,7 +75,7 @@ if (!empty($userIdFilter)) {
     $listingWhere .= " AND user_id = " . intval($userIdFilter);
 }
 $listingQuery = "SELECT id, user_id, 'listing' AS activity_type, '' AS ip_address, '' AS user_agent, created_at, name AS details
-                 FROM ITEMS $listingWhere";
+                FROM ITEMS $listingWhere";
 
 $combinedQuery = "($activityQuery) UNION ALL ($reviewsQuery) UNION ALL ($listingQuery) ORDER BY created_at DESC LIMIT 100";
 $resultCombined = $conn->query($combinedQuery);
@@ -93,9 +93,10 @@ $resultCombined = $conn->query($combinedQuery);
 
 <body>
     <div class="account-activity">
-        <div class="in-line-div">
+        <div class="top-div">
             <div class="recent-activity">
-                <h3>Activity in Last 24 Hours</h3>
+                <h3>Activity</h3>
+                <h5>(Last 24 Hours)</h5>
                 <p><strong>New Logins:</strong> <?php echo htmlspecialchars($loginCount); ?></p>
                 <p><strong>New Registrations:</strong> <?php echo htmlspecialchars($registrationCount); ?></p>
                 <p><strong>New Listings:</strong> <?php echo htmlspecialchars($listingCount); ?></p>
@@ -110,7 +111,8 @@ $resultCombined = $conn->query($combinedQuery);
         </div>
 
         <div class="login-trends">
-            <h3>Login Trends (Last 7 Days)</h3>
+            <h3>Login Trends</h3>
+            <h5>(Last 7 Days)</h5>
             <div class="chart-container">
                 <canvas id="trendChart"></canvas>
             </div>
@@ -137,32 +139,34 @@ $resultCombined = $conn->query($combinedQuery);
                     value="<?php echo isset($_GET['user_id']) ? htmlspecialchars($_GET['user_id']) : ''; ?>">
             </form>
 
-            <table class="orders-table">
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>Activity Type</th>
-                        <th>Created At</th>
-                        <th>User Agent</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($resultCombined && $resultCombined->num_rows > 0) {
-                        while ($row = $resultCombined->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($row['user_id']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['activity_type']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
-                            echo "<td>" . htmlspecialchars($row['user_agent']) . "</td>";
-                            echo "</tr>";
+            <div class="activity-table-div">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Activity Type</th>
+                            <th>Created At</th>
+                            <th>User Agent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if ($resultCombined && $resultCombined->num_rows > 0) {
+                            while ($row = $resultCombined->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td>" . htmlspecialchars($row['user_id']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['activity_type']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['user_agent']) . "</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='6'>No records found.</td></tr>";
                         }
-                    } else {
-                        echo "<tr><td colspan='6'>No records found.</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

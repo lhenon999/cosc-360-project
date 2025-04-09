@@ -19,45 +19,47 @@
                 <input type="text" id="userSearch" class="form-control mb-3" placeholder="Search users..."
                     onkeyup="filterTable('usersTable', 'userSearch')">
                 <?php if (!empty($all_users)): ?>
-                    <table class="users-table" id="usersTable">
-                        <thead>
-                            <tr>
-                                <th>Profile</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Total Orders</th>
-                                <th>Total Listings</th>
-                                <th>Joined Date</th>
-                                <th>Actions</th>
-                                <th>Moderate</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($all_users as $user): ?>
+                    <div class="table-div">
+                        <table class="users-table" id="usersTable">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <img src="<?= htmlspecialchars($profile_picture) ?>" alt="Profile Picture"
-                                            id="profile-img-users-table">
-                                    </td>
-                                    <td><?= htmlspecialchars($user["name"]) ?></td>
-                                    <td><?= htmlspecialchars($user["email"]) ?></td>
-                                    <td><?= $user["total_orders"] ?></td>
-                                    <td><?= $user["total_listings"] ?></td>
-                                    <td><?= date('M j, Y', strtotime($user["created_at"])) ?></td>
-                                    <td>
-                                        <a href="user_profile.php?id=<?= $user["id"] ?><?= ($user_type === 'admin') ? '&from=profile_users' : '' ?>"
-                                            class="view-btn">
-                                            View Profile
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="manage-btn"
-                                            onclick="showManageModal(<?= $user['id'] ?>, '<?= htmlspecialchars($user['name']) ?>')">Moderate</button>
-                                    </td>
+                                    <th>Profile</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Total Orders</th>
+                                    <th>Total Listings</th>
+                                    <th>Joined Date</th>
+                                    <th>Actions</th>
+                                    <th>Moderate</th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($all_users as $user): ?>
+                                    <tr>
+                                        <td>
+                                            <img src="<?= htmlspecialchars($profile_picture) ?>" alt="Profile Picture"
+                                                id="profile-img-users-table">
+                                        </td>
+                                        <td><?= htmlspecialchars($user["name"]) ?></td>
+                                        <td><?= htmlspecialchars($user["email"]) ?></td>
+                                        <td><?= $user["total_orders"] ?></td>
+                                        <td><?= $user["total_listings"] ?></td>
+                                        <td><?= date('M j, Y', strtotime($user["created_at"])) ?></td>
+                                        <td>
+                                            <a href="user_profile.php?id=<?= $user["id"] ?><?= ($user_type === 'admin') ? '&from=profile_users' : '' ?>"
+                                                class="view-btn">
+                                                View Profile
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="manage-btn"
+                                                onclick="showManageModal(<?= $user['id'] ?>, '<?= htmlspecialchars($user['name']) ?>')">Moderate</button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php else: ?>
                     <p>No users found.</p>
                 <?php endif; ?>
@@ -79,47 +81,49 @@
                 $stmt->execute();
                 $result = $stmt->get_result();
                 if ($result->num_rows > 0): ?>
-                    <table class="inventory-table" id="listingsTable">
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Stock</th>
-                                <th>Category</th>
-                                <th>Price</th>
-                                <th>Total Orders</th>
-                                <th>Actions</th>
-                                <th>Moderate</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php while ($item = $result->fetch_assoc()): ?>
-                                <tr class="<?= $item['stock'] < 5 ? 'low-stock' : '' ?>">
-                                    <td><?= htmlspecialchars($item["name"]) ?></td>
-                                    <td>
-                                        <span
-                                            class="stock-level <?= $item['stock'] < 5 ? 'critical' : ($item['stock'] < 10 ? 'warning' : 'good') ?>">
-                                            <?= $item["stock"] ?>
-                                        </span>
-                                    </td>
-                                    <td><?= htmlspecialchars($item["category"]) ?></td>
-                                    <td>$<?= number_format($item["price"], 2) ?></td>
-                                    <td><?= $item["total_orders"] ?></td>
-                                    <td>
-                                        <a href="product.php?id=<?= $item["id"] ?>&from=profile_listings" class="view-btn">
-                                            View Listing
-                                        </a>
-
-                                    </td>
-
-                                    <td>
-                                        <a href="user_profile.php?id=<?= $item["user_id"] ?>&from=admin"></a>
-                                        <button type="button" class="delete-btn"
-                                            onclick="showDeleteListingModal(<?= $item['id'] ?>)">Delete</button>
-                                    </td>
+                    <div class="table-div">
+                        <table class="inventory-table" id="listingsTable">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Stock</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Total Orders</th>
+                                    <th>Actions</th>
+                                    <th>Moderate</th>
                                 </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php while ($item = $result->fetch_assoc()): ?>
+                                    <tr class="<?= $item['stock'] < 5 ? 'low-stock' : '' ?>">
+                                        <td><?= htmlspecialchars($item["name"]) ?></td>
+                                        <td>
+                                            <span
+                                                class="stock-level <?= $item['stock'] < 5 ? 'critical' : ($item['stock'] < 10 ? 'warning' : 'good') ?>">
+                                                <?= $item["stock"] ?>
+                                            </span>
+                                        </td>
+                                        <td><?= htmlspecialchars($item["category"]) ?></td>
+                                        <td>$<?= number_format($item["price"], 2) ?></td>
+                                        <td><?= $item["total_orders"] ?></td>
+                                        <td>
+                                            <a href="product.php?id=<?= $item["id"] ?>&from=profile_listings" class="view-btn">
+                                                View Listing
+                                            </a>
+
+                                        </td>
+
+                                        <td>
+                                            <a href="user_profile.php?id=<?= $item["user_id"] ?>&from=admin"></a>
+                                            <button type="button" class="delete-btn"
+                                                onclick="showDeleteListingModal(<?= $item['id'] ?>)">Delete</button>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php else: ?>
                     <p>No products found in the inventory.</p>
                 <?php endif;
