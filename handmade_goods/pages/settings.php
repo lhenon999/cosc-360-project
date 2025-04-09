@@ -60,11 +60,9 @@ $isAdmin = ($user['user_type'] === 'admin');
 <body>
     <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
-    <div class="settings-container">
-        <div class="settings-header">
-            <h2><i class="bi bi-gear-fill"></i> Settings</h2>
-        </div>
+    <h1 class="text-center mt-5 mb-3">Settings</h1>
 
+    <div class="settings-container">
         <div class="mb-4">
             <h5>Account Details</h5>
             <form action="update_profile.php" method="post">
@@ -109,15 +107,11 @@ $isAdmin = ($user['user_type'] === 'admin');
                 <div class="theme-slider"></div>
             </div>
         </div>
-        <button id="advanced-settings-btn" class="btn btn-outline-secondary w-100 w-100">Advanced Settings</button>
-
-        <div id="advanced-settings" class="advanced-settings-content">
-            <div class="mb-4">
-                <h5>Advanced Settings</h5>
-                <label class="form-label">Account Deletion</label>
-                </select>
-                <button id="delete-btn" class="btn btn-outline-secondary" <?= $isAdmin ? 'disabled' : '' ?>>Delete My Account</button>
-            </div>
+        <div class="mb-4">
+            <h5>Advanced Settings</h5>
+            <label class="form-label">Account Deletion</label>
+            </select>
+            <button id="delete-btn" class="btn btn-outline-secondary" <?= $isAdmin ? 'disabled' : '' ?>>Delete My Account</button>
         </div>
         <div>
                 <a href="profile.php" class="btn btn-outline-secondary w-100" </a>Back</a>
