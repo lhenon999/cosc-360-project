@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($errors)) {
         $stmt = $conn->prepare(
             "INSERT INTO ITEMS (name, description, price, stock, category, img, user_id)
-             VALUES (?, ?, ?, ?, ?, ?, ?)"
+            VALUES (?, ?, ?, ?, ?, ?, ?)"
         );
         $stmt->bind_param("ssdissi", $name, $description, $price, $stock, $category, $target_file, $user_id);
 
@@ -204,7 +204,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         onchange="previewImage(); validateForm();">
                 </div>
 
-                <div class="d-flex justify-content-center gap-3 mb-3">
+                <div class="buttons-div">
                     <a class="m-btn" href="my_shop.php">
                         <span class="material-symbols-outlined">close</span> Cancel
                     </a>
