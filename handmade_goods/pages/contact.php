@@ -19,7 +19,7 @@
         </div>
 
         <div class="text-center d-flex align-items-center justify-content-center mt-5">
-            <button type="submit" class="white-button">Submit</button>
+            <button type="submit" class="m-btn">Submit</button>
         </div>
 
         <div class="status-message text-center mt-3" id="formStatus"></div>

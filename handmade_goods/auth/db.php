@@ -4,10 +4,9 @@ session_start();
 session_regenerate_id(true);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-// var_dump($_FILES);
-// exit();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     // Register 
     if (isset($_POST["register"])) {
         $name = trim($_POST["full_name"]);
@@ -53,7 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check->store_result();
 
         if ($check->num_rows > 0) {
-            // Email already exists, redirect with clear error message
             header("Location: ../auth/register.php?error=email_taken&email=" . urlencode($email));
             exit();
         }
@@ -62,7 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
         try {
-            // Add try-catch to handle potential duplicate entry errors that might slip through
             $stmt = $conn->prepare("INSERT INTO USERS (name, email, password, user_type, profile_picture) VALUES (?, ?, ?, ?, ?)");
             $stmt->bind_param("sssss", $name, $email, $hashed_password, $user_type, $profile_picture);
 
@@ -73,6 +70,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["user_name"] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
                 $_SESSION["user_type"] = $user_type;
                 $_SESSION["profile_picture"] = $profile_picture;
+                
+                // Log registration event
+                $ip_address = $_SERVER['REMOTE_ADDR'];
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                $log_stmt = $conn->prepare("INSERT INTO ACCOUNT_ACTIVITY (user_id, event_type, ip_address, user_agent) VALUES (?, 'registration', ?, ?)");
+                $log_stmt->bind_param("iss", $user_id, $ip_address, $user_agent);
+                $log_stmt->execute();
+                $log_stmt->close();
 
                 $api_key = "api-DFEA151D81194B3EB9B6CF30891D53A5";
                 $email_data = [
@@ -104,7 +109,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $stmt->close();
     }
-}
 
     // Login
     if (isset($_POST["login"])) {
@@ -127,7 +131,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             setcookie("user_email", $email, time() + (30 * 24 * 60 * 60), "/", "", false, true);
         }
     
-        
         $stmt = $conn->prepare("SELECT id, name, password, user_type, profile_picture FROM USERS WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -143,6 +146,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["user_name"] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
                 $_SESSION["user_type"] = $user_type;
                 $_SESSION["profile_picture"] = $profile_picture;
+                
+                $ip_address = $_SERVER['REMOTE_ADDR'];
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                $log_stmt = $conn->prepare("INSERT INTO ACCOUNT_ACTIVITY (user_id, event_type, ip_address, user_agent) VALUES (?, 'login', ?, ?)");
+                $log_stmt->bind_param("iss", $user_id, $ip_address, $user_agent);
+                $log_stmt->execute();
+                $log_stmt->close();
+
                 header("Location: http://localhost/cosc-360-project/handmade_goods/pages/home.php");
                 exit();
             } else {
@@ -152,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             header("Location: http://localhost/cosc-360-project/handmade_goods/auth/login.php?error=nouser");
             exit();
-
         }
         $stmt->close();
     }
+}

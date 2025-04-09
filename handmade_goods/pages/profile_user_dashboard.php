@@ -22,7 +22,7 @@ $myReviewsResult = $myReviewsStmt->get_result();
 $myReviewsStmt->close();
 
 // get ratings summary
-    $ratingDistStmt = $conn->prepare("
+$ratingDistStmt = $conn->prepare("
     SELECT rating, COUNT(*) AS rating_count
     FROM REVIEWS
     WHERE user_id = ?
@@ -35,14 +35,14 @@ $ratingDistStmt->close();
 
 $ratingCounts = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0];
 $totalReviews = 0;
-$sumRatings   = 0;
+$sumRatings = 0;
 
 while ($row = $ratingDistResult->fetch_assoc()) {
-    $r = (int)$row['rating'];
-    $count = (int)$row['rating_count'];
+    $r = (int) $row['rating'];
+    $count = (int) $row['rating_count'];
     $ratingCounts[$r] = $count;
-    $totalReviews    += $count;
-    $sumRatings      += ($r * $count);
+    $totalReviews += $count;
+    $sumRatings += ($r * $count);
 }
 
 $averageRating = 0;
@@ -133,62 +133,64 @@ $stmt->close();
     </div>
     <div id="reviews" class="tab-pane">
         <div class="reviews-containers">
-        <div class="rating-summary">
-            <h3>Review Summary</h3>
+            <div class="rating-summary">
+                <h3>Review Summary</h3>
 
-            <div class="rating-overall">
-                <span class="rating-score"><?= $averageRating ?></span>
-                <?php
+                <div class="rating-overall">
+                    <span class="rating-score"><?= $averageRating ?></span>
+                    <?php
                     $filledStars = floor($averageRating);
                     $emptyStars = 5 - $filledStars;
                     $starOutput = str_repeat('★', $filledStars) . str_repeat('☆', $emptyStars);
-                ?>
-                <span class="stars"><?= $starOutput ?></span>
+                    ?>
+                    <span class="stars"><?= $starOutput ?></span>
 
-                <span class="rating-count"><?= $totalReviews ?> reviews</span>
-            </div>
+                    <span class="rating-count"><?= $totalReviews ?> reviews</span>
+                </div>
 
-            <div class="rating-bars">
-                <?php 
-                for ($r = 5; $r >= 1; $r--):
-                    $percent = ($totalReviews > 0) 
-                        ? round(($ratingCounts[$r] / $totalReviews) * 100) 
-                        : 0;
-                ?>
-                    <div class="rating-row">
-                        <span><?= $r ?></span>
-                        <div class="bar">
-                            <div class="filled" style="width: <?= $percent ?>%;"></div>
+                <div class="rating-bars">
+                    <?php
+                    for ($r = 5; $r >= 1; $r--):
+                        $percent = ($totalReviews > 0)
+                            ? round(($ratingCounts[$r] / $totalReviews) * 100)
+                            : 0;
+                        ?>
+                        <div class="rating-row">
+                            <span><?= $r ?></span>
+                            <div class="bar">
+                                <div class="filled" style="width: <?= $percent ?>%;"></div>
+                            </div>
                         </div>
-                    </div>
-                <?php endfor; ?>
+                    <?php endfor; ?>
+                </div>
+                <a class="m-btn g">
+                    <span class="material-symbols-outlined">favorite</span>My Activity
+                </a>
             </div>
-        </div>
-            
             <div class="reviews-summary-outer">
                 <div class="reviews-summary">
                     <h3>Reviews</h3>
-                        <?php if ($myReviewsResult->num_rows > 0): ?>
-                            <table class="orders-table">
-                                <thead>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Seller</th>
-                                        <th>Rating</th>
-                                        <th>Comment</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                    <?php if ($myReviewsResult->num_rows > 0): ?>
+                        <table class="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Seller</th>
+                                    <th>Rating</th>
+                                    <th>Comment</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <?php while ($row = $myReviewsResult->fetch_assoc()): ?>
                                     <?php
-                                        // Protect special chars, format date, etc.
-                                        $itemId       = (int)$row['item_id'];
-                                        $itemName     = htmlspecialchars($row['item_name']);
-                                        $sellerName   = htmlspecialchars($row['seller_name']);
-                                        $rating       = (int)$row['rating'];
-                                        $comment      = htmlspecialchars($row['comment']);
-                                        $date         = date('M j, Y', strtotime($row['created_at']));
+                                    // Protect special chars, format date, etc.
+                                    $itemId = (int) $row['item_id'];
+                                    $itemName = htmlspecialchars($row['item_name']);
+                                    $sellerName = htmlspecialchars($row['seller_name']);
+                                    $rating = (int) $row['rating'];
+                                    $comment = htmlspecialchars($row['comment']);
+                                    $date = date('M j, Y', strtotime($row['created_at']));
                                     ?>
                                     <tr>
                                         <td>
@@ -203,15 +205,16 @@ $stmt->close();
                                         <td><?= $date ?></td>
                                     </tr>
                                 <?php endwhile; ?>
-                                </tbody>
-                            </table>
-                        <?php else: ?>
-                            <p>You haven't left any reviews yet.</p>
-                        <?php endif; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p>You haven't left any reviews yet.</p>
+                    <?php endif; ?>
                 </div>
-                </div>
+            </div>
         </div>
     </div>
+    <div id="activity" class="tab-pane" style="display: none;"></div>
     <div id="sales" class="tab-pane">
         <div class="sales-container">
             <?php if ($totalEarnings > 0): ?>
