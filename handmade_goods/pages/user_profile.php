@@ -152,99 +152,100 @@ $reviewsStmt->close();
             <?php endif; ?>
             </div>
         </section>
-
-        <section class="reviews-containers">
-            <div class="rating-summary">
-                <h3>Reviews Summary</h3>
-                <div class="rating-overall">
-                    <span class="rating-score"><?= $averageRating ?></span>
-                    <?php
-                    $filledStars = floor($averageRating);
-                    $emptyStars = 5 - $filledStars;
-                    $starString = str_repeat('★', $filledStars) . str_repeat('☆', $emptyStars);
-                    ?>
-                    <span class="stars"><?= $starString ?></span>
-                    <span class="rating-count"><?= $totalReviews ?> reviews</span>
-                </div>
-
-                <div class="rating-bars">
-                    <?php
-                    for ($star = 5; $star >= 1; $star--):
-                        $count = $ratingCounts[$star];
-                        $percent = ($totalReviews > 0)
-                            ? round(($count / $totalReviews) * 100)
-                            : 0;
+        <?php if ($totalReviews > 0): ?>
+            <section class="reviews-containers">
+                <div class="rating-summary">
+                    <h3>Reviews Summary</h3>
+                    <div class="rating-overall">
+                        <span class="rating-score"><?= $averageRating ?></span>
+                        <?php
+                        $filledStars = floor($averageRating);
+                        $emptyStars = 5 - $filledStars;
+                        $starString = str_repeat('★', $filledStars) . str_repeat('☆', $emptyStars);
                         ?>
-                        <div class="rating-row">
-                            <span><?= $star ?></span>
-                            <div class="bar">
-                                <div class="filled" style="width: <?= $percent ?>%;"></div>
-                            </div>
-                        </div>
-                    <?php endfor; ?>
-                </div>
-            </div>
+                        <span class="stars"><?= $starString ?></span>
+                        <span class="rating-count"><?= $totalReviews ?> reviews</span>
+                    </div>
 
-            <div class="reviews-summary-outer">
-                <h3>Recent Reviews on their Listings</h3>
-                <div class="reviews-summary">
-
-                    <?php if ($recentReviews->num_rows > 0): ?>
-                        <?php while ($rev = $recentReviews->fetch_assoc()):
-                            $revRating = (int) $rev['rating'];
-                            $revComment = htmlspecialchars($rev['comment']);
-                            $revDate = date('M j, Y', strtotime($rev['created_at']));
-
-                            $reviewerId = (int) $rev['reviewer_id'];
-                            $reviewerName = htmlspecialchars($rev['reviewer_name']);
-                            $reviewerPic = htmlspecialchars($rev['reviewer_pic']);
-
-                            $nameParts = explode(" ", $reviewerName);
-                            if (count($nameParts) > 1) {
-                                $firstName = $nameParts[0];
-                                $lastName = end($nameParts);
-                                $initial = strtoupper(substr($lastName, 0, 1));
-                                $reviewerNameFormatted = $firstName . ' ' . $initial;
-                            } else {
-                                $reviewerNameFormatted = $reviewerName;
-                            }
-
-
-                            $itemId = (int) $rev['item_id'];
-                            $itemName = htmlspecialchars($rev['item_name']);
+                    <div class="rating-bars">
+                        <?php
+                        for ($star = 5; $star >= 1; $star--):
+                            $count = $ratingCounts[$star];
+                            $percent = ($totalReviews > 0)
+                                ? round(($count / $totalReviews) * 100)
+                                : 0;
                             ?>
-                            <div class="single-review" style="margin-bottom: 1em;">
-                                <div class="review-meta">
-                                    <div class="review-author">
-                                        <a
-                                            href="user_profile.php?id=<?= $reviewerId ?>&ref=<?= urlencode($_SERVER['REQUEST_URI']) ?>">
-                                            <img src="<?= $reviewerPic ?>" alt="Reviewer Profile"
-                                                style="width: 40px; height: 40px; border-radius:50%; object-fit:cover; margin-right:8px;">
-                                            <strong><?= $reviewerNameFormatted ?></strong>
-                                        </a>
-                                    </div>
-                                    <p class="review-comment"><?= $revComment ?></p>
-                                    <div class="review-product">
-                                        <a href="product.php?id=<?= $itemId ?>&and=user_profile"><?= $itemName ?></a>
-                                        <em>(<?= $revDate ?>)</em>
-                                    </div>
-                                </div>
-                                <div class="review-stars">
-                                    <?php
-                                    for ($i = 1; $i <= 5; $i++):
-                                        $starClass = ($i <= $revRating) ? 'star-filled' : '';
-                                        echo "<span class='star $starClass'>" . ($starClass == 'star-filled' ? "★" : "☆") . "</span>";
-                                    endfor;
-                                    ?>
+                            <div class="rating-row">
+                                <span><?= $star ?></span>
+                                <div class="bar">
+                                    <div class="filled" style="width: <?= $percent ?>%;"></div>
                                 </div>
                             </div>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <p>No reviews yet for this user’s products.</p>
-                    <?php endif; ?>
+                        <?php endfor; ?>
+                    </div>
                 </div>
-            </div>
-        </section>
+
+                <div class="reviews-summary-outer">
+                    <h3>Recent Reviews on their Listings</h3>
+                    <div class="reviews-summary">
+
+                        <?php if ($recentReviews->num_rows > 0): ?>
+                            <?php while ($rev = $recentReviews->fetch_assoc()):
+                                $revRating = (int) $rev['rating'];
+                                $revComment = htmlspecialchars($rev['comment']);
+                                $revDate = date('M j, Y', strtotime($rev['created_at']));
+
+                                $reviewerId = (int) $rev['reviewer_id'];
+                                $reviewerName = htmlspecialchars($rev['reviewer_name']);
+                                $reviewerPic = htmlspecialchars($rev['reviewer_pic']);
+
+                                $nameParts = explode(" ", $reviewerName);
+                                if (count($nameParts) > 1) {
+                                    $firstName = $nameParts[0];
+                                    $lastName = end($nameParts);
+                                    $initial = strtoupper(substr($lastName, 0, 1));
+                                    $reviewerNameFormatted = $firstName . ' ' . $initial;
+                                } else {
+                                    $reviewerNameFormatted = $reviewerName;
+                                }
+
+
+                                $itemId = (int) $rev['item_id'];
+                                $itemName = htmlspecialchars($rev['item_name']);
+                                ?>
+                                <div class="single-review" style="margin-bottom: 1em;">
+                                    <div class="review-meta">
+                                        <div class="review-author">
+                                            <a
+                                                href="user_profile.php?id=<?= $reviewerId ?>&ref=<?= urlencode($_SERVER['REQUEST_URI']) ?>">
+                                                <img src="<?= $reviewerPic ?>" alt="Reviewer Profile"
+                                                    style="width: 40px; height: 40px; border-radius:50%; object-fit:cover; margin-right:8px;">
+                                                <strong><?= $reviewerNameFormatted ?></strong>
+                                            </a>
+                                        </div>
+                                        <p class="review-comment"><?= $revComment ?></p>
+                                        <div class="review-product">
+                                            <a href="product.php?id=<?= $itemId ?>&and=user_profile"><?= $itemName ?></a>
+                                            <em>(<?= $revDate ?>)</em>
+                                        </div>
+                                    </div>
+                                    <div class="review-stars">
+                                        <?php
+                                        for ($i = 1; $i <= 5; $i++):
+                                            $starClass = ($i <= $revRating) ? 'star-filled' : '';
+                                            echo "<span class='star $starClass'>" . ($starClass == 'star-filled' ? "★" : "☆") . "</span>";
+                                        endfor;
+                                        ?>
+                                    </div>
+                                </div>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <p>No reviews yet for this user’s products.</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </section>
+        <?php endif ?>
 
 
         <?php if (!empty($products)): ?>
@@ -270,9 +271,6 @@ $reviewsStmt->close();
                     </div>
                 </div>
             </section>
-        <?php endif; ?>
-        <?php if ($user_frozen): ?>
-            <p class="frozen-label">This account is frozen due to account restrictions.</p>
         <?php endif; ?>
     </main>
 

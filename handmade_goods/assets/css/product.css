@@ -274,6 +274,7 @@ main section.main nav.breadcrumb-nav {
 .bg-dark textarea{
     background-color: #1a1a1a !important;
     border: none;
+    color: white;
 }
 
 .m-btn.not-logged-in{
