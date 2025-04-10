@@ -53,7 +53,7 @@
                                     <td>
                                         <button type="button" class="manage-btn"
                                             onclick="showManageModal(<?= $user['id'] ?>, '<?= htmlspecialchars($user['name']) ?>')"
-                                            data-user-id="<?= $user['id'] ?>" data-user-name="<?= htmlspecialchars($user['name']) ?>">
+                                            data-user-id="<?= $user['id'] ?>" data-user-name="<?= htmlspecialchars($user['name']) ?>" data-user-frozen="<?= !empty($user["is_frozen"]) ? 'true' : 'false' ?>">
                                             Moderate
                                         </button>
                                     </td>
