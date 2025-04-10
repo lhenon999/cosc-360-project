@@ -108,6 +108,7 @@ include __DIR__ . '/../config.php';
             </div>
         </div>
         </div>
+        <?php include "chat_bot.php"; ?>
         <?php include "../assets/html/footer.php"; ?>
 
         <script>
