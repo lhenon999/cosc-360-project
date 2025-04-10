@@ -121,7 +121,7 @@ if ($session_user_id !== null) {
                     <?php endif; ?>
                 </div>
                 <div class="right">
-                    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                    <div aria-label="breadcrumb" class="breadcrumb-nav">
                         <ol class="breadcrumb">
                             <?php if ($from_products): ?>
                                 <li class="breadcrumb-item">
@@ -159,7 +159,7 @@ if ($session_user_id !== null) {
 
                             <li class="breadcrumb-item active" aria-current="page"><?= $name ?></li>
                         </ol>
-                    </nav>
+                    </div>
 
 
                     <h1><?= $name ?></h1>
