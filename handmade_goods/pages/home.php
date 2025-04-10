@@ -35,7 +35,7 @@ include __DIR__ . '/../config.php';
             <h1 >Welcome to Handmade Goods</h1>
             <p class="text-muted mb-5">Discover unique local products crafted with care</p>
 
-            <?php include '../assets/html/landing_slider.php'; ?>
+            <?php include __DIR__ . '/../assets/html/landing_slider.php'; ?>
 
             <h3 class="text-center mt-5">Browse by Category</h3>
             <?php
@@ -91,7 +91,7 @@ include __DIR__ . '/../config.php';
                             $stock = intval($product["stock"]);
                             $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
                             $source = 'home';
-                            include "../assets/html/product_card.php";
+                            include __DIR__ . "/../assets/html/product_card.php";
                         endwhile;
                     } else {
                         echo "<p>No products found. Check back soon for new items!</p>";
@@ -108,8 +108,8 @@ include __DIR__ . '/../config.php';
             </div>
         </div>
         </div>
-        <?php include "chat_bot.php"; ?>
-        <?php include "../assets/html/footer.php"; ?>
+        <?php include __DIR__ . "/chat_bot.php"; ?>
+        <?php include __DIR__ . "/../assets/html/footer.php"; ?>
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
