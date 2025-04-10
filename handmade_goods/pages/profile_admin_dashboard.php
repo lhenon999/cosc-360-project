@@ -1,8 +1,8 @@
 <div class="profile-tabs mt-5">
     <div class="tabs-nav">
         <?php if ($user_type === 'admin'): ?>
-                <a href="#users" class="tab-link">Users</a>
-                <a href="#listings" class="tab-link">Listings</a>
+            <a href="#users" class="tab-link">Users</a>
+            <a href="#listings" class="tab-link">Listings</a>
             <div class="tab-slider-admin"></div>
         <?php endif; ?>
     </div>
@@ -53,7 +53,9 @@
                                     <td>
                                         <button type="button" class="manage-btn"
                                             onclick="showManageModal(<?= $user['id'] ?>, '<?= htmlspecialchars($user['name']) ?>')"
-                                            data-user-id="<?= $user['id'] ?>" data-user-name="<?= htmlspecialchars($user['name']) ?>" data-user-frozen="<?= !empty($user["is_frozen"]) ? 'true' : 'false' ?>">
+                                            data-user-id="<?= $user['id'] ?>"
+                                            data-user-name="<?= htmlspecialchars($user['name']) ?>"
+                                            data-user-frozen="<?= !empty($user["is_frozen"]) ? 'true' : 'false' ?>">
                                             Moderate
                                         </button>
                                     </td>
@@ -166,7 +168,8 @@
                     <button type="submit" class="freeze-btn uf">Restore Account</button>
                 </form>
 
-                <form id="deleteUserFormFromManage" method="POST" action="delete_user.php">
+                <form id="deleteUserFormFromManage" method="POST" action="delete_user.php"
+                    onsubmit="return confirm('Are you sure you want to delete this account? This action cannot be undone.');">
                     <input type="hidden" name="user_id" id="deleteUserIdFromManage">
                     <button type="submit" class="confirm-btn">Delete Account</button>
                 </form>
@@ -174,20 +177,6 @@
                 <button type="button" class="cancel-btn" onclick="closeModal('manageModal')">Cancel</button>
             </div>
         </div>
-    </div>
-</div>
-
-<div id="deleteUserModal" class="modal">
-    <div class="modal-content">
-        <h3>Confirm Deletion</h3>
-        <p>Are you sure you want to delete this account? This action cannot be undone.</p>
-        <form id="deleteUserForm" method="POST" action="delete_user.php">
-            <input type="hidden" name="user_id" id="deleteUserId">
-            <div class="modal-buttons">
-                <button type="submit" class="confirm-btn">Delete</button>
-                <button type="button" class="cancel-btn" onclick="closeModal('deleteUserModal')">Cancel</button>
-            </div>
-        </form>
     </div>
 </div>
 
