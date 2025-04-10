@@ -104,7 +104,7 @@ include __DIR__ . '/../config.php';
                 ?>
             </div>
             <div class="view-more-container text-center mt-4">
-                <a href="products.php?" class="m-btn">View More</a>
+                <a href="products.php?" class="m-btn b">View More</a>
             </div>
         </div>
         </div>

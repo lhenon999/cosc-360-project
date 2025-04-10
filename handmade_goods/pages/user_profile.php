@@ -131,14 +131,14 @@ $reviewsStmt->close();
                     </p>
                 </div>
                 <?php if ($from_admin): ?>
-                    <a href="profile.php" class="m-btn w-100">Back</a>
+                    <a href="profile.php" class="m-btn b w-100">Back</a>
                 <?php elseif ($from_product): ?>
                     <a href="<?= htmlspecialchars($from_product . ($from_profile_listings ? (strpos($from_product, '?') !== false ? '&' : '?') . 'from=profile_listings' : '')) ?>"
-                        class="m-btn w-100" onclick="goBack(event)">Back</a>
+                        class="m-btn b w-100" onclick="goBack(event)">Back</a>
                 <?php elseif ($from_profile_listings_user): ?>
-                    <a href="profile.php#listings" class="m-btn w-100">Back</a>
+                    <a href="profile.php#listings" class="m-btn b w-100">Back</a>
                 <?php elseif ($from_profile_users): ?>
-                    <a href="profile.php#users" class="m-btn w-100">Back</a>
+                    <a href="profile.php#users" class="m-btn b w-100">Back</a>
                 <?php elseif ($ref): ?>
                     <a href="<?= htmlspecialchars($ref) ?>" class="m-btn w-100">Back</a>
                 <?php endif; ?>
