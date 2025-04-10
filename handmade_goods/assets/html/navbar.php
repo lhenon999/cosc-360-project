@@ -1,9 +1,5 @@
 <?php
 
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -35,7 +31,7 @@ if (isset($_SESSION["user_id"])) {
 <nav>
     <div class="navleft">
         <a href="../pages/home.php">
-            <h3 class="cta hover-raise"><span class="material-symbols-outlined logo">spa</span>Handmade Goods</h3>
+            <h3 class="cta hover-raise title"><span class="material-symbols-outlined" id="logo">spa</span><span id="logo-text">Handmade Goods</span></h3>
         </a>
         <button class="material-symbols-outlined" id="toggle-nav">menu</button>
     </div>
@@ -53,9 +49,24 @@ if (isset($_SESSION["user_id"])) {
                 <li class="hover-raise"><a class="navlink" href="../pages/home.php">Home</a></li>
                 <li class="hover-raise"><a class="navlink" href="../pages/products.php">Shop</a></li>
                 <li class="hover-raise"><a class="navlink" href="../pages/about.php">About</a></li>
+                <?php if (isset($_SESSION["user_id"])): ?>
+                    <?php if ($_SESSION["user_type"] === 'admin'): ?>
+                        <li class="hover-raise mobile-only"><a class="navlink" href="../pages/profile.php">Dashboard</a></li>
+                        <li class="hover-raise mobile-only"><a class="navlink" href="../pages/settings.php">Admin Settings</a></li>
+                        <li class="hover-raise mobile-only"><a class="navlink" href="../auth/logout.php">Logout</a></li>
+                    <?php else: ?>
+                        <li class="hover-raise mobile-only"><a class="navlink" href="../pages/profile.php">View Profile</a></li>
+                        <li class="hover-raise mobile-only"><a class="navlink" href="../pages/my_shop.php">My Shop</a></li>
+                        <li class="hover-raise mobile-only"><a class="navlink" href="../pages/settings.php">Settings</a></li>
+                        <li class="hover-raise mobile-only"><a class="navlink" href="../auth/logout.php">Logout</a></li>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <li class="hover-raise mobile-only"><a class="navlink" href="../auth/login.php">Login</a></li>
+                    <li class="hover-raise mobile-only"><a class="navlink" href="../auth/register.php">Sign Up</a></li>
+                <?php endif; ?>
             </ul>
         </div>
-        <span class="hover-raise dropdown">
+        <span class="hover-raise dropdown desktop-only">
             <span class="material-symbols-outlined">account_circle</span>
             <span class="material-symbols-outlined" id="downArrow">expand_more</span>
             <div class="dropdown-content">

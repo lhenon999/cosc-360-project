@@ -197,10 +197,16 @@ $rating_stmt->close();
 <body>
     <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
-    <h1 class="text-center">Explore Our Products!</h1>
-    <p class="text-center">Browse our collection and discover what suits you</p>
+    <?php if (!empty($products)): ?>
+        <h1 class="text-center">Explore Our Products!</h1>
+        <p class="text-center">Browse our collection and discover what suits you</p>
+    <?php endif; ?>
+
 
     <main class="mt-5">
+        <div class="mobile-only" id="toggle-filters">
+            <h5>Filters <span class="material-symbols-outlined">keyboard_arrow_down</span></h5>
+        </div>
         <div class="sidebar">
             <form action="products.php" method="GET" id="filter-form" class="filter-form">
                 <?php if ($search): ?>
@@ -285,6 +291,20 @@ $rating_stmt->close();
     <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleBtn = document.getElementById("toggle-filters");
+            const sidebar = document.querySelector(".sidebar");
+
+            toggleBtn.addEventListener("click", function () {
+                if (window.innerWidth <= 680) {
+                    sidebar.classList.toggle("show");
+
+                    const icon = this.querySelector(".material-symbols-outlined");
+                    icon.textContent = sidebar.classList.contains("show") ? "keyboard_arrow_up" : "keyboard_arrow_down";
+                }
+            });
+        });
+
         // validation for price filters
         const priceFrom = document.getElementById('price-from');
         const priceTo = document.getElementById('price-to');

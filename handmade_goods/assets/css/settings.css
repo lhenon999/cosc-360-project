@@ -1,36 +1,15 @@
 .settings-container {
-    max-width: 700px;
-    margin: 50px auto;
+    width: 95%;
+    max-width: 860px;
+    margin: auto;
     background-color: white;
     padding: 2.5rem;
     border-radius: 16px;
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.12),
                 0px 4px 12px rgba(0, 0, 0, 0.06);
     border: 1px solid rgba(200, 200, 200, 0.4); 
-    transition: all 0.3s ease-in-out;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-}
-
-.settings-container:hover {
-    box-shadow: 0px 12px 36px rgba(0, 0, 0, 0.15), 
-                0px 6px 18px rgba(0, 0, 0, 0.08);
-    transform: translateY(-2px);
-    border-color: rgba(150, 150, 150, 0.5);
-}
-
-.settings-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 3rem;
-}
-
-h2 {
-    font-weight: 600;
-    color: #2d5a27;
-    margin-bottom: 0;
 }
 
 h5 {
@@ -38,8 +17,8 @@ h5 {
 }
 
 .form-label {
-    font-family: "Newsreader", serif;
-    color: #426B1F;
+    color: #888;
+    text-transform: uppercase;
     font-weight: 500;
 }
 
@@ -120,6 +99,7 @@ h5 {
     justify-content: space-between;
     align-items: center;
     max-height: 40px;
+    border: 1px #DDD solid;
 }
 
 .theme-toggle label {
@@ -167,6 +147,10 @@ h5 {
 
 .bg-dark .theme-toggle  {
     background: #222222;
+}
+
+.bg-dark .theme-toggle {
+    border: 2px solid #444;
 }
 
 .advanced-settings-content {

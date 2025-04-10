@@ -56,7 +56,6 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -82,10 +81,10 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
 <body>
     <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
-    <div class="container">
+    <div>
         <h1 class="text-center mt-5"><?php echo ($user_type === 'admin') ? 'Admin Dashboard' : 'My Profile'; ?></h1>
         <?php if ($is_frozen == 1): ?>
-            <div class="alert alert-warning">
+            <div class="alert short alert-warning">
                 <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit or create new listings at this
                 time.
             </div>
@@ -117,21 +116,21 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
                     <p><?php echo htmlspecialchars($email); ?></p>
                     <div class="profile-buttons">
                         <?php if ($user_type == 'admin'): ?>
-                            <a class="r-btn <?php echo $isAdvanced ? 'active' : ''; ?>"
+                            <a class="r-btn header-btn <?php echo $isAdvanced ? 'active' : ''; ?>"
                                 href="../pages/<?php echo $toggleLink; ?>">
                                 <span class="material-symbols-outlined">assessment</span>Advanced Report
                             </a>
                         <?php endif; ?>
-                        <a class="r-btn" href="../pages/settings.php">
+                        <a class="r-btn header-btn" href="../pages/settings.php">
                             <span class="material-symbols-outlined">settings</span>Settings
                         </a>
 
                         <?php if ($user_type !== 'admin'): ?>
-                            <a class="r-btn" href="../pages/my_shop.php">
+                            <a class="r-btn header-btn" href="../pages/my_shop.php">
                                 <span class="material-symbols-outlined">storefront</span>My Shop
                             </a>
                         <?php endif; ?>
-                        <a class="r-btn" href="../auth/logout.php">
+                        <a class="r-btn header-btn" href="../auth/logout.php">
                             <span class="material-symbols-outlined">logout</span>Logout
                         </a>
                     </div>

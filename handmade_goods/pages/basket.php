@@ -1,9 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../config.php';
-require_once '../stripe/stripe.php';
-
-// echo "Debug: User ID = $user_id <br>";
+require_once __DIR__ . '/../stripe/stripe.php';
 
 $isLoggedIn = isset($_SESSION["user_id"]);
 if (!$isLoggedIn) {
@@ -79,7 +77,7 @@ $addresses = [];
 if ($isLoggedIn) {
     $stmt = $conn->prepare("
         SELECT id, street_address, city, state, postal_code, country 
-        FROM addresses 
+        FROM ADDRESSES 
         WHERE user_id = ? 
         ORDER BY id DESC
     ");
@@ -132,7 +130,7 @@ $subtotal = array_reduce($cart_items, function ($carry, $item) {
     return $carry + ($item['price'] * $item['quantity']);
 }, 0);
 $tax = round($subtotal * $taxRate, 2);
-$total = $subtotal + $tax;  // Removed shipping from here since it's handled by Stripe
+$total = $subtotal + $tax;
 ?>
 
 <!DOCTYPE html>
@@ -150,7 +148,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <?php 
-    // Replace direct Stripe JS inclusion with our ensure_stripe_js function
     echo ensure_stripe_js(); 
     ?>
 
@@ -162,46 +159,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
     <link rel="stylesheet" href="../assets/css/product_card.css">
     <link rel="stylesheet" href="../assets/css/form.css">
     <link rel="stylesheet" href="../assets/css/address-form.css">
-    <style>
-        /* Confirmation modal styles */
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            display: none;
-        }
-        
-        .modal-dialog {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 1001;
-            width: 90%;
-            max-width: 400px;
-        }
-        
-        .modal-header {
-            margin-bottom: 15px;
-        }
-        
-        .modal-footer {
-            margin-top: 20px;
-            text-align: right;
-        }
-        
-        .modal-footer button {
-            margin-left: 10px;
-        }
-    </style>
 </head>
 
 <body>
@@ -255,13 +212,13 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                     <form action="../basket/update_basket.php" method="POST" class="d-flex align-items-center">
                                         <input type="hidden" name="product_id" value="<?= $id ?>">
                                         <input type="number" name="quantity" value="<?= $item['quantity'] ?>" 
-                                               min="1" max="<?= $item['stock'] ?>"
-                                               class="form-control quantity-input me-2"
-                                               <?= ($item['stock'] <= 0) ? 'disabled' : '' ?>
-                                               onchange="this.form.submit()">
+                                                min="1" max="<?= $item['stock'] ?>"
+                                                class="form-control quantity-input me-2"
+                                                <?= ($item['stock'] <= 0) ? 'disabled' : '' ?>
+                                                onchange="this.form.submit()">
                                     </form>
                                     <a href="../basket/remove_from_basket.php?id=<?= $id ?>"
-                                       class="btn btn-sm btn-outline-danger ms-2">Remove</a>
+                                        class="btn btn-sm btn-outline-danger ms-2">Remove</a>
                                 </div>
                             </div>
                             <h5 class="text-end">$<?= number_format($item['price'] * $item['quantity'], 2) ?></h5>
@@ -404,23 +361,19 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                             </form>
 
                             <script>
-                                // Use the global stripe instance that's properly initialized with fallback
                                 $(document).ready(function () {
                                     $("#placeOrderForm").submit(function (e) {
                                         e.preventDefault();
                                         const button = $(this).find('button');
                                         button.prop('disabled', true);
                                         button.html('<div class="spinner-border spinner-border-sm" role="status"></div> Processing...');
-
-                                        // Add timeout to prevent the button from being stuck
                                         const buttonTimeout = setTimeout(function() {
                                             console.log("Request timeout - resetting button");
                                             button.prop('disabled', false);
                                             button.html('<span class="material-symbols-outlined">shopping_cart_checkout</span> Place Order');
                                             alert("The request is taking too long. Please try again or check your internet connection.");
-                                        }, 20000); // 20 seconds timeout
+                                        }, 20000);
                                         
-                                        // Check if address is selected
                                         const selectedOption = $('input[name="address_option"]:checked').val();
                                         
                                         if (!selectedOption) {
@@ -430,9 +383,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                             return;
                                         }
 
-                                        // If "new" address is selected but the form is visible
                                         if (selectedOption === 'new' && !$('#new-address-form').hasClass('hidden')) {
-                                            // Check if there are any saved addresses
                                             if ($('.address-option').length <= 1) {
                                                 alert('Please add a shipping address to continue');
                                             } else {
@@ -443,7 +394,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                             return;
                                         }
 
-                                        // Extract address ID from the selected option if it exists
                                         let addressId = null;
                                         if (selectedOption.startsWith('existing_')) {
                                             addressId = selectedOption.split('_')[1];
@@ -452,7 +402,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         console.log("Selected address option:", selectedOption);
                                         console.log("Extracted address ID:", addressId);
 
-                                        // First create the order
                                         $.ajax({
                                             url: "../basket/place_order.php",
                                             type: "POST",
@@ -468,7 +417,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                 console.log("Place order response:", response);
                                                 
                                                 if (response.success) {
-                                                    // Then redirect to Stripe Checkout
                                                     console.log("Creating Stripe checkout session for order ID:", response.order_id);
                                                     const checkoutData = { order_id: response.order_id };
                                                     console.log("Sending data to process_stripe_checkout.php:", JSON.stringify(checkoutData));
@@ -482,7 +430,7 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                         },
                                                         data: JSON.stringify(checkoutData),
                                                         dataType: 'json',
-                                                        timeout: 30000, // 30 second timeout
+                                                        timeout: 30000,
                                                         success: function (checkoutResponse) {
                                                             clearTimeout(buttonTimeout);
                                                             console.log("Checkout response:", checkoutResponse);
@@ -502,8 +450,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                             let errorMessage = "Error creating checkout session. Please try again.";
                                                             
                                                             try {
-                                                                // Only try to parse if the response looks like JSON
-                                                                // Check if response starts with {
                                                                 const responseText = xhr.responseText.trim();
                                                                 if (responseText.startsWith('{')) {
                                                                     const errorData = JSON.parse(responseText);
@@ -513,7 +459,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                                                 } else if (responseText.includes("permission denied")) {
                                                                     errorMessage = "Server error: The server doesn't have permission to write log files. Please contact the administrator.";
                                                                 } else {
-                                                                    // Response contains HTML - likely a PHP error
                                                                     errorMessage = "Server error: There was a problem processing your request. Please try again.";
                                                                 }
                                                             } catch (e) {
@@ -596,28 +541,24 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                             </script>
                             <script>
                                 $(document).ready(function () {
-                                    // Initialize form visibility based on selected option on page load
                                     const selectedOption = $('input[name="address_option"]:checked').val();
                                     if (selectedOption === 'new') {
                                         $('#new-address-form').removeClass('hidden');
                                     } else {
                                         $('#new-address-form').addClass('hidden');
                                     }
-                                    
-                                    // Toggle address form visibility based on selection
+
                                     $('input[name="address_option"]').change(function() {
                                         if (this.value === 'new') {
                                             $('#new-address-form').removeClass('hidden');
                                         } else {
                                             $('#new-address-form').addClass('hidden');
                                         }
-                                        
-                                        // Add selected class to parent
+
                                         $('.address-option').removeClass('selected');
                                         $(this).closest('.address-option').addClass('selected');
                                     });
-                                    
-                                    // Function to validate address field
+
                                     function validateAddressField(selector, minLength, pattern, errorMessages) {
                                         const value = $(selector).val().trim();
                                         const fieldName = $(selector).siblings('label').text().replace(' *', '');
@@ -640,7 +581,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         return true;
                                     }
 
-                                    // Add real-time validation for address fields
                                     $('#address-line1').on('input change blur', function() {
                                         validateAddressField('#address-line1', 3, /^[A-Za-z0-9\s\-\.,#\/]+$/, {
                                             required: 'Address Line 1 is required',
@@ -676,12 +616,10 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         });
                                     });
                                     
-                                    // Special handling for postal code with country-specific validation
                                     $('#address-postal').on('input change blur', function() {
                                         validatePostalCode();
                                     });
 
-                                    // Validate postal code when country changes
                                     $('#address-country').on('change blur', function() {
                                         const value = $(this).val();
                                         if (!value) {
@@ -689,12 +627,10 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                             $('.invalid-feedback', $(this).parent()).text('Country is required');
                                         } else {
                                             $(this).removeClass('is-invalid');
-                                            // Also validate postal code when country changes
                                             validatePostalCode();
                                         }
                                     });
 
-                                    // Function to validate postal code format
                                     function validatePostalCode() {
                                         const postalCode = $('#address-postal').val().trim();
                                         const country = $('#address-country').val();
@@ -736,7 +672,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         return postalCodeValid;
                                     }
                                     
-                                    // Reinitialize the save button handler
                                     $('#save-address').off('click').on('click', function() {
                                         const form = document.getElementById('address-form');
                                         console.log('Save button clicked (after delete), form element:', form);
@@ -747,15 +682,13 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                             return;
                                         }
                                         
-                                        // Add a check for any ongoing AJAX requests
                                         if ($(this).data('processing')) {
                                             console.log('Already processing a request, please wait...');
                                             return;
                                         }
                                         
                                         let isValid = true;
-                                        
-                                        // Basic form validation
+                                    
                                         const line1 = $('#address-line1').val().trim();
                                         const line2 = $('#address-line2').val().trim(); 
                                         const city = $('#address-city').val().trim();
@@ -764,8 +697,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         const country = $('#address-country').val();
                                         
                                         console.log('Form values (after delete):', { line1, line2, city, state, postalCode, country });
-                                        
-                                        // Clear previous error styles
                                         $('#address-line1, #address-line2, #address-city, #address-state, #address-postal, #address-country').removeClass('is-invalid');
                                         
                                         // Validate each field
@@ -783,7 +714,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                             isValid = false;
                                         }
 
-                                        // Line 2 is optional, but validate if provided
                                         if (line2 && line2.length > 0) {
                                             if (line2.length < 3) {
                                                 $('#address-line2').addClass('is-invalid');
@@ -824,14 +754,12 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                             isValid = false;
                                         }
                                         
-                                        // Postal code validation with country-specific formats
                                         if (!postalCode) {
                                             $('#address-postal').addClass('is-invalid');
                                             $('.invalid-feedback', $('#address-postal').parent()).text('ZIP/Postal Code is required');
                                             isValid = false;
                                         } else {
                                             let postalCodeValid = true;
-                                            // Country-specific postal code validation
                                             if (country === 'US') {
                                                 // US ZIP: 5 digits or 5+4 format (12345 or 12345-6789)
                                                 if (!postalCode.match(/^\d{5}(-\d{4})?$/)) {
@@ -866,7 +794,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         
                                         console.log('Form validation result (after delete):', isValid);
                                         
-                                        // If the form is invalid, stop here
                                         if (!isValid) {
                                             return;
                                         }
@@ -875,7 +802,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
                                         button.prop('disabled', true);
                                         button.html('Saving...');
                                         
-                                        // Mark as processing
                                         $(this).data('processing', true);
                                         
                                         // Create formData from the form
@@ -963,17 +889,16 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
 <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
-<!-- Confirmation Modal -->
-<div class="modal-backdrop" id="deleteConfirmationModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Delete Address</h5>
+<div class="b-modal modal-backdrop" id="deleteConfirmationModal">
+    <div class="b-modal modal-dialog">
+        <div class="b-modal modal-content">
+            <div class="b-modal modal-header">
+                <h5 class="b-modal modal-title">Delete Address</h5>
             </div>
-            <div class="modal-body">
+            <div class="b-modal modal-body">
                 <p>Are you sure you want to delete this address?</p>
             </div>
-            <div class="modal-footer">
+            <div class="b-modal modal-footer">
                 <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
                 <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
             </div>
@@ -986,14 +911,12 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
         let addressToDelete = null;
         let addressOptionElement = null;
 
-        // Handle cancel button in modal
         $('#cancelDeleteBtn').click(function() {
             $('#deleteConfirmationModal').fadeOut(200);
             addressToDelete = null;
             addressOptionElement = null;
         });
         
-        // Use event delegation for dynamically added delete buttons
         $(document).on('click', '.delete-address-btn', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -1001,7 +924,6 @@ $total = $subtotal + $tax;  // Removed shipping from here since it's handled by 
             addressToDelete = $(this).data('address-id');
             addressOptionElement = $(this).closest('.address-option');
             
-            // Show confirmation modal
             $('#deleteConfirmationModal').fadeIn(200);
         });
         

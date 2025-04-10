@@ -1,5 +1,4 @@
 .profile-container {
-    max-width: 1800px;
     margin: auto;
     padding: 20px;
     text-align: center;
@@ -9,8 +8,11 @@
 
 .profile-header {
     display: flex;
+    flex-direction: row;
     align-items: center;
     gap: 2rem;
+    width: 80%;
+    margin: auto;
     margin-bottom: 3rem;
 }
 
@@ -71,45 +73,36 @@
 .tabs-nav {
     display: flex;
     position: relative;
-    width: 100%;
+    width: 80%;
+    margin: auto;
     background: #d7d7d79b;
     border-radius: 25px;
     padding: 5px;
-    justify-content: space-between;
+    justify-content: space-around;
+    overflow: hidden;
     align-items: center;
     max-height: 40px;
-    gap: 2rem;
     margin-bottom: 3rem;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-
-}
-
-.tabs-nav label {
-    flex: 1;
-    text-align: center;
-    padding: 10px 15px;
-    cursor: pointer;
-    position: relative;
-    z-index: 2;
-    width: 100%;
 }
 
 .tab-pane {
-    opacity: 0;
-    visibility: hidden;
-    position: absolute;
+    display: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
     width: 100%;
 }
 
 .tab-pane.active {
-    display: block !important;
+    display: block;
     opacity: 1;
     visibility: visible;
-    position: relative;
 }
-.tabs-nav a {
+
+.tabs-nav a,
+.tab-link {
     display: block;
-    padding: 15px 20px;
+    width: 100%;
+    z-index: 2;
     text-align: center; 
     font-size: 16px;
 }
@@ -125,8 +118,8 @@
     font-weight: 500;
     text-decoration: none;
     display: inline-block;
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     transition: all 0.3s ease-in-out;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
@@ -169,5 +162,92 @@
     right: 25px;
 }
 
+.header-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+@media (max-width: 1100px) {
+    .reviews-containers, .sales-container {
+        flex-direction: column;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        width: 100%;
+    }
 
+    .reviews-summary-outer,
+    .sales-summary {
+        flex: none !important;
+        min-width: auto !important;
+        height: auto !important;
+        max-height: none !important;
+        width: 100%;
+    }
+
+    .orders-table,
+    .tabs-nav {
+        width: 100% !important;
+    }
+    
+    .reviews-summary {
+        overflow-y: visible !important;
+        overflow-x: scroll;
+        width: 100%;
+        font-size: 0.8em;
+        height: auto !important;
+        max-height: none !important;
+    }
+
+    .activity-container {
+        padding: 10px;
+    }
+    
+    .activity-scroll {
+        overflow-x: auto !important;
+        width: 100% !important;
+    }
+
+    .rating-summary, .earnings-summary {
+        max-width: unset !important;
+    }
+}
+
+@media (max-width: 780px) {
+    .profile-header {
+        flex-direction: column;
+        
+    }
+
+    .profile-info {
+        align-items: center;
+        text-align: center;
+        margin-bottom: 1em;
+    }
+
+    .tab-link,
+    .header-btn,
+    .orders-table {
+        font-size: 0.75em !important;
+    }
+
+    .header-btn,
+    .tab-link {
+        white-space: nowrap;
+    }
+
+    .header-btn span {
+        font-size: 1em !important;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+}
+
+.alert.short{
+    width: 80%;
+    align-self: center;
+    justify-self: center;
+}

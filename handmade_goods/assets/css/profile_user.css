@@ -1,5 +1,6 @@
 .orders-table {
-    width: 100%;
+    width: 80%;
+    margin: auto;
     border-collapse: separate;
     border-spacing: 0;
     margin-top: 20px;
@@ -14,10 +15,15 @@
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
+.inner-table {
+    width: 100%;
+}
+
 .orders-table thead {
     background-color: #ECECEC;
     color: #333;
     font-weight: 600;
+    width: 100%;
 }
 
 .orders-table th, .orders-table td {
@@ -65,13 +71,13 @@ tr:nth-of-type(2n) {
 }
 
 .reviews-containers, .sales-container {
-    width: 100%;
+    width: 80%;
+    margin: auto;
     display: flex;
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: flex-start;
     gap: 30px;
-    padding: 20px;
 }
 
 .rating-summary, .earnings-summary {
@@ -88,25 +94,24 @@ tr:nth-of-type(2n) {
     flex: 1; 
     width: 100%;
     height: 400px;
-    min-width: 300px !important;
-    /* border: #DDD 2px solid; */
+    min-width: 280px;
+    max-width: 400px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.reviews-summary-outer, .sales-summary {
+.reviews-summary-outer,
+.sales-summary {
     background: white;
     color: #1e1e1e;
     border-radius: 16px;
     text-align: center;
     flex: 1; 
-    min-width: 850px;
     padding: 20px;
-    /* border: #DDD 2px solid; */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.sales-summary {
-    height: 400px;
+.reviews-summary-outer h3 {
+    margin-top: 0.5em;
 }
 
 .reviews-summary-outer {
@@ -119,7 +124,7 @@ tr:nth-of-type(2n) {
     overflow-y: scroll;
     box-sizing: border-box;
     height: auto;
-    max-height: 760px;
+    max-height: 700px;
 }
 
 .rating-overall {
@@ -191,7 +196,6 @@ tr:nth-of-type(2n) {
     object-fit: cover;
     vertical-align: middle;
     margin-right: 10px;
-    /* border: 2px solid #ddd; */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
@@ -208,7 +212,7 @@ tr:nth-of-type(2n) {
     width: 33.333%;
     border-radius: 20px;
     transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
-    z-index: 1;
+    z-index: 0;
 }
 
 .reviews-table {
@@ -266,14 +270,25 @@ tr:nth-of-type(2n) {
     width: 80%;
 }
 
+.m-btn.aty{
+    margin: 0;
+    width: 20%;
+    justify-self: center;
+}
+
 .activity-container {
     display: flex;              
     flex-direction: column;
     align-items: center;        
     background-color: white;
-    width: 100%;
+    width: 80%;
+    margin: auto;
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
+.activity-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
