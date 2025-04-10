@@ -25,32 +25,28 @@ while ($row = $result->fetch_assoc()) {
 $stmt->close();
 ?>
 
-<body>
-    <div class="container mt-5">
-        <?php if (empty($basket_items)): ?>
-            <p>Your basket is empty.</p>
-        <?php else: ?>
-            <?php
-            $total = 0;
-            foreach ($basket_items as $item):
-                $total += $item['price'] * $item['quantity'];
-                ?>
-                <div class="basket-item">
-                    <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
-                    <div class="basket-details">
-                        <h5><?= htmlspecialchars($item['name']) ?></h5>
-                        <p>
-                            Price: $<?= number_format($item['price'], 2) ?>
-                            &nbsp;|&nbsp;
-                            Quantity: <?= $item['quantity'] ?>
-                        </p>
+<div class="mt-3 container">
+    <?php if (empty($basket_items)): ?>
+        <p>Your basket is empty.</p>
+    <?php else: ?>
+        <?php
+        $total = 0;
+        foreach ($basket_items as $item):
+            $total += $item['price'] * $item['quantity'];
+            ?>
+            <div class="basket-item">
+                <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
+                <div class="basket-details">
+                    <h5><?= htmlspecialchars($item['name']) ?></h5>
+                    <p>
+                        Price: $<?= number_format($item['price'], 2) ?>
+                        &nbsp;|&nbsp;
+                        Quantity: <?= $item['quantity'] ?>
+                    </p>
 
-                    </div>
                 </div>
-            <?php endforeach; ?>
-            <h4 class="total-label">Total: $<?= number_format($total, 2) ?></h4>
-        <?php endif; ?>
-    </div>
-</body>
-
-</html>
+            </div>
+        <?php endforeach; ?>
+        <h4 class="total-label">Total: $<?= number_format($total, 2) ?></h4>
+    <?php endif; ?>
+</div>

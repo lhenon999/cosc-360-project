@@ -54,8 +54,20 @@
     align-items: start;
 }
 
-.ending-div{
+.ending-div {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@media(max-width: 990px) {
+    .cart-img {
+        height: 70px;
+        width: 70px;
+        border-radius: 8px;
+    }
+
+    .order-item h5 {
+        text-align: left;
+    }
 }

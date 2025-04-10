@@ -1,15 +1,11 @@
 <div class="profile-tabs mt-5">
-    <nav class="tabs-nav">
+    <div class="tabs-nav">
         <?php if ($user_type === 'admin'): ?>
-            <label>
-                <a href="#users" class="tab-link">Users</a>
-            </label>
-            <label>
-                <a href="#listings" class="tab-link">Listings</a>
-            </label>
+            <a href="#users" class="tab-link">Users</a>
+            <a href="#listings" class="tab-link">Listings</a>
             <div class="tab-slider-admin"></div>
         <?php endif; ?>
-    </nav>
+    </div>
 </div>
 
 <div class="tab-content">
@@ -19,52 +15,56 @@
             <input type="text" id="userSearch" class="form-control mb-3" placeholder="Search users..."
                 onkeyup="filterTable('usersTable', 'userSearch')">
             <?php if (!empty($all_users)): ?>
-                <table class="users-table" id="usersTable">
-                    <thead>
-                        <tr>
-                            <th>Profile</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Total Orders</th>
-                            <th>Total Listings</th>
-                            <th>Joined Date</th>
-                            <th>Actions</th>
-                            <th>Moderate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($all_users as $user): ?>
-                            <tr class="<?= !empty($user["is_frozen"]) ? 'frozen' : '' ?>">
-                                <td>
-                                    <?= htmlspecialchars($user["name"]) ?>
-                                    <?php if (!empty($user["is_frozen"])): ?>
-                                        <i class="fas fa-lock" title="Frozen Account"></i>
-                                    <?php endif; ?>
-                                </td>
-
-                                <td><?= htmlspecialchars($user["name"]) ?></td>
-                                <td><?= htmlspecialchars($user["email"]) ?></td>
-                                <td><?= $user["total_orders"] ?></td>
-                                <td><?= $user["total_listings"] ?></td>
-                                <td><?= date('M j, Y', strtotime($user["created_at"])) ?></td>
-                                <td>
-                                    <a href="user_profile.php?id=<?= $user["id"] ?><?= ($user_type === 'admin') ? '&from=profile_users' : '' ?>"
-                                        class="view-btn">
-                                        View Profile
-                                    </a>
-                                </td>
-                                <td>
-                                    <button type="button" class="manage-btn"
-                                        onclick="showManageModal(<?= $user['id'] ?>, '<?= htmlspecialchars($user['name']) ?>')"
-                                        data-user-id="<?= $user['id'] ?>" data-user-name="<?= htmlspecialchars($user['name']) ?>">
-                                        Moderate
-                                    </button>
-                                </td>
+                <div class="table-div">
+                    <table class="users-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>Profile</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Total Orders</th>
+                                <th>Total Listings</th>
+                                <th>Joined Date</th>
+                                <th>Actions</th>
+                                <th>Moderate</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($all_users as $user): ?>
+                                <tr class="<?= !empty($user["is_frozen"]) ? 'frozen' : '' ?>">
+                                    <td>
+                                        <?= htmlspecialchars($user["name"]) ?>
+                                        <?php if (!empty($user["is_frozen"])): ?>
+                                            <i class="fas fa-lock" title="Frozen Account"></i>
+                                        <?php endif; ?>
+                                    </td>
 
-                </table>
+                                    <td><?= htmlspecialchars($user["name"]) ?></td>
+                                    <td><?= htmlspecialchars($user["email"]) ?></td>
+                                    <td><?= $user["total_orders"] ?></td>
+                                    <td><?= $user["total_listings"] ?></td>
+                                    <td><?= date('M j, Y', strtotime($user["created_at"])) ?></td>
+                                    <td>
+                                        <a href="user_profile.php?id=<?= $user["id"] ?><?= ($user_type === 'admin') ? '&from=profile_users' : '' ?>"
+                                            class="view-btn">
+                                            View Profile
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="manage-btn"
+                                            onclick="showManageModal(<?= $user['id'] ?>, '<?= htmlspecialchars($user['name']) ?>')"
+                                            data-user-id="<?= $user['id'] ?>"
+                                            data-user-name="<?= htmlspecialchars($user['name']) ?>"
+                                            data-user-frozen="<?= !empty($user["is_frozen"]) ? 'true' : 'false' ?>">
+                                            Moderate
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+
+                    </table>
+                </div>
             <?php else: ?>
                 <p>No users found.</p>
             <?php endif; ?>
@@ -83,60 +83,63 @@
                     JOIN USERS u ON i.user_id = u.id
                     ORDER BY i.stock ASC, i.name ASC
                 ");
+
             $stmt->execute();
             $result = $stmt->get_result();
             if ($result->num_rows > 0): ?>
-                <table class="inventory-table" id="listingsTable">
-                    <thead>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Stock</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Total Orders</th>
-                            <th>Actions</th>
-                            <th>Moderate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($item = $result->fetch_assoc()): ?>
-                            <?php
-                            $rowClass = !empty($item['seller_frozen']) ? 'frozen' : ($item['stock'] < 5 ? 'low-stock' : '');
-                            ?>
-                            <tr class="<?= $rowClass ?>">
-                                <td>
-                                    <?= htmlspecialchars($item["name"]) ?>
-                                    <?php if (!empty($item["is_frozen"])): ?>
-                                        <i class="fas fa-lock" title="Seller Account Frozen"></i>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <span
-                                        class="stock-level <?= $item['stock'] < 5 ? 'critical' : ($item['stock'] < 10 ? 'warning' : 'good') ?>">
-                                        <?= $item["stock"] ?>
-                                    </span>
-                                </td>
-                                <td><?= htmlspecialchars($item["category"]) ?></td>
-                                <td>$<?= number_format($item["price"], 2) ?></td>
-                                <td><?= $item["total_orders"] ?></td>
-                                <td>
-                                    <a href="product.php?id=<?= $item["id"] ?>&from=profile_listings" class="view-btn">
-                                        View Listing
-                                    </a>
-                                </td>
-                                <td>
-                                    <form method="POST" action="delete_listing.php" style="display: inline;">
-                                        <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
-                                        <button type="submit" class="delete-btn"
-                                            onclick="return confirm('Are you sure you want to delete this listing?')">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
+                <div class="table-div">
+                    <table class="inventory-table" id="listingsTable">
+                        <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Stock</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Total Orders</th>
+                                <th>Actions</th>
+                                <th>Moderate</th>
                             </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php while ($item = $result->fetch_assoc()): ?>
+                                <?php
+                                $rowClass = !empty($item['seller_frozen']) ? 'frozen' : ($item['stock'] < 5 ? 'low-stock' : '');
+                                ?>
+                                <tr class="<?= $rowClass ?>">
+                                    <td>
+                                        <?= htmlspecialchars($item["name"]) ?>
+                                        <?php if (!empty($item["is_frozen"])): ?>
+                                            <i class="fas fa-lock" title="Seller Account Frozen"></i>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="stock-level <?= $item['stock'] < 5 ? 'critical' : ($item['stock'] < 10 ? 'warning' : 'good') ?>">
+                                            <?= $item["stock"] ?>
+                                        </span>
+                                    </td>
+                                    <td><?= htmlspecialchars($item["category"]) ?></td>
+                                    <td>$<?= number_format($item["price"], 2) ?></td>
+                                    <td><?= $item["total_orders"] ?></td>
+                                    <td>
+                                        <a href="product.php?id=<?= $item["id"] ?>&from=profile_listings" class="view-btn">
+                                            View Listing
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="delete_listing.php" style="display: inline;">
+                                            <input type="hidden" name="item_id" value="<?= $item['id'] ?>">
+                                            <button type="submit" class="delete-btn"
+                                                onclick="return confirm('Are you sure you want to delete this listing?')">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                </div>
             <?php else: ?>
                 <p>No products found in the inventory.</p>
             <?php endif;
@@ -165,7 +168,8 @@
                     <button type="submit" class="freeze-btn uf">Restore Account</button>
                 </form>
 
-                <form id="deleteUserFormFromManage" method="POST" action="delete_user.php">
+                <form id="deleteUserFormFromManage" method="POST" action="delete_user.php"
+                    onsubmit="return confirm('Are you sure you want to delete this account? This action cannot be undone.');">
                     <input type="hidden" name="user_id" id="deleteUserIdFromManage">
                     <button type="submit" class="confirm-btn">Delete Account</button>
                 </form>
@@ -173,20 +177,6 @@
                 <button type="button" class="cancel-btn" onclick="closeModal('manageModal')">Cancel</button>
             </div>
         </div>
-    </div>
-</div>
-
-<div id="deleteUserModal" class="modal">
-    <div class="modal-content">
-        <h3>Confirm Deletion</h3>
-        <p>Are you sure you want to delete this account? This action cannot be undone.</p>
-        <form id="deleteUserForm" method="POST" action="delete_user.php">
-            <input type="hidden" name="user_id" id="deleteUserId">
-            <div class="modal-buttons">
-                <button type="submit" class="confirm-btn">Delete</button>
-                <button type="button" class="cancel-btn" onclick="closeModal('deleteUserModal')">Cancel</button>
-            </div>
-        </form>
     </div>
 </div>
 
@@ -203,3 +193,5 @@
         </form>
     </div>
 </div>
+
+<script src="../assets/js/profile_handle_modal.js"></script>

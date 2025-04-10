@@ -1,6 +1,7 @@
 main {
     display: flex;
     justify-content: flex-start;
+    flex-direction: row;
     align-items: flex-start;
     gap: 28px;
     margin: auto;
@@ -155,7 +156,7 @@ h1 {
     pointer-events: none;
     opacity: 0.5;
     cursor: not-allowed;
-  }
+}
 
 .bg-dark .clear-filters{
     background-color: #426B1F;
@@ -164,7 +165,6 @@ h1 {
 .bg-dark .clear-filters:disabled{
     background-color: #333;
 }
-  
 
 .clear-filters:hover {
     background-color: #426B1F;
@@ -223,4 +223,37 @@ h1 {
 
 .bg-dark .scrollable-container{
     background-color: transparent !important;
-  }
+}
+
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 680px) {
+    main {
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin: auto;
+        display: none;
+    }
+
+    .sidebar.show {
+        display: block;
+        margin-bottom: 1.5em;
+    }
+
+    .listing-grid {
+        align-items: center;
+        width: 100%;
+        justify-items: center;
+    }
+
+    .mobile-only {
+        display: block;
+    }
+}

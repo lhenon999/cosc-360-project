@@ -194,7 +194,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 </div>
 
-                <div class="d-flex justify-content-center gap-3 mb-3">
+                <div class="buttons-div">
                     <a class="m-btn" href="my_shop.php">
                         <span class="material-symbols-outlined">close</span> Cancel
                     </a>

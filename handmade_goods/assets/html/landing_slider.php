@@ -59,19 +59,17 @@ try {
 
 <div class="slider">
     <?php foreach ($sliderData as $index => $slide): ?>
-        <div class="slide">
+        <a class="slide" href="../pages/product.php?id=<?= $slide['id'] ?><?= isset($isFromProfile) && $isFromProfile ? '&from=user_profile' : '' ?>&source=home">
             <div class="left">
                 <h5><?php echo htmlspecialchars($slide['title']); ?></h5>
                 <h1><?php echo htmlspecialchars($slide['name']); ?></h1>
                 <p><?php echo htmlspecialchars($slide['desc']); ?></p>
-                <a class="view-button" href="../pages/product.php?id=<?= $slide['id'] ?><?= isset($isFromProfile) && $isFromProfile ? '&from=user_profile' : '' ?>&source=home">View Now</a>
             </div>
-
             <div class="right">
                 <img src="<?php echo htmlspecialchars($slide['img']); ?>"
                     alt="<?php echo htmlspecialchars($slide['name']); ?>">
             </div>
-        </div>
+    </a>
     <?php endforeach; ?>
 </div>
 

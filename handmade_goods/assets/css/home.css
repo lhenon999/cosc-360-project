@@ -30,32 +30,6 @@
     justify-content: center;
 }
 
-.contact-form-container {
-    max-width: 900px;
-    margin: 0 auto;
-    background-color: #F5F5F5;
-    padding: 2em;
-    border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.bg-dark .contact-form-container {
-    background-color: #1e1e1e;
-}
-
-form input, form textarea {
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    padding: 0.75em;
-    width: 100%;
-}
-
-.form-label {
-    font-family: "Newsreader", serif;
-    color: black;
-    font-size: 16px;
-}
-
 .img-container {
     width: 100%;
     position: relative;
@@ -137,29 +111,4 @@ form input, form textarea {
 .view-more-container {
     display: flex;
     justify-content: center;
-}
-
-.contact-form-container {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: white;
-    padding: 2em;
-    border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.bg-dark .contact-form-container {
-    background-color: #1e1e1e;
-}
-
-form input, form textarea {
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    padding: 0.75em;
-    width: 100%;
-}
-
-.form-label {
-    font-family: "Newsreader", serif;
-    color: #426B1F;
 }
