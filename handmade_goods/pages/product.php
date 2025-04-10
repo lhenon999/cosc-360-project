@@ -205,7 +205,7 @@ if ($session_user_id !== null) {
                                 class="user-options">
                                 <input type="hidden" name="product_id" value="<?= $product_id ?>">
                                 <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
-                                    <a href="profile.php?item=<?= urlencode($name) ?>" class="m-btn g atc">
+                                    <a href="profile.php?item=<?= urlencode($name) ?>" class="m-btn g atc keep-active">
                                         <span class="material-symbols-outlined">manage_accounts</span> Manage Listing
                                     </a>
                                 <?php else: ?>
@@ -318,9 +318,10 @@ if ($session_user_id !== null) {
         });
     </script>
     <?php if ($product_frozen): ?>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                document.querySelectorAll('.m-btn').forEach(function (btn) {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.m-btn').forEach(function (btn) {
+                if (!btn.classList.contains('keep-active')) {
                     if (btn.tagName.toLowerCase() === 'button') {
                         btn.disabled = true;
                     } else {
@@ -329,10 +330,11 @@ if ($session_user_id !== null) {
                     }
                     btn.style.opacity = "0.6";
                     btn.style.cursor = "not-allowed";
-                });
+                }
             });
-        </script>
-    <?php endif; ?>
+        });
+    </script>
+<?php endif; ?>
 
 </body>
 
