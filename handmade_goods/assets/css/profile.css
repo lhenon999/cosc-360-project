@@ -84,7 +84,6 @@
     max-height: 40px;
     margin-bottom: 3rem;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-
 }
 
 .tab-pane {
@@ -99,9 +98,11 @@
     visibility: visible;
 }
 
+.tabs-nav a,
 .tab-link {
     display: block;
-    padding: 15px;
+    width: 100%;
+    z-index: 2;
     text-align: center; 
     font-size: 16px;
 }
@@ -183,6 +184,11 @@
         height: auto !important;
         max-height: none !important;
         width: 100%;
+    }
+
+    .orders-table,
+    .tabs-nav {
+        width: 100% !important;
     }
     
     .reviews-summary {
