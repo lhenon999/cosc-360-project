@@ -170,20 +170,34 @@ if ($session_user_id !== null) {
                     <p class="mt-4"><?= $description ?></p>
 
                     <?php if (!$from_profile): ?>
-                        <a href="user_profile.php?id=<?= $user_id ?>&from_product=product.php?id=<?= $product_id ?>"
-                            class="seller-info hover-raise">
-                            <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
-                                class="rounded-circle" width="50" height="50">
-                            <p class="ms-3 mb-0">
-                                Sold by <strong><?= htmlspecialchars($seller['name']) ?></strong>
-                            </p>
-                        </a>
+                        <?php if (!$from_profile): ?>
+                            <?php if ($session_user_id === $user_id): ?>
+                                <div class="seller-info">
+                                    <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Your Profile"
+                                        class="rounded-circle" width="50" height="50">
+                                    <p class="ms-3 mb-0">
+                                        <strong>Your Listing</strong>
+                                    </p>
+                                </div>
+                            <?php else: ?>
+                                <a href="user_profile.php?id=<?= $user_id ?>&from_product=product.php?id=<?= $product_id ?>"
+                                    class="seller-info hover-raise">
+                                    <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
+                                        class="rounded-circle" width="50" height="50">
+                                    <p class="ms-3 mb-0">
+                                        Sold by <strong><?= htmlspecialchars($seller['name']) ?></strong>
+                                    </p>
+                                </a>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
                     <?php endif; ?>
 
                     <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
                         <?php if ($is_frozen): ?>
                             <div class="alert alert-warning">
-                                <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit your listings at
+                                <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit your listings
+                                at
                                 this time.
                             </div>
                             <button class="m-btn g atc" disabled style="opacity: 0.6; cursor: not-allowed;">
@@ -231,7 +245,7 @@ if ($session_user_id !== null) {
             <section class="reviews">
                 <h1 class="mb-4">Customer Reviews</h1>
                 <?php if (empty($reviews)): ?>
-                    <p class="mb-5">No reviews yet. Be the first to review this product!</p>
+                    <p class="mb-5">Be the first to review this product!</p>
                 <?php else: ?>
                     <?php foreach ($reviews as $review): ?>
                         <div class="review mt-2 d-flex flex-column">
@@ -252,7 +266,7 @@ if ($session_user_id !== null) {
 
                 <?php if ($session_user_id !== null): ?>
                     <?php if ($hasPurchased): ?>
-                        <?php if ($userHasReviewed): ?>
+                        <?php if (!$userHasReviewed): ?>
                             <h3 class="mt-5">Add a Review</h3>
                             <form action="add_review.php" method="POST" class="add-review-form">
                                 <input type="hidden" name="product_id" value="<?= $product_id ?>">
@@ -273,12 +287,12 @@ if ($session_user_id !== null) {
                                         <label for="star1">★</label>
                                     </div>
                                 </div>
-                                <button type="submit" class="m-btn w-40">
+                                <button type="submit" class="m-btn g w-40">
                                     <span class="material-symbols-outlined">check</span>Submit Review
                                 </button>
                             </form>
                         <?php else: ?>
-                            <p>You can only review the product once.</p>
+                            <p>You can only leave one review</p>
                         <?php endif; ?>
                     <?php else: ?>
                         <p>You can only leave a review if you've purchased this product.</p>
@@ -289,7 +303,6 @@ if ($session_user_id !== null) {
             </section>
         </div>
     </main>
-    <script src="../assets/js/product_reviews.js"></script>
     <?php include __DIR__ . '/../assets/html/footer.php'; ?>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -300,14 +313,16 @@ if ($session_user_id !== null) {
             submitButton.disabled = true;
 
             function checkFormValidity() {
-                const commentFilled = comment.value.trim() !== '';
+                const commentValid = comment.value.trim().length >= 10;
+
                 let ratingSelected = false;
                 ratingInputs.forEach(input => {
                     if (input.checked) {
                         ratingSelected = true;
                     }
                 });
-                submitButton.disabled = !(commentFilled && ratingSelected);
+
+                submitButton.disabled = !(commentValid && ratingSelected);
             }
 
             comment.addEventListener('input', checkFormValidity);
@@ -317,25 +332,26 @@ if ($session_user_id !== null) {
             });
         });
     </script>
-    <?php if ($product_frozen): ?>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.m-btn').forEach(function (btn) {
-                if (!btn.classList.contains('keep-active')) {
-                    if (btn.tagName.toLowerCase() === 'button') {
-                        btn.disabled = true;
-                    } else {
-                        btn.removeAttribute('href');
-                        btn.style.pointerEvents = 'none';
-                    }
-                    btn.style.opacity = "0.6";
-                    btn.style.cursor = "not-allowed";
-                }
-            });
-        });
-    </script>
-<?php endif; ?>
 
+    <?php if ($product_frozen): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.m-btn').forEach(function (btn) {
+                    if (!btn.classList.contains('keep-active')) {
+                        if (btn.tagName.toLowerCase() === 'button') {
+                            btn.disabled = true;
+                        } else {
+                            btn.removeAttribute('href');
+                            btn.style.pointerEvents = 'none';
+                        }
+                        btn.style.opacity = "0.6";
+                        btn.style.cursor = "not-allowed";
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
+    <script src="../assets/js/product_reviews.js"></script>
 </body>
 
 </html>
