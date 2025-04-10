@@ -161,7 +161,7 @@ $stmt->close();
                 <h3>Reviews</h3>
                 <div class="reviews-summary">
                     <?php if ($myReviewsResult->num_rows > 0): ?>
-                        <table class="orders-table">
+                        <table class="orders-table inner-table">
                             <thead>
                                 <tr>
                                     <th>Item</th>
@@ -235,7 +235,7 @@ $stmt->close();
 
                 if ($result->num_rows > 0): ?>
                     <div class="activity-scroll">
-                        <table class="orders-table">
+                        <table class="orders-table inner-table">
                             <thead>
                                 <tr>
                                     <th>Sale ID</th>

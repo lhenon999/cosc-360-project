@@ -15,6 +15,10 @@
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
+.inner-table {
+    width: 100%;
+}
+
 .orders-table thead {
     background-color: #ECECEC;
     color: #333;

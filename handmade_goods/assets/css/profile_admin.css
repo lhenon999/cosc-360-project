@@ -234,7 +234,7 @@
     align-items: center;
 }
 
-#manageModal .modal-account-name{
+#manageModal .modal-account-name {
     display: inline-block;
     word-wrap: break-word;
     max-width: 100%;

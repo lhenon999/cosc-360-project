@@ -110,34 +110,42 @@ $isAdmin = ($user['user_type'] === 'admin');
         <div class="mb-4">
             <h5>Advanced Settings</h5>
             <label class="form-label">Account Deletion</label>
-            </select>
-            <button id="delete-btn" class="btn btn-outline-secondary" <?= $isAdmin ? 'disabled' : '' ?>>Delete My Account</button>
+            <form id="delete-form" action="delete_user.php" method="post" onsubmit="return confirmDelete();">
+                <input type="hidden" name="user_id" value="<?= htmlspecialchars($user_id); ?>">
+                <input type="hidden" name="self_deletion" value="1">
+                <button type="submit" id="delete-btn" class="btn btn-outline-secondary" <?= $isAdmin ? 'disabled' : '' ?>>
+                    Delete My Account
+                </button>
+            </form>
         </div>
         <div>
-                <a href="profile.php" class="btn btn-outline-secondary w-100" </a>Back</a>
+            <a href="profile.php" class="btn btn-outline-secondary w-100" </a>Back</a>
         </div>
     </div>
-        <script src="../assets/js/bg-dark.js"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const advancedSettingsButton = document.getElementById("advanced-settings-btn");
-                const advancedSettingsContent = document.getElementById("advanced-settings");
+    <script src="../assets/js/bg-dark.js"></script>
+    <script>
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete your account? This action cannot be undone.');
+        }
 
-                advancedSettingsButton.addEventListener("click", function () {
-                    if (advancedSettingsContent.classList.contains("expanded")) {
-                        advancedSettingsContent.classList.remove("expanded");
-                        advancedSettingsButton.textContent = "Advanced Settings";
-                    } else {
-                        advancedSettingsContent.classList.add("expanded");
-                        advancedSettingsButton.textContent = "Hide";
-                    }
-                });
+        document.addEventListener("DOMContentLoaded", function () {
+            const advancedSettingsButton = document.getElementById("advanced-settings-btn");
+            const advancedSettingsContent = document.getElementById("advanced-settings");
+
+            advancedSettingsButton.addEventListener("click", function () {
+                if (advancedSettingsContent.classList.contains("expanded")) {
+                    advancedSettingsContent.classList.remove("expanded");
+                    advancedSettingsButton.textContent = "Advanced Settings";
+                } else {
+                    advancedSettingsContent.classList.add("expanded");
+                    advancedSettingsButton.textContent = "Hide";
+                }
             });
-    
-        </script>
+        });
+    </script>
 
-<?php include __DIR__ . '/../assets/html/footer.php'; ?>
-<?php $conn->close(); ?>
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
+    <?php $conn->close(); ?>
 </body>
 
 </html>
