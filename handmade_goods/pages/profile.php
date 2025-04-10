@@ -84,7 +84,7 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
     <div>
         <h1 class="text-center mt-5"><?php echo ($user_type === 'admin') ? 'Admin Dashboard' : 'My Profile'; ?></h1>
         <?php if ($is_frozen == 1): ?>
-            <div class="alert alert-warning">
+            <div class="alert short alert-warning">
                 <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit or create new listings at this
                 time.
             </div>
