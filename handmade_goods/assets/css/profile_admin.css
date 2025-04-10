@@ -116,6 +116,18 @@
     transition: all 0.2s ease-in-out;
 }
 
+.users-table tr.frozen,
+.inventory-table tr.frozen {
+    background-color: #fde7e7 !important;
+    color: #444 !important;            
+}
+
+.fas.fa-lock {
+    color: #555;
+    margin-left: 4px;
+    font-size: 0.9em;
+}
+
 .inventory-table tr:nth-child(even), .users-table tr:nth-child(even) {
     background-color: rgba(245, 245, 245, 0.6);
 }
@@ -261,6 +273,14 @@
 .freeze-btn {
     background-color: #f0ac4ec1;
     color: white;
+}
+
+.freeze-btn.uf{
+    background-color: #37dd4dc1;
+}
+
+.freeze-btn.uf:hover{
+    background-color: #36c549c1;
 }
 
 .freeze-btn:hover {

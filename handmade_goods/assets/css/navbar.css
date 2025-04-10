@@ -60,7 +60,7 @@
     .dropdown-content {
         position: static;
         box-shadow: none;
-        background-color: transparent;
+        background-color: white;
         min-width: 100%;
     }
 
@@ -178,6 +178,8 @@ h3 {
     display: flex;
     align-items: center;
     gap: 4px;
+    position: absolute;
+    z-index: 9999;
 }
 
 .material-symbols-outlined {

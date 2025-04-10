@@ -71,7 +71,14 @@ include __DIR__ . '/../config.php';
             <div class="product-cards-container" id="product-cards-container">
                 <?php
                 try {
-                    $stmt = $conn->prepare("SELECT id, name, price, img, stock FROM ITEMS ORDER BY created_at DESC LIMIT 6");
+                    $stmt = $conn->prepare("
+                        SELECT i.id, i.name, i.price, i.img, i.stock 
+                        FROM ITEMS i
+                        JOIN USERS u ON i.user_id = u.id
+                        WHERE u.is_frozen = 0
+                        ORDER BY i.created_at DESC 
+                        LIMIT 6
+                    ");
                     $stmt->execute();
                     $result = $stmt->get_result();
                     
@@ -101,6 +108,7 @@ include __DIR__ . '/../config.php';
             </div>
         </div>
         </div>
+        <?php include "chat_bot.php"; ?>
         <?php include "../assets/html/footer.php"; ?>
 
         <script>

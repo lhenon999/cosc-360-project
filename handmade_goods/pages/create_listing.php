@@ -8,8 +8,13 @@ if (!isset($_SESSION["user_id"])) {
 }
 
 $errors = [];
+$is_frozen = isset($_SESSION["is_frozen"]) && $_SESSION["is_frozen"] == 1;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// If this is a POST request and the user's account is frozen, prevent creating listings
+if ($_SERVER["REQUEST_METHOD"] == "POST" && $is_frozen) {
+    $errors[] = "Your account is currently frozen. You cannot create new listings at this time.";
+    // Don't process the form submission
+} else if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = trim($_POST["name"] ?? "");
     $description = trim($_POST["description"] ?? "");
     $price = trim($_POST["price"] ?? "");
@@ -121,10 +126,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <p class="text-center">Fill in the details to add your product to our directory!</p>
     <br>
 
+    <?php if ($is_frozen): ?>
+        <div class="alert alert-warning text-center">
+            <strong>Account Notice:</strong> Your account is currently frozen. You can view your existing listings, but you cannot create new listings or modify existing ones. Any existing listings are not visible to other users.
+        </div>
+    <?php endif; ?>
+
     <?php if (!empty($errors)): ?>
         <div class="alert alert-danger">
             <ul>
-                <?php foreach ($errors as $error): ?>
+                <?php foreach($errors as $error): ?>
                     <li><?= htmlspecialchars($error) ?></li>
                 <?php endforeach; ?>
             </ul>

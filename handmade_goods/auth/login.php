@@ -7,15 +7,21 @@ if (!isset($_SESSION["user_id"]) && isset($_COOKIE["remember_token"])) {
     $token = $_COOKIE["remember_token"];
     $email = $_COOKIE["user_email"];
 
-    $stmt = $conn->prepare("SELECT id FROM USERS WHERE email = ? AND remember_token = ?");
+    $stmt = $conn->prepare("SELECT id, name, user_type, profile_picture, is_frozen FROM USERS WHERE email = ? AND remember_token = ?");
     $stmt->bind_param("ss", $email, $token);
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
 
     if ($user) {
+        // Store account status in session
         $_SESSION["user_id"] = $user["id"];
-        $_SESSION["user_email"] = $email;
+        $_SESSION["email"] = $email;
+        $_SESSION["user_name"] = htmlspecialchars($user["name"], ENT_QUOTES, 'UTF-8');
+        $_SESSION["user_type"] = $user["user_type"];
+        $_SESSION["profile_picture"] = $user["profile_picture"];
+        $_SESSION["is_frozen"] = $user["is_frozen"];
+        
         header("Location: /cosc-360-project/handmade_goods/pages/home.php");
         exit();
     }
@@ -57,6 +63,8 @@ if (!isset($_SESSION["user_id"]) && isset($_COOKIE["remember_token"])) {
                     echo "No user found with that email.";
                 } elseif ($_GET["error"] == "invalid") {
                     echo "Invalid email or password.";
+                } elseif ($_GET["error"] == "account_frozen") {
+                    echo "Your account has been frozen by an administrator. Please contact support for assistance.";
                 }
                 echo '</p>';
             }

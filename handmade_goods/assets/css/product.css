@@ -3,7 +3,7 @@
     width: 80%;
     display: flex;
     flex-direction: row;
-    gap: 40px;
+    gap: 20px;
     margin-bottom: 4em;
 }
 
@@ -289,6 +289,20 @@ main section.main nav.breadcrumb-nav {
 .m-btn {
     white-space: nowrap;
     width: 100%;
+}
+
+.frozen-product {
+    filter: grayscale(60%) contrast(80%);
+}
+
+.frozen-label {
+    display: inline-block;
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    margin: 0;
 }
 
 @media (max-width: 1120px) {

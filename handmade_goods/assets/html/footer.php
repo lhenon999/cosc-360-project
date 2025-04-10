@@ -14,7 +14,6 @@
             <strong>Email:</strong> <a href="mailto:info@handmadegoods.com">info@handmadegoods.com</a>
         </p>
         <p>3333 University Way, Kelowna, BC, Canada</p>
-            
         </div>
     </div>
 
@@ -37,7 +36,6 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
 <script>
 $(document).ready(function() {
     $('#contactModal').on('show.bs.modal', function () {

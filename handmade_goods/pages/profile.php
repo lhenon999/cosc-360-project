@@ -16,12 +16,13 @@ if (isset($_SESSION['success'])) {
 }
 
 $user_id = intval($_SESSION["user_id"]);
-$stmt = $conn->prepare("SELECT name, email, profile_picture FROM USERS WHERE id = ?");
+$stmt = $conn->prepare("SELECT name, email, profile_picture, is_frozen FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
-$stmt->bind_result($name, $email, $profile_picture);
+$stmt->bind_result($name, $email, $profile_picture, $is_frozen);
 $stmt->fetch();
 $stmt->close();
+
 
 $all_users = [];
 if ($user_type === 'admin') {
@@ -32,6 +33,7 @@ if ($user_type === 'admin') {
             u.email, 
             u.user_type, 
             u.created_at,
+            u.is_frozen,
             (SELECT COUNT(*) FROM ORDERS WHERE user_id = u.id) as total_orders,
             (SELECT COUNT(*) FROM ITEMS WHERE user_id = u.id) as total_listings
         FROM USERS u
@@ -50,8 +52,6 @@ if ($user_type === 'admin') {
 
 $isAdvanced = isset($_GET['page']) && $_GET['page'] === 'advanced';
 $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
-
-
 ?>
 
 <!DOCTYPE html>
@@ -83,6 +83,13 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
 
     <div>
         <h1 class="text-center mt-5"><?php echo ($user_type === 'admin') ? 'Admin Dashboard' : 'My Profile'; ?></h1>
+        <?php if ($is_frozen == 1): ?>
+            <div class="alert alert-warning">
+                <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit or create new listings at this
+                time.
+            </div>
+        <?php endif; ?>
+
 
         <div class="profile-container">
             <div class="profile-header">
@@ -164,11 +171,131 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-                new bootstrap.Tooltip(tooltipTriggerEl);
+
+            document.querySelectorAll(".manage-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const userId = this.getAttribute("data-user-id");
+                    const userName = this.getAttribute("data-user-name");
+                    console.log("Direct click handler - user:", userId, userName);
+                    if (userId && userName) {
+                        showManageModal(userId, userName);
+                    }
+                });
+            });
+
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const itemId = this.getAttribute("data-item-id");
+                    console.log("Delete button clicked for item:", itemId);
+                    if (itemId) {
+                        showDeleteListingModal(itemId);
+                    }
+                });
+            });
+
+            document.querySelectorAll(".cancel-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const modal = this.closest(".modal");
+                    if (modal) modal.style.display = "none";
+                });
+            });
+
+            window.addEventListener("click", function (event) {
+                document.querySelectorAll(".modal").forEach(modal => {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                });
             });
         });
+    </script>
+    <script>
+        function openModal(modalId) {
+            let modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = "flex";
+                console.log("Opening modal:", modalId);
+            } else {
+                console.error("Modal not found:", modalId);
+            }
+        }
+
+        function closeModal(modalId) {
+            let modal = document.getElementById(modalId);
+            if (modal) modal.style.display = "none";
+        }
+
+        function showManageModal(userId, userName) {
+            console.log("Show manage modal for user:", userName, "ID:", userId);
+
+            // Set user ID
+            const freezeUserIdInput = document.getElementById("freezeUserId");
+            const unfreezeUserIdInput = document.getElementById("unfreezeUserId");
+            if (freezeUserIdInput) {
+                freezeUserIdInput.value = userId;
+            }
+            if (unfreezeUserIdInput) {
+                unfreezeUserIdInput.value = userId;
+            }
+
+            const deleteUserIdInput = document.getElementById("deleteUserIdFromManage");
+            if (deleteUserIdInput) {
+                deleteUserIdInput.value = userId;
+            } else {
+                console.error("deleteUserIdFromManage input not found");
+            }
+
+            // Set the account name
+            const accountNameSpan = document.getElementById("accountName");
+            if (accountNameSpan) {
+                accountNameSpan.innerText = userName;
+            } else {
+                console.error("accountName span not found");
+            }
+
+            // Check if user is frozen and show appropriate button
+            let isFrozen = false;
+
+            <?php if (!empty($all_users)): ?>
+                <?php foreach ($all_users as $user): ?>
+                    if (<?= $user['id'] ?> == userId) {
+                        isFrozen = <?= $user['is_frozen'] ? 'true' : 'false' ?>;
+                    }
+                <?php endforeach; ?>
+            <?php endif; ?>
+
+            const freezeForm = document.getElementById("freezeForm");
+            const unfreezeForm = document.getElementById("unfreezeForm");
+            const statusMessage = document.getElementById("accountStatusMessage");
+
+            if (isFrozen) {
+                freezeForm.style.display = "none";
+                unfreezeForm.style.display = "block";
+                statusMessage.textContent = "This account is currently frozen. No products from this account are visible to other users.";
+            } else {
+                freezeForm.style.display = "block";
+                unfreezeForm.style.display = "none";
+                statusMessage.textContent = "Freezing an account blocks all listings and orders.";
+            }
+
+            openModal("manageModal");
+        }
+
+        function showDeleteUserModal(userId) {
+            document.getElementById("deleteUserId").value = userId;
+            openModal("deleteUserModal");
+        }
+
+        function showDeleteListingModal(itemId) {
+            console.log("Show delete listing modal for ID:", itemId);
+            const deleteItemInput = document.getElementById("deleteListingItemId");
+            if (deleteItemInput) {
+                deleteItemInput.value = itemId;
+                openModal("deleteListingModal");
+            } else {
+                console.error("deleteListingItemId input not found");
+            }
+        }
     </script>
 </body>
 

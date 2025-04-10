@@ -12,11 +12,10 @@ $from_profile_listings = isset($_GET['from']) && $_GET['from'] === 'profile_list
 $from_profile_listings_user = isset($_GET['from']) && $_GET['from'] === 'profile_listing_users';
 $from_profile_users = isset($_GET['from']) && $_GET['from'] === 'profile_users';
 $ref = isset($_GET['ref']) ? $_GET['ref'] : null;
-
-
 $user_id = intval($_GET['id']);
 
-$query = "SELECT name, email, profile_picture FROM USERS WHERE id = ?";
+
+$query = "SELECT name, email, profile_picture, is_frozen FROM USERS WHERE id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -27,6 +26,8 @@ $stmt->close();
 if (!$user) {
     die("User not found.");
 }
+
+$user_frozen = isset($user['is_frozen']) && $user['is_frozen'] == 1;
 
 $first_name = explode(' ', trim($user['name']))[0];
 
@@ -116,7 +117,7 @@ $reviewsStmt->close();
 <body>
     <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
-    <main class="mt-5">
+    <main class="mt-5 <?= $user_frozen ? 'frozen-user' : '' ?>">
         <section class="profile-header">
             <img src="<?= htmlspecialchars($user['profile_picture']) ?>" alt="Profile Picture" class="profile-pic">
 
@@ -269,6 +270,9 @@ $reviewsStmt->close();
                     </div>
                 </div>
             </section>
+        <?php endif; ?>
+        <?php if ($user_frozen): ?>
+            <p class="frozen-label">This account is frozen due to account restrictions.</p>
         <?php endif; ?>
     </main>
 
