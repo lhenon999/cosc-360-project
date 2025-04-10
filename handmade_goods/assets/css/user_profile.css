@@ -11,6 +11,7 @@ main {
 .reviews-containers {
     width: 100%;
     display: flex;
+    flex-direction: row;
     flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
@@ -76,6 +77,7 @@ main {
     height: 280px;
     border-radius: 50%;
     object-fit: cover;
+    border: #DDD 1px solid;
 }
 
 
@@ -130,6 +132,10 @@ main {
     max-width: 350px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
 }
 
 .reviews-summary {
@@ -236,8 +242,7 @@ main {
     align-items: center;
     gap: 8px;
     margin-bottom: 20px;
-  }
-  
+}
 
 .bg-dark .reviews-summary, .bg-dark .rating-summary{
     background: #2a2a2a;
@@ -330,43 +335,89 @@ main {
     color: white;
 }
 
-/* Dark Mode Overrides */
 .bg-dark .listings-container {
     background: #2b2b2b;
     color: #e0e0e0;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  }
-  
-  .bg-dark .profile-header {
+}
+
+.bg-dark .profile-header {
     background: #2a2a2a;
     color: #e0e0e0;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  }
-  
-  .bg-dark .product-card {
+}
+
+.bg-dark .product-card {
     background: #2a2a2a;
     border: 1px solid #444;
     color: #e0e0e0;
-  }
-  
-  .bg-dark .reviews-summary-outer {
+}
+
+.bg-dark .reviews-summary-outer {
     background: #2b2b2b;
     color: #fff;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  }
-  
-  .bg-dark .single-review {
+}
+
+.bg-dark .single-review {
     background-color: #1e1e1e;
     border: none;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  }
-  
-  .bg-dark .manage-btn {
+}
+
+.bg-dark .manage-btn {
     color: #fff;
     border: 1px solid #fff;
-  }
+}
 
-  .bg-dark .scrollable-container{
+.bg-dark .scrollable-container{
     background-color: transparent !important;
-  }
-  
+}
+
+.frozen-user {
+    filter: grayscale(60%) contrast(80%);
+}
+
+.frozen-label {
+    display: inline-block;
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+@media(max-width: 890px) {
+    main {
+        width: 90%;
+    }
+
+    .profile-pic {
+        width: 160px;
+        height: 160px;
+    }
+
+    .profile-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .reviews-containers {
+        flex-direction: column;
+    }
+
+    .rating-summary {
+        max-width: unset;
+        width: 100%;
+    }
+
+    .reviews-summary-outer {
+        width: 100%;
+        min-width: unset;
+        overflow-x: scroll;
+    }
+}

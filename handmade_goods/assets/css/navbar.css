@@ -1,4 +1,4 @@
-@media (max-width: 880px) {
+@media (max-width: 890px) {
     nav {
         position: fixed;
         top: 0;
@@ -8,7 +8,7 @@
         flex-direction: column !important;
         align-items: center;
         justify-content: center !important;
-        padding: 2.5em;
+        padding: 2em;
         font-size: 1.2em;
         gap: 3em !important;
         z-index: 100;
@@ -60,7 +60,7 @@
     .dropdown-content {
         position: static;
         box-shadow: none;
-        background-color: transparent;
+        background-color: white;
         min-width: 100%;
     }
 
@@ -68,7 +68,12 @@
         padding: 8px 0;
         text-align: center;
     }
+}
 
+@media (max-width: 1100px) {
+    #logo-text {
+        display: none;
+    }
 }
 
 #toggle-nav {
@@ -127,11 +132,8 @@ nav {
     color: #345418;
 }
 
-.logo {
-    margin: 0;
-    padding: 0;
-    margin-right: 4px;
-    padding-top: 2px;
+#logo {
+    margin: 0 4px 5px 0;
 }
 
 h3 {
@@ -176,6 +178,8 @@ h3 {
     display: flex;
     align-items: center;
     gap: 4px;
+    position: absolute;
+    z-index: 9999;
 }
 
 .material-symbols-outlined {
@@ -392,12 +396,15 @@ nav .navright form .search-button::-moz-focus-inner {
     position: relative;
     display: inline-block;
     color: #426B1F !important;
-    font-size: 1.8rem;
-    margin: 20px;
+    font-size: 1.25rem;
     padding: 0;
     background: transparent;
     box-shadow: none;
     max-height: 50px;
+    border: none;
+    font-size: 1.5rem;
+    margin: 0px;
+    margin-left: 15px;
 }
 
 #basket-btn .badge {
@@ -429,23 +436,24 @@ nav .navright form .search-button::-moz-focus-inner {
     position: absolute !important;
     top: 100%;
     right: 0;
-    background-color: #f8f8f8;
     min-width: 600px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 16px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
     z-index: 1;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.2s ease-in-out;
-    transition-delay: 0.4s;
+    background-color: white;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    transition-delay: 0.3s;
+    transform: translateY(-10px);
     align-items: center;
     z-index: 9999;
 }
 
 .dropdown:hover .overview-content {
     opacity: 1;
+    transform: translateY(0);
     pointer-events: auto;
-    transition-delay: 1s;
 }
 
 .dropdown.overview {
@@ -486,27 +494,48 @@ nav .navright form .search-button::-moz-focus-inner {
     background-color: #2b2b2b;
     color: #e0e0e0;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  }
-  
-  .bg-dark .basket-item img {
+}
+
+.bg-dark .basket-item img {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  }
-  
-  .bg-dark .basket-details h5 {
+}
+
+.bg-dark .basket-details h5 {
     color: #fff;
     text-align: left;
-  }
-  
-  .bg-dark .basket-details p {
+}
+
+.bg-dark .basket-details p {
     color: #ccc;
-  }
-  
-  .bg-dark .total-label {
+}
+
+.bg-dark .total-label {
     color: #fff;
     text-align: right;
-  }
+}
 
-  .bg-dark .overview-content{
+.bg-dark .overview-content{
     background-color: #1e1e1e;
-  }
-  
+}
+
+nav .mobile-only {
+    display: none;
+}
+
+nav .desktop-only {
+    display: block;
+}
+
+@media (max-width: 890px) {
+    nav .mobile-only {
+        display: block;
+    }
+
+    nav .desktop-only {
+        display: none;
+    }
+
+    nav {
+        z-index: 100;
+    }
+}

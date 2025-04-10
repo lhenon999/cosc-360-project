@@ -14,17 +14,19 @@
 
     $user_id = intval($_POST['user_id']);
 
-    $stmt = $conn->prepare("UPDATE USERS SET is_frozen = 1 WHERE id = ?");
+    // Set is_frozen to 0 (unfrozen)
+    $stmt = $conn->prepare("UPDATE USERS SET is_frozen = 0 WHERE id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $stmt->close();
 
-    $stmt = $conn->prepare("UPDATE ITEMS SET status = 'inactive' WHERE user_id = ?");
+    // Reactivate all the user's listings
+    $stmt = $conn->prepare("UPDATE ITEMS SET status = 'active' WHERE user_id = ? AND status = 'inactive'");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $stmt->close();
 
-    $_SESSION['success'] = "User account and listings have been frozen.";
+    $_SESSION['success'] = "User account has been unfrozen and listings have been reactivated.";
     header("Location: /cosc-360-project/handmade_goods/pages/profile.php#users");
     exit();
 ?>

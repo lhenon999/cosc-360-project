@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
         targetTab.style.visibility = "visible";
         targetTab.style.opacity = "0";
         targetTab.style.transform = "translateX(50px)";
-        targetTab.offsetHeight; // force reflow
+        targetTab.offsetHeight;
         targetTab.style.transition = "opacity 0.6s ease-in-out, transform 0.6s ease-out";
         targetTab.style.opacity = "1";
         targetTab.style.transform = "translateX(0)";

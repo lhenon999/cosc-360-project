@@ -7,6 +7,13 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
+$is_frozen = isset($_SESSION["is_frozen"]) && $_SESSION["is_frozen"] == 1;
+if ($is_frozen) {
+    $_SESSION['error'] = "Your account is currently frozen. You cannot edit listings at this time.";
+    header("Location: my_shop.php");
+    exit();
+}
+
 if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
     header("Location: my_shop.php");
     exit();
@@ -187,7 +194,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 </div>
 
-                <div class="d-flex justify-content-center gap-3 mb-3">
+                <div class="buttons-div">
                     <a class="m-btn" href="my_shop.php">
                         <span class="material-symbols-outlined">close</span> Cancel
                     </a>
