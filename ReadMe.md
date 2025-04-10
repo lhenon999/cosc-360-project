@@ -59,6 +59,8 @@ Import the following SQL files in order:
 1. `init.sql`
 2. `populate_items.sql`
 3. `populate_users.sql`
+4. `generate_sales.sql`
+4. `generate_reviews.sql`
 
 ### 6. Test the Site
 
