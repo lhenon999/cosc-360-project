@@ -162,9 +162,7 @@
 
                 <form id="unfreezeForm" method="POST" action="unfreeze_account.php" style="display: none;">
                     <input type="hidden" name="user_id" id="unfreezeUserId">
-                    <button type="submit" class="unfreeze-btn"
-                        style="background-color: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Unfreeze
-                        Account</button>
+                    <button type="submit" class="freeze-btn uf">Restore Account</button>
                 </form>
 
                 <form id="deleteUserFormFromManage" method="POST" action="delete_user.php">

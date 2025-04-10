@@ -2,11 +2,6 @@
 session_start();
 require_once __DIR__ . '/../config.php';
 
-// Add cache control headers to prevent caching
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
     exit();
@@ -15,18 +10,11 @@ if (!isset($_SESSION["user_id"])) {
 $user_id = $_SESSION["user_id"];
 $user_type = $_SESSION["user_type"];
 
-// Display success/error messages
 if (isset($_SESSION['success'])) {
     echo '<div class="alert alert-success">' . $_SESSION['success'] . '</div>';
     unset($_SESSION['success']);
 }
 
-if (isset($_SESSION['error'])) {
-    echo '<div class="alert alert-danger">' . $_SESSION['error'] . '</div>';
-    unset($_SESSION['error']);
-}
-
-// Get user information
 $user_id = intval($_SESSION["user_id"]);
 $stmt = $conn->prepare("SELECT name, email, profile_picture, is_frozen FROM USERS WHERE id = ?");
 $stmt->bind_param("i", $user_id);
@@ -161,10 +149,6 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
             <?php else: ?>
                 <?php include __DIR__ . '/profile_user_dashboard.php'; ?>
             <?php endif; ?>
-
-
-
-
         </div>
     </div>
     <script>
@@ -172,12 +156,61 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
             document.getElementById("profilePicForm").submit();
         });
     </script>
-    <!-- Load jQuery first to ensure it's available -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-    <!-- Make modal functions globally available -->
+    <script src="../assets/js/profile_tab_switching.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>const totalEarnings = <?= json_encode($totalEarnings) ?>;</script>
+    <script src="../assets/js/profile_earnings_chart.js"></script>
     <script>
-        // Global modal functions
+        let urlParams = new URLSearchParams(window.location.search);
+        let itemName = urlParams.get('item');
+        let userName = urlParams.get('user');
+        let userType = "<?= $user_type ?>";
+    </script>
+    <script src="../assets/js/admin_manage_listing.js"></script>
+
+    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            document.querySelectorAll(".manage-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const userId = this.getAttribute("data-user-id");
+                    const userName = this.getAttribute("data-user-name");
+                    console.log("Direct click handler - user:", userId, userName);
+                    if (userId && userName) {
+                        showManageModal(userId, userName);
+                    }
+                });
+            });
+
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const itemId = this.getAttribute("data-item-id");
+                    console.log("Delete button clicked for item:", itemId);
+                    if (itemId) {
+                        showDeleteListingModal(itemId);
+                    }
+                });
+            });
+
+            document.querySelectorAll(".cancel-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const modal = this.closest(".modal");
+                    if (modal) modal.style.display = "none";
+                });
+            });
+
+            window.addEventListener("click", function (event) {
+                document.querySelectorAll(".modal").forEach(modal => {
+                    if (event.target === modal) {
+                        modal.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
         function openModal(modalId) {
             let modal = document.getElementById(modalId);
             if (modal) {
@@ -196,7 +229,7 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
         function showManageModal(userId, userName) {
             console.log("Show manage modal for user:", userName, "ID:", userId);
 
-            // Set user ID for freeze/unfreeze account forms
+            // Set user ID
             const freezeUserIdInput = document.getElementById("freezeUserId");
             const unfreezeUserIdInput = document.getElementById("unfreezeUserId");
             if (freezeUserIdInput) {
@@ -206,7 +239,6 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
                 unfreezeUserIdInput.value = userId;
             }
 
-            // Set user ID for delete account form
             const deleteUserIdInput = document.getElementById("deleteUserIdFromManage");
             if (deleteUserIdInput) {
                 deleteUserIdInput.value = userId;
@@ -214,7 +246,7 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
                 console.error("deleteUserIdFromManage input not found");
             }
 
-            // Set the account name in the modal
+            // Set the account name
             const accountNameSpan = document.getElementById("accountName");
             if (accountNameSpan) {
                 accountNameSpan.innerText = userName;
@@ -225,7 +257,6 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
             // Check if user is frozen and show appropriate button
             let isFrozen = false;
 
-            // Find the user in the all_users array by userId
             <?php if (!empty($all_users)): ?>
                 <?php foreach ($all_users as $user): ?>
                     if (<?= $user['id'] ?> == userId) {
@@ -234,7 +265,6 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
                 <?php endforeach; ?>
             <?php endif; ?>
 
-            // Show/hide appropriate buttons and update message
             const freezeForm = document.getElementById("freezeForm");
             const unfreezeForm = document.getElementById("unfreezeForm");
             const statusMessage = document.getElementById("accountStatusMessage");
@@ -267,71 +297,6 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
                 console.error("deleteListingItemId input not found");
             }
         }
-    </script>
-
-    <!-- Load other scripts -->
-    <script src="../assets/js/profile_tab_switching.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>const totalEarnings = <?= json_encode($totalEarnings) ?>;</script>
-    <script src="../assets/js/profile_earnings_chart.js"></script>
-    <script>
-        let urlParams = new URLSearchParams(window.location.search);
-        let itemName = urlParams.get('item');
-        let userName = urlParams.get('user');
-        let userType = "<?= $user_type ?>";
-    </script>
-    <script src="../assets/js/admin_manage_listing.js"></script>
-
-    <?php include __DIR__ . '/../assets/html/footer.php'; ?>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Initialize tooltips
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
-                new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-
-            // Add direct event handlers to modal buttons after DOM is fully loaded
-            document.querySelectorAll(".manage-btn").forEach(button => {
-                button.addEventListener("click", function () {
-                    const userId = this.getAttribute("data-user-id");
-                    const userName = this.getAttribute("data-user-name");
-                    console.log("Direct click handler - user:", userId, userName);
-                    if (userId && userName) {
-                        showManageModal(userId, userName);
-                    }
-                });
-            });
-
-            // Add event handlers for delete listing buttons
-            document.querySelectorAll(".delete-btn").forEach(button => {
-                button.addEventListener("click", function () {
-                    const itemId = this.getAttribute("data-item-id");
-                    console.log("Delete button clicked for item:", itemId);
-                    if (itemId) {
-                        showDeleteListingModal(itemId);
-                    }
-                });
-            });
-
-            // Handle modal cancellation
-            document.querySelectorAll(".cancel-btn").forEach(button => {
-                button.addEventListener("click", function () {
-                    const modal = this.closest(".modal");
-                    if (modal) modal.style.display = "none";
-                });
-            });
-
-            // Close modal when clicking outside
-            window.addEventListener("click", function (event) {
-                document.querySelectorAll(".modal").forEach(modal => {
-                    if (event.target === modal) {
-                        modal.style.display = "none";
-                    }
-                });
-            });
-        });
     </script>
 </body>
 
