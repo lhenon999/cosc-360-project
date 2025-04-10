@@ -102,18 +102,3 @@ The system will automatically:
 
 You can check the webhook status in the logs at:
 `/logs/stripe_cli.log`
-
-### Troubleshooting
-
-1. **Webhook Not Starting:**
-   - Check the logs in `logs/stripe_cli.log`
-   - Ensure PHP has permissions to execute commands
-   - On macOS/Linux, ensure the Stripe CLI binary is executable
-
-2. **Permission Issues (macOS/Linux):**
-   - Run the chmod commands in section 3
-   - Ensure your web server user has write access to logs and bin directories
-
-3. **Port Conflicts:**
-   - Default webhook uses port 3000
-   - If port 3000 is in use, edit stripe_cli_manager.php to use a different port
