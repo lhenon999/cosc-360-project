@@ -170,20 +170,34 @@ if ($session_user_id !== null) {
                     <p class="mt-4"><?= $description ?></p>
 
                     <?php if (!$from_profile): ?>
-                        <a href="user_profile.php?id=<?= $user_id ?>&from_product=product.php?id=<?= $product_id ?>"
-                            class="seller-info hover-raise">
-                            <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
-                                class="rounded-circle" width="50" height="50">
-                            <p class="ms-3 mb-0">
-                                Sold by <strong><?= htmlspecialchars($seller['name']) ?></strong>
-                            </p>
-                        </a>
+                        <?php if (!$from_profile): ?>
+                            <?php if ($session_user_id === $user_id): ?>
+                                <div class="seller-info">
+                                    <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Your Profile"
+                                        class="rounded-circle" width="50" height="50">
+                                    <p class="ms-3 mb-0">
+                                        <strong>Your Listing</strong>
+                                    </p>
+                                </div>
+                            <?php else: ?>
+                                <a href="user_profile.php?id=<?= $user_id ?>&from_product=product.php?id=<?= $product_id ?>"
+                                    class="seller-info hover-raise">
+                                    <img src="<?= htmlspecialchars($seller['profile_picture']) ?>" alt="Seller Profile"
+                                        class="rounded-circle" width="50" height="50">
+                                    <p class="ms-3 mb-0">
+                                        Sold by <strong><?= htmlspecialchars($seller['name']) ?></strong>
+                                    </p>
+                                </a>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
                     <?php endif; ?>
 
                     <?php if ($session_user_id !== null && $session_user_id === $user_id): ?>
                         <?php if ($is_frozen): ?>
                             <div class="alert alert-warning">
-                                <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit your listings at
+                                <strong>Account Notice:</strong> Your account is currently frozen. You cannot edit your listings
+                                at
                                 this time.
                             </div>
                             <button class="m-btn g atc" disabled style="opacity: 0.6; cursor: not-allowed;">
@@ -273,7 +287,7 @@ if ($session_user_id !== null) {
                                         <label for="star1">★</label>
                                     </div>
                                 </div>
-                                <button type="submit" class="m-btn w-40">
+                                <button type="submit" class="m-btn g w-40">
                                     <span class="material-symbols-outlined">check</span>Submit Review
                                 </button>
                             </form>
@@ -293,40 +307,51 @@ if ($session_user_id !== null) {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const comment = document.getElementById('comment');
+            const ratingInputs = document.querySelectorAll('input[name="rating"]');
             const submitButton = document.querySelector('.add-review-form button[type="submit"]');
 
             submitButton.disabled = true;
 
-            function checkCommentLength() {
-                if (comment.value.trim().length >= 10) {
-                    submitButton.disabled = false;
-                } else {
-                    submitButton.disabled = true;
-                }
+            function checkFormValidity() {
+                const commentValid = comment.value.trim().length >= 10;
+
+                let ratingSelected = false;
+                ratingInputs.forEach(input => {
+                    if (input.checked) {
+                        ratingSelected = true;
+                    }
+                });
+
+                submitButton.disabled = !(commentValid && ratingSelected);
             }
 
-            comment.addEventListener('input', checkCommentLength);
-        });
-    </script>
-    <?php if ($product_frozen): ?>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.m-btn').forEach(function (btn) {
-                if (!btn.classList.contains('keep-active')) {
-                    if (btn.tagName.toLowerCase() === 'button') {
-                        btn.disabled = true;
-                    } else {
-                        btn.removeAttribute('href');
-                        btn.style.pointerEvents = 'none';
-                    }
-                    btn.style.opacity = "0.6";
-                    btn.style.cursor = "not-allowed";
-                }
+            comment.addEventListener('input', checkFormValidity);
+
+            ratingInputs.forEach(input => {
+                input.addEventListener('change', checkFormValidity);
             });
         });
     </script>
-<?php endif; ?>
-<script src="../assets/js/product_reviews.js"></script>
+
+    <?php if ($product_frozen): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.m-btn').forEach(function (btn) {
+                    if (!btn.classList.contains('keep-active')) {
+                        if (btn.tagName.toLowerCase() === 'button') {
+                            btn.disabled = true;
+                        } else {
+                            btn.removeAttribute('href');
+                            btn.style.pointerEvents = 'none';
+                        }
+                        btn.style.opacity = "0.6";
+                        btn.style.cursor = "not-allowed";
+                    }
+                });
+            });
+        </script>
+    <?php endif; ?>
+    <script src="../assets/js/product_reviews.js"></script>
 </body>
 
 </html>
