@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="text-center d-flex align-items-center justify-content-center mt-5 w-100">
-            <button type="submit" class="m-btn w-100">Submit</button>
+            <button type="submit" class="m-btn g" style="width: 96%;">Submit</button>
         </div>
 
         <div class="status-message text-center mt-3 w-100" id="formStatus"></div>

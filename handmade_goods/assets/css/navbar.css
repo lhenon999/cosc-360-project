@@ -402,6 +402,9 @@ nav .navright form .search-button::-moz-focus-inner {
     box-shadow: none;
     max-height: 50px;
     border: none;
+    font-size: 1.5rem;
+    margin: 0px;
+    margin-left: 15px;
 }
 
 #basket-btn .badge {
@@ -440,7 +443,6 @@ nav .navright form .search-button::-moz-focus-inner {
     opacity: 0;
     pointer-events: none;
     background-color: white;
-    border: 2px solid #DDD;
     transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
     transition-delay: 0.3s;
     transform: translateY(-10px);

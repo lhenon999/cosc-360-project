@@ -245,3 +245,9 @@
         display: none;
     }
 }
+
+.alert.short{
+    width: 80%;
+    align-self: center;
+    justify-self: center;
+}
