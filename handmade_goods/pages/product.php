@@ -112,13 +112,13 @@ if ($session_user_id !== null) {
     <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
     <main>
+        <?php if ($product_frozen): ?>
+            <p class="frozen-label">This product is frozen due to account restrictions.</p>
+        <?php endif; ?>
         <div class="<?= $product_frozen ? 'frozen-product' : '' ?>">
             <section class="main mt-5">
                 <div class="left">
                     <img src="<?= $image ?>" alt="<?= $name ?>">
-                    <?php if ($product_frozen): ?>
-                        <p class="frozen-label">This product is frozen due to account restrictions.</p>
-                    <?php endif; ?>
                 </div>
                 <div class="right">
                     <div aria-label="breadcrumb" class="breadcrumb-nav">

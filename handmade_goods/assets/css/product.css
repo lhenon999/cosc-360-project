@@ -300,10 +300,12 @@ main section.main nav.breadcrumb-nav {
     display: inline-block;
     background-color: #e74c3c;
     color: #fff;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 0.9em;
-    margin: 0;
+    padding: 12px;
+    text-align: center;
+    font-size: 1em;
+    width: 100%;
+    margin: auto;
+    font-weight: bold;
 }
 
 @media (max-width: 1120px) {
