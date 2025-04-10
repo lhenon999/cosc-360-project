@@ -122,6 +122,7 @@
 
 .inventory-table tr:hover, .users-table tr:hover {
     background-color: rgba(230, 230, 230, 0.8);
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
 }
 
@@ -196,7 +197,7 @@
     text-decoration: underline;
 }
 
-.modal {
+#manageModal.modal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -207,7 +208,7 @@
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+#manageModal .modal-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -221,14 +222,14 @@
     align-items: center;
 }
 
-.modal-account-name{
+#manageModal .modal-account-name{
     display: inline-block;
     word-wrap: break-word;
     max-width: 100%;
     white-space: normal;
 }
 
-.modal-buttons {
+#manageModal .modal-buttons {
     display: flex;
     justify-content: center;
     align-items: center;

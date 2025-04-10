@@ -187,3 +187,5 @@
         </form>
     </div>
 </div>
+
+<script src="../assets/js/profile_handle_modal.js"></script>

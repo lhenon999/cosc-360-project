@@ -121,6 +121,7 @@
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
+    -webkit-user-select: none;
     user-select: none;
     border: 1px solid transparent;
     padding: 0.375rem 0.75rem;
@@ -176,8 +177,7 @@ select.is-invalid ~ .invalid-feedback {
     display: block;
 }
 
-/* Confirmation modal styles */
-.modal-backdrop {
+.b-modal.modal-backdrop {
     position: fixed;
     top: 0;
     left: 0;
@@ -190,7 +190,7 @@ select.is-invalid ~ .invalid-feedback {
     align-items: center;
 }
 
-.modal-dialog {
+.b-modal.modal-dialog {
     background: white;
     border-radius: 5px;
     max-width: 500px;
@@ -198,25 +198,25 @@ select.is-invalid ~ .invalid-feedback {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
-.modal-content {
+.b-modal.modal-content {
     position: relative;
 }
 
-.modal-header {
+.b-modal.modal-header {
     padding: 15px;
     border-bottom: 1px solid #e9ecef;
 }
 
-.modal-title {
+.b-modal.modal-title {
     margin: 0;
     color: #333;
 }
 
-.modal-body {
+.b-modal.modal-body {
     padding: 15px;
 }
 
-.modal-footer {
+.b-modal.modal-footer {
     padding: 15px;
     border-top: 1px solid #e9ecef;
     text-align: right;

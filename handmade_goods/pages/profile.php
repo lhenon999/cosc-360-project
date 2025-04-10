@@ -148,7 +148,6 @@ $toggleLink = $isAdvanced ? 'profile.php' : 'profile.php?page=advanced';
             document.getElementById("profilePicForm").submit();
         });
     </script>
-    <script src="../assets/js/profile_handle_modal.js"></script>
     <script src="../assets/js/profile_tab_switching.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>const totalEarnings = <?= json_encode($totalEarnings) ?>;</script>

@@ -159,45 +159,6 @@ $total = $subtotal + $tax;
     <link rel="stylesheet" href="../assets/css/product_card.css">
     <link rel="stylesheet" href="../assets/css/form.css">
     <link rel="stylesheet" href="../assets/css/address-form.css">
-    <style>
-        .modal-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            display: none;
-        }
-        
-        .modal-dialog {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 1001;
-            width: 90%;
-            max-width: 400px;
-        }
-        
-        .modal-header {
-            margin-bottom: 15px;
-        }
-        
-        .modal-footer {
-            margin-top: 20px;
-            text-align: right;
-        }
-        
-        .modal-footer button {
-            margin-left: 10px;
-        }
-    </style>
 </head>
 
 <body>
@@ -902,16 +863,16 @@ $total = $subtotal + $tax;
 <?php include __DIR__ . '/../assets/html/footer.php'; ?>
 </body>
 
-<div class="modal-backdrop" id="deleteConfirmationModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Delete Address</h5>
+<div class="b-modal modal-backdrop" id="deleteConfirmationModal">
+    <div class="b-modal modal-dialog">
+        <div class="b-modal modal-content">
+            <div class="b-modal modal-header">
+                <h5 class="b-modal modal-title">Delete Address</h5>
             </div>
-            <div class="modal-body">
+            <div class="b-modal modal-body">
                 <p>Are you sure you want to delete this address?</p>
             </div>
-            <div class="modal-footer">
+            <div class="b-modal modal-footer">
                 <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
                 <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
             </div>
