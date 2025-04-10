@@ -1,11 +1,11 @@
 # README
 
-## Setup
-
 #### Requirements:
 
 - **XAMPP** (Apache, MySQL, PHP) for Windows/Linux
 - **PHP 7.4+** with `curl` extension enabled
+
+## Setup
 
 ### 1. Move the Project to the Web Server Directory
 
