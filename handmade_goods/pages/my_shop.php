@@ -9,7 +9,6 @@ if (!$is_logged_in) {
 
 include __DIR__ . '/../config.php';
 
-// Check if the account is frozen
 $is_frozen = isset($_SESSION["is_frozen"]) && $_SESSION["is_frozen"] == 1;
 
 $user_email = $_SESSION["user_id"];

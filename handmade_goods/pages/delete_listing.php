@@ -17,9 +17,6 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST" || !isset($_POST["item_id"])) {
 
 $item_id = intval($_POST["item_id"]);
 
-// For debugging
-error_log("Attempting to delete item ID: " . $item_id);
-
 // Start transaction to ensure data consistency
 $conn->begin_transaction();
 
@@ -94,9 +91,5 @@ while (ob_get_level()) {
     ob_end_clean();
 }
 
-// Redirect with proper cache control
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
 header("Location: profile.php#listings");
 exit();

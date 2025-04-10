@@ -7,7 +7,6 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
-// Check if the user account is frozen
 $is_frozen = isset($_SESSION["is_frozen"]) && $_SESSION["is_frozen"] == 1;
 if ($is_frozen) {
     $_SESSION['error'] = "Your account is currently frozen. You cannot edit listings at this time.";

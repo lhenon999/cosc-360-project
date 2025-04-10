@@ -2,12 +2,6 @@
     session_start();
     include __DIR__ . '/../config.php';
 
-    // Check if the user is an admin
-    if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
-        header("Location: ../index.php");
-        exit();
-    }
-
     // Check if a user ID was provided
     if (!isset($_POST['user_id']) || !is_numeric($_POST['user_id'])) {
         $_SESSION['error'] = "Invalid user ID provided.";
@@ -50,16 +44,7 @@
         $stmt->execute();
         $stmt->close();
 
-        // Delete user's password resets if any - using the email directly instead of a subquery
-        if (!empty($user_email)) {
-            $stmt = $conn->prepare("DELETE FROM PASSWORD_RESETS WHERE email = ?");
-            $stmt->bind_param("s", $user_email);
-            $stmt->execute();
-            $stmt->close();
-        }
-
         // Delete the user's orders
-        // First get all order IDs
         $stmt = $conn->prepare("SELECT id FROM ORDERS WHERE user_id = ?");
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
@@ -105,4 +90,3 @@
         header("Location: profile.php");
         exit();
     }
-?>

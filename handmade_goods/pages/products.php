@@ -30,7 +30,6 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $results["products"] = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
 
-
     // for users
     $query = "SELECT id, name, profile_picture FROM USERS WHERE (name LIKE ? OR email LIKE ?) AND user_type != 'admin' LIMIT 5";
     $stmt = $conn->prepare($query);

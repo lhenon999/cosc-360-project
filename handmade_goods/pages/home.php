@@ -71,7 +71,6 @@ include __DIR__ . '/../config.php';
             <div class="product-cards-container" id="product-cards-container">
                 <?php
                 try {
-                    // Updated query to exclude products from frozen accounts
                     $stmt = $conn->prepare("
                         SELECT i.id, i.name, i.price, i.img, i.stock 
                         FROM ITEMS i

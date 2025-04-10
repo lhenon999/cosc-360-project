@@ -49,7 +49,6 @@ $product_frozen = isset($seller['is_frozen']) && $seller['is_frozen'] == 1;
 $first_name = isset($seller['name']) ? explode(' ', trim($seller['name']))[0] : 'Seller';
 $sellerProfileUrl = "user_profile.php?id=" . $user_id . "&from_product=product.php?id=" . $product_id;
 
-// Check if the user account is frozen
 $is_frozen = isset($_SESSION["is_frozen"]) && $_SESSION["is_frozen"] == 1;
 
 $stmt = $conn->prepare("SELECT r.rating, r.comment, u.id AS user_id, u.name, u.profile_picture 
