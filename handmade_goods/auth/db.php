@@ -6,10 +6,14 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/../config.php';
 session_regenerate_id(true);
 
+echo "<script>console.log('db.php loaded');</script>";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    echo "<script>console.log('POST request received');</script>";
 
     // Register 
     if (isset($_POST["register"])) {
+        echo "<script>console.log('Registering new user');</script>";
         $name = trim($_POST["full_name"]);
         $email = trim($_POST["email"]);
         $password = $_POST["password"];
@@ -112,6 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Login
         if (isset($_POST["login"])) {
+            echo "<script>console.log('Loggin in user');</script>";
             $email = trim($_POST["email"]);
             $password = $_POST["password"];
             $remember = isset($_POST["remember"]); 
@@ -155,14 +160,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $log_stmt->bind_param("iss", $user_id, $ip_address, $user_agent);
                     $log_stmt->execute();
                     $log_stmt->close();
-
+                    
+                    echo "<script>console.log('Login successful, redirecting');</script>";
                     header("Location: https://cosc360.ok.ubc.ca/~rsodhi03/cosc-360-project/handmade_goods/pages/home.php");
                     exit();
                 } else {
+                    echo "<script>console.log('Invalid pass');</script>";
                     header("Location: /cosc-360-project/handmade_goods/auth/login.php?error=invalid");
                     exit();
                 }
             } else {
+                echo "<script>console.log('No such user');</script>";
                 header("Location: https://cosc360.ok.ubc.ca/~rsodhi03/cosc-360-project/handmade_goods/auth/login.php?error=nouser");
                 exit();
             }
