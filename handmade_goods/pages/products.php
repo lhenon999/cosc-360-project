@@ -197,8 +197,11 @@ $rating_stmt->close();
 <body>
     <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
 
-    <h1 class="text-center">Explore Our Products!</h1>
-    <p class="text-center">Browse our collection and discover what suits you</p>
+    <?php if (!empty($products)): ?>
+        <h1 class="text-center">Explore Our Products!</h1>
+        <p class="text-center">Browse our collection and discover what suits you</p>
+    <?php endif; ?>
+
 
     <main class="mt-5">
         <div class="mobile-only" id="toggle-filters">
@@ -289,18 +292,18 @@ $rating_stmt->close();
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-        const toggleBtn = document.getElementById("toggle-filters");
-        const sidebar = document.querySelector(".sidebar");
+            const toggleBtn = document.getElementById("toggle-filters");
+            const sidebar = document.querySelector(".sidebar");
 
-        toggleBtn.addEventListener("click", function () {
-            if (window.innerWidth <= 680) {
-                sidebar.classList.toggle("show");
+            toggleBtn.addEventListener("click", function () {
+                if (window.innerWidth <= 680) {
+                    sidebar.classList.toggle("show");
 
-                const icon = this.querySelector(".material-symbols-outlined");
-                icon.textContent = sidebar.classList.contains("show") ? "keyboard_arrow_up" : "keyboard_arrow_down";
-            }
+                    const icon = this.querySelector(".material-symbols-outlined");
+                    icon.textContent = sidebar.classList.contains("show") ? "keyboard_arrow_up" : "keyboard_arrow_down";
+                }
+            });
         });
-    });
 
         // validation for price filters
         const priceFrom = document.getElementById('price-from');
