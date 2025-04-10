@@ -1,3 +1,4 @@
+use rsodhi03;
 INSERT INTO REVIEWS (item_id, user_id, rating, comment)
 VALUES
   (1, 2, 5, 'Great product!'),

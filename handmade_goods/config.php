@@ -1,12 +1,11 @@
 <?php
-// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "rsodhi03";
 $database = "rsodhi03";
 
 $conn = new mysqli($servername, $username, $password, $database);
