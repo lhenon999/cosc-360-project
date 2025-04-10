@@ -4,7 +4,6 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/../config.php';
-session_start();
 session_regenerate_id(true);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -157,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $log_stmt->execute();
                     $log_stmt->close();
 
-                    header("Location: http://localhost/cosc-360-project/handmade_goods/pages/home.php");
+                    header("Location: https://cosc360.ok.ubc.ca/~rsodhi03/cosc-360-project/handmade_goods/pages/home.php");
                     exit();
                 } else {
                     header("Location: /cosc-360-project/handmade_goods/auth/login.php?error=invalid");
