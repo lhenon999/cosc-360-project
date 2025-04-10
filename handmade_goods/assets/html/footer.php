@@ -16,15 +16,15 @@
             <p><a href="about.php">Learn More</a></p>
         </div>
 
-        <!-- <div class="footer-section">
-            <h3>Customer Support</h3>
+        <div class="footer-section">
+            <h3>Support</h3>
             <ul>
                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</a></li>
-                <li><a href="nf">Shipping & Returns</a></li>
-                <li><a href="nf">FAQs</a></li>
-                <li><a href="nf">Terms & Conditions</a></li>
+                <!-- <li><a href="nf">Shipping & Returns</a></li> -->
+                <!-- <li><a href="nf">FAQs</a></li> -->
+                <!-- <li><a href="nf">Terms & Conditions</a></li> -->
             </ul>
-        </div> -->
+        </div>
     </div>
 
     <div class="footer-bottom">
@@ -46,7 +46,6 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
 <script>
 $(document).ready(function() {
     $('#contactModal').on('show.bs.modal', function () {

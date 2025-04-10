@@ -18,7 +18,11 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
     $results = ["products" => [], "users" => [], "categories" => []];
 
     // for products
-    $query = "SELECT id, name, img, user_id FROM ITEMS WHERE name LIKE ? LIMIT 5";
+    $query = "SELECT i.id, i.name, i.img, i.user_id 
+        FROM ITEMS i 
+        JOIN USERS u ON i.user_id = u.id 
+        WHERE i.name LIKE ? AND u.is_frozen = 0 
+        LIMIT 5";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("s", $search_param);
     $stmt->execute();
@@ -51,12 +55,44 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == 'true') {
 // Build the base query
 $query = "SELECT DISTINCT i.id, i.name, i.img, i.user_id, i.price, i.stock, IFNULL(AVG(r.rating), 0) as avg_rating 
         FROM ITEMS i 
-        LEFT JOIN REVIEWS r ON i.id = r.item_id";
+        LEFT JOIN REVIEWS r ON i.id = r.item_id
+        LEFT JOIN USERS u ON i.user_id = u.id";
 
 // Start WHERE clause
 $where_conditions = [];
 $params = [];
 $types = "";
+
+// First check if the current user's account is frozen
+$is_user_frozen = false;
+if (isset($_SESSION["user_id"])) {
+    $user_id = $_SESSION["user_id"];
+    $check_frozen_stmt = $conn->prepare("SELECT is_frozen FROM USERS WHERE id = ?");
+    $check_frozen_stmt->bind_param("i", $user_id);
+    $check_frozen_stmt->execute();
+    $check_frozen_stmt->bind_result($is_frozen);
+    $check_frozen_stmt->fetch();
+    $check_frozen_stmt->close();
+    $is_user_frozen = ($is_frozen == 1);
+}
+
+// Filter listings based on frozen status
+if (isset($_SESSION["user_id"])) {
+    if ($is_user_frozen) {
+        // If user is frozen, don't show their own listings in products page
+        $where_conditions[] = "(u.is_frozen = 0 OR (i.user_id = ? AND u.is_frozen = 0))";
+        $params[] = $_SESSION["user_id"];
+        $types .= "i";
+    } else {
+        // If user is not frozen, show their listings and other non-frozen users' listings
+        $where_conditions[] = "(u.is_frozen = 0 OR i.user_id = ?)";
+        $params[] = $_SESSION["user_id"];
+        $types .= "i";
+    }
+} else {
+    // If not logged in, never show frozen account listings
+    $where_conditions[] = "u.is_frozen = 0";
+}
 
 // Add category filter with exact matching
 if ($category_filter !== null && trim($category_filter) !== '') {
@@ -192,12 +228,14 @@ $rating_stmt->close();
                     <h4>Price Range</h4>
                     <label class="price-label">
                         <span>Min $</span>
-                        <input type="number" name="price-from" id="price-from" placeholder="Min Price" min="0" value="<?= htmlspecialchars($price_from ?? '') ?>">
+                        <input type="number" name="price-from" id="price-from" placeholder="Min Price" min="0"
+                            value="<?= htmlspecialchars($price_from ?? '') ?>">
                     </label>
 
                     <label class="price-label">
-                    <span>Max $</span>
-                        <input type="number" name="price-to" id="price-to" placeholder="Max Price" min="0" value="<?= htmlspecialchars($price_to ?? '') ?>">
+                        <span>Max $</span>
+                        <input type="number" name="price-to" id="price-to" placeholder="Max Price" min="0"
+                            value="<?= htmlspecialchars($price_to ?? '') ?>">
                     </label>
 
                 </div>
@@ -216,8 +254,8 @@ $rating_stmt->close();
                         ★</label>
                 </div>
 
-
-                <a href="products.php" class="clear-filters">Clear Filters</a>
+                <button type="button" class="m-btn clear-filters" onclick="window.location.href='products.php'">Clear
+                    Filters</button>
             </form>
         </div>
 
@@ -235,7 +273,8 @@ $rating_stmt->close();
                     ?>
                 <?php endforeach; ?>
             <?php else: ?>
-                <div class="no-results text-center w-100 d-flex flex-column justify-content-center align-items-center h-100">
+                <div
+                    class="no-results text-center w-100 d-flex flex-column justify-content-center align-items-center h-100">
                     <p>No products found matching your criteria. Try adjusting search or filter parameters!</p>
                     <a href="products.php" class="cta hover-raise mt-5 clear-filters">Clear Filters</a>
                 </div>
@@ -295,5 +334,23 @@ $rating_stmt->close();
                 }, 1000);
             });
         });
+
+        // Clear filters button logic
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasCategory = urlParams.get('category') && urlParams.get('category').trim() !== '';
+        const hasPriceFrom = urlParams.get('price-from') && urlParams.get('price-from').trim() !== '';
+        const hasPriceTo = urlParams.get('price-to') && urlParams.get('price-to').trim() !== '';
+        const hasSearch = urlParams.get('search') && urlParams.get('search').trim() !== '';
+        const hasRating = urlParams.get('rating') && urlParams.get('rating').trim() !== '';
+
+        const clearBtn = document.querySelector('.clear-filters');
+
+        if (!(hasCategory || hasPriceFrom || hasPriceTo || hasSearch || hasRating)) {
+            clearBtn.disabled = true;
+        } else {
+            clearBtn.disabled = false;
+        }
     </script>
 </body>
+
+</html>

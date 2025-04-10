@@ -4,10 +4,9 @@ session_start();
 session_regenerate_id(true);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-// var_dump($_FILES);
-// exit();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     // Register 
     if (isset($_POST["register"])) {
         $name = trim($_POST["full_name"]);
@@ -53,38 +52,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $check->store_result();
 
         if ($check->num_rows > 0) {
-            header("Location: /~rsodhi03/cosc-360-project/handmade_goods/auth/register.php?error=email_taken");
+            header("Location: ../auth/register.php?error=email_taken&email=" . urlencode($email));
             exit();
         }
         $check->close();
 
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-        $stmt = $conn->prepare("INSERT INTO USERS (name, email, password, user_type, profile_picture) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $name, $email, $hashed_password, $user_type, $profile_picture);
+        try {
+            $stmt = $conn->prepare("INSERT INTO USERS (name, email, password, user_type, profile_picture) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssss", $name, $email, $hashed_password, $user_type, $profile_picture);
 
-        if ($stmt->execute()) {
-            $user_id = $stmt->insert_id;
-            $_SESSION["user_id"] = $user_id;
-            $_SESSION["email"] = $email;
-            $_SESSION["user_name"] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-            $_SESSION["user_type"] = $user_type;
-            $_SESSION["profile_picture"] = $profile_picture;
+            if ($stmt->execute()) {
+                $user_id = $stmt->insert_id;
+                $_SESSION["user_id"] = $user_id;
+                $_SESSION["email"] = $email;
+                $_SESSION["user_name"] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+                $_SESSION["user_type"] = $user_type;
+                $_SESSION["profile_picture"] = $profile_picture;
+                
+                // Log registration event
+                $ip_address = $_SERVER['REMOTE_ADDR'];
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                $log_stmt = $conn->prepare("INSERT INTO ACCOUNT_ACTIVITY (user_id, event_type, ip_address, user_agent) VALUES (?, 'registration', ?, ?)");
+                $log_stmt->bind_param("iss", $user_id, $ip_address, $user_agent);
+                $log_stmt->execute();
+                $log_stmt->close();
 
-            $api_key = "api-DFEA151D81194B3EB9B6CF30891D53A5";
-            $email_data = [
-                "api_key" => $api_key,
-                "sender" => "handmadegoods@mail2world.com",
-                "to" => [$email],
-                "subject" => "Welcome to Handmade Goods",
-                "html_body" => "<h1>Hello $name,</h1><p>Thank you for signing up! Welcome to Handmade Goods.</p>",
-            ];
+                $api_key = "api-DFEA151D81194B3EB9B6CF30891D53A5";
+                $email_data = [
+                    "api_key" => $api_key,
+                    "sender" => "handmadegoods@mail2world.com",
+                    "to" => [$email],
+                    "subject" => "Welcome to Handmade Goods",
+                    "html_body" => "<h1>Hello $name,</h1><p>Thank you for signing up! Welcome to Handmade Goods.</p>",
+                ];
 
-            $ch = curl_init("https://api.smtp2go.com/v3/email/send");
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($email_data));
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'accept: application/json']);
+                $ch = curl_init("https://api.smtp2go.com/v3/email/send");
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($email_data));
+                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'accept: application/json']);
 
             $response = curl_exec($ch);
             curl_close($ch);
@@ -97,7 +105,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $stmt->close();
     }
-}
 
     // Login
     if (isset($_POST["login"])) {
@@ -120,23 +127,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             setcookie("user_email", $email, time() + (30 * 24 * 60 * 60), "/", "", false, true);
         }
     
-        
-        $stmt = $conn->prepare("SELECT id, name, password, user_type, profile_picture FROM USERS WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, name, password, user_type, profile_picture, is_frozen FROM USERS WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows == 1) {
-            $stmt->bind_result($user_id, $name, $hashed_password, $user_type, $profile_picture);
+            $stmt->bind_result($user_id, $name, $hashed_password, $user_type, $profile_picture, $is_frozen);
             $stmt->fetch();
             
             if (password_verify($password, $hashed_password)) {
+                // Store the is_frozen status in the session instead of blocking login
                 $_SESSION["user_id"] = $user_id;
                 $_SESSION["email"] = $email;
                 $_SESSION["user_name"] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
                 $_SESSION["user_type"] = $user_type;
                 $_SESSION["profile_picture"] = $profile_picture;
-                header("Location: https://cosc360.ok.ubc.ca/~rsodhi03/cosc-360-project/handmade_goods/pages/product.php?id=3cosc-360-project/handmade_goods/pages/home.php");
+                $_SESSION["is_frozen"] = $is_frozen;
+                
+                $ip_address = $_SERVER['REMOTE_ADDR'];
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                $log_stmt = $conn->prepare("INSERT INTO ACCOUNT_ACTIVITY (user_id, event_type, ip_address, user_agent) VALUES (?, 'login', ?, ?)");
+                $log_stmt->bind_param("iss", $user_id, $ip_address, $user_agent);
+                $log_stmt->execute();
+                $log_stmt->close();
+
+                header("Location: http://localhost/cosc-360-project/handmade_goods/pages/home.php");
                 exit();
             } else {
                 header("Location: /cosc-360-project/handmade_goods/auth/login.php?error=invalid");
@@ -145,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             header("Location: https://cosc360.ok.ubc.ca/~rsodhi03/cosc-360-project/handmade_goods/auth/login.php?error=nouser");
             exit();
-
         }
         $stmt->close();
     }
+}

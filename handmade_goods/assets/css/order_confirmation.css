@@ -9,6 +9,23 @@
     color: #3f661e;
 }
 
+.shipping-address {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.shipping-address h4 {
+    color: #2d5a27;
+    margin-bottom: 0.5rem;
+    font-size: inherit;
+    font-weight: bold;
+}
+
+.shipping-address p {
+    margin-bottom: 0.25rem;
+    font-size: inherit;
+}
+
 .order-item {
     border: #DDD 2px solid;
     background-color: white;

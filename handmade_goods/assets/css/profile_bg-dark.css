@@ -7,22 +7,25 @@
     background: rgba(30, 30, 30, 0.9);
     box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
     color: #ddd;
+    border: none;
 }
 
 .bg-dark .inventory-table th, 
 .bg-dark .users-table th, .bg-dark .orders-table th {
-    background: rgba(40, 40, 40, 1);
+    background: rgba(40, 40, 40, 1) !important;
     color: #f5f5f5;
 }
 
-.bg-dark .inventory-table tr:nth-child(even), 
-.bg-dark .users-table tr:nth-child(even), .bg-dark .orders-table:nth-child(even) {
-    background: rgba(50, 50, 50, 0.8);
+.bg-dark .inventory-table tr, 
+.bg-dark .users-table tr, .bg-dark .orders-table tr {
+    background: rgba(40, 40, 40, 1) !important;
+    color: #f5f5f5;
 }
 
-.bg-dark .inventory-table tr:nth-child(odd), 
-.bg-dark .users-table tr:nth-child(odd), .bg-dark .orders-table:nth-child(odd) {
-    background: rgba(40, 40, 40, 0.9);
+.bg-dark .inventory-table tr:nth-of-type(2n), 
+.bg-dark .users-table tr:nth-of-type(2n), .bg-dark .orders-table tr:nth-of-type(2n) {
+    background: rgb(49, 49, 49) !important;
+    color: #f5f5f5;
 }
 
 .bg-dark .inventory-table td, 
@@ -51,8 +54,9 @@
     box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 2px 4px rgba(255, 255, 255, 0.08);
 }
 
-.bg-dark .reviews-summary, .bg-dark .rating-summary{
+.bg-dark .reviews-summary-outer, .bg-dark .rating-summary, .bg-dark .sales-summary, .bg-dark .earnings-summary {
     color: #fff;
+    background-color: #1e1e1e !important;
 }
 
 .bg-dark .stock-level {
@@ -95,16 +99,16 @@
 
 .bg-dark .tabs-nav {
     background: #333;
+    border: none !important;
 }
 
-.bg-dark .profile-info a.round-btn {
+.bg-dark .profile-info a.r-btn {
     background: rgba(50, 50, 50, 0.7); 
-    color: #fff; /* White text */
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.bg-dark .profile-info a.round-btn:hover {
+.bg-dark .profile-info a.r-btn:hover {
     background: #62a73b; 
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
@@ -120,13 +124,12 @@
     color: currentColor;
 }
 
-.bg-dark .profile-info a.round-btn:hover .material-symbols-outlined {
+.bg-dark .profile-info a.r-btn:hover .material-symbols-outlined {
     color: white !important;
 }
 
 .bg-dark .tabs-nav {
     background: rgba(50, 50, 50, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .bg-dark .tabs-nav a {

@@ -8,7 +8,6 @@
     }
 
     if (!isset($_POST['user_id']) || !is_numeric($_POST['user_id'])) {
-        $_SESSION['error'] = "Invalid user ID.";
         header("Location: ../profile.php");
         exit();
     }
@@ -26,6 +25,6 @@
     $stmt->close();
 
     $_SESSION['success'] = "User account and listings have been frozen.";
-    header("Location: ../user_profile.php?id=$user_id");
+    header("Location: /cosc-360-project/handmade_goods/pages/profile.php#users");
     exit();
 ?>
