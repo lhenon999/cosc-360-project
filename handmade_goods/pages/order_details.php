@@ -91,14 +91,14 @@ $stmt->close();
                     <?= htmlspecialchars($order["status"]) ?>
                 </span>
             </p>
-          
+
             <p><strong>Total Price:</strong> $<?= number_format($order["total_price"], 2) ?></p>
             <p><strong>Order Date:</strong> <?= $order["created_at"] ?></p>
             <?php if ($order["street_address"]): ?>
-                <p><strong>Shipping Address:</strong> 
+                <p><strong>Shipping Address:</strong>
                     <?= htmlspecialchars($order["street_address"]) ?>,
-                    <?= htmlspecialchars($order["city"]) ?>, 
-                    <?= htmlspecialchars($order["state"]) ?> 
+                    <?= htmlspecialchars($order["city"]) ?>,
+                    <?= htmlspecialchars($order["state"]) ?>
                     <?= htmlspecialchars($order["postal_code"]) ?>,
                     <?= htmlspecialchars($order["country"]) ?>
                 </p>
@@ -136,13 +136,16 @@ $stmt->close();
 
         <div class="action-buttons">
             <a href="../pages/profile.php" class="btn btn-outline-secondary" id="back-btn">Back</a>
-            <form method="POST" action="delete_order.php" class="delete-form"
-                onsubmit="return confirm('Are you sure you want to <?= $order["status"] === 'Cancelled' ? 'remove' : 'cancel' ?> this order? <?= $user_type === 'admin' ? 'The stock will be returned to inventory.' : 'This cannot be undone.' ?>');">
-                <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
-                <button type="submit" class="btn btn-outline-secondary" id="cancel-btn">
-                    <?= $order["status"] === 'Cancelled' ? 'Remove Order' : 'Cancel Order' ?>
-                </button>
-            </form>
+            <?php if ($order["status"] === 'Cancelled'): ?>
+                <form method="POST" action="delete_order.php" class="delete-form"
+                    onsubmit="return confirm('Are you sure you want to delete this order? This canno't be undone.');">
+                    <input type="hidden" name="order_id" value="<?= $order["id"] ?>">
+                    <button type="submit" class="btn btn-outline-secondary" id="delete-btn">
+                        Delete Order
+                    </button>
+                </form>
+            <?php endif; ?>
+
         </div>
     </div>
 
