@@ -92,13 +92,4 @@ For all test cards:
 - Any 3 digits for CVC
 - Any postal code
 
-### Webhook Forwarding
 
-The system will automatically:
-1. Check if Stripe CLI is installed
-2. Download and install it if needed
-3. Start webhook forwarding when the site is accessed
-4. Handle stopping and restarting of webhooks automatically
-
-You can check the webhook status in the logs at:
-`/logs/stripe_cli.log`
