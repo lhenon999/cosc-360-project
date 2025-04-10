@@ -7,6 +7,13 @@ if (!isset($_SESSION["user_id"])) {
     exit();
 }
 
+$is_frozen = isset($_SESSION["is_frozen"]) && $_SESSION["is_frozen"] == 1;
+if ($is_frozen) {
+    $_SESSION['error'] = "Your account is currently frozen. You cannot edit listings at this time.";
+    header("Location: my_shop.php");
+    exit();
+}
+
 if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
     header("Location: my_shop.php");
     exit();
