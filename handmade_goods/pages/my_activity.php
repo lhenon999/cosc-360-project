@@ -33,7 +33,7 @@ $myReviewsStmt->close();
     <h3>My Activity</h3>
     <?php if ($myReviewsResult->num_rows > 0): ?>
         <div class="activity-scroll">
-            <table class="orders-table">
+            <table class="orders-table inner-table">
                 <thead>
                     <tr>
                         <th>Item</th>
