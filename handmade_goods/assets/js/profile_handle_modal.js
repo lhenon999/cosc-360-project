@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function () {
     function showManageModal(userId, userName, isFrozen) {
         console.log("Show manage modal for user:", userName, "ID:", userId);
         
-        // Set user ID for freeze account form
         const freezeUserIdInput = document.getElementById("freezeUserId");
         if (freezeUserIdInput) {
             freezeUserIdInput.value = userId;
@@ -53,7 +52,6 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("freezeUserId input not found");
         }
         
-        // Set user ID for delete account form
         const deleteUserIdInput = document.getElementById("deleteUserIdFromManage");
         if (deleteUserIdInput) {
             deleteUserIdInput.value = userId;
@@ -61,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("deleteUserIdFromManage input not found");
         }
         
-        // Set the account name in the modal
         const accountNameSpan = document.getElementById("accountName");
         if (accountNameSpan) {
             accountNameSpan.innerText = userName;
@@ -81,14 +78,12 @@ document.addEventListener("DOMContentLoaded", function () {
         openModal("manageModal");
     }
 
-    // Set up global functions first - this ensures they're available for inline onclick handlers
     window.openModal = openModal;
     window.closeModal = closeModal;
     window.showDeleteUserModal = showDeleteUserModal;
     window.showDeleteListingModal = showDeleteListingModal;
     window.showManageModal = showManageModal;
     
-    // Add direct click events for all manage buttons
     document.querySelectorAll(".manage-btn").forEach(button => {
         button.addEventListener("click", function(e) {
             console.log("Manage button clicked");
@@ -99,7 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("Calling showManageModal with", userId, userName, isFrozen);
                 showManageModal(userId, userName, isFrozen);
             } else {
-                // Fallback to onclick handler if data attributes not found
                 console.log("No data attributes found, trying inline onclick handler");
             }
         });
