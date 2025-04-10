@@ -113,68 +113,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "Error: " . $e->getMessage();
                 exit();
             }
+    }
 
-        // Login
-        if (isset($_POST["login"])) {
-            echo "<script>console.log('Loggin in user');</script>";
-            $email = trim($_POST["email"]);
-            $password = $_POST["password"];
-            $remember = isset($_POST["remember"]); 
+    // Login
+    if (isset($_POST["login"])) {
+        echo "<script>console.log('Loggin in user');</script>";
+        $email = trim($_POST["email"]);
+        $password = $_POST["password"];
+        $remember = isset($_POST["remember"]); 
 
-            if ($remember) {
-                $token = bin2hex(random_bytes(32));
-        
-                $cookie_stmt = $conn->prepare("UPDATE USERS SET remember_token = ? WHERE email = ?");
-                $cookie_stmt->bind_param("ss", $token, $email);
-                
-                if (!$cookie_stmt->execute()) {
-                    echo "Error updating remember me token.";
-                }
-                $cookie_stmt->close();
-        
-                setcookie("remember_token", $token, time() + (30 * 24 * 60 * 60), "/", "", false, true);
-                setcookie("user_email", $email, time() + (30 * 24 * 60 * 60), "/", "", false, true);
+        if ($remember) {
+            $token = bin2hex(random_bytes(32));
+    
+            $cookie_stmt = $conn->prepare("UPDATE USERS SET remember_token = ? WHERE email = ?");
+            $cookie_stmt->bind_param("ss", $token, $email);
+            
+            if (!$cookie_stmt->execute()) {
+                echo "Error updating remember me token.";
             }
-        
-            $stmt = $conn->prepare("SELECT id, name, password, user_type, profile_picture, is_frozen FROM USERS WHERE email = ?");
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-            $stmt->store_result();
+            $cookie_stmt->close();
+    
+            setcookie("remember_token", $token, time() + (30 * 24 * 60 * 60), "/", "", false, true);
+            setcookie("user_email", $email, time() + (30 * 24 * 60 * 60), "/", "", false, true);
+        }
+    
+        $stmt = $conn->prepare("SELECT id, name, password, user_type, profile_picture, is_frozen FROM USERS WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
 
-            if ($stmt->num_rows == 1) {
-                $stmt->bind_result($user_id, $name, $hashed_password, $user_type, $profile_picture, $is_frozen);
-                $stmt->fetch();
+        if ($stmt->num_rows == 1) {
+            $stmt->bind_result($user_id, $name, $hashed_password, $user_type, $profile_picture, $is_frozen);
+            $stmt->fetch();
+            
+            if (password_verify($password, $hashed_password)) {
+                // Store the is_frozen status in the session instead of blocking login
+                $_SESSION["user_id"] = $user_id;
+                $_SESSION["email"] = $email;
+                $_SESSION["user_name"] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+                $_SESSION["user_type"] = $user_type;
+                $_SESSION["profile_picture"] = $profile_picture;
+                $_SESSION["is_frozen"] = $is_frozen;
                 
-                if (password_verify($password, $hashed_password)) {
-                    // Store the is_frozen status in the session instead of blocking login
-                    $_SESSION["user_id"] = $user_id;
-                    $_SESSION["email"] = $email;
-                    $_SESSION["user_name"] = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
-                    $_SESSION["user_type"] = $user_type;
-                    $_SESSION["profile_picture"] = $profile_picture;
-                    $_SESSION["is_frozen"] = $is_frozen;
-                    
-                    $ip_address = $_SERVER['REMOTE_ADDR'];
-                    $user_agent = $_SERVER['HTTP_USER_AGENT'];
-                    $log_stmt = $conn->prepare("INSERT INTO ACCOUNT_ACTIVITY (user_id, event_type, ip_address, user_agent) VALUES (?, 'login', ?, ?)");
-                    $log_stmt->bind_param("iss", $user_id, $ip_address, $user_agent);
-                    $log_stmt->execute();
-                    $log_stmt->close();
-                    
-                    echo "<script>console.log('Login successful, redirecting');</script>";
-                    header("Location: https://cosc360.ok.ubc.ca/~rsodhi03/cosc-360-project/handmade_goods/pages/home.php");
-                    exit();
-                } else {
-                    echo "<script>console.log('Invalid pass');</script>";
-                    header("Location: /cosc-360-project/handmade_goods/auth/login.php?error=invalid");
-                    exit();
-                }
+                $ip_address = $_SERVER['REMOTE_ADDR'];
+                $user_agent = $_SERVER['HTTP_USER_AGENT'];
+                $log_stmt = $conn->prepare("INSERT INTO ACCOUNT_ACTIVITY (user_id, event_type, ip_address, user_agent) VALUES (?, 'login', ?, ?)");
+                $log_stmt->bind_param("iss", $user_id, $ip_address, $user_agent);
+                $log_stmt->execute();
+                $log_stmt->close();
+                
+                echo "<script>console.log('Login successful, redirecting');</script>";
+                header("Location: https://cosc360.ok.ubc.ca/~rsodhi03/cosc-360-project/handmade_goods/pages/home.php");
+                exit();
             } else {
-                echo "<script>console.log('No such user');</script>";
-                header("Location: https://cosc360.ok.ubc.ca/~rsodhi03/cosc-360-project/handmade_goods/auth/login.php?error=nouser");
+                echo "<script>console.log('Invalid pass');</script>";
+                header("Location: /cosc-360-project/handmade_goods/auth/login.php?error=invalid");
                 exit();
             }
-            $stmt->close();
+        } else {
+            echo "<script>console.log('No such user');</script>";
+            header("Location: https://cosc360.ok.ubc.ca/~rsodhi03/cosc-360-project/handmade_goods/auth/login.php?error=nouser");
+            exit();
         }
+        $stmt->close();
     }
 }
