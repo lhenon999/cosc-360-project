@@ -270,6 +270,12 @@ tr:nth-of-type(2n) {
     width: 80%;
 }
 
+.m-btn.aty{
+    margin: 0;
+    width: 20%;
+    justify-self: center;
+}
+
 .activity-container {
     display: flex;              
     flex-direction: column;

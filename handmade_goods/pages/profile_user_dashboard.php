@@ -122,6 +122,7 @@ $stmt->close();
         ?>
     </div>
     <div id="reviews" class="tab-pane">
+    <?php if ($myReviewsResult->num_rows > 0): ?>
         <div class="reviews-containers">
             <div class="rating-summary">
                 <h3>Rating Summary</h3>
@@ -134,17 +135,15 @@ $stmt->close();
                     $starOutput = str_repeat('★', $filledStars) . str_repeat('☆', $emptyStars);
                     ?>
                     <span class="stars"><?= $starOutput ?></span>
-
                     <span class="rating-count"><?= $totalReviews ?> reviews</span>
                 </div>
 
                 <div class="rating-bars">
-                    <?php
-                    for ($r = 5; $r >= 1; $r--):
+                    <?php for ($r = 5; $r >= 1; $r--):
                         $percent = ($totalReviews > 0)
                             ? round(($ratingCounts[$r] / $totalReviews) * 100)
                             : 0;
-                        ?>
+                    ?>
                         <div class="rating-row">
                             <span><?= $r ?></span>
                             <div class="bar">
@@ -160,48 +159,52 @@ $stmt->close();
             <div class="reviews-summary-outer">
                 <h3>Reviews</h3>
                 <div class="reviews-summary">
-                    <?php if ($myReviewsResult->num_rows > 0): ?>
-                        <table class="orders-table inner-table">
-                            <thead>
+                    <table class="orders-table inner-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Seller</th>
+                                <th>Rating</th>
+                                <th>Comment</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = $myReviewsResult->fetch_assoc()): ?>
+                                <?php
+                                $itemId = (int) $row['item_id'];
+                                $itemName = htmlspecialchars($row['item_name']);
+                                $sellerName = htmlspecialchars($row['seller_name']);
+                                $rating = (int) $row['rating'];
+                                $comment = htmlspecialchars($row['comment']);
+                                $date = date('M j, Y', strtotime($row['created_at']));
+                                ?>
                                 <tr>
-                                    <th>Item</th>
-                                    <th>Seller</th>
-                                    <th>Rating</th>
-                                    <th>Comment</th>
-                                    <th>Date</th>
+                                    <td>
+                                        <a href="product.php?id=<?= $itemId ?>">
+                                            <?= $itemName ?>
+                                        </a>
+                                    </td>
+                                    <td><?= $sellerName ?></td>
+                                    <td><?= $rating ?></td>
+                                    <td><?= $comment ?></td>
+                                    <td><?= $date ?></td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <?php while ($row = $myReviewsResult->fetch_assoc()): ?>
-                                    <?php
-                                    $itemId = (int) $row['item_id'];
-                                    $itemName = htmlspecialchars($row['item_name']);
-                                    $sellerName = htmlspecialchars($row['seller_name']);
-                                    $rating = (int) $row['rating'];
-                                    $comment = htmlspecialchars($row['comment']);
-                                    $date = date('M j, Y', strtotime($row['created_at']));
-                                    ?>
-                                    <tr>
-                                        <td>
-                                            <a href="product.php?id=<?= $itemId ?>">
-                                                <?= $itemName ?>
-                                            </a>
-                                        </td>
-                                        <td><?= $sellerName ?></td>
-                                        <td><?= $rating ?></td>
-                                        <td><?= $comment ?></td>
-                                        <td><?= $date ?></td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                    <?php else: ?>
-                        <p>You haven't left any reviews yet.</p>
-                    <?php endif; ?>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
+    <?php else: ?>
+        <h3>My Reviews</h3>
+        <p>You don't have any reviews yet.</p>
+        <a class="m-btn g aty">
+            <span class="material-symbols-outlined">favorite</span>My Activity
+        </a>
+    <?php endif; ?>
+</div>
+
     <div id="activity" class="tab-pane" style="display: none;"></div>
     <div id="sales" class="tab-pane">
         <div class="sales-container">
