@@ -399,6 +399,7 @@ nav .navright form .search-button::-moz-focus-inner {
     background: transparent;
     box-shadow: none;
     max-height: 50px;
+    border: none;
 }
 
 #basket-btn .badge {

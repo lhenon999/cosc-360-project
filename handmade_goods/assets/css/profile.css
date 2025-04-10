@@ -167,13 +167,13 @@
     align-items: center;
 }
 
-@media (max-width: 890px) {
+@media (max-width: 1100px) {
     .reviews-containers, .sales-container {
         flex-direction: column;
         justify-content: center;
         justify-items: center;
         align-items: center;
-        width: 90%;
+        width: 100%;
     }
 
     .reviews-summary-outer,
@@ -208,7 +208,7 @@
     }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 780px) {
     .profile-header {
         flex-direction: column;
         

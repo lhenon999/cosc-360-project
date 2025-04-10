@@ -187,7 +187,7 @@ if ($session_user_id !== null) {
                             class="user-options">
                             <input type="hidden" name="product_id" value="<?= $product_id ?>">
                             <?php if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin'): ?>
-                                <a href="profile.php?item=<?= urlencode($name) ?>" class="m-btn g atc">
+                                <a href="profile.php?item=<?= urlencode($name) ?>" class="m-btn g atc" id="manage-btn">
                                     <span class="material-symbols-outlined">manage_accounts</span> Manage Listing
                                 </a>
                             <?php else: ?>

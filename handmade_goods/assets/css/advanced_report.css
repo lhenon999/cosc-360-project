@@ -1,8 +1,8 @@
-.account-activity{
+.account-activity {
     align-items: center;
     justify-content: center;
     justify-items: center;
-    width: 100%;
+    width: 80%;
     margin: auto;
 }
 
@@ -149,6 +149,10 @@
     .activity-table-div {
         max-height: unset;
         overflow-x: scroll;
+    }
+
+    .account-activity { 
+        width: 100%;
     }
 
     .top-div {

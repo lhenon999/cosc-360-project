@@ -5,7 +5,6 @@
     flex-direction: row;
     gap: 40px;
     margin-bottom: 4em;
-    flex-wrap: wrap;
 }
 
 .left {
@@ -25,7 +24,7 @@
     background: white;
     border-radius: 16px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-    padding: 20px 40px;
+    padding: 40px;
 }
 
 .left img {
@@ -36,11 +35,6 @@
     object-position: center;
     min-width: 300px;
 }
-
-.left, .right {
-    flex: 1;
-}
-
 
 #category-btn {
     background: none;
@@ -295,13 +289,16 @@ main section.main nav.breadcrumb-nav {
 .m-btn {
     white-space: nowrap;
     width: 100%;
-    margin: auto;
 }
 
 @media (max-width: 1120px) {
     .main {
         flex-direction: column;
         width: 90%;
+    }
+
+    .m-btn {
+        margin: auto;
     }
 
     .right {
