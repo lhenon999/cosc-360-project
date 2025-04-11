@@ -22,6 +22,25 @@ $trendQuery = "SELECT DATE(created_at) AS date, COUNT(*) AS count
                 ORDER BY DATE(created_at) ASC";
 $resultTrend = $conn->query($trendQuery);
 
+$loginCountQuery = "
+    SELECT COUNT(*) AS login_count 
+    FROM ACCOUNT_ACTIVITY
+    WHERE event_type = 'login'
+      AND created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+";
+$resultLoginCount = $conn->query($loginCountQuery);
+$loginCount = $resultLoginCount ? $resultLoginCount->fetch_assoc()['login_count'] : 0;
+
+$registrationCountQuery = "
+    SELECT COUNT(*) AS reg_count
+    FROM ACCOUNT_ACTIVITY
+    WHERE event_type = 'registration'
+      AND created_at >= DATE_SUB(NOW(), INTERVAL 1 DAY)
+";
+$resultRegistrationCount = $conn->query($registrationCountQuery);
+$registrationCount = $resultRegistrationCount ? $resultRegistrationCount->fetch_assoc()['reg_count'] : 0;
+
+
 $dates = [];
 $counts = [];
 if ($resultTrend && $resultTrend->num_rows > 0) {
@@ -140,7 +159,7 @@ $resultCombined = $conn->query($combinedQuery);
             </form>
 
             <div class="activity-table-div">
-                <table class="orders-table">
+                <table class="orders-table w-100">
                     <thead>
                         <tr>
                             <th>User ID</th>
