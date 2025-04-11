@@ -20,6 +20,10 @@ error_reporting(E_ALL);
     } elseif (isset($isFromProfile) && $isFromProfile) {
         $and = '&and=user_profile';
     }
+
+    if (!isset($source)) {
+        $source = '';
+    }
     
     if (isset($source) && $source === 'home') {
         $source = '&source=home';
