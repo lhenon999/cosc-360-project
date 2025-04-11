@@ -145,8 +145,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div class="listing-form-container">
-            <form action="edit_listing.php?id=<?= $product_id ?>" id="listingForm" method="POST"
-                enctype="multipart/form-data" class="mt-4">
+            <form action="edit_listing.php?id=<?= $product_id ?>"
+                id="listingForm"
+                method="POST"
+                enctype="multipart/form-data"
+                onsubmit="return confirm('Are you sure you want to save these changes?');"
+                class="mt-4">
                 <div class="mb-3">
                     <label for="name" class="form-label">Product Name</label>
                     <input type="text" name="name" id="name" class="form-control" required
