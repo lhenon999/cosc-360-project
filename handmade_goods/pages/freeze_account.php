@@ -25,6 +25,6 @@
     $stmt->close();
 
     $_SESSION['success'] = "User account and listings have been frozen.";
-    header("Location: /cosc-360-project/handmade_goods/pages/profile.php#users");
+    header("Location: ../pages/profile.php#users");
     exit();
 ?>
