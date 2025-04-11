@@ -2,11 +2,6 @@
     session_start();
     include __DIR__ . '/../config.php';
 
-    if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
-        header("Location: ../index.php");
-        exit();
-    }
-
     if (!isset($_POST['user_id']) || !is_numeric($_POST['user_id'])) {
         header("Location: ../profile.php");
         exit();
