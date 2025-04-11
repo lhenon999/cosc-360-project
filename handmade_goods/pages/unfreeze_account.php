@@ -27,6 +27,6 @@
     $stmt->close();
 
     $_SESSION['success'] = "User account has been unfrozen and listings have been reactivated.";
-    header("Location: /cosc-360-project/handmade_goods/pages/profile.php#users");
+    header("Location: ../pages/profile.php#users");
     exit();
 ?>
