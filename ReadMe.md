@@ -45,6 +45,3 @@ For all test cards:
 - Any future expiration date
 - Any 3 digits for CVC
 - Any postal code
-
-You can check the webhook status in the logs at:
-`/logs/stripe_cli.log`
