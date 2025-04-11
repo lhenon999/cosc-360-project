@@ -278,6 +278,7 @@ $rating_stmt->close();
                     $price = number_format($product["price"], 2);
                     $image = htmlspecialchars($product["img"]);
                     $stock = intval($product["stock"]);
+                    $source="products";
                     $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
                     include __DIR__ . "/../assets/html/product_card.php";
                     ?>
