@@ -158,10 +158,6 @@
     transition: none;
 }
 
-#basket-btn .badge {
-    right: 25px;
-}
-
 .header-btn {
     display: flex;
     justify-content: center;
