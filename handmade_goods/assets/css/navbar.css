@@ -539,3 +539,9 @@ nav .desktop-only {
         z-index: 100;
     }
 }
+
+.bg-dark nav{
+    background-color: #121212 !important;
+    border: none;
+    color: white;
+}

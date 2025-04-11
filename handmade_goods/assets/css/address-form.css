@@ -259,3 +259,17 @@ select.is-invalid ~ .invalid-feedback {
         padding: 12px;
     }
 } 
+
+.bg-dark .address-option.selected {
+    background-color: #426B1F;
+}
+
+.bg-dark .address-option {
+    background-color: #1e1e1e;
+}
+
+.bg-dark .form-row input, .bg-dark .form-row select, .bg-dark .address-form{
+    background-color: #1e1e1e;
+    color: white;
+    border-color: #333;
+}
