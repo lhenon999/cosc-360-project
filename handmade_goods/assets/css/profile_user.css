@@ -289,7 +289,7 @@ tr:nth-of-type(2n) {
 }
 
 .bg-dark .activity-container {
-    background-color: #1e1e1e;
+    background-color: #1e1e1e !important;
 }
 
 .activity-scroll {
