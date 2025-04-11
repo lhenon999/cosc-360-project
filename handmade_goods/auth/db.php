@@ -18,9 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = trim($_POST["email"]);
         $password = $_POST["password"];
         $user_type = 'normal';
-        $profile_picture = "/~rsodhi03/cosc-360-project/handmade_goods/assets/images/default_profile.png";
+        $profile_picture = "../assets/images/default_profile.png";
 
-        $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "/~rsodhi03/cosc-360-project/handmade_goods/assets/images/uploads/profile_pictures/";
+        $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "../assets/images/uploads/profile_pictures/";
 
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0775, true);
@@ -167,7 +167,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             } else {
                 echo "<script>console.log('Invalid pass');</script>";
-                header("Location: /cosc-360-project/handmade_goods/auth/login.php?error=invalid");
+                header("Location: /~rsodhi03/cosc-360-project/handmade_goods/auth/login.php?error=invalid");
                 exit();
             }
         } else {
