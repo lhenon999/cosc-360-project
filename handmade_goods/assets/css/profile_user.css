@@ -292,3 +292,7 @@ tr:nth-of-type(2n) {
     width: 100%;
     overflow-x: auto;
 }
+
+.bg-dark .activity-container{
+    background-color: #1e1e1e;
+}

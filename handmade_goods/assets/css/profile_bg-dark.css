@@ -1,6 +1,3 @@
-.bg-dark .profile-container{
-    background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity))!important;
-}
 
 .bg-dark .inventory-table, 
 .bg-dark .users-table, .orders-table {
