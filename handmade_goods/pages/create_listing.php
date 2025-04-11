@@ -50,7 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $is_frozen) {
 
     if (empty($errors)) {
         $maxSize = 2 * 1024 * 1024;
-        // $target_dir = "/~rsodhi03/cosc-360-project/handmade_goods/assets/images/product_images/";
         $target_dir = "../assets/images/product_images/";
         $image_name = basename($_FILES["image"]["name"]);
         $target_file = $target_dir . time() . "_" . $image_name;

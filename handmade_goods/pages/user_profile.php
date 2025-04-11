@@ -265,7 +265,7 @@ $reviewsStmt->close();
                             $stock = intval($product["stock"]);
                             $stock_class = $stock > 5 ? 'in-stock' : ($stock > 0 ? 'low-stock' : 'out-of-stock');
                             $from_profile = "user_profile";
-                            include "../assets/html/product_card.php";
+                            include __DIR__ . "/../assets/html/product_card.php";
                             ?>
                         <?php endforeach; ?>
                     </div>

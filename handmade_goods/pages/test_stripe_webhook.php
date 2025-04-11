@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../config.php';
-require_once '../stripe/stripe.php';
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../stripe/stripe.php';
 
 if (!isset($_SESSION["user_id"]) || ($_SESSION["user_id"] != 1 && !isset($_SESSION["is_admin"]))) {
     echo "Unauthorized access";
