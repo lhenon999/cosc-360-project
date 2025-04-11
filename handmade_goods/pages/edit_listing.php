@@ -149,7 +149,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 id="listingForm"
                 method="POST"
                 enctype="multipart/form-data"
-                onsubmit="return confirm('Are you sure you want to save these changes?');"
                 class="mt-4">
                 <div class="mb-3">
                     <label for="name" class="form-label">Product Name</label>
@@ -207,7 +206,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <span class="material-symbols-outlined">add</span> Submit Product
                     </button>
                     
-                    <form action="delete_listing_user.php" method="POST" style="display: inline;">
+                    <form action="delete_listing_user.php" method="POST" style="display: inline;" 
+                        onsubmit="return confirm('Are you sure you want to delete this listing? This cannot be undone.');">
                         <input type="hidden" name="id" value="<?= $product_id ?>">
                         <button type="submit" class="m-btn r">
                             <span class="material-symbols-outlined">delete</span> Delete Listing
