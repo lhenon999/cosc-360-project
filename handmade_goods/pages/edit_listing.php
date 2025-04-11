@@ -207,8 +207,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <span class="material-symbols-outlined">add</span> Submit Product
                     </button>
                     
-                    <form action="delete_listing_user.php" method="POST" style="display: inline;" 
-                        onsubmit="return confirm('Are you sure you want to delete this listing? This cannot be undone.');">
+                    <form action="delete_listing_user.php" method="POST" style="display: inline;">
                         <input type="hidden" name="id" value="<?= $product_id ?>">
                         <button type="submit" class="m-btn r">
                             <span class="material-symbols-outlined">delete</span> Delete Listing
