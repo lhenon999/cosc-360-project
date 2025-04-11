@@ -20,6 +20,6 @@
     $stmt->close();
 
     $_SESSION['success'] = "User account and listings have been frozen.";
-    header("Location: ../profile.php#users");
+    header("Location: ../pages/profile.php#users");
     exit();
 ?>
