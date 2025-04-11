@@ -11,7 +11,7 @@
 
 ### 2. Start the Web Server
 
-### 5. Import Database
+### 3. Import Database
 
 Import the following files in order:
 1. `init.sql`
@@ -20,7 +20,7 @@ Import the following files in order:
 4. `generate_sales.sql`
 4. `generate_reviews.sql`
 
-### 6. Test the Site
+### 4. Test the Site
 
 Open: `http://localhost/cosc-360-project/handmade_goods/pages/home.php`
 
@@ -45,4 +45,3 @@ For all test cards:
 - Any future expiration date
 - Any 3 digits for CVC
 - Any postal code
-
