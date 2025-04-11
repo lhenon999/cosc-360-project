@@ -198,9 +198,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <a class="m-btn" href="my_shop.php">
                         <span class="material-symbols-outlined">close</span> Cancel
                     </a>
+
                     <button type="submit" id="submitButton" class="m-btn g" disabled>
                         <span class="material-symbols-outlined">add</span> Submit Product
                     </button>
+                    
+                    <form action="delete_listing_user.php" method="POST" style="display: inline;" 
+                        onsubmit="return confirm('Are you sure you want to delete this listing? This cannot be undone.');">
+                        <input type="hidden" name="id" value="<?= $product_id ?>">
+                        <button type="submit" class="m-btn r">
+                            <span class="material-symbols-outlined">delete</span> Delete Listing
+                        </button>
+                    </form>
                 </div>
             </form>
         </div>
