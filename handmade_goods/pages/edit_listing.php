@@ -249,27 +249,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             const currentStock = document.getElementById("stock").value;
             const currentCategory = document.getElementById("category").value;
             const imageInput = document.getElementById("image");
+            const file = imageInput.files[0];
 
-            let hasChanged = (currentName !== initialName) ||
-                (currentDescription !== initialDescription) ||
-                (currentPrice !== initialPrice) ||
-                (currentStock !== initialStock) ||
-                (currentCategory !== initialCategory) ||
-                (imageInput.files.length > 0);
+            let imageChanged = false;
+            if (file) {
+                imageChanged = true;
 
                 const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
                 if (!allowedTypes.includes(file.type)) {
                     alert('Only JPG, JPEG, WEBP, or PNG files are allowed.');
-                    e.target.value = '';
-                    return;
+                    imageInput.value = '';
+                    imageChanged = false;
                 }
 
-                // Check file size <= 2MB
                 const maxSize = 2 * 1024 * 1024;
                 if (file.size > maxSize) {
                     alert('File exceeds maximum allowed size of 2MB.');
-                    e.target.value = '';
+                    imageInput.value = '';
+                    imageChanged = false;
                 }
+            }
+
+            const hasChanged = (
+                currentName !== initialName ||
+                currentDescription !== initialDescription ||
+                currentPrice !== initialPrice ||
+                currentStock !== initialStock ||
+                currentCategory !== initialCategory ||
+                imageChanged
+            );
 
             document.getElementById("submitButton").disabled = !hasChanged;
         }
