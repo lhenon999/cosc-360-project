@@ -257,6 +257,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 (currentCategory !== initialCategory) ||
                 (imageInput.files.length > 0);
 
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Only JPG, JPEG, WEBP, or PNG files are allowed.');
+                    e.target.value = '';
+                    return;
+                }
+
+                // Check file size <= 2MB
+                const maxSize = 2 * 1024 * 1024;
+                if (file.size > maxSize) {
+                    alert('File exceeds maximum allowed size of 2MB.');
+                    e.target.value = '';
+                }
+
             document.getElementById("submitButton").disabled = !hasChanged;
         }
 
