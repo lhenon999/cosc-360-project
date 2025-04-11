@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "../assets/images/uploads/profile_pictures/";
 
         if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0775, true);
+            mkdir($upload_dir, 0777, true);
         }
 
         if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] == UPLOAD_ERR_OK) {
