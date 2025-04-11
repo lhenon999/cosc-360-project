@@ -2,6 +2,9 @@
 session_start();
 require_once __DIR__ . '/../config.php';
 
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../pages/login.php");
     exit();
@@ -28,28 +31,18 @@ $stmt->execute();
 $result = $stmt->get_result();
 $order = $result->fetch_assoc();
 $stmt->close();
-
 if (!$order) {
     die("Order not found or you do not have permission to view it.");
 }
 
-// Fetch order items - different queries for admin vs regular user
-if ($user_type === 'admin') {
-    $stmt = $conn->prepare("
-        SELECT oi.item_name, i.id, i.stock, oi.quantity, oi.price_at_purchase
-        FROM ORDER_ITEMS oi
-        LEFT JOIN ITEMS i ON oi.item_id = i.id
-        WHERE oi.order_id = ?
-        ORDER BY oi.item_name
-    ");
-} else {
-    $stmt = $conn->prepare("
-        SELECT oi.item_name, oi.quantity, oi.price_at_purchase
+$formattedDate = date("j F Y", strtotime($order["created_at"]));
+
+$stmt = $conn->prepare("
+        SELECT oi.item_name, oi.quantity, oi.price_at_purchase, oi.item_id
         FROM ORDER_ITEMS oi
         WHERE oi.order_id = ?
         ORDER BY oi.item_name
     ");
-}
 $stmt->bind_param("i", $order_id);
 $stmt->execute();
 $order_items = $stmt->get_result();
@@ -82,28 +75,37 @@ $stmt->close();
     <?php include __DIR__ . '/../assets/html/navbar.php'; ?>
     <div class="order-details-container">
         <h2 class="text-center">Order Details</h2>
-
         <div class="order-info">
-            <p><strong>Order ID: </strong> <span>#<?= $order["id"] ?></span></p>
-
-            <p><strong>Status: </strong>
-                <span class="status <?= strtolower($order["status"]) ?>">
+            <div class="info-row">
+                <span class="info-label">Order ID:</span>
+                <span class="info-value">#<?= htmlspecialchars($order["id"]) ?></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Order Date:</span>
+                <span class="info-value"><?= $formattedDate ?></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Status:</span>
+                <span class="info-value status <?= strtolower($order["status"]) ?>">
                     <?= htmlspecialchars($order["status"]) ?>
                 </span>
-            </p>
-
-            <p><strong>Total Price:</strong> $<?= number_format($order["total_price"], 2) ?></p>
-            <p><strong>Order Date:</strong> <?= $order["created_at"] ?></p>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Total Price:</span>
+                <span class="info-value">$<?= number_format($order["total_price"], 2) ?></span>
+            </div>
             <?php if ($order["street_address"]): ?>
-                <p><strong>Shipping Address:</strong>
-                    <?= htmlspecialchars($order["street_address"]) ?>,
-                    <?= htmlspecialchars($order["city"]) ?>,
-                    <?= htmlspecialchars($order["state"]) ?>
-                    <?= htmlspecialchars($order["postal_code"]) ?>,
-                    <?= htmlspecialchars($order["country"]) ?>
-                </p>
+                <div class="info-row">
+                    <span class="info-label">Shipping Address:</span>
+                    <span class="info-value">
+                        <?= htmlspecialchars($order["street_address"]) ?>,
+                        <?= htmlspecialchars($order["city"]) ?>,
+                        <?= htmlspecialchars($order["state"]) ?>
+                        <?= htmlspecialchars($order["postal_code"]) ?>,
+                        <?= htmlspecialchars($order["country"]) ?>
+                    </span>
+                </div>
             <?php endif; ?>
-
         </div>
 
         <h3>Ordered Items</h3>
@@ -112,30 +114,22 @@ $stmt->close();
                 <tr>
                     <th>Item</th>
                     <th>Quantity</th>
-                    <?php if ($user_type === 'admin'): ?>
-                        <th>Current Stock</th>
-                        <th>Stock After Delete</th>
-                    <?php endif; ?>
-                    <th>Price (Each)</th>
+                    <th>Price</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php while ($item = $order_items->fetch_assoc()): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($item["item_name"]) ?></td>
-                        <td><?= $item["quantity"] ?></td>
-                        <?php if ($user_type === 'admin'): ?>
-                            <td><?= $item["stock"] ?? 'Item Deleted' ?></td>
-                            <td><?= isset($item["stock"]) ? ($item["stock"] + $item["quantity"]) : 'N/A' ?></td>
-                        <?php endif; ?>
-                        <td>$<?= number_format($item["price_at_purchase"], 2) ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
+            <?php while ($item = $order_items->fetch_assoc()): ?>
+                <tr class="clickable-row"
+                    onclick="window.location.href='../pages/product.php?id=<?= $item["item_id"] ?>&from=order_details&order_id=<?= $order["id"] ?>'">
+                    <td><?= htmlspecialchars($item["item_name"]) ?></td>
+                    <td><?= $item["quantity"] ?></td>
+                    <td>$<?= number_format($item["price_at_purchase"], 2) ?></td>
+                </tr>
+            <?php endwhile; ?>
         </table>
 
+
         <div class="action-buttons">
-            <a href="../pages/profile.php" class="btn btn-outline-secondary" id="back-btn">Back</a>
+            <a href="../pages/profile.php" class="m-btn b" id="back-btn">Back</a>
             <?php if ($order["status"] === 'Cancelled'): ?>
                 <form method="POST" action="delete_order.php" class="delete-form"
                     onsubmit="return confirm('Are you sure you want to delete this order? This canno't be undone.');">
