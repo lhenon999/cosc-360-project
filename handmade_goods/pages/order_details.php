@@ -18,9 +18,9 @@ $order_id = intval($_GET["order_id"]);
 // Fetch order details
 $stmt = $conn->prepare("
     SELECT o.id, o.total_price, o.status, o.created_at, 
-           a.street_address, a.city, a.state, a.postal_code, a.country
+        a.street_address, a.city, a.state, a.postal_code, a.country
     FROM ORDERS o
-    LEFT JOIN addresses a ON o.address_id = a.id
+    LEFT JOIN ADDRESSES a ON o.address_id = a.id
     WHERE o.id = ? AND o.user_id = ?
 ");
 $stmt->bind_param("ii", $order_id, $user_id);

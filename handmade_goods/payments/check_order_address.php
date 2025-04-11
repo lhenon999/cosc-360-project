@@ -30,7 +30,7 @@ try {
     logMessage("Checking order ID: $order_id");
     
     // Get order details
-    $stmt = $conn->prepare("SELECT o.*, a.* FROM orders o LEFT JOIN addresses a ON o.address_id = a.id WHERE o.id = ?");
+    $stmt = $conn->prepare("SELECT o.*, a.* FROM ORDERS o LEFT JOIN ADDRESSES a ON o.address_id = a.id WHERE o.id = ?");
     $stmt->bind_param("i", $order_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -70,7 +70,7 @@ try {
         logMessage("Order $order_id has no address");
         
         // Check if there's a recent address for this user
-        $stmt = $conn->prepare("SELECT * FROM addresses WHERE user_id = ? ORDER BY id DESC LIMIT 1");
+        $stmt = $conn->prepare("SELECT * FROM ADDRESSES WHERE user_id = ? ORDER BY id DESC LIMIT 1");
         $stmt->bind_param("i", $order['user_id']);
         $stmt->execute();
         $addressResult = $stmt->get_result();

@@ -1,17 +1,14 @@
 <?php
-// Only process if accessed directly, not via include
 if (basename($_SERVER['PHP_SELF']) === 'link_address.php') {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
     require_once __DIR__ . '/../config.php';
     
-    // Create logs directory if it doesn't exist
     $logDir = dirname(__DIR__) . '/logs';
     if (!is_dir($logDir)) {
         mkdir($logDir, 0777, true);
     }
     
-    // Define log file
     $logFile = $logDir . '/address_linking.log';
     
     echo "<h1>Link Address to Order</h1>";
@@ -24,8 +21,7 @@ if (basename($_SERVER['PHP_SELF']) === 'link_address.php') {
             throw new Exception("Missing order_id or address_id parameters");
         }
         
-        // Verify order exists
-        $stmt = $conn->prepare("SELECT * FROM orders WHERE id = ?");
+        $stmt = $conn->prepare("SELECT * FROM ORDERS WHERE id = ?");
         $stmt->bind_param("i", $order_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -35,9 +31,8 @@ if (basename($_SERVER['PHP_SELF']) === 'link_address.php') {
         }
         
         $order = $result->fetch_assoc();
-        
-        // Verify address exists
-        $stmt = $conn->prepare("SELECT * FROM addresses WHERE id = ?");
+
+        $stmt = $conn->prepare("SELECT * FROM ADDRESSES WHERE id = ?");
         $stmt->bind_param("i", $address_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -48,8 +43,7 @@ if (basename($_SERVER['PHP_SELF']) === 'link_address.php') {
         
         $address = $result->fetch_assoc();
         
-        // Link address to order
-        $stmt = $conn->prepare("UPDATE orders SET address_id = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE ORDERS SET address_id = ? WHERE id = ?");
         $stmt->bind_param("ii", $address_id, $order_id);
         
         if ($stmt->execute()) {

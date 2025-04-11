@@ -1,9 +1,8 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once __DIR__ . '/../config.php';
 header('Content-Type: application/json');
 
-// Debugging - log the request data
 error_log("save_address.php called with user_id: " . ($_SESSION['user_id'] ?? 'not set'));
 
 // Check if user is logged in
@@ -42,7 +41,6 @@ error_log("Extracted address data: " . json_encode([
     'country' => $country
 ]));
 
-// Simple validation for required fields
 if (empty($line1) || empty($city) || empty($state) || empty($postal_code) || empty($country)) {
     $missing = [];
     if (empty($line1)) $missing[] = 'line1';
@@ -56,7 +54,6 @@ if (empty($line1) || empty($city) || empty($state) || empty($postal_code) || emp
     exit;
 }
 
-// Validate text length and allowed characters
 $validation_errors = [];
 
 // Address Line 1
@@ -135,7 +132,7 @@ if (!$postal_code_valid) {
 }
 
 try {
-    // Build street address
+
     $street_address = $line1;
     if (!empty($line2)) {
         $street_address .= ', ' . $line2;
@@ -143,9 +140,8 @@ try {
 
     error_log("Formatted street address: " . $street_address);
 
-    // Insert address into database
     $stmt = $conn->prepare("
-        INSERT INTO addresses (user_id, street_address, city, state, postal_code, country)
+        INSERT INTO ADDRESSES (user_id, street_address, city, state, postal_code, country)
         VALUES (?, ?, ?, ?, ?, ?)
     ");
     
@@ -169,7 +165,6 @@ try {
     
     error_log("Address inserted successfully with ID: " . $address_id);
     
-    // Return success with the new address ID and formatted address
     $response = [
         'success' => true, 
         'address_id' => $address_id,

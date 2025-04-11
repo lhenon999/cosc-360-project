@@ -10,10 +10,8 @@ if (!$isLoggedIn) {
 }
 $user_id = $isLoggedIn ? $_SESSION["user_id"] : null;
 
-// Check if we need to restore a cart from a canceled checkout
 if (isset($_SESSION['pending_order_cart']) && isset($_SESSION['pending_order_id'])) {
-    // Get the user's cart ID
-    $stmt = $conn->prepare("SELECT id FROM cart WHERE user_id = ?");
+    $stmt = $conn->prepare("SELECT id FROM CART WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -22,57 +20,48 @@ if (isset($_SESSION['pending_order_cart']) && isset($_SESSION['pending_order_id'
         $cart = $result->fetch_assoc();
         $cart_id = $cart['id'];
     } else {
-        // Create a new cart if one doesn't exist
-        $stmt = $conn->prepare("INSERT INTO cart (user_id) VALUES (?)");
+        $stmt = $conn->prepare("INSERT INTO CART (user_id) VALUES (?)");
         $stmt->bind_param("i", $user_id);
         $stmt->execute();
         $cart_id = $conn->insert_id;
     }
     $stmt->close();
     
-    // Restore saved cart items
     foreach ($_SESSION['pending_order_cart'] as $item_id => $item_data) {
         $quantity = $item_data['quantity'];
         
-        // Check if item already exists in cart
-        $stmt = $conn->prepare("SELECT quantity FROM cart_items WHERE cart_id = ? AND item_id = ?");
+        $stmt = $conn->prepare("SELECT quantity FROM CART_ITEMS WHERE cart_id = ? AND item_id = ?");
         $stmt->bind_param("ii", $cart_id, $item_id);
         $stmt->execute();
         $result = $stmt->get_result();
         
         if ($result->num_rows > 0) {
-            // Update existing item
             $existing = $result->fetch_assoc();
             $new_quantity = $existing['quantity'] + $quantity;
             
-            $stmt = $conn->prepare("UPDATE cart_items SET quantity = ? WHERE cart_id = ? AND item_id = ?");
+            $stmt = $conn->prepare("UPDATE CART_ITEMS SET quantity = ? WHERE cart_id = ? AND item_id = ?");
             $stmt->bind_param("iii", $new_quantity, $cart_id, $item_id);
             $stmt->execute();
         } else {
-            // Add new item to cart
-            $stmt = $conn->prepare("INSERT INTO cart_items (cart_id, item_id, quantity) VALUES (?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO CART_ITEMS (cart_id, item_id, quantity) VALUES (?, ?, ?)");
             $stmt->bind_param("iii", $cart_id, $item_id, $quantity);
             $stmt->execute();
         }
     }
     
-    // Update order status to canceled
-    $stmt = $conn->prepare("UPDATE orders SET status = 'Cancelled' WHERE id = ? AND user_id = ?");
+    $stmt = $conn->prepare("UPDATE ORDERS SET status = 'Cancelled' WHERE id = ? AND user_id = ?");
     $stmt->bind_param("ii", $_SESSION['pending_order_id'], $user_id);
     $stmt->execute();
     $stmt->close();
     
-    // Clear the pending order data
     unset($_SESSION['pending_order_cart']);
     unset($_SESSION['pending_order_id']);
     
-    // Clear any success message when restoring a cart from a canceled checkout
     if (isset($_SESSION['success']) && $_SESSION['success'] == "Order placed successfully!") {
         unset($_SESSION['success']);
     }
 }
 
-// Get existing user addresses
 $addresses = [];
 if ($isLoggedIn) {
     $stmt = $conn->prepare("
@@ -87,7 +76,6 @@ if ($isLoggedIn) {
     $stmt->close();
 }
 
-// Make Stripe publishable key available to JavaScript
 $stripe_publishable_key = 'pk_test_51R1OROBSlWUNcExMybmLKuUOMFFhHJ7ZYoaNOHG6XvbnoqxRyQxkLJcf2hgNuIvgd3d03CPS5DvOStmYzOoP80c100G4jIbM8r';
 
 $shipping = 7.99;

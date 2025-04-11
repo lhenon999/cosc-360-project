@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once __DIR__ . '/../config.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -11,9 +13,9 @@ $basket_user_id = $_SESSION["user_id"];
 $basket_items = [];
 $stmt = $conn->prepare("
     SELECT ci.item_id, i.name, i.price, i.img, ci.quantity, i.stock
-    FROM cart_items ci
-    JOIN items i ON ci.item_id = i.id
-    JOIN cart c ON ci.cart_id = c.id
+    FROM CART_ITEMS ci
+    JOIN ITEMS i ON ci.item_id = i.id
+    JOIN CART c ON ci.cart_id = c.id
     WHERE c.user_id = ?
 ");
 $stmt->bind_param("i", $basket_user_id);

@@ -3,19 +3,16 @@ session_start();
 require_once '../config.php';
 require_once '../stripe/stripe.php';
 
-// Ensure only admins or developers can access this page
 if (!isset($_SESSION["user_id"]) || ($_SESSION["user_id"] != 1 && !isset($_SESSION["is_admin"]))) {
     echo "Unauthorized access";
     exit;
 }
 
-// Create logs directory if it doesn't exist
 $logDir = dirname(dirname(__FILE__)) . '/logs';
 if (!is_dir($logDir)) {
     mkdir($logDir, 0777, true);
 }
 
-// Define log file
 $logFile = $logDir . '/stripe_webhook_test.log';
 
 function log_message($message) {
@@ -23,19 +20,16 @@ function log_message($message) {
     file_put_contents($logFile, date('Y-m-d H:i:s') . " - " . $message . "\n", FILE_APPEND);
 }
 
-// Initialize variables
 $success_message = '';
 $error_message = '';
 
-// Check and fix Stripe webhook configuration
 function checkStripeWebhookConfiguration() {
     global $conn, $success_message, $error_message;
-    
-    // 1. Check if payment_id and payment_method columns exist in orders table
-    $result = $conn->query("SHOW COLUMNS FROM orders LIKE 'payment_id'");
+
+    $result = $conn->query("SHOW COLUMNS FROM ORDERS LIKE 'payment_id'");
     $paymentIdExists = $result->num_rows > 0;
     
-    $result = $conn->query("SHOW COLUMNS FROM orders LIKE 'payment_method'");
+    $result = $conn->query("SHOW COLUMNS FROM ORDERS LIKE 'payment_method'");
     $paymentMethodExists = $result->num_rows > 0;
     
     if (!$paymentIdExists || !$paymentMethodExists) {
@@ -43,13 +37,13 @@ function checkStripeWebhookConfiguration() {
             $conn->begin_transaction();
             
             if (!$paymentIdExists) {
-                $conn->query("ALTER TABLE orders ADD COLUMN payment_id VARCHAR(255) DEFAULT NULL");
+                $conn->query("ALTER TABLE ORDERS ADD COLUMN payment_id VARCHAR(255) DEFAULT NULL");
                 log_message("Added payment_id column to orders table");
                 $success_message .= "Added payment_id column to orders table<br>";
             }
             
             if (!$paymentMethodExists) {
-                $conn->query("ALTER TABLE orders ADD COLUMN payment_method VARCHAR(50) DEFAULT NULL");
+                $conn->query("ALTER TABLE ORDERS ADD COLUMN payment_method VARCHAR(50) DEFAULT NULL");
                 log_message("Added payment_method column to orders table");
                 $success_message .= "Added payment_method column to orders table<br>";
             }
@@ -63,14 +57,11 @@ function checkStripeWebhookConfiguration() {
     }
 }
 
-// Function to simulate a webhook event for testing
 function simulateWebhookEvent() {
     global $conn, $stripe_publishable_key, $success_message, $error_message;
-    
-    // Get the most recent pending order
     $stmt = $conn->prepare("
         SELECT o.id, o.user_id, o.address_id, o.total_price 
-        FROM orders o 
+        FROM ORDERS o 
         WHERE o.status = 'Pending' AND o.payment_id IS NULL
         ORDER BY o.created_at DESC 
         LIMIT 1
@@ -87,7 +78,6 @@ function simulateWebhookEvent() {
     $order = $result->fetch_assoc();
     $orderId = $order['id'];
     
-    // Create a mock Stripe event
     $mockEvent = [
         'type' => 'checkout.session.completed',
         'data' => [
@@ -106,14 +96,11 @@ function simulateWebhookEvent() {
         ]
     ];
     
-    // Update the order directly to simulate webhook processing
     try {
         $conn->begin_transaction();
-        
-        // Get order items to update inventory
         $stmt = $conn->prepare("
             SELECT oi.item_id, oi.item_name, oi.quantity 
-            FROM order_items oi 
+            FROM ORDER_ITEMS oi 
             WHERE oi.order_id = ?
         ");
         $stmt->bind_param("i", $orderId);
@@ -121,13 +108,10 @@ function simulateWebhookEvent() {
         $items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         
-        // Store stock changes for display
         $stockUpdates = [];
         
-        // Update inventory for each item
         foreach ($items as $item) {
-            // Get current stock
-            $stmt = $conn->prepare("SELECT stock FROM items WHERE id = ?");
+            $stmt = $conn->prepare("SELECT stock FROM ITEMS WHERE id = ?");
             $stmt->bind_param("i", $item['item_id']);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -135,9 +119,8 @@ function simulateWebhookEvent() {
             $oldStock = $product['stock'];
             $stmt->close();
             
-            // Update the stock
             $stmt = $conn->prepare("
-                UPDATE items 
+                UPDATE ITEMS 
                 SET stock = GREATEST(0, stock - ?) 
                 WHERE id = ?
             ");
@@ -145,8 +128,7 @@ function simulateWebhookEvent() {
             $stmt->execute();
             $stmt->close();
             
-            // Get new stock
-            $stmt = $conn->prepare("SELECT stock FROM items WHERE id = ?");
+            $stmt = $conn->prepare("SELECT stock FROM ITEMS WHERE id = ?");
             $stmt->bind_param("i", $item['item_id']);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -163,9 +145,8 @@ function simulateWebhookEvent() {
             ];
         }
         
-        // Update order status
         $stmt = $conn->prepare("
-            UPDATE orders 
+            UPDATE ORDERS 
             SET status = 'Processing', 
                 payment_id = ?,
                 payment_method = ?
@@ -183,7 +164,6 @@ function simulateWebhookEvent() {
         
         $conn->commit();
         
-        // Build success message with inventory details
         $success_message = "<strong>Successfully simulated webhook for Order #$orderId</strong><br>";
         $success_message .= "Order status updated to 'Processing'.<br>";
         $success_message .= "<hr><strong>Inventory Updates:</strong><ul>";
@@ -212,15 +192,13 @@ function simulateWebhookEvent() {
     }
 }
 
-// Function to fix orders with missing address_id
 function fixOrderAddresses() {
     global $conn, $success_message, $error_message;
     
     try {
-        // Get users with pending orders that have NULL address_id
         $stmt = $conn->prepare("
             SELECT DISTINCT o.user_id
-            FROM orders o
+            FROM ORDERS o
             WHERE o.address_id IS NULL
         ");
         $stmt->execute();
@@ -236,11 +214,9 @@ function fixOrderAddresses() {
         
         foreach ($users as $user) {
             $userId = $user['user_id'];
-            
-            // Get the user's most recent address
             $stmt = $conn->prepare("
                 SELECT id 
-                FROM addresses 
+                FROM ADDRESSES 
                 WHERE user_id = ? 
                 ORDER BY id DESC 
                 LIMIT 1
@@ -252,10 +228,9 @@ function fixOrderAddresses() {
             if ($result->num_rows > 0) {
                 $address = $result->fetch_assoc();
                 $addressId = $address['id'];
-                
-                // Update all orders for this user where address_id is NULL
+
                 $stmt = $conn->prepare("
-                    UPDATE orders 
+                    UPDATE ORDERS 
                     SET address_id = ? 
                     WHERE user_id = ? AND address_id IS NULL
                 ");
@@ -280,7 +255,6 @@ function fixOrderAddresses() {
     }
 }
 
-// Function to test inventory updates manually
 function testInventoryUpdate() {
     global $conn, $success_message, $error_message;
     
@@ -298,8 +272,7 @@ function testInventoryUpdate() {
     }
     
     try {
-        // Get current product info
-        $stmt = $conn->prepare("SELECT id, name, stock FROM items WHERE id = ?");
+        $stmt = $conn->prepare("SELECT id, name, stock FROM ITEMS WHERE id = ?");
         $stmt->bind_param("i", $product_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -313,13 +286,11 @@ function testInventoryUpdate() {
         $oldStock = $product['stock'];
         $productName = $product['name'];
         
-        // Update stock
-        $stmt = $conn->prepare("UPDATE items SET stock = GREATEST(0, stock - ?) WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE ITEMS SET stock = GREATEST(0, stock - ?) WHERE id = ?");
         $stmt->bind_param("ii", $quantity, $product_id);
         $stmt->execute();
         
-        // Get updated stock
-        $stmt = $conn->prepare("SELECT stock FROM items WHERE id = ?");
+        $stmt = $conn->prepare("SELECT stock FROM ITEMS WHERE id = ?");
         $stmt->bind_param("i", $product_id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -344,7 +315,6 @@ function testInventoryUpdate() {
     }
 }
 
-// Process actions
 if (isset($_POST['action'])) {
     if ($_POST['action'] === 'check_and_fix') {
         checkStripeWebhookConfiguration();
@@ -355,21 +325,18 @@ if (isset($_POST['action'])) {
     } elseif ($_POST['action'] === 'test_inventory') {
         testInventoryUpdate();
     } elseif ($_POST['action'] === 'force_update_scarf') {
-        // Force update the Knitted Scarf stock (ID 2)
         try {
             $conn->begin_transaction();
             
-            // Get current stock of knitted scarf
-            $stmt = $conn->prepare("SELECT stock, name FROM items WHERE id = 2");
+            $stmt = $conn->prepare("SELECT stock, name FROM ITEMS WHERE id = 2");
             $stmt->execute();
             $result = $stmt->get_result();
             $product = $result->fetch_assoc();
             $oldStock = $product['stock'];
             $productName = $product['name'];
             
-            // Force update to one less
             $newStock = max(0, $oldStock - 1);
-            $stmt = $conn->prepare("UPDATE items SET stock = ? WHERE id = 2");
+            $stmt = $conn->prepare("UPDATE ITEMS SET stock = ? WHERE id = 2");
             $stmt->bind_param("i", $newStock);
             $stmt->execute();
             
@@ -388,11 +355,10 @@ if (isset($_POST['action'])) {
     }
 }
 
-// Get recent orders for display
 $orders = $conn->query("
     SELECT o.id, o.user_id, o.address_id, o.total_price, o.status, o.created_at, 
-           o.payment_id, o.payment_method
-    FROM orders o
+    o.payment_id, o.payment_method
+    FROM ORDERS o
     ORDER BY o.id DESC
     LIMIT 10
 ")->fetch_all(MYSQLI_ASSOC);
@@ -491,7 +457,7 @@ $orders = $conn->query("
                                     <option value="">-- Select a product --</option>
                                     <?php
                                     // Get all products from the database
-                                    $result = $conn->query("SELECT id, name, stock FROM items ORDER BY name");
+                                    $result = $conn->query("SELECT id, name, stock FROM ITEMS ORDER BY name");
                                     while ($row = $result->fetch_assoc()) {
                                         $stockStatus = '';
                                         if ($row['stock'] <= 0) {

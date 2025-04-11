@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../config.php';
-require_once '../stripe/stripe.php';
+require_once __DIR__ . '/../stripe/stripe.php';
 
 header('Content-Type: application/json');
 
@@ -10,13 +10,10 @@ try {
         throw new Exception("User not authenticated");
     }
 
-    // Get JSON input
     $input = json_decode(file_get_contents('php://input'), true);
     $orderId = $input['order_id'];
     $amount = $input['amount'];
-
-    // Verify order belongs to user
-    $stmt = $conn->prepare("SELECT total_price, status FROM orders WHERE id = ? AND user_id = ?");
+    $stmt = $conn->prepare("SELECT total_price, status FROM ORDERS WHERE id = ? AND user_id = ?");
     $stmt->bind_param("ii", $orderId, $_SESSION["user_id"]);
     $stmt->execute();
     $order = $stmt->get_result()->fetch_assoc();
@@ -30,7 +27,6 @@ try {
         throw new Exception("Order is not in pending status");
     }
 
-    // Create a PaymentIntent with Stripe
     $paymentIntent = \Stripe\PaymentIntent::create([
         'amount' => $amount,
         'currency' => 'usd',

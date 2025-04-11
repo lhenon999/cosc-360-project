@@ -25,9 +25,9 @@ $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : null;
 // Get order with address details
 $stmt = $conn->prepare("
     SELECT o.id, o.total_price, o.status, o.created_at,
-           a.street_address, a.city, a.state, a.postal_code, a.country
+        a.street_address, a.city, a.state, a.postal_code, a.country
     FROM ORDERS o
-    LEFT JOIN addresses a ON o.address_id = a.id
+    LEFT JOIN ADDRESSES a ON o.address_id = a.id
     WHERE o.user_id = ? AND " . ($order_id ? "o.id = ?" : "1=1") . "
     ORDER BY o.created_at DESC
     LIMIT 1

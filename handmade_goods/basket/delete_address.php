@@ -28,7 +28,7 @@ if (!$address_id) {
 
 try {
     // First check if the address belongs to the user
-    $stmt = $conn->prepare("SELECT id FROM addresses WHERE id = ? AND user_id = ?");
+    $stmt = $conn->prepare("SELECT id FROM ADDRESSES WHERE id = ? AND user_id = ?");
     $stmt->bind_param("ii", $address_id, $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -42,7 +42,7 @@ try {
     $conn->begin_transaction();
     
     // Check if this address is linked to any orders
-    $stmt = $conn->prepare("SELECT id FROM orders WHERE address_id = ?");
+    $stmt = $conn->prepare("SELECT id FROM ORDERS WHERE address_id = ?");
     $stmt->bind_param("i", $address_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -51,7 +51,7 @@ try {
     
     // If address is used in orders, update orders to remove the link first
     if ($is_used_in_orders) {
-        $update_stmt = $conn->prepare("UPDATE orders SET address_id = NULL WHERE address_id = ?");
+        $update_stmt = $conn->prepare("UPDATE ORDERS SET address_id = NULL WHERE address_id = ?");
         $update_stmt->bind_param("i", $address_id);
         
         if (!$update_stmt->execute()) {
@@ -62,7 +62,7 @@ try {
     }
     
     // Now try deleting the address
-    $stmt = $conn->prepare("DELETE FROM addresses WHERE id = ? AND user_id = ?");
+    $stmt = $conn->prepare("DELETE FROM ADDRESSES WHERE id = ? AND user_id = ?");
     $stmt->bind_param("ii", $address_id, $user_id);
     
     if (!$stmt->execute()) {
