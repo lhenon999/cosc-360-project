@@ -205,6 +205,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <button type="submit" id="submitButton" class="m-btn g" disabled>
                         <span class="material-symbols-outlined">add</span> Submit Product
                     </button>
+                    <a class="m-btn r" href="delete_listing.php?id=<?= $product_id; ?>"
+                        onclick="return confirm('Are you sure you want to delete this listing? This action cannot be undone.');">
+                        <span class="material-symbols-outlined">cancel</span> Delete listing
+                    </a>
+
                 </div>
             </form>
         </div>
@@ -288,4 +293,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     </script>
 </body>
+
 </html>
