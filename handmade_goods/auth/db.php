@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user_type = 'normal';
         $profile_picture = "../assets/images/default_profile.png";
 
-        $upload_dir = $_SERVER['DOCUMENT_ROOT'] . "../assets/images/uploads/profile_pictures/";
+        $upload_dir = "../assets/images/uploads/profile_pictures/";
 
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0777, true);
