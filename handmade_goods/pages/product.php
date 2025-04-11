@@ -15,6 +15,10 @@ $from_listing_users = isset($_GET['from']) && $_GET['from'] === 'profile_listing
 $from_users = isset($_GET['from']) && $_GET['from'] === 'profile_users';
 $from_home = isset($_GET['source']) && $_GET['source'] === 'home';
 $from_my_shop = isset($_GET['and']) && $_GET['and'] === 'my_shop';
+$from_order_details = isset($_GET['from']) && $_GET['from'] === 'order_details';
+$order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;
+$fromParam = urlencode("order_details?order_id=" . $order["id"]);
+
 
 $stmt = $conn->prepare("SELECT id, name, description, price, img, user_id, category, stock FROM ITEMS WHERE id = ?");
 $stmt->bind_param("i", $product_id);
@@ -143,6 +147,13 @@ if ($session_user_id !== null) {
                                 <li class="breadcrumb-item">
                                     <a href="home.php?id=<?= $user_id ?>">Home</a>
                                 </li>
+                            <?php elseif ($from_order_details):
+                                $order_id = isset($_GET['order_id']) ? $_GET['order_id'] : '';
+                                ?>
+                                <li class="breadcrumb-item">
+                                    <a href="order_details.php?order_id=<?= htmlspecialchars($order_id) ?>">My Order</a>
+                                </li>
+
                             <?php else: ?>
                                 <li class="breadcrumb-item">
                                     <a href="products.php">Products</a>
