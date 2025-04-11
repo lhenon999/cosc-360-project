@@ -266,6 +266,14 @@ button.cta-2:hover span {
     border: 1px solid #ccc;
 }
 
+.m-btn.r {
+    color: rgb(236, 104, 104);
+}
+
+.m-btn.r .material-symbols-outlined {
+    color: rgb(236, 104, 104);
+}
+
 .bg-dark .m-btn.b{
     border: none;
 }
