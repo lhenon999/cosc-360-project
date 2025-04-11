@@ -99,7 +99,7 @@ if (isset($_SESSION["user_id"])) {
                 </a>
                 <div class="overview-content">
                     <?php if (isset($_SESSION["user_id"])): ?>
-                        <?php include "basket_overview.php"; ?>
+                        <?php include "../pages/basket_overview.php"; ?>
                     <?php endif; ?>
                 </div>
             </span>
