@@ -1,3 +1,11 @@
+<?php
+$userAgent = $_SERVER['HTTP_USER_AGENT'];
+if (preg_match('/Mobile|Android|iPhone/', $userAgent)) {
+  $isMobile = true;
+} else {
+  $isMobile = false;
+}
+?>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <style>
@@ -20,30 +28,14 @@
     color: white;
     font-size: 2rem;
   }
-  
-  .chat-container {
-    position: fixed;
-    bottom: 90px;       
-    right: 20px;
-    width: 450px;
-    height: 600px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: none;
-    z-index: 1000;
-    overflow: hidden;
-  }
 </style>
 
-<div class="chat-bot-button">
-  <span class="material-symbols-outlined">support_agent</span>
-</div>
 
-<div id="chat-container" class="chat-container">
-  <p style="padding: 10px; margin: 0;">Chat content placeholder</p>
-</div>
+<?php if (!$isMobile): ?>
+  <div class="chat-bot-button">
+    <span class="material-symbols-outlined">support_agent</span>
+  </div>
+<?php endif; ?>
 
 <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
 <df-messenger

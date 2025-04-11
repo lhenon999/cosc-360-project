@@ -262,6 +262,14 @@ button.cta-2:hover span {
     color: white;
 }
 
+.m-btn.b{
+    border: 1px solid #ccc;
+}
+
+.bg-dark .m-btn.b{
+    border: none;
+}
+
 .m-btn:hover {
     transform: scale(1.05);
 }
