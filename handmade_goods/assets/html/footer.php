@@ -8,7 +8,7 @@
         </div>
 
         <div class="footer-section">
-        <a href="./about"><h3>About Us</h3></a>
+        <a href="./about.php"><h3>About Us</h3></a>
         <a href="tel:+12345678900"><p>+1 (234)-567-8900</p></a>
         <p>
             <strong>Email:</strong> <a href="mailto:info@handmadegoods.com">info@handmadegoods.com</a>
